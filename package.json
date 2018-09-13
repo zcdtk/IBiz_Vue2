@@ -1,0 +1,17 @@
+{
+  "name": "ibizsys_package",
+  "version": "1.0.0",
+  "description": "javascript ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ibizsys",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "rxjs": "^6.3.2",
+    "typescript": "^3.0.3"
+  }
+}
