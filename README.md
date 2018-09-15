@@ -22,6 +22,6 @@ $ npm install
 ## gulp 命令说明
 
 ```bash
-$ gulp compilets            -----  将src目录下的TypeScript文件编译成dist目录下的JavaScript文件<br/>
+$ gulp compilets            -----  将src目录下的TypeScript文件编译成dist目录下的JavaScript文件
 $ gulp concatibizsys        -----  将dist目录下的JavaScript文件合并成ibizsys.js文件，合并顺序参考命令下的数组顺序  
 ```
