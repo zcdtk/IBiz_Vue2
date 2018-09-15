@@ -1,4 +1,5 @@
-import { observable, Subject, Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+
 /**
  * 抽象接口基类
  *
