@@ -7,7 +7,7 @@ gulp.task('js', function () {
         'node_modules/vue/dist/vue.js',
         'node_modules/iview/dist/iview.js',
         'node_modules/vue-router/dist/vue-router.js',
-        'node_modules/rxjs/Rx.js'
+        // 'node_modules/rxjs/Rx.js'
     ];
     return gulp.src(assets)
         .pipe(concat('assets.js'))
