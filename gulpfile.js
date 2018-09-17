@@ -24,4 +24,15 @@ gulp.task('css', function() {
     .pipe(gulp.dest('dist'));
 });
 
+// font 字体图标
+gulp.task('font', function() {
+    var font = [
+        'node_modules/iview/dist/styles/fonts/ionicons.svg',
+        'node_modules/iview/dist/styles/fonts/ionicons.ttf',
+        'node_modules/iview/dist/styles/fonts/ionicons.woff'
+    ];
+    return gulp.src(font)
+    .pipe(gulp.dest('dist/font'));
+});
+
 
