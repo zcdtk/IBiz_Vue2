@@ -16,6 +16,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
+    "iview": "^3.1.1-rc.1",
     "rxjs": "^6.3.2",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
