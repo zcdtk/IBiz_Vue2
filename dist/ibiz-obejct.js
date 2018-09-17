@@ -1,6 +1,6 @@
 "use strict";
+// import { Subject, Observable } from 'rxjs';
 Object.defineProperty(exports, "__esModule", { value: true });
-var rxjs_1 = require("rxjs");
 /**
  * 抽象接口基类
  *
@@ -56,7 +56,7 @@ var IBizObejct = /** @class */ (function () {
         var subject;
         if (name && !Object.is(name, '')) {
             if (!this.events.get(name)) {
-                subject = new rxjs_1.Subject();
+                subject = new Subject();
                 this.events.set(name, subject);
             }
             else {
