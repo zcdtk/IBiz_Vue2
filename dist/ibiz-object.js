@@ -14,6 +14,14 @@ var IBizObject = /** @class */ (function () {
      */
     function IBizObject(opts) {
         if (opts === void 0) { opts = {}; }
+        /**
+         * 事件对象集合
+         *
+         * @private
+         * @type {Map<string, Subject<any>>}
+         * @memberof IBizObject
+         */
+        this.events = new Map();
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
@@ -92,12 +100,21 @@ var IBizObject = /** @class */ (function () {
     };
     /**
      * 注册事件
-     * @param event 事件名称
-     * @param callback 回调函数<不支持字符串><3个参数 sender,data,event>
-     * @param scope 作用域
+     *
+     * @param {string} name 事件名称
+     * @returns {Observable<any>} 事件订阅对象
+     * @memberof IBizObject
      */
     IBizObject.prototype.on = function (name) {
-        return;
+        var subject;
+        if (this.events.get(name)) {
+            subject = this.events.get(name);
+        }
+        else {
+            subject = new rxjs.Subject();
+            this.events.set(name, subject);
+        }
+        return subject.asObservable();
     };
     /**
      * 呼出事件<参数会封装成JSON对象进行传递>
@@ -106,6 +123,9 @@ var IBizObject = /** @class */ (function () {
      * @param args 参数
      */
     IBizObject.prototype.fire = function (name, data) {
+        if (this.events.get(name)) {
+            this.events.get(name).next(data);
+        }
     };
     return IBizObject;
 }());

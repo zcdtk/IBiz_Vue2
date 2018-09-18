@@ -5,7 +5,14 @@
  */
 abstract class IBizObject {
 
-    private events: Map<string, any> = new Map();
+    /**
+     * 事件对象集合
+     *
+     * @private
+     * @type {Map<string, Subject<any>>}
+     * @memberof IBizObject
+     */
+    private events: Map<string, Subject<any>> = new Map();
 
     /**
      * 对象id
@@ -136,14 +143,23 @@ abstract class IBizObject {
     public getController(): any {
         return this.viewController;
     }
-	/**
-	 * 注册事件
-	 * @param event 事件名称
-	 * @param callback 回调函数<不支持字符串><3个参数 sender,data,event>
-	 * @param scope 作用域
-	 */
-    public on(name: string): any {
-        return;
+
+    /**
+     * 注册事件
+     *
+     * @param {string} name 事件名称
+     * @returns {Observable<any>} 事件订阅对象
+     * @memberof IBizObject
+     */
+    public on(name: string): Observable<any> {
+        let subject: Subject<any>;
+        if (this.events.get(name)) {
+            subject = this.events.get(name);
+        } else {
+            subject = new rxjs.Subject();
+            this.events.set(name, subject);
+        }
+        return subject.asObservable();
     }
 	/**
 	 * 呼出事件<参数会封装成JSON对象进行传递>
@@ -152,5 +168,8 @@ abstract class IBizObject {
 	 * @param args 参数
 	 */
     public fire(name: string, data: any): void {
+        if (this.events.get(name)) {
+            this.events.get(name).next(data);
+        }
     }
 }
