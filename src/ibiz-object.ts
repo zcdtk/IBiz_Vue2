@@ -5,6 +5,8 @@
  */
 abstract class IBizObject {
 
+    private events: Map<string, any> = new Map();
+
     /**
      * 对象id
      *
