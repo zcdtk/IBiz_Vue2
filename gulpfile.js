@@ -15,11 +15,15 @@ gulp.task('concatibizsys', function () {
     // 目录（顺序）
     var ibizsys = [
         // 基础文件
-        'ibizsys/ibiz-obejct.js',
+        'dist/ibiz-object.js',
         // 部件
-        'ibizsys/widget/ibiz-control.js',
+        'dist/widget/ibiz-control.js',
+        'dist/widget/ibiz-app-menu.js',
+        'dist/widget/ibiz-toolbar.js',
         // 控制器
-        'ibizsys/app/ibiz-view-controller.js'
+        'dist/app/ibiz-view-controller.js',
+        'dist/app/ibiz-main-view-controller.js',
+        'dist/app/ibiz-index-view-controller.js'
     ]
     return gulp.src(ibizsys)
         .pipe(concat('ibizsys.js'))

@@ -31,5 +31,27 @@ var IBizControl = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         return _super.call(this, opts) || this;
     }
+    IBizControl.prototype.load = function (params) {
+    };
+    /**
+     * 销毁<暂时无效>
+     */
+    IBizControl.prototype.destroy = function () {
+    };
+    IBizControl.prototype.setSize = function (width, height) {
+    };
+    IBizControl.prototype.setWidth = function (width) {
+    };
+    IBizControl.prototype.setHeight = function (height) {
+    };
+    IBizControl.prototype.isVisible = function () {
+        return true;
+    };
+    IBizControl.prototype.invoke = function (command, arg) {
+        var me = this;
+        me.onInvoke(command, arg);
+    };
+    IBizControl.prototype.onInvoke = function (command, arg) {
+    };
     return IBizControl;
 }(IBizObject));

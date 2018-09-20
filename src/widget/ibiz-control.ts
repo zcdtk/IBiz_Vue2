@@ -16,4 +16,33 @@ class IBizControl extends IBizObject {
     constructor(opts: any = {}) {
         super(opts);
     }
+
+    public load(params): void {
+
+    }
+	/**
+	 * 销毁<暂时无效>
+	 */
+    public destroy(): void {
+
+    }
+    public setSize(width, height): void {
+
+    }
+    public setWidth(width): void {
+
+    }
+    public setHeight(height): void {
+
+    }
+    public isVisible(): boolean {
+        return true;
+    }
+    public invoke(command, arg): void {
+        var me = this;
+        me.onInvoke(command, arg);
+    }
+    public onInvoke(command, arg): void {
+
+    }
 }
