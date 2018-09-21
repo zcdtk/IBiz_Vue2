@@ -1,4 +1,6 @@
-interface Observable<T> { };
+interface Observable<T> { 
+    subscribe(success?: Function, error?: Function): void;
+ };
 interface Subject<T> {
     asObservable(): any;
     next(data: any);

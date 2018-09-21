@@ -65,6 +65,79 @@ var IBizHttp = /** @class */ (function () {
 }());
 
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 代码表对象
+ *
+ * @class IBizCodeList
+ * @extends {IBizObject}
+ */
+var IBizCodeList = /** @class */ (function (_super) {
+    __extends(IBizCodeList, _super);
+    /**
+     * Creates an instance of IBizCodeList.
+     * 创建 IBizCodeList 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizCodeList
+     */
+    function IBizCodeList(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 静态代码表数据项
+         *
+         * @private
+         * @type {Array<any>}
+         * @memberof IBizCodeList
+         */
+        _this.items = [];
+        _this.items = opts.datas.slice();
+        return _this;
+    }
+    /**
+     * 获取静态代码表数据项
+     *
+     * @returns {Array<any>}
+     * @memberof IBizCodeList
+     */
+    IBizCodeList.prototype.getDatas = function () {
+        return this.items;
+    };
+    /**
+     * 根据值获文本
+     *
+     * @param {*} value
+     * @param {*} cascade
+     * @returns {*}
+     * @memberof IBizCodeList
+     */
+    IBizCodeList.prototype.getItemByValue = function (value, cascade) {
+        var result;
+        this.items.some(function (item) {
+            if (Object.is(item.value, value)) {
+                result = item;
+                return true;
+            }
+        });
+        return result;
+    };
+    return IBizCodeList;
+}(IBizObject));
+
+"use strict";
 /**
  * 抽象接口对象
  *
@@ -88,6 +161,12 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.events = new Map();
+        /**
+         * http 服务
+         *
+         * @memberof IBizObject
+         */
+        this.iBizHttp = new IBizHttp();
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
@@ -253,6 +332,94 @@ var IBizControl = /** @class */ (function (_super) {
     };
     return IBizControl;
 }(IBizObject));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 计数器部件对象
+ *
+ * @class IBizCounter
+ * @extends {IBizControl}
+ */
+var IBizCounter = /** @class */ (function (_super) {
+    __extends(IBizCounter, _super);
+    /**
+     * Creates an instance of IBizCounter.
+     * 创建 IBizCounter 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizCounter
+     */
+    function IBizCounter(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this_1 = _super.call(this, opts) || this;
+        _this_1.counterparam = {};
+        _this_1.lastReloadArg = {};
+        _this_1.data = {};
+        _this_1.counterid = opts.counterid;
+        // this.tag = opts.tag;
+        _this_1.counterparam = JSON.stringify(opts.counterparam);
+        _this_1.timer = opts.timer;
+        // this.url = me.getController().getBackendUrl();
+        if (_this_1.timer > 1000) {
+            _this_1.tag = setInterval(function () { this.reload(); }, _this_1.timer);
+        }
+        _this_1.reload();
+        return _this_1;
+    }
+    IBizCounter.prototype.reload = function () {
+        var _this = this;
+        var params = { srfcounterid: _this.counterid, srfaction: 'FETCH', srfcounterparam: _this.counterparam };
+        this.iBizHttp.post('', params).subscribe(function (data) {
+            if (data.ret == 0) {
+                _this.setData(data);
+            }
+            else {
+                console.log('加载计数数据异常.' + data.info);
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    };
+    IBizCounter.prototype.setData = function (data) {
+        var _this = this;
+        _this.result = data;
+        _this.data = data.data;
+        _this.fire(IBizCounter.COUNTERCHANGED, _this.data);
+    };
+    IBizCounter.prototype.getResult = function () {
+        var _this = this;
+        return _this.result;
+    };
+    IBizCounter.prototype.getData = function () {
+        var _this = this;
+        return _this.data;
+    };
+    IBizCounter.prototype.close = function () {
+        if (this.tag !== undefined) {
+            clearInterval(this.tag);
+            delete this.timer;
+        }
+    };
+    /*****************事件声明************************/
+    /**
+     * 计数发生变化
+     */
+    IBizCounter.COUNTERCHANGED = "COUNTERCHANGED";
+    return IBizCounter;
+}(IBizControl));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {

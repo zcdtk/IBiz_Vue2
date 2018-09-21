@@ -16,10 +16,12 @@ gulp.task('concatibizsys', function () {
     var ibizsys = [
         // util
         'dist/util/ibiz-http.js',
+        'dist/util/ibiz-code-list.js',
         // 基础文件
         'dist/ibiz-object.js',
         // 部件
         'dist/widget/ibiz-control.js',
+        'dist/widget/ibiz-counter.js',
         'dist/widget/ibiz-app-menu.js',
         'dist/widget/ibiz-toolbar.js',
         // 控制器
@@ -31,4 +33,5 @@ gulp.task('concatibizsys', function () {
         .pipe(concat('ibizsys.js'))
         .pipe(gulp.dest('dist'));
 });
+
 

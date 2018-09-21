@@ -22,6 +22,12 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.events = new Map();
+        /**
+         * http 服务
+         *
+         * @memberof IBizObject
+         */
+        this.iBizHttp = new IBizHttp();
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;

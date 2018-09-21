@@ -15,6 +15,13 @@ abstract class IBizObject {
     private events: Map<string, Subject<any>> = new Map();
 
     /**
+     * http 服务
+     *
+     * @memberof IBizObject
+     */
+    public iBizHttp = new IBizHttp();
+
+    /**
      * 对象id
      *
      * @private
