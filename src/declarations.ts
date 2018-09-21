@@ -8,3 +8,4 @@ interface Subject<T> {
 declare var Subject;
 declare var rxjs;
 declare var Vue;
+declare var axios;

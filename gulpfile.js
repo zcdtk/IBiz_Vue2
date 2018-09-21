@@ -14,6 +14,8 @@ gulp.task('compilets', function () {
 gulp.task('concatibizsys', function () {
     // 目录（顺序）
     var ibizsys = [
+        // util
+        'dist/util/ibiz-http.js',
         // 基础文件
         'dist/ibiz-object.js',
         // 部件
