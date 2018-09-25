@@ -7,20 +7,20 @@
 class IBizAppMenu extends IBizControl {
 
     /**
-     *应用菜单数据
+     * 应用菜单数据
      *
-     * @type {any[]}
+     * @type {Array<any>}
      * @memberof IBizAppMenu
      */
-    public items: any[];
+    public items: Array<any> = [];
 
     /**
      * 应用功能集合
      *
-     * @type {Map<string, any>}
+     * @type {Array<any>}
      * @memberof IBizAppMenu
      */
-    public appFuncs: Map<string, any> = new Map();
+    public appFuncs: Array<any> = [];
 
     /**
      * Creates an instance of IBizAppMenu.
@@ -31,6 +31,26 @@ class IBizAppMenu extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
+    }
+
+    /**
+     * 获取菜单数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    public getItems(): Array<any> {
+        return this.items;
+    }
+
+    /**
+     * 获取应用功能数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    public getAppFuncs(): Array<any> {
+        return this.appFuncs;
     }
 
     public load(): void {
