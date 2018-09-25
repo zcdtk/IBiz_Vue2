@@ -31,16 +31,44 @@ var IBizAppMenu = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
-         * 应用功能集合
+         * 应用菜单数据
          *
-         * @type {Map<string, any>}
+         * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this.appFuncs = new Map();
+        _this.items = [];
+        /**
+         * 应用功能集合
+         *
+         * @type {Array<any>}
+         * @memberof IBizAppMenu
+         */
+        _this.appFuncs = [];
         return _this;
     }
-    IBizAppMenu.prototype.load = function () {
+    /**
+     * 获取菜单数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getItems = function () {
+        return this.items;
+    };
+    /**
+     * 获取应用功能数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getAppFuncs = function () {
+        return this.appFuncs;
+    };
+    IBizAppMenu.prototype.load = function (opt) {
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
+        if (opt) {
+            Object.assign(params, opt);
+        }
         // this.post(params, this.getBackendUrl()).subscribe(success => {
         //     if (success.ret === 0) {
         //         this.$items = success.items;

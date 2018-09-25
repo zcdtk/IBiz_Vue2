@@ -70,6 +70,9 @@ var IBizViewController = /** @class */ (function (_super) {
         var _this = this;
         return _this.itemMap.get(itemId);
     };
+    IBizViewController.prototype.setControl = function (name, control) {
+        this.controls.set(name, control);
+    };
     IBizViewController.prototype.getControl = function (name) {
         this.controls.get(name);
     };

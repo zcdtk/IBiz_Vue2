@@ -34,7 +34,7 @@ class IBizViewController extends IBizObject {
 
     private updatepanels: Map<string, any> = new Map();
 
-    private controls:Map<string, any> = new Map();
+    public controls:Map<string, any> = new Map();
 
     /**
      * Creates an instance of IBizViewController.
@@ -73,6 +73,10 @@ class IBizViewController extends IBizObject {
     public getItem(itemId: string): any {
         var _this = this;
         return _this.itemMap.get(itemId);
+    }
+
+    public setControl(name:string, control:any): void {
+        this.controls.set(name, control);
     }
 
     public getControl(name:string):any {
