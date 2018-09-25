@@ -53,8 +53,11 @@ class IBizAppMenu extends IBizControl {
         return this.appFuncs;
     }
 
-    public load(): void {
-        const params: any = { srfctrlid: this.getName(), srfaction: 'FETCH' };
+    public load(opt?: any): void {
+        let params: any = { srfctrlid: this.getName(), srfaction: 'FETCH' };
+        if (opt) {
+            Object.assign(params, opt);
+        }
         // this.post(params, this.getBackendUrl()).subscribe(success => {
         //     if (success.ret === 0) {
         //         this.$items = success.items;
