@@ -29,7 +29,15 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 应用功能集合
+         *
+         * @type {Map<string, any>}
+         * @memberof IBizAppMenu
+         */
+        _this.appFuncs = new Map();
+        return _this;
     }
     IBizAppMenu.prototype.load = function () {
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
@@ -46,8 +54,26 @@ var IBizAppMenu = /** @class */ (function (_super) {
     IBizAppMenu.prototype.onSelectChange = function (select) {
     };
     /*****************事件声明************************/
+    /**
+     * 部件加载之前
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.BEFORELOAD = 'BEFORELOAD';
+    /**
+     * 部件加载完成
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.LOAD = 'LOAD';
+    /**
+     * 部件选中
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.SELECTION = 'SELECTION';
     return IBizAppMenu;
 }(IBizControl));

@@ -6,7 +6,21 @@
  */
 class IBizAppMenu extends IBizControl {
 
-    public $items: any[];
+    /**
+     *应用菜单数据
+     *
+     * @type {any[]}
+     * @memberof IBizAppMenu
+     */
+    public items: any[];
+
+    /**
+     * 应用功能集合
+     *
+     * @type {Map<string, any>}
+     * @memberof IBizAppMenu
+     */
+    public appFuncs: Map<string, any> = new Map();
 
     /**
      * Creates an instance of IBizAppMenu.
@@ -37,7 +51,28 @@ class IBizAppMenu extends IBizControl {
     }
 
     /*****************事件声明************************/
+
+    /**
+     * 部件加载之前
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     public static BEFORELOAD = 'BEFORELOAD';
+
+    /**
+     * 部件加载完成
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     public static LOAD = 'LOAD';
+
+    /**
+     * 部件选中
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     public static SELECTION = 'SELECTION';
 }
