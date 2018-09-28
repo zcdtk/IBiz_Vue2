@@ -34,7 +34,7 @@ class IBizViewController extends IBizObject {
 
     private updatepanels: Map<string, any> = new Map();
 
-    public controls:Map<string, any> = new Map();
+    public controls: Map<string, any> = new Map();
 
     /**
      * Creates an instance of IBizViewController.
@@ -75,22 +75,26 @@ class IBizViewController extends IBizObject {
         return _this.itemMap.get(itemId);
     }
 
-    public setControl(name:string, control:any): void {
+    public setControl(name: string, control: any): void {
         this.controls.set(name, control);
     }
 
-    public getControl(name:string):any {
+    public getControl(name: string): any {
         this.controls.get(name);
     }
 
-    public regUIActions(opts:any = {}): void {
+    public regUIActions(opts: any = {}): void {
 
     }
-    public regCodeLists(opts:any = {}): void {
-        
+    public regCodeLists(opts: any = {}): void {
+
     }
-    public regUICounters(opts:any = {}): void {
-        
+    public regUICounters(opts: any = {}): void {
+
+    }
+
+    public mounted(vue) {
+
     }
 
     public registerItem(itemId, item): void {

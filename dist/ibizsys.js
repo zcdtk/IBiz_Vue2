@@ -748,6 +748,8 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.regUICounters = function (opts) {
         if (opts === void 0) { opts = {}; }
     };
+    IBizViewController.prototype.mounted = function (vue) {
+    };
     IBizViewController.prototype.registerItem = function (itemId, item) {
         var _this = this;
         _this.itemMap.set(itemId, item);
