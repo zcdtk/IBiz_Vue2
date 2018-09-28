@@ -74,7 +74,7 @@ var IBizViewController = /** @class */ (function (_super) {
         this.controls.set(name, control);
     };
     IBizViewController.prototype.getControl = function (name) {
-        this.controls.get(name);
+        return this.controls.get(name);
     };
     IBizViewController.prototype.regUIActions = function (opts) {
         if (opts === void 0) { opts = {}; }

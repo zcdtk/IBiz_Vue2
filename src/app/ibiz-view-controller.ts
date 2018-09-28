@@ -80,7 +80,7 @@ class IBizViewController extends IBizObject {
     }
 
     public getControl(name: string): any {
-        this.controls.get(name);
+        return this.controls.get(name);
     }
 
     public regUIActions(opts: any = {}): void {
