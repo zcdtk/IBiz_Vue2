@@ -521,7 +521,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
             Object.assign(params, opt);
         }
         var http = new IBizHttp();
-        http.post(params, this.getBackendUrl()).subscribe(function (success) {
+        http.post(this.getBackendUrl(), params).subscribe(function (success) {
             console.log(success);
             if (success.ret === 0) {
                 _this.items = success.items;

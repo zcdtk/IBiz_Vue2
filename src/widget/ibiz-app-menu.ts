@@ -59,7 +59,7 @@ class IBizAppMenu extends IBizControl {
             Object.assign(params, opt);
         }
         let http = new IBizHttp();
-        http.post(params, this.getBackendUrl()).subscribe(success => {
+        http.post(this.getBackendUrl(), params).subscribe(success => {
             console.log(success)
             if (success.ret === 0) {
                 this.items = success.items;
