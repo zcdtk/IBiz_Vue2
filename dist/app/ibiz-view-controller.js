@@ -45,7 +45,6 @@ var IBizViewController = /** @class */ (function (_super) {
         _this_1.containerid = opts.containerid;
         _this_1.appctx = opts.appctx;
         _this_1.backendurl = opts.backendurl;
-        _this_1.init();
         return _this_1;
     }
     IBizViewController.prototype.isClosed = function () {

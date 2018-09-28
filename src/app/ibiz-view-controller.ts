@@ -48,7 +48,6 @@ class IBizViewController extends IBizObject {
         this.containerid = opts.containerid;
         this.appctx = opts.appctx;
         this.backendurl = opts.backendurl;
-        this.init();
     }
 
     public isClosed(): boolean {
