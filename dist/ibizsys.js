@@ -23,18 +23,26 @@ var IBizHttp = /** @class */ (function () {
         params_keys.forEach(function (key) {
             bodyFormData.set(key, params[key]);
         });
-        axios({
-            method: 'post',
-            url: url,
-            data: bodyFormData,
-            config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        }).then(function (response) {
+        axios.post(url, bodyFormData).
+            then(function (response) {
             console.log(response);
             subject.next(response);
-        }).catch(function (response) {
-            console.log(response);
-            subject.error(response);
+        }).catch(function (error) {
+            console.log(error);
+            subject.error(error);
         });
+        // axios({
+        //     method: 'post',
+        //     url: url,
+        //     data: bodyFormData,
+        //     config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        // }).then(function (response) {
+        //     console.log(response);
+        //     subject.next(response);
+        // }).catch(function (response) {
+        //     console.log(response);
+        //     subject.error(response);
+        // });
         return subject.asObservable();
     };
     /**

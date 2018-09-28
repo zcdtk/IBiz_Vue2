@@ -15,25 +15,33 @@ class IBizHttp {
      */
     public post(url: string, params: any = {}): Observable<any> {
         const subject: Subject<any> = new rxjs.Subject();
-
         let bodyFormData = new FormData();
         const params_keys = Object.keys(params);
         params_keys.forEach(key => {
             bodyFormData.set(key, params[key]);
         })
+        axios.post(url, bodyFormData).
+            then(function (response: any) {
+                console.log(response);
+                subject.next(response);
+            }).catch(function (error: any) {
+                console.log(error);
+                subject.error(error);
+            });
 
-        axios({
-            method: 'post',
-            url: url,
-            data: bodyFormData,
-            config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        }).then(function (response) {
-            console.log(response);
-            subject.next(response);
-        }).catch(function (response) {
-            console.log(response);
-            subject.error(response);
-        });
+
+        // axios({
+        //     method: 'post',
+        //     url: url,
+        //     data: bodyFormData,
+        //     config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        // }).then(function (response) {
+        //     console.log(response);
+        //     subject.next(response);
+        // }).catch(function (response) {
+        //     console.log(response);
+        //     subject.error(response);
+        // });
         return subject.asObservable();
     }
 
