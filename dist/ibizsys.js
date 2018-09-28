@@ -65,79 +65,6 @@ var IBizHttp = /** @class */ (function () {
 }());
 
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    }
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-/**
- * 代码表对象
- *
- * @class IBizCodeList
- * @extends {IBizObject}
- */
-var IBizCodeList = /** @class */ (function (_super) {
-    __extends(IBizCodeList, _super);
-    /**
-     * Creates an instance of IBizCodeList.
-     * 创建 IBizCodeList 实例
-     *
-     * @param {*} [opts={}]
-     * @memberof IBizCodeList
-     */
-    function IBizCodeList(opts) {
-        if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
-        /**
-         * 静态代码表数据项
-         *
-         * @private
-         * @type {Array<any>}
-         * @memberof IBizCodeList
-         */
-        _this.items = [];
-        _this.items = opts.datas.slice();
-        return _this;
-    }
-    /**
-     * 获取静态代码表数据项
-     *
-     * @returns {Array<any>}
-     * @memberof IBizCodeList
-     */
-    IBizCodeList.prototype.getDatas = function () {
-        return this.items;
-    };
-    /**
-     * 根据值获文本
-     *
-     * @param {*} value
-     * @param {*} cascade
-     * @returns {*}
-     * @memberof IBizCodeList
-     */
-    IBizCodeList.prototype.getItemByValue = function (value, cascade) {
-        var result;
-        this.items.some(function (item) {
-            if (Object.is(item.value, value)) {
-                result = item;
-                return true;
-            }
-        });
-        return result;
-    };
-    return IBizCodeList;
-}(IBizObject));
-
-"use strict";
 /**
  * 抽象接口对象
  *
@@ -274,6 +201,79 @@ var IBizObject = /** @class */ (function () {
     };
     return IBizObject;
 }());
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 代码表对象
+ *
+ * @class IBizCodeList
+ * @extends {IBizObject}
+ */
+var IBizCodeList = /** @class */ (function (_super) {
+    __extends(IBizCodeList, _super);
+    /**
+     * Creates an instance of IBizCodeList.
+     * 创建 IBizCodeList 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizCodeList
+     */
+    function IBizCodeList(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 静态代码表数据项
+         *
+         * @private
+         * @type {Array<any>}
+         * @memberof IBizCodeList
+         */
+        _this.items = [];
+        _this.items = opts.datas.slice();
+        return _this;
+    }
+    /**
+     * 获取静态代码表数据项
+     *
+     * @returns {Array<any>}
+     * @memberof IBizCodeList
+     */
+    IBizCodeList.prototype.getDatas = function () {
+        return this.items;
+    };
+    /**
+     * 根据值获文本
+     *
+     * @param {*} value
+     * @param {*} cascade
+     * @returns {*}
+     * @memberof IBizCodeList
+     */
+    IBizCodeList.prototype.getItemByValue = function (value, cascade) {
+        var result;
+        this.items.some(function (item) {
+            if (Object.is(item.value, value)) {
+                result = item;
+                return true;
+            }
+        });
+        return result;
+    };
+    return IBizCodeList;
+}(IBizObject));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -452,10 +452,46 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 应用菜单数据
+         *
+         * @type {Array<any>}
+         * @memberof IBizAppMenu
+         */
+        _this.items = [];
+        /**
+         * 应用功能集合
+         *
+         * @type {Array<any>}
+         * @memberof IBizAppMenu
+         */
+        _this.appFuncs = [];
+        return _this;
     }
-    IBizAppMenu.prototype.load = function () {
+    /**
+     * 获取菜单数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getItems = function () {
+        return this.items;
+    };
+    /**
+     * 获取应用功能数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getAppFuncs = function () {
+        return this.appFuncs;
+    };
+    IBizAppMenu.prototype.load = function (opt) {
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
+        if (opt) {
+            Object.assign(params, opt);
+        }
         // this.post(params, this.getBackendUrl()).subscribe(success => {
         //     if (success.ret === 0) {
         //         this.$items = success.items;
@@ -469,8 +505,26 @@ var IBizAppMenu = /** @class */ (function (_super) {
     IBizAppMenu.prototype.onSelectChange = function (select) {
     };
     /*****************事件声明************************/
+    /**
+     * 部件加载之前
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.BEFORELOAD = 'BEFORELOAD';
+    /**
+     * 部件加载完成
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.LOAD = 'LOAD';
+    /**
+     * 部件选中
+     *
+     * @static
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.SELECTION = 'SELECTION';
     return IBizAppMenu;
 }(IBizControl));
@@ -678,6 +732,9 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.getItem = function (itemId) {
         var _this = this;
         return _this.itemMap.get(itemId);
+    };
+    IBizViewController.prototype.setControl = function (name, control) {
+        this.controls.set(name, control);
     };
     IBizViewController.prototype.getControl = function (name) {
         this.controls.get(name);
