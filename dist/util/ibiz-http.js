@@ -18,27 +18,16 @@ var IBizHttp = /** @class */ (function () {
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
         var subject = new rxjs.Subject();
-        // axios.defaults.headers.post['Accept'] = 'application/json';
-        // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-        // axios.post(url, params).
-        //     then(function (response: any) {
-        //         console.log(response);
-        //         subject.next(response);
-        //     }).catch(function (error: any) {
-        //         console.log(error);
-        //         subject.error(error);
-        //     });
         var bodyFormData = new FormData();
         var params_keys = Object.keys(params);
         params_keys.forEach(function (key) {
             bodyFormData.set(key, params[key]);
         });
-        // bodyFormData.set('userName', 'Fred');
         axios({
             method: 'post',
             url: url,
             data: bodyFormData,
-            config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', Accept: 'application/json' } }
+            config: { headers: { 'Content-Type': 'multipart/form-data' } }
         }).then(function (response) {
             console.log(response);
             subject.next(response);
