@@ -15,6 +15,8 @@ class IBizHttp {
      */
     public post(url: string, params: any = {}): Observable<any> {
         const subject: Subject<any> = new rxjs.Subject();
+        axios.defaults.headers.post['Accept'] = 'application/json';
+        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         axios.post(url, params).
             then(function (response: any) {
                 console.log(response);

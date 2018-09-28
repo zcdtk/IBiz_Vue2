@@ -18,6 +18,8 @@ var IBizHttp = /** @class */ (function () {
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
         var subject = new rxjs.Subject();
+        axios.defaults.headers.post['Accept'] = 'application/json';
+        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
         axios.post(url, params).
             then(function (response) {
             console.log(response);
