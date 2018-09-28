@@ -9,6 +9,7 @@
   "author": "ibizsys",
   "license": "ISC",
   "devDependencies": {
+    "@babel/polyfill": "^7.0.0",
     "browserify": "^16.2.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
@@ -16,6 +17,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "iview": "^3.1.1-rc.1",
     "require": "^2.4.20",
     "rxjs": "^6.3.2",
