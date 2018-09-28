@@ -18,29 +18,24 @@ var IBizHttp = /** @class */ (function () {
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
         var subject = new rxjs.Subject();
-        var bodyFormData = new FormData();
         var params_keys = Object.keys(params);
+        var form_arr = [];
         params_keys.forEach(function (key) {
-            bodyFormData.set(key, params[key]);
+            form_arr.push(key + "=" + params[key]);
         });
-        // axios.post(url, bodyFormData).
-        //     then(function (response: any) {
-        //         console.log(response);
-        //         subject.next(response);
-        //     }).catch(function (error: any) {
-        //         console.log(error);
-        //         subject.error(error);
-        //     });
         axios({
             method: 'post',
             url: url,
-            data: bodyFormData,
+            data: form_arr.join('&'),
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'Accept': 'application/json' },
         }).then(function (response) {
-            console.log(response);
-            subject.next(response);
+            if (response.status === 200) {
+                subject.next(response.data);
+            }
+            else {
+                subject.error(response);
+            }
         }).catch(function (response) {
-            console.log(response);
             subject.error(response);
         });
         return subject.asObservable();
