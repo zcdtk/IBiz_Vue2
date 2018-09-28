@@ -83,6 +83,16 @@ class IBizViewController extends IBizObject {
         this.controls.get(name);
     }
 
+    public regUIActions(opts:any = {}): void {
+
+    }
+    public regCodeLists(opts:any = {}): void {
+        
+    }
+    public regUICounters(opts:any = {}): void {
+        
+    }
+
     public registerItem(itemId, item): void {
         var _this = this;
         _this.itemMap.set(itemId, item);

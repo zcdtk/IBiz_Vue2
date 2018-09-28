@@ -739,6 +739,15 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.getControl = function (name) {
         this.controls.get(name);
     };
+    IBizViewController.prototype.regUIActions = function (opts) {
+        if (opts === void 0) { opts = {}; }
+    };
+    IBizViewController.prototype.regCodeLists = function (opts) {
+        if (opts === void 0) { opts = {}; }
+    };
+    IBizViewController.prototype.regUICounters = function (opts) {
+        if (opts === void 0) { opts = {}; }
+    };
     IBizViewController.prototype.registerItem = function (itemId, item) {
         var _this = this;
         _this.itemMap.set(itemId, item);
