@@ -31,9 +31,9 @@ class IBizCounter extends IBizControl {
     constructor(opts: any = {}) {
         super(opts);
         let _this = this;
-        _this.counterid = opts.counterid;
+        _this.counterid = opts.counterId;
         // this.tag = opts.tag;
-        _this.counterparam = JSON.stringify(opts.counterparam);
+        _this.counterparam = JSON.stringify(opts.counterParam);
         _this.timer = opts.timer;
         // this.url = me.getController().getBackendUrl();
         if (_this.timer > 1000) {

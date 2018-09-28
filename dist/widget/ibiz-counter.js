@@ -34,9 +34,9 @@ var IBizCounter = /** @class */ (function (_super) {
         _this_1.lastReloadArg = {};
         _this_1.data = {};
         var _this = _this_1;
-        _this.counterid = opts.counterid;
+        _this.counterid = opts.counterId;
         // this.tag = opts.tag;
-        _this.counterparam = JSON.stringify(opts.counterparam);
+        _this.counterparam = JSON.stringify(opts.counterParam);
         _this.timer = opts.timer;
         // this.url = me.getController().getBackendUrl();
         if (_this.timer > 1000) {
