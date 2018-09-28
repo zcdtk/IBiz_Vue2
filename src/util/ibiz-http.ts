@@ -15,16 +15,36 @@ class IBizHttp {
      */
     public post(url: string, params: any = {}): Observable<any> {
         const subject: Subject<any> = new rxjs.Subject();
-        axios.defaults.headers.post['Accept'] = 'application/json';
-        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-        axios.post(url, params).
-            then(function (response: any) {
-                console.log(response);
-                subject.next(response);
-            }).catch(function (error: any) {
-                console.log(error);
-                subject.error(error);
-            });
+        // axios.defaults.headers.post['Accept'] = 'application/json';
+        // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+        // axios.post(url, params).
+        //     then(function (response: any) {
+        //         console.log(response);
+        //         subject.next(response);
+        //     }).catch(function (error: any) {
+        //         console.log(error);
+        //         subject.error(error);
+        //     });
+
+        let bodyFormData = new FormData();
+        const params_keys = Object.keys(params);
+        params_keys.forEach(key => {
+            bodyFormData.set(key, params[key]);
+        })
+        // bodyFormData.set('userName', 'Fred');
+
+        axios({
+            method: 'post',
+            url: url,
+            data: bodyFormData,
+            config: { headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', Accept: 'application/json' } }
+        }).then(function (response) {
+            console.log(response);
+            subject.next(response);
+        }).catch(function (response) {
+            console.log(response);
+            subject.error(response);
+        });
         return subject.asObservable();
     }
 
