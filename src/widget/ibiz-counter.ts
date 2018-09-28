@@ -30,21 +30,22 @@ class IBizCounter extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        this.counterid = opts.counterid;
+        let _this = this;
+        _this.counterid = opts.counterid;
         // this.tag = opts.tag;
-        this.counterparam = JSON.stringify(opts.counterparam);
-        this.timer = opts.timer;
+        _this.counterparam = JSON.stringify(opts.counterparam);
+        _this.timer = opts.timer;
         // this.url = me.getController().getBackendUrl();
-        if (this.timer > 1000) {
-            this.tag = setInterval(function () { this.reload(); }, this.timer);
+        if (_this.timer > 1000) {
+            _this.tag = setInterval(function () { _this.reload(); }, _this.timer);
         }
-        this.reload();
+        _this.reload();
     }
 
     public reload(): void {
         var _this = this;
         let params = { srfcounterid: _this.counterid, srfaction: 'FETCH', srfcounterparam: _this.counterparam };
-        this.iBizHttp.post('', params).subscribe((data) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
             if (data.ret == 0) {
                 _this.setData(data);
             } else {

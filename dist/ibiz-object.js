@@ -31,7 +31,6 @@ var IBizObject = /** @class */ (function () {
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
-        this.viewController = opts.viewController;
     }
     /**
      * 对象初始化
@@ -94,15 +93,6 @@ var IBizObject = /** @class */ (function () {
      */
     IBizObject.prototype.getRefName = function () {
         return this.refname;
-    };
-    /**
-     * 获取界面控制器
-     *
-     * @returns {*}
-     * @memberof IBizObject
-     */
-    IBizObject.prototype.getController = function () {
-        return this.viewController;
     };
     /**
      * 注册事件

@@ -29,7 +29,12 @@ var IBizControl = /** @class */ (function (_super) {
      */
     function IBizControl(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
+        _this_1.backendurl = '';
+        var _this = _this_1;
+        _this.backendurl = opts.backendurl;
+        _this.viewController = opts.viewController;
+        return _this_1;
     }
     IBizControl.prototype.load = function (params) {
     };
@@ -52,6 +57,20 @@ var IBizControl = /** @class */ (function (_super) {
         me.onInvoke(command, arg);
     };
     IBizControl.prototype.onInvoke = function (command, arg) {
+    };
+    IBizControl.prototype.getViewController = function () {
+        return this.viewController;
+    };
+    IBizControl.prototype.getBackendUrl = function () {
+        var url;
+        if (this.backendurl && !Object.is(this.backendurl, '')) {
+            url = this.backendurl;
+        }
+        else if (this.getViewController()) {
+            var viewController = this.getViewController();
+            url = viewController.getBackendUrl();
+        }
+        return url;
     };
     return IBizControl;
 }(IBizObject));

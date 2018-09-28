@@ -48,14 +48,6 @@ abstract class IBizObject {
      */
     private refname: string;
 
-    /**
-     * 对象视图控制器
-     *
-     * @private
-     * @type {*}
-     * @memberof IBizObject
-     */
-    private viewController: any;
 
     /**
      * Creates an instance of IBizObject.
@@ -68,7 +60,6 @@ abstract class IBizObject {
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
-        this.viewController = opts.viewController;
     }
 
 
@@ -139,16 +130,6 @@ abstract class IBizObject {
      */
     public getRefName(): string {
         return this.refname;
-    }
-
-    /**
-     * 获取界面控制器
-     *
-     * @returns {*}
-     * @memberof IBizObject
-     */
-    public getController(): any {
-        return this.viewController;
     }
 
     /**

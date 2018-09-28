@@ -6,6 +6,10 @@
  */
 class IBizControl extends IBizObject {
 
+    private backendurl: string = '';
+
+    private viewController: any;
+
     /**
      * Creates an instance of IBizControl.
      * 创建 IBizControl 实例对象
@@ -15,6 +19,9 @@ class IBizControl extends IBizObject {
      */
     constructor(opts: any = {}) {
         super(opts);
+        let _this = this;
+        _this.backendurl = opts.backendurl;
+        _this.viewController = opts.viewController;
     }
 
     public load(params): void {
@@ -44,5 +51,20 @@ class IBizControl extends IBizObject {
     }
     public onInvoke(command, arg): void {
 
+    }
+
+    public getViewController(): any {
+        return this.viewController;
+    }
+
+    public getBackendUrl(): string {
+        let url: string;
+        if (this.backendurl && !Object.is(this.backendurl, '')) {
+            url = this.backendurl;
+        } else if (this.getViewController()) {
+            const viewController = this.getViewController();
+            url = viewController.getBackendUrl();
+        }
+        return url;
     }
 }

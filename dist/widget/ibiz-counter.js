@@ -33,21 +33,22 @@ var IBizCounter = /** @class */ (function (_super) {
         _this_1.counterparam = {};
         _this_1.lastReloadArg = {};
         _this_1.data = {};
-        _this_1.counterid = opts.counterid;
+        var _this = _this_1;
+        _this.counterid = opts.counterid;
         // this.tag = opts.tag;
-        _this_1.counterparam = JSON.stringify(opts.counterparam);
-        _this_1.timer = opts.timer;
+        _this.counterparam = JSON.stringify(opts.counterparam);
+        _this.timer = opts.timer;
         // this.url = me.getController().getBackendUrl();
-        if (_this_1.timer > 1000) {
-            _this_1.tag = setInterval(function () { this.reload(); }, _this_1.timer);
+        if (_this.timer > 1000) {
+            _this.tag = setInterval(function () { _this.reload(); }, _this.timer);
         }
-        _this_1.reload();
+        _this.reload();
         return _this_1;
     }
     IBizCounter.prototype.reload = function () {
         var _this = this;
         var params = { srfcounterid: _this.counterid, srfaction: 'FETCH', srfcounterparam: _this.counterparam };
-        this.iBizHttp.post('', params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret == 0) {
                 _this.setData(data);
             }

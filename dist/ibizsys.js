@@ -97,7 +97,6 @@ var IBizObject = /** @class */ (function () {
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
-        this.viewController = opts.viewController;
     }
     /**
      * 对象初始化
@@ -160,15 +159,6 @@ var IBizObject = /** @class */ (function () {
      */
     IBizObject.prototype.getRefName = function () {
         return this.refname;
-    };
-    /**
-     * 获取界面控制器
-     *
-     * @returns {*}
-     * @memberof IBizObject
-     */
-    IBizObject.prototype.getController = function () {
-        return this.viewController;
     };
     /**
      * 注册事件
@@ -306,7 +296,12 @@ var IBizControl = /** @class */ (function (_super) {
      */
     function IBizControl(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
+        _this_1.backendurl = '';
+        var _this = _this_1;
+        _this.backendurl = opts.backendurl;
+        _this.viewController = opts.viewController;
+        return _this_1;
     }
     IBizControl.prototype.load = function (params) {
     };
@@ -329,6 +324,20 @@ var IBizControl = /** @class */ (function (_super) {
         me.onInvoke(command, arg);
     };
     IBizControl.prototype.onInvoke = function (command, arg) {
+    };
+    IBizControl.prototype.getViewController = function () {
+        return this.viewController;
+    };
+    IBizControl.prototype.getBackendUrl = function () {
+        var url;
+        if (this.backendurl && !Object.is(this.backendurl, '')) {
+            url = this.backendurl;
+        }
+        else if (this.getViewController()) {
+            var viewController = this.getViewController();
+            url = viewController.getBackendUrl();
+        }
+        return url;
     };
     return IBizControl;
 }(IBizObject));
@@ -368,21 +377,22 @@ var IBizCounter = /** @class */ (function (_super) {
         _this_1.counterparam = {};
         _this_1.lastReloadArg = {};
         _this_1.data = {};
-        _this_1.counterid = opts.counterid;
+        var _this = _this_1;
+        _this.counterid = opts.counterid;
         // this.tag = opts.tag;
-        _this_1.counterparam = JSON.stringify(opts.counterparam);
-        _this_1.timer = opts.timer;
+        _this.counterparam = JSON.stringify(opts.counterparam);
+        _this.timer = opts.timer;
         // this.url = me.getController().getBackendUrl();
-        if (_this_1.timer > 1000) {
-            _this_1.tag = setInterval(function () { this.reload(); }, _this_1.timer);
+        if (_this.timer > 1000) {
+            _this.tag = setInterval(function () { _this.reload(); }, _this.timer);
         }
-        _this_1.reload();
+        _this.reload();
         return _this_1;
     }
     IBizCounter.prototype.reload = function () {
         var _this = this;
         var params = { srfcounterid: _this.counterid, srfaction: 'FETCH', srfcounterparam: _this.counterparam };
-        this.iBizHttp.post('', params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret == 0) {
                 _this.setData(data);
             }
