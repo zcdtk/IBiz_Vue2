@@ -65,19 +65,22 @@ var IBizAppMenu = /** @class */ (function (_super) {
         return this.appFuncs;
     };
     IBizAppMenu.prototype.load = function (opt) {
+        var _this = this;
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
         if (opt) {
             Object.assign(params, opt);
         }
-        // this.post(params, this.getBackendUrl()).subscribe(success => {
-        //     if (success.ret === 0) {
-        //         this.$items = success.items;
-        //         const data = this.doMenus(success.items);
-        //         this.fire(IBizEvent.IBizAppMenu_LOADED, data);
-        //     }
-        // }, error => {
-        //     console.log(error);
-        // });
+        var http = new IBizHttp();
+        http.post(params, this.getBackendUrl()).subscribe(function (success) {
+            console.log(success);
+            if (success.ret === 0) {
+                _this.items = success.items;
+                // const data = this.doMenus(success.items);
+                // this.fire(IBizEvent.IBizAppMenu_LOADED, data);
+            }
+        }, function (error) {
+            console.log(error);
+        });
     };
     IBizAppMenu.prototype.onSelectChange = function (select) {
     };

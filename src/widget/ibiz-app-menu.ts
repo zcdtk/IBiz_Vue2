@@ -58,15 +58,17 @@ class IBizAppMenu extends IBizControl {
         if (opt) {
             Object.assign(params, opt);
         }
-        // this.post(params, this.getBackendUrl()).subscribe(success => {
-        //     if (success.ret === 0) {
-        //         this.$items = success.items;
-        //         const data = this.doMenus(success.items);
-        //         this.fire(IBizEvent.IBizAppMenu_LOADED, data);
-        //     }
-        // }, error => {
-        //     console.log(error);
-        // });
+        let http = new IBizHttp();
+        http.post(params, this.getBackendUrl()).subscribe(success => {
+            console.log(success)
+            if (success.ret === 0) {
+                this.items = success.items;
+                // const data = this.doMenus(success.items);
+                // this.fire(IBizEvent.IBizAppMenu_LOADED, data);
+            }
+        }, error => {
+            console.log(error);
+        });
     }
 
     public onSelectChange(select: any): any {
