@@ -23,26 +23,26 @@ var IBizHttp = /** @class */ (function () {
         params_keys.forEach(function (key) {
             bodyFormData.set(key, params[key]);
         });
-        axios.post(url, bodyFormData).
-            then(function (response) {
+        // axios.post(url, bodyFormData).
+        //     then(function (response: any) {
+        //         console.log(response);
+        //         subject.next(response);
+        //     }).catch(function (error: any) {
+        //         console.log(error);
+        //         subject.error(error);
+        //     });
+        axios({
+            method: 'post',
+            url: url,
+            data: bodyFormData,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'Accept': 'application/json' },
+        }).then(function (response) {
             console.log(response);
             subject.next(response);
-        }).catch(function (error) {
-            console.log(error);
-            subject.error(error);
+        }).catch(function (response) {
+            console.log(response);
+            subject.error(response);
         });
-        // axios({
-        //     method: 'post',
-        //     url: url,
-        //     data: bodyFormData,
-        //     config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        // }).then(function (response) {
-        //     console.log(response);
-        //     subject.next(response);
-        // }).catch(function (response) {
-        //     console.log(response);
-        //     subject.error(response);
-        // });
         return subject.asObservable();
     };
     /**
