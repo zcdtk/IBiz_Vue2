@@ -14,6 +14,7 @@ class IBizHttp {
      * @memberof IBizHttp
      */
     public post(url: string, params: any = {}): Observable<any> {
+        const _this = this;
         const subject: Subject<any> = new rxjs.Subject();
         const params_keys = Object.keys(params);
         let form_arr: Array<any> = [];
@@ -27,6 +28,9 @@ class IBizHttp {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'Accept': 'application/json' },
         }).then(function (response) {
             if (response.status === 200) {
+                if (response.data.ret === 2 && response.data.notlogin) {
+                    _this.httpDefaultInterceptor(response.data);
+                }
                 subject.next(response.data);
             } else {
                 subject.error(response);
@@ -68,5 +72,18 @@ class IBizHttp {
                 subject.error(error);
             });
         return subject.asObservable();
+    }
+
+    /**
+     * 模拟http拦截器 重定向登陆处理
+     *
+     * @param {*} [data={}]
+     * @memberof IBizHttp
+     */
+    public httpDefaultInterceptor(data: any = {}): void {
+        const curUrl = decodeURIComponent(window.location.href);
+        if (window.location.href.indexOf('/ibizutil/login.html') === -1) {
+            window.location.href = `/${IBizEnvironment.sss}${IBizEnvironment.LoginRedirect}?RU=${curUrl}`;
+        }
     }
 }

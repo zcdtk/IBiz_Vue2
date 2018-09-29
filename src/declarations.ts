@@ -11,3 +11,4 @@ declare var Subject;
 declare var rxjs;
 declare var Vue;
 declare var axios;
+declare var IBizEnvironment;
