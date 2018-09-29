@@ -17,6 +17,7 @@ var IBizHttp = /** @class */ (function () {
      */
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
+        var _this = this;
         var subject = new rxjs.Subject();
         var params_keys = Object.keys(params);
         var form_arr = [];
@@ -30,6 +31,9 @@ var IBizHttp = /** @class */ (function () {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'Accept': 'application/json' },
         }).then(function (response) {
             if (response.status === 200) {
+                if (response.data.ret === 2 && response.data.notlogin) {
+                    _this.httpDefaultInterceptor(response.data);
+                }
                 subject.next(response.data);
             }
             else {
@@ -72,6 +76,20 @@ var IBizHttp = /** @class */ (function () {
             subject.error(error);
         });
         return subject.asObservable();
+    };
+    /**
+     * 模拟http拦截器 重定向登陆处理
+     *
+     * @private
+     * @param {*} [data={}]
+     * @memberof IBizHttp
+     */
+    IBizHttp.prototype.httpDefaultInterceptor = function (data) {
+        if (data === void 0) { data = {}; }
+        var curUrl = decodeURIComponent(window.location.href);
+        if (window.location.href.indexOf('/ibizutil/login.html') === -1) {
+            window.location.href = "/" + IBizEnvironment.sss + IBizEnvironment.LoginRedirect + "?RU=" + curUrl;
+        }
     };
     return IBizHttp;
 }());
