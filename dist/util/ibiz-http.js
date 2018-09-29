@@ -80,7 +80,6 @@ var IBizHttp = /** @class */ (function () {
     /**
      * 模拟http拦截器 重定向登陆处理
      *
-     * @private
      * @param {*} [data={}]
      * @memberof IBizHttp
      */
@@ -88,7 +87,7 @@ var IBizHttp = /** @class */ (function () {
         if (data === void 0) { data = {}; }
         var curUrl = decodeURIComponent(window.location.href);
         if (window.location.href.indexOf('/ibizutil/login.html') === -1) {
-            window.location.href = "/" + IBizEnvironment.sss + IBizEnvironment.LoginRedirect + "?RU=" + curUrl;
+            window.location.href = "/" + IBizEnvironment.SysName + IBizEnvironment.LoginRedirect + "?RU=" + curUrl;
         }
     };
     return IBizHttp;

@@ -83,7 +83,7 @@ class IBizHttp {
     public httpDefaultInterceptor(data: any = {}): void {
         const curUrl = decodeURIComponent(window.location.href);
         if (window.location.href.indexOf('/ibizutil/login.html') === -1) {
-            window.location.href = `/${IBizEnvironment.sss}${IBizEnvironment.LoginRedirect}?RU=${curUrl}`;
+            window.location.href = `/${IBizEnvironment.SysName}${IBizEnvironment.LoginRedirect}?RU=${curUrl}`;
         }
     }
 }
