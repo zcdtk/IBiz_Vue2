@@ -27,7 +27,9 @@ gulp.task('concatibizsys', function () {
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
-        'dist/app/ibiz-index-view-controller.js'
+        'dist/app/ibiz-index-view-controller.js',
+        // 组件
+        'dist/components/ibiz-tool-bar/ibiz-tool-bar.component.js'
     ]
     return gulp.src(ibizsys)
         .pipe(concat('ibizsys.js'))

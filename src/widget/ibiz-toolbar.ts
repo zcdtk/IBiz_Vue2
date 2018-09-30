@@ -13,7 +13,14 @@ class IBizToolbar extends IBizControl {
      * @type {Map<string, any>}
      * @memberof IBizToolbar
      */
-    private items: Map<string, any> = new Map();
+    /**
+     * 所有工具栏按钮
+     *
+     * @private
+     * @type {Array<any>}
+     * @memberof IBizToolbar
+     */
+    private items: Array<any> = [];
 
     /**
      * Creates an instance of IBizToolbar.
@@ -42,26 +49,63 @@ class IBizToolbar extends IBizControl {
      * @memberof IBizToolbar
      */
     public regToolBarItem(item: any = {}): void {
-        if (Object.keys(item).length > 0 && !Object.is(item.name, '')) {
-            item.dataaccaction = true;
-            this.items.set(item.name, item);
-        }
-        if (item.menu && item.menu.length > 0) {
-            const _menus: Array<any> = [...item.menu];
-            _menus.forEach((menu) => {
-                this.regToolBarItem(menu);
-            });
-        }
+        this.items.push(item);
     }
 
     /**
      * 获取所有工具栏按钮
      *
-     * @returns {Map<string, any>}
+     * @returns {Array<any>}
      * @memberof IBizToolbar
      */
-    public getItems(): Map<string, any> {
+    public getItems(): Array<any> {
         return this.items;
+    }
+
+    /**
+     * 获取工具栏按钮
+     *
+     * @param {string} [name] 名称（可选）
+     * @param {string} [tag] 标识（可选）
+     * @returns {*}
+     * @memberof IBizToolbar
+     */
+    public getItem(name?: string, tag?: string): any {
+        let _item = {};
+        Object.assign(this._getItem(this.items, name, tag));
+        return _item;
+    }
+
+    /**
+     * 
+     *
+     * @private
+     * @param {Array<any>} items
+     * @param {string} [name]
+     * @param {string} [tag]
+     * @returns {*}
+     * @memberof IBizToolbar
+     */
+    private _getItem(items: Array<any>, name?: string, tag?: string): any {
+        let _item = {};
+        items.some(item => {
+            if (Object.is(item.name, name)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (Object.is(item.tag, tag)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items) {
+                const subItem = this._getItem(item.items, name, tag);
+                if (Object.keys(subItem).length > 0) {
+                    Object.assign(_item, subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
     }
 
     /**
@@ -72,9 +116,12 @@ class IBizToolbar extends IBizControl {
      * @memberof IBizToolbar
      */
     public setItemDisabled(name: string, disabled: boolean): void {
-        if (this.items.get(name)) {
-            this.items.get(name).disabled = disabled
-        }
+        this.items.some(item => {
+            if (Object.is(item.name, name)) {
+                item.disabled = disabled;
+                return true;
+            }
+        });
     }
 
     /**

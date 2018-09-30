@@ -610,7 +610,14 @@ var IBizToolbar = /** @class */ (function (_super) {
          * @type {Map<string, any>}
          * @memberof IBizToolbar
          */
-        _this_1.items = new Map();
+        /**
+         * 所有工具栏按钮
+         *
+         * @private
+         * @type {Array<any>}
+         * @memberof IBizToolbar
+         */
+        _this_1.items = [];
         _this_1.regToolBarItems();
         return _this_1;
     }
@@ -628,27 +635,62 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.regToolBarItem = function (item) {
-        var _this_1 = this;
         if (item === void 0) { item = {}; }
-        if (Object.keys(item).length > 0 && !Object.is(item.name, '')) {
-            item.dataaccaction = true;
-            this.items.set(item.name, item);
-        }
-        if (item.menu && item.menu.length > 0) {
-            var _menus = item.menu.slice();
-            _menus.forEach(function (menu) {
-                _this_1.regToolBarItem(menu);
-            });
-        }
+        this.items.push(item);
     };
     /**
      * 获取所有工具栏按钮
      *
-     * @returns {Map<string, any>}
+     * @returns {Array<any>}
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.getItems = function () {
         return this.items;
+    };
+    /**
+     * 获取工具栏按钮
+     *
+     * @param {string} [name] 名称（可选）
+     * @param {string} [tag] 标识（可选）
+     * @returns {*}
+     * @memberof IBizToolbar
+     */
+    IBizToolbar.prototype.getItem = function (name, tag) {
+        var _item = {};
+        Object.assign(this._getItem(this.items, name, tag));
+        return _item;
+    };
+    /**
+     *
+     *
+     * @private
+     * @param {Array<any>} items
+     * @param {string} [name]
+     * @param {string} [tag]
+     * @returns {*}
+     * @memberof IBizToolbar
+     */
+    IBizToolbar.prototype._getItem = function (items, name, tag) {
+        var _this_1 = this;
+        var _item = {};
+        items.some(function (item) {
+            if (Object.is(item.name, name)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (Object.is(item.tag, tag)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items) {
+                var subItem = _this_1._getItem(item.items, name, tag);
+                if (Object.keys(subItem).length > 0) {
+                    Object.assign(_item, subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
     };
     /**
      * 设置工具栏按钮是否启用
@@ -658,9 +700,12 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.setItemDisabled = function (name, disabled) {
-        if (this.items.get(name)) {
-            this.items.get(name).disabled = disabled;
-        }
+        this.items.some(function (item) {
+            if (Object.is(item.name, name)) {
+                item.disabled = disabled;
+                return true;
+            }
+        });
     };
     /**
      * 更新工具栏按钮状态
@@ -1646,3 +1691,16 @@ var IBizIndexViewController = /** @class */ (function (_super) {
     };
     return IBizIndexViewController;
 }(IBizMianViewController));
+
+"use strict";
+Vue.component('ibiz-tool-bar', {
+    template: "\n        <div class=\"ibiz-tool-bar\">\n            <template v-for=\"item in ctrl.items\">\n                <template v-if=\"item.items && item.items.length > 0\">\n                    <template v-for=\"item1 in item.items\">\n                        <Button type=\"info\">{{item1.caption}}</Button>\n                    </template>\n                </template>\n                <template v-else>\n                    <Button type=\"info\">{{item.caption}}</Button>\n                </template>\n            </template>\n        </div>\n    ",
+    props: ['ctrl', 'viewController'],
+    data: function () {
+        var data = {};
+        return data;
+    },
+    mounted: function () {
+        console.log(this.ctrl);
+    }
+});
