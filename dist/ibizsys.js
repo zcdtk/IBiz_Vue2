@@ -1,5 +1,661 @@
 "use strict";
 /**
+ * IBizSys平台工具类
+ *
+ * @class IBizUtil
+ */
+var IBizUtil = /** @class */ (function () {
+    function IBizUtil() {
+    }
+    /**
+     * 创建 UUID
+     *
+     * @static
+     * @returns {string}
+     * @memberof IBizUtil
+     */
+    IBizUtil.createUUID = function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+    /**
+     * 判断条件是否成立
+     *
+     * @static
+     * @param {*} value
+     * @param {*} op
+     * @param {*} value2
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.testCond = function (value, op, value2) {
+        // 等于操作
+        if (Object.is(op, 'EQ')) {
+            return value === value2;
+        }
+        // 大于操作
+        if (Object.is(op, 'GT')) {
+            var result = this.compare(value, value2);
+            if (result !== undefined && result > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // 大于等于操作
+        if (Object.is(op, 'GTANDEQ')) {
+            var result = this.compare(value, value2);
+            if (result !== undefined && result >= 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // 值包含在给定的范围中
+        if (Object.is(op, 'IN')) {
+            return this.contains(value, value2);
+        }
+        // 不为空判断操作
+        if (Object.is(op, 'ISNOTNULL')) {
+            return (value != null && value !== '');
+        }
+        // 为空判断操作
+        if (Object.is(op, 'ISNULL')) {
+            return (value == null || value === '');
+        }
+        // 文本左包含
+        if (Object.is(op, 'LEFTLIKE')) {
+            return (value && value2 && (value.toUpperCase().indexOf(value2.toUpperCase()) === 0));
+        }
+        // 文本包含
+        if (Object.is(op, 'LIKE')) {
+            return (value && value2 && (value.toUpperCase().indexOf(value2.toUpperCase()) !== -1));
+        }
+        // 小于操作
+        if (Object.is(op, 'LT')) {
+            var result = this.compare(value, value2);
+            if (result !== undefined && result < 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // 小于等于操作
+        if (Object.is(op, 'LTANDEQ')) {
+            var result = this.compare(value, value2);
+            if (result !== undefined && result <= 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // 不等于操作
+        if (Object.is(op, 'NOTEQ')) {
+            return value !== value2;
+        }
+        // 值不包含在给定的范围中
+        if (Object.is(op, 'NOTIN')) {
+            return !this.contains(value, value2);
+        }
+        // 文本右包含
+        if (Object.is(op, 'RIGHTLIKE')) {
+            if (!(value && value2)) {
+                return false;
+            }
+            var nPos = value.toUpperCase().indexOf(value2.toUpperCase());
+            if (nPos === -1) {
+                return false;
+            }
+            return nPos + value2.length === value.length;
+        }
+        // 空判断
+        if (Object.is(op, 'TESTNULL')) {
+        }
+        // 自定义包含
+        if (Object.is(op, 'USERLIKE')) {
+        }
+        return false;
+    };
+    /**
+     * 文本包含
+     *
+     * @static
+     * @param {any} value
+     * @param {any} value2
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.contains = function (value, value2) {
+        if (value && value2) {
+            // 定义一数组
+            var arr = new Array();
+            arr = value2.split(',');
+            // 定义正则表达式的连接符
+            var S = String.fromCharCode(2);
+            var reg = new RegExp(S + value + S);
+            return (reg.test(S + arr.join(S) + S));
+        }
+        return false;
+    };
+    /**
+     * 值比较
+     *
+     * @static
+     * @param {*} value
+     * @param {*} value2
+     * @returns {number}
+     * @memberof IBizUtil
+     */
+    IBizUtil.compare = function (value, value2) {
+        var result;
+        if (!Object.is(value, '') && !Object.is(value2, '') && !isNaN(value) && !isNaN(value2)) {
+            result = this.compareNumber(parseFloat(value), parseFloat(value2));
+        }
+        else if (this.isParseDate(value) && this.isParseDate(value2)) {
+            result = this.compareDate((new Date(value)).getTime(), (new Date(value2)).getTime());
+        }
+        else if (value && (typeof (value) === 'boolean' || value instanceof Boolean)) {
+            result = this.compareBoolean(value, value2);
+        }
+        else if (value && (typeof (value) === 'string' || value instanceof String)) {
+            result = this.compareString(value, value2);
+        }
+        return result;
+    };
+    /**
+     * 是否是时间
+     *
+     * @static
+     * @param {string} value
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.isParseDate = function (value) {
+        var time = new Date(value);
+        if (isNaN(time.getTime())) {
+            return false;
+        }
+        return true;
+    };
+    /**
+     * 时间值比较（毫秒数）
+     *
+     * @static
+     * @param {number} value
+     * @param {number} value2
+     * @returns {number}
+     * @memberof IBizUtil
+     */
+    IBizUtil.compareDate = function (value, value2) {
+        if (value > value2) {
+            return 1;
+        }
+        else if (value < value2) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    };
+    /**
+     * 数值比较
+     *
+     * @static
+     * @param {number} value
+     * @param {number} value2
+     * @returns {number}
+     * @memberof IBizUtil
+     */
+    IBizUtil.compareNumber = function (value, value2) {
+        if (value > value2) {
+            return 1;
+        }
+        else if (value < value2) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    };
+    /**
+     * 字符串比较
+     *
+     * @static
+     * @param {*} value
+     * @param {*} value2
+     * @returns {number}
+     * @memberof IBizUtil
+     */
+    IBizUtil.compareString = function (value, value2) {
+        return value.localeCompare(value2);
+    };
+    /**
+     * boolean 值比较
+     *
+     * @static
+     * @param {*} value
+     * @param {*} value2
+     * @returns {number}
+     * @memberof IBizUtil
+     */
+    IBizUtil.compareBoolean = function (value, value2) {
+        if (value === value2) {
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    };
+    /**
+    *
+    *
+    * @param {*} [o={}]
+    * @memberof IBizUtil
+    */
+    IBizUtil.processResult = function (o) {
+        if (o === void 0) { o = {}; }
+        if (o.url != null && o.url !== '') {
+            window.location.href = o.url;
+        }
+        if (o.code != null && o.code !== '') {
+            eval(o.code);
+        }
+        if (o.downloadurl != null && o.downloadurl !== '') {
+            var downloadurl = this.parseURL2('', o.downloadurl, '');
+            this.download(downloadurl);
+        }
+    };
+    /**
+     * 下载文件
+     *
+     * @static
+     * @param {string} url
+     * @memberof IBizUtil
+     */
+    IBizUtil.download = function (url) {
+        window.open(url, '_blank');
+    };
+    /**
+     *
+     *
+     * @static
+     * @param {any} subapp
+     * @param {any} url
+     * @param {any} params
+     * @returns {string}
+     * @memberof IBizUtil
+     */
+    IBizUtil.parseURL2 = function (subapp, url, params) {
+        var tmpURL;
+        // let root;
+        // if (subapp) {
+        //     root = WEBROOTURL;
+        // } else {
+        //     root = BASEURL;
+        // }
+        // if (url.toLowerCase().indexOf('http') !== -1) {
+        //     tmpURL = url;
+        // } else {
+        //     tmpURL = root + '/jsp' + url;
+        // }
+        if (url.indexOf('../../') !== -1) {
+            tmpURL = url.substring(url.indexOf('../../') + 6, url.length);
+        }
+        else if (url.indexOf('/') === 0) {
+            tmpURL = url.substring(url.indexOf('/') + 1, url.length);
+        }
+        else {
+            tmpURL = url;
+        }
+        if (params) {
+            return tmpURL + (url.indexOf('?') === -1 ? '?' : '&'); // + $.param(params);
+        }
+        else {
+            return tmpURL;
+        }
+    };
+    /**
+     * 是否是数字
+     *
+     * @param {*} num
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.isNumberNaN = function (num) {
+        return Number.isNaN(num) || num !== num;
+    };
+    /**
+     * 是否未定义
+     *
+     * @static
+     * @param {*} value
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.isUndefined = function (value) {
+        return typeof value === 'undefined';
+    };
+    /**
+     * 是否为空
+     *
+     * @static
+     * @param {*} value
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.isEmpty = function (value) {
+        return this.isUndefined(value) || value === '' || value === null || value !== value;
+    };
+    /**
+     * 检查属性常规条件
+     *
+     * @static
+     * @param {*} value 属性值
+     * @param {string} op 检测条件
+     * @param {*} value2 预定义值
+     * @param {string} errorInfo 错误信息
+     * @param {string} paramType 参数类型
+     * @param {*} form 表单对象
+     * @param {boolean} primaryModel 是否必须条件
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.checkFieldSimpleRule = function (value, op, value2, errorInfo, paramType, form, primaryModel) {
+        if (Object.is(paramType, 'CURTIME')) {
+            value2 = "" + new Date();
+        }
+        if (Object.is(paramType, 'ENTITYFIELD')) {
+            value2 = value2 ? value2.toLowerCase() : '';
+            var _value2Field = form.findField(value2);
+            if (!_value2Field) {
+                this.errorInfo = "\u8868\u5355\u9879" + value2 + "\u672A\u914D\u7F6E";
+                return true;
+            }
+            value2 = _value2Field.getValue();
+        }
+        if (this.isEmpty(errorInfo)) {
+            errorInfo = '内容必须符合值规则';
+        }
+        this.errorInfo = errorInfo;
+        var reault = this.testCond(value, op, value2);
+        if (!reault) {
+            if (primaryModel) {
+                throw new Error(this.errorInfo);
+            }
+        }
+        return !reault;
+    };
+    /**
+     * 检查属性字符长度规则
+     *
+     * @static
+     * @param {*} viewValue
+     * @param {number} minLength
+     * @param {boolean} indexOfMin
+     * @param {number} maxLength
+     * @param {boolean} indexOfMax
+     * @param {string} errorInfo
+     * @param {boolean} primaryModel
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.checkFieldStringLengthRule = function (viewValue, minLength, indexOfMin, maxLength, indexOfMax, errorInfo, primaryModel) {
+        if (this.isEmpty(errorInfo)) {
+            this.errorInfo = '内容长度必须符合范围规则';
+        }
+        else {
+            this.errorInfo = errorInfo;
+        }
+        var isEmpty = IBizUtil.isEmpty(viewValue);
+        if (isEmpty) {
+            if (primaryModel) {
+                throw new Error('值为空');
+            }
+            this.errorInfo = '值为空';
+            return true;
+        }
+        var viewValueLength = viewValue.length;
+        // 小于等于
+        if (minLength !== null) {
+            if (indexOfMin) {
+                if (viewValueLength < minLength) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+            else {
+                if (viewValueLength <= minLength) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+        }
+        //  大于等于
+        if (maxLength !== null) {
+            if (indexOfMax) {
+                if (viewValueLength > maxLength) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+            else {
+                if (viewValueLength >= maxLength) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+        }
+        this.errorInfo = '';
+        return false;
+    };
+    /**
+     * 检查属性值正则式规则
+     *
+     * @static
+     * @param {string} viewValue 属性值
+     * @param {*} strReg 验证正则
+     * @param {string} errorInfo 错误信息
+     * @param {boolean} primaryModel 是否关键条件
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.checkFieldRegExRule = function (viewValue, strReg, errorInfo, primaryModel) {
+        if (this.isEmpty(errorInfo)) {
+            this.errorInfo = '值必须符合正则规则';
+        }
+        else {
+            this.errorInfo = errorInfo;
+        }
+        var isEmpty = IBizUtil.isEmpty(viewValue);
+        if (isEmpty) {
+            if (primaryModel) {
+                throw new Error('值为空');
+            }
+            this.errorInfo = '值为空';
+            return true;
+        }
+        var regExp = new RegExp(strReg);
+        if (!regExp.test(viewValue)) {
+            if (primaryModel) {
+                throw new Error(this.errorInfo);
+            }
+            return true;
+        }
+        this.errorInfo = '';
+        return false;
+    };
+    /**
+     * 检查属性值范围规则
+     *
+     * @static
+     * @param {string} viewValue 属性值
+     * @param {*} minNumber 最小数值
+     * @param {boolean} indexOfMin 是否包含最小数值
+     * @param {*} maxNumber 最大数值
+     * @param {boolean} indexOfMax 是否包含最大数值
+     * @param {string} errorInfo 错误信息
+     * @param {boolean} primaryModel 是否关键条件
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.checkFieldValueRangeRule = function (viewValue, minNumber, indexOfMin, maxNumber, indexOfMax, errorInfo, primaryModel) {
+        if (this.isEmpty(errorInfo)) {
+            this.errorInfo = '值必须符合值范围规则';
+        }
+        else {
+            this.errorInfo = errorInfo;
+        }
+        var isEmpty = IBizUtil.isEmpty(viewValue);
+        if (isEmpty) {
+            if (primaryModel) {
+                throw new Error('值为空');
+            }
+            this.errorInfo = '值为空';
+            return true;
+        }
+        var valueFormat = this.checkFieldRegExRule(viewValue, /^-?\d*\.?\d+$/, null, primaryModel);
+        if (valueFormat) {
+            return true;
+        }
+        else {
+            this.errorInfo = errorInfo;
+        }
+        var data = Number.parseFloat(viewValue);
+        // 小于等于
+        if (minNumber !== null) {
+            if (indexOfMin) {
+                if (data < minNumber) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+            else {
+                if (data <= minNumber) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+        }
+        // //大于等于
+        if (maxNumber != null) {
+            if (indexOfMax) {
+                if (data > maxNumber) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+            else {
+                if (data >= maxNumber) {
+                    if (primaryModel) {
+                        throw new Error(this.errorInfo);
+                    }
+                    return true;
+                }
+            }
+        }
+        this.errorInfo = '';
+        return false;
+    };
+    /**
+     * 检查属性值系统值范围规则  暂时支持正则表达式
+     *
+     * @static
+     * @param {string} viewValue 属性值
+     * @param {*} strReg 正则
+     * @param {string} errorInfo  错误信息
+     * @param {boolean} primaryModel 是否关键条件
+     * @returns {boolean}
+     * @memberof IBizUtil
+     */
+    IBizUtil.checkFieldSysValueRule = function (viewValue, strReg, errorInfo, primaryModel) {
+        return this.checkFieldRegExRule(viewValue, strReg, errorInfo, primaryModel);
+    };
+    /**
+     * 将文本格式的xml转换为dom模式
+     *
+     * @static
+     * @param {string} strXml
+     * @memberof IBizUtil
+     */
+    IBizUtil.parseXML = function (strXml) {
+        if (strXml) {
+            return new DOMParser().parseFromString(strXml, 'text/xml');
+        }
+    };
+    /**
+     * 将xml转换为object对象
+     *
+     * @static
+     * @param {*} node
+     * @param {*} [obj={}]
+     * @memberof IBizUtil
+     */
+    IBizUtil.loadXMLNode = function (node, obj) {
+        if (obj === void 0) { obj = {}; }
+        if (node && node.attributes) {
+            var arr = node.attributes;
+            for (var i = 0; i < arr.length; i++) {
+                var A = arr.item(i).name;
+                var B = arr.item(i).value;
+                A = A.toLowerCase();
+                obj[A] = B;
+            }
+        }
+    };
+    /**
+     * 将object转换为xml对象
+     *
+     * @static
+     * @param {any} XML
+     * @param {any} obj
+     * @memberof IBizUtil
+     */
+    IBizUtil.saveXMLNode = function (XML, obj) {
+        var proName = '';
+        for (proName in obj) {
+            var value = obj[proName];
+            if (!value || value instanceof Object || typeof (value) === 'function') {
+                continue;
+            }
+            var proValue = obj[proName].toString();
+            if (proValue !== '') {
+                XML.attrib(proName, proValue);
+            }
+        }
+    };
+    /**
+     * 错误提示信息
+     *
+     * @static
+     * @type {string}
+     * @memberof IBizUtil
+     */
+    IBizUtil.errorInfo = '';
+    return IBizUtil;
+}());
+
+"use strict";
+/**
  * IBizHttp net 对象
  *
  * @class IBizHttp
@@ -969,7 +1625,7 @@ var IBizMDControl = /** @class */ (function (_super) {
                 if (data.info && !Object.is(data.info, '')) {
                     // this.showToast(this.$showInfoToast, '', data.info);
                 }
-                // IBizUtil.processResult(data);
+                IBizUtil.processResult(data);
             }
             else {
                 // this.showToast(this.$showErrorToast, '操作失败', '操作失败,执行操作发生错误,' + data.info);
@@ -1094,14 +1750,995 @@ var IBizMDControl = /** @class */ (function (_super) {
      */
     IBizMDControl.ADDBATCHED = 'ADDBATCHED';
     /**
+     * 加载之前
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    IBizMDControl.BEFORELOAD = 'BEFORELOAD';
+    /**
+     * 加载完成
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    IBizMDControl.LOADED = 'LOADED';
+    /**
      * 行数据选中
      *
      * @static
      * @memberof IBizMDControl
      */
     IBizMDControl.SELECTIONCHANGE = 'SELECTIONCHANGE';
+    /**
+     * 实体界面行为
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    IBizMDControl.UIACTION = 'UIACTION';
     return IBizMDControl;
 }(IBizControl));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+};
+/**
+ * 表格部件控制器
+ *
+ * @class IBizDataGrid
+ * @extends {IBizMDControl}
+ */
+var IBizDataGrid = /** @class */ (function (_super) {
+    __extends(IBizDataGrid, _super);
+    /**
+     * Creates an instance of IBizDataGrid.
+     * 创建 IBizDataGrid 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizDataGrid
+     */
+    function IBizDataGrid(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this_1 = _super.call(this, opts) || this;
+        /**
+         * 是否全部选中
+         *
+         * @type {boolean}
+         * @memberof IBizDataGrid
+         */
+        _this_1.allChecked = false;
+        /**
+         * 备份数据（行编辑使用）
+         *
+         * @type {Array<any>}
+         * @memberof IBizDataGrid
+         */
+        _this_1.backupData = [];
+        /**
+         * 当前显示页码
+         *
+         * @type {number}
+         * @memberof IBizDataGrid
+         */
+        _this_1.curPage = 1;
+        /**
+         * 表格编辑项集合
+         *
+         * @type {*}
+         * @memberof IBizDataGrid
+         */
+        _this_1.editItems = {};
+        /**
+         * 表格全部排序字段
+         *
+         * @type {Array<any>}
+         * @memberof IBizDataGrid
+         */
+        _this_1.gridSortField = [];
+        /**
+         * 表格行选中动画
+         *
+         * @type {boolean}
+         * @memberof IBizDataGrid
+         */
+        _this_1.indeterminate = false;
+        /**
+         * 是否启用行编辑
+         *
+         * @type {boolean}
+         * @memberof IBizDataGrid
+         */
+        _this_1.isEnableRowEdit = false;
+        /**
+         * 每次加载条数
+         *
+         * @type {number}
+         * @memberof IBizDataGrid
+         */
+        _this_1.limit = 20;
+        /**
+         * 是否支持多项
+         *
+         * @type {boolean}
+         * @memberof IBizDataGrid
+         */
+        _this_1.multiSelect = true;
+        /**
+         * 最大导出行数
+         *
+         * @type {number}
+         * @memberof IBizDataGrid
+         */
+        _this_1.maxExportRow = 1000;
+        /**
+         * 打开行编辑
+         *
+         * @type {boolean}
+         * @memberof IBizDataGrid
+         */
+        _this_1.openRowEdit = false;
+        /**
+         * 行多项选中设置，用于阻塞多次触发选中效果
+         *
+         * @private
+         * @type {boolean}
+         * @memberof IBizDataGrid
+         */
+        _this_1.rowsSelection = false;
+        /**
+         * 查询开始条数
+         *
+         * @type {number}
+         * @memberof IBizDataGrid
+         */
+        _this_1.start = 0;
+        /**
+         * 编辑行数据处理
+         *
+         * @type {*}
+         * @memberof IBizDataGrid
+         */
+        _this_1.state = {};
+        /**
+         * 总条数
+         *
+         * @type {number}
+         * @memberof IBizDataGrid
+         */
+        _this_1.totalrow = 0;
+        var _this = _this_1;
+        _this.regEditItems();
+        return _this_1;
+    }
+    /**
+     * 加载数据
+     *
+     * @param {*} [arg={}]
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.load = function (arg) {
+        var _this_1 = this;
+        if (arg === void 0) { arg = {}; }
+        var opt = {};
+        Object.assign(opt, arg);
+        if (this.loading) {
+            return;
+        }
+        Object.assign(opt, { srfctrlid: this.getName(), srfaction: 'fetch' });
+        if (!opt.start) {
+            Object.assign(opt, { start: (this.curPage - 1) * this.limit });
+        }
+        if (!opt.limit) {
+            Object.assign(opt, { limit: this.limit });
+        }
+        Object.assign(opt, { sort: JSON.stringify(this.gridSortField) });
+        // 设置为正在加载，使load方法在加载中时不可用。
+        this.loading = true;
+        // 发送加载数据前事件
+        this.fire(IBizMDControl.BEFORELOAD, opt);
+        this.allChecked = false;
+        this.indeterminate = false;
+        this.selections = [];
+        this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
+        this.iBizHttp.post(opt).subscribe(function (response) {
+            if (!response.items || response.ret !== 0) {
+                if (response.errorMessage) {
+                    // this.showToast(this.$showErrorToast, '', response.errorMessage);
+                }
+                _this_1.loading = false;
+                return;
+            }
+            _this_1.items = _this_1.rendererDatas(response.items);
+            _this_1.totalrow = response.totalrow;
+            _this_1.fire(IBizMDControl.LOADED, response.items);
+            _this_1.loading = false;
+        }, function (error) {
+            _this_1.loading = false;
+            console.log(error.info);
+        });
+    };
+    /**
+     * 刷新数据
+     *
+     * @param {*} [arg={}]
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.refresh = function (arg) {
+        var _this_1 = this;
+        if (arg === void 0) { arg = {}; }
+        var opt = {};
+        Object.assign(opt, arg);
+        if (this.loading) {
+            return;
+        }
+        Object.assign(opt, { srfctrlid: this.getName(), srfaction: 'fetch' });
+        if (!opt.start) {
+            Object.assign(opt, { start: (this.curPage - 1) * this.limit });
+        }
+        if (!opt.limit) {
+            Object.assign(opt, { limit: this.limit });
+        }
+        Object.assign(opt, { sort: JSON.stringify(this.gridSortField) });
+        // 设置为正在加载，使load方法在加载中时不可用。
+        this.loading = true;
+        // 发送加载数据前事件
+        this.fire(IBizMDControl.BEFORELOAD, opt);
+        this.allChecked = false;
+        this.indeterminate = false;
+        this.selections = [];
+        this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
+        this.iBizHttp.post(opt).subscribe(function (response) {
+            if (!response.items || response.ret !== 0) {
+                if (response.errorMessage) {
+                    // this.showToast(this.$showErrorToast, '', response.errorMessage);
+                }
+                _this_1.loading = false;
+                return;
+            }
+            _this_1.fire(IBizMDControl.LOADED, response.items);
+            _this_1.items = _this_1.rendererDatas(response.items);
+            _this_1.totalrow = response.totalrow;
+            _this_1.loading = false;
+        }, function (error) {
+            _this_1.loading = false;
+            console.log(error.info);
+        });
+    };
+    /**
+     * 删除数据
+     *
+     * @param {*} [arg={}]
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.remove = function (arg) {
+        var _this_1 = this;
+        if (arg === void 0) { arg = {}; }
+        var params = {};
+        Object.assign(params, arg);
+        Object.assign(params, { srfaction: 'remove', srfctrlid: this.getName() });
+        this.iBizHttp.post(params).subscribe(function (response) {
+            if (response.ret === 0) {
+                if (_this_1.allChecked) {
+                    var rows = _this_1.curPage * _this_1.limit;
+                    if (_this_1.totalrow <= rows) {
+                        _this_1.curPage = _this_1.curPage - 1;
+                        if (_this_1.curPage === 0) {
+                            _this_1.curPage = 1;
+                        }
+                    }
+                }
+                _this_1.load({});
+                _this_1.fire(IBizDataGrid.REMOVED, {});
+                if (response.info && response.info !== '') {
+                    // this.showToast(this.$showSuccessToast, '', '删除成功!');
+                }
+                _this_1.selections = [];
+                IBizUtil.processResult(response);
+            }
+            else {
+                // this.showToast(this.$showErrorToast, '', '删除数据失败,' + response.info);
+            }
+        }, function (error) {
+            // this.showToast(this.$showErrorToast, '', '删除数据失败');
+        });
+    };
+    /**
+     * 行数据复选框单选
+     *
+     * @param {boolean} value
+     * @param {*} [item={}]
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.onItemSelect = function (value, item) {
+        if (item === void 0) { item = {}; }
+        if (item.disabled) {
+            return;
+        }
+        if (this.isEnableRowEdit && this.openRowEdit) {
+            return;
+        }
+        var index = this.selections.findIndex(function (data) { return Object.is(data.srfkey, item.srfkey); });
+        if (index === -1) {
+            this.selections.push(item);
+        }
+        else {
+            this.selections.splice(index, 1);
+        }
+        if (!this.multiSelect) {
+            this.selections.forEach(function (data) {
+                data.checked = false;
+            });
+            this.selections = [];
+            if (index === -1) {
+                this.selections.push(item);
+            }
+        }
+        this.rowsSelection = true;
+        this.allChecked = this.selections.length === this.items.length ? true : false;
+        this.indeterminate = (!this.allChecked) && (this.selections.length > 0);
+        item.checked = value;
+        this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
+    };
+    /**
+     * 行数据复选框全选
+     *
+     * @param {boolean} value
+     * @memberof IBizMDService
+     */
+    IBizDataGrid.prototype.selectAll = function (value) {
+        var _this_1 = this;
+        if (this.isEnableRowEdit && this.openRowEdit) {
+            return;
+        }
+        if (!this.multiSelect) {
+            setTimeout(function () {
+                _this_1.allChecked = false;
+            });
+            return;
+        }
+        this.items.forEach(function (item) {
+            if (!item.disabled) {
+                item.checked = value;
+            }
+        });
+        this.selections = [];
+        if (value) {
+            this.selections = this.items.slice();
+        }
+        this.indeterminate = (!value) && (this.selections.length > 0);
+        this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
+    };
+    /**
+     * 导出数据
+     *
+     * @param {any} params
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.exportData = function (arg) {
+        if (arg === void 0) { arg = {}; }
+        var params = {};
+        this.fire(IBizMDControl.BEFORELOAD, params);
+        if (params.search) {
+            Object.assign(params, { query: params.search });
+        }
+        Object.assign(params, { srfaction: 'exportdata', srfctrlid: this.getName() });
+        if (Object.is(arg.itemTag, 'all')) {
+            Object.assign(params, { start: 0, limit: this.maxExportRow });
+        }
+        else if (Object.is(arg.itemTag, 'custom')) {
+            var nStart = arg.exportPageStart;
+            var nEnd = arg.exportPageEnd;
+            if (nStart < 1 || nEnd < 1 || nStart > nEnd) {
+                // this.showToast('INFO', '警告', '请输入有效的起始页');
+                return;
+            }
+            Object.assign(params, { start: (nStart - 1) * this.limit, limit: nEnd * this.limit });
+        }
+        else {
+            Object.assign(params, { start: (this.curPage * this.limit) - this.limit, limit: this.curPage * this.limit });
+        }
+        this.iBizHttp.post(params).subscribe(function (res) {
+            if (res.ret === 0) {
+                if (res.downloadurl) {
+                    var downloadurl = res.downloadurl;
+                    if (downloadurl.indexOf('/') === 0) {
+                        downloadurl = downloadurl.substring(downloadurl.indexOf('/') + 1, downloadurl.length);
+                    }
+                    else {
+                        downloadurl = downloadurl;
+                    }
+                    IBizUtil.download(downloadurl);
+                }
+            }
+            else {
+                // this.showToast('ERROR', '警告', res.info);
+            }
+        }, function (error) {
+            console.log(error.info);
+        });
+    };
+    /**
+     * 重置分页
+     *
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.resetStart = function () {
+        this.start = 0;
+    };
+    /**
+     * 第几页跳转
+     *
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.clickPageIndex = function () {
+        this.pageChangeFlag = true;
+    };
+    /**
+     * 分页页数改变
+     *
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.changePageIndex = function () {
+        this.refresh();
+    };
+    /**
+     * 每页显示条数
+     *
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.changePageSize = function () {
+        this.curPage = 1;
+        this.refresh();
+    };
+    /**
+     * 单击行选中
+     *
+     * @param {*} [data={}]
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.clickRowSelect = function (data) {
+        if (data === void 0) { data = {}; }
+        if (data.disabled) {
+            return;
+        }
+        if (this.doRowDataSelect(data)) {
+            return;
+        }
+        this.fire(IBizDataGrid.ROWCLICK, this.selections);
+    };
+    /**
+     * 双击行选中
+     *
+     * @param {*} [data={}]
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.dblClickRowSelection = function (data) {
+        if (data === void 0) { data = {}; }
+        if (data.disabled) {
+            return;
+        }
+        if (this.doRowDataSelect(data)) {
+            return;
+        }
+        this.fire(IBizDataGrid.ROWDBLCLICK, this.selections);
+    };
+    /**
+     * 表格排序
+     *
+     * @param {string} name 字段明显
+     * @param {string} type 排序类型
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.sort = function (name, type) {
+        var item = this.gridSortField.find(function (item) { return Object.is(item.property, name); });
+        if (item === undefined) {
+            if (Object.is('ascend', type)) {
+                this.gridSortField.push({ property: name, direction: 'asc' });
+            }
+            else if (Object.is('descend', type)) {
+                this.gridSortField.push({ property: name, direction: 'desc' });
+            }
+            else {
+                return;
+            }
+        }
+        var index = this.gridSortField.findIndex(function (item) {
+            return Object.is(item.property, name);
+        });
+        if (Object.is('ascend', type)) {
+            this.gridSortField[index].direction = 'asc';
+        }
+        else if (Object.is('descend', type)) {
+            this.gridSortField[index].direction = 'desc';
+        }
+        else {
+            this.gridSortField.splice(index, 1);
+        }
+        this.refresh({});
+    };
+    /**
+     * 设置表格数据当前页
+     *
+     * @param {number} page 分页数量
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.setCurPage = function (page) {
+        this.curPage = page;
+    };
+    /**
+     * 设置是否支持多选
+     *
+     * @param {boolean} state 是否支持多选
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.setMultiSelect = function (state) {
+        this.multiSelect = state;
+    };
+    /**
+     * 界面行为
+     *
+     * @param {string} tag
+     * @param {*} [data={}]
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.uiAction = function (tag, data) {
+        if (data === void 0) { data = {}; }
+        if (data.disabled) {
+            return;
+        }
+        if (this.doRowDataSelect(data)) {
+            return;
+        }
+        this.fire(IBizMDControl.UIACTION, { tag: tag, data: data });
+    };
+    /**
+     * 处理非复选框行数据选中,并处理是否激活数据
+     *
+     * @private
+     * @param {*} [data={}]
+     * @returns {boolean} 是否激活
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.doRowDataSelect = function (data) {
+        if (data === void 0) { data = {}; }
+        if (this.isEnableRowEdit && this.openRowEdit) {
+            return;
+        }
+        if (this.rowsSelection) {
+            this.rowsSelection = false;
+            return true;
+        }
+        this.selections.forEach(function (data) {
+            data.checked = false;
+        });
+        this.selections = [];
+        data.checked = true;
+        this.selections.push(data);
+        this.indeterminate = (!this.allChecked) && (this.selections.length > 0);
+        return false;
+    };
+    /**
+     * 渲染绘制多项数据
+     *
+     * @param {Array<any>} items
+     * @returns {Array<any>}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.rendererDatas = function (items) {
+        var _this_1 = this;
+        _super.prototype.rendererDatas.call(this, items);
+        items.forEach(function (item) {
+            var names = Object.keys(item);
+            names.forEach(function (name) { item[name] = item[name] ? item[name] : ''; });
+        });
+        if (this.isEnableRowEdit) {
+            items.forEach(function (item) { item.openeditrow = (_this_1.isEnableRowEdit) ? true : false; });
+        }
+        return items;
+    };
+    /**
+     * 注册表格所有编辑项
+     *
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.regEditItems = function () {
+    };
+    /**
+     * 注册表格编辑项
+     *
+     * @param {*} [item={}]
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.regEditItem = function (item) {
+        if (item === void 0) { item = {}; }
+        if (Object.keys(item).length === 0) {
+            return;
+        }
+        this.editItems[item.name] = item;
+    };
+    /**
+     * 设置编辑项状态
+     *
+     * @param {string} srfkey
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.setEditItemState = function (srfkey) {
+        var _this_1 = this;
+        if (!this.state) {
+            return;
+        }
+        if (!srfkey) {
+            // this.$notification.warning('警告', '数据异常');
+        }
+        var editItems = {};
+        var itemsName = Object.keys(this.editItems);
+        itemsName.forEach(function (name) {
+            var item = {};
+            var _editor = JSON.stringify(_this_1.editItems[name]);
+            Object.assign(item, JSON.parse(_editor));
+            editItems[name] = item;
+        });
+        this.state[srfkey] = editItems;
+    };
+    /**
+     * 删除信息编辑项状态
+     *
+     * @param {string} srfkey
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.deleteEditItemState = function (srfkey) {
+        if (srfkey && this.state.hasOwnProperty(srfkey)) {
+            delete this.state.srfkey;
+        }
+    };
+    /**
+     * 设置编辑项是否启用
+     *
+     * @param {string} srfkey
+     * @param {number} type
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.setEditItemDisabled = function (srfkey, type) {
+        if (this.state && this.state.hasOwnProperty(srfkey)) {
+            var item_1 = this.state[srfkey];
+            var itemsName = Object.keys(item_1);
+            itemsName.forEach(function (name) {
+                var disabled = (item_1[name].enabledcond === 3 || item_1[name].enabledcond === type);
+                item_1[name].disabled = !disabled;
+            });
+            Object.assign(this.state[srfkey], item_1);
+        }
+    };
+    /**
+     * 获取行编辑状态
+     *
+     * @returns {boolean}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.getOpenEdit = function () {
+        return this.openRowEdit;
+    };
+    /**
+     * 保存表格所有编辑行 <在插件模板中提供重写>
+     *
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.saveAllEditRow = function () {
+    };
+    /**
+     * 是否启用行编辑
+     *
+     * @param {string} tag
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.isOpenEdit = function (tag) {
+        var _this_1 = this;
+        if (!this.isEnableRowEdit) {
+            // this.$notification.info('提示', '未启用行编辑');
+            return;
+        }
+        this.openRowEdit = !this.openRowEdit;
+        if (this.openRowEdit) {
+            this.items.forEach(function (item) { item.openeditrow = true; });
+            this.selections.forEach(function (data) {
+                data.checked = false;
+            });
+            this.selections = [];
+            this.indeterminate = false;
+            this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
+            this.items.forEach(function (item) {
+                var data = __rest(item, []);
+                _this_1.backupData.push(data);
+                _this_1.setEditItemState(item.srfkey);
+            });
+        }
+        else {
+            this.items = [];
+            this.backupData.forEach(function (data) {
+                _this_1.items.push(data);
+            });
+            this.backupData = [];
+            this.state = {};
+        }
+    };
+    /**
+     * 编辑行数据
+     *
+     * @param {*} [data={}]
+     * @param {number} rowindex
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.editRow = function (data, rowindex) {
+        if (data === void 0) { data = {}; }
+        data.openeditrow = !data.openeditrow;
+        this.setEditItemState(data.srfkey);
+        if (data.openeditrow) {
+            var index = this.backupData.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
+            if (index !== -1) {
+                Object.assign(data, this.backupData[index]);
+            }
+            if (Object.is(data.srfkey, '')) {
+                this.items.splice(rowindex, 1);
+            }
+        }
+        else {
+            this.setEditItemDisabled(data.srfkey, 2);
+        }
+    };
+    /**
+     * 保存编辑行数据
+     *
+     * @param {*} [data={}]
+     * @param {number} rowindex
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.editRowSave = function (data, rowindex) {
+        var _this_1 = this;
+        if (data === void 0) { data = {}; }
+        var _index = this.backupData.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
+        var srfaction = (_index !== -1) ? 'update' : 'create';
+        // if (Object.is(srfaction, 'create')) {
+        //     delete data.srfkey;
+        // }
+        var params = { srfaction: srfaction, srfctrlid: 'grid' };
+        var viewController = this.getViewController();
+        if (viewController && viewController.getViewParam() && Object.keys(viewController.getViewParam()).length > 0) {
+            Object.assign(params, viewController.getViewParam());
+        }
+        var _names = Object.keys(data);
+        _names.forEach(function (name) {
+            data[name] = data[name] ? data[name] : '';
+        });
+        Object.assign(params, data);
+        this.iBizHttp.post(params).subscribe(function (responce) {
+            if (responce.ret === 0) {
+                data.openeditrow = !data.openeditrow;
+                var index = _this_1.backupData.findIndex(function (item) { return Object.is(data.srfkey, item.srfkey); });
+                if (index !== -1) {
+                    Object.assign(_this_1.backupData[index], responce.data);
+                }
+                else {
+                    _this_1.deleteEditItemState(data.srfkey);
+                    _this_1.setEditItemState(responce.data.srfkey);
+                    _this_1.backupData.push(data);
+                }
+                Object.assign(data, responce.data);
+                // this.showToast(this.$showSuccessToast, '提示', '保存成功');
+                _this_1.fire(IBizMDControl.LOADED, data);
+            }
+            else {
+                var info_1 = '';
+                if (responce.error && (responce.error.items && Array.isArray(responce.error.items))) {
+                    var items = responce.error.items;
+                    items.forEach(function (item, index) {
+                        if (index > 0) {
+                            info_1 += '\n';
+                        }
+                        info_1 += item.info;
+                        Object.assign(_this_1.state[data.srfkey][item.id].styleCss, { 'border': '1px solid #f04134', 'border-radius': '4px' });
+                    });
+                }
+                // this.$notification.error('错误', !Object.is(info, '') ? info : '行编辑保存失败');
+            }
+        }, function (error) {
+            var info = '';
+            if (error.error && (error.error.items && Array.isArray(error.error.items))) {
+                var items = error.error.items;
+                items.forEach(function (item, index) {
+                    if (index > 0) {
+                        info += '\n';
+                    }
+                    info += item.info;
+                    Object.assign(_this_1.state[data.srfkey][item.id].styleCss, { 'border': '1px solid #f04134', 'border-radius': '4px' });
+                });
+            }
+            // this.$notification.error('错误', !Object.is(info, '') ? info : '行编辑保存失败');
+        });
+    };
+    /**
+     * 行编辑文本框光标移出事件
+     *
+     * @param {*} $event
+     * @param {string} name
+     * @param {*} [data={}]
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.onBlur = function ($event, name, data) {
+        if (data === void 0) { data = {}; }
+        if ((!$event) || Object.keys(data).length === 0) {
+            return;
+        }
+        if (Object.is($event.target.value, data[name])) {
+            return;
+        }
+        this.colValueChange(name, $event.target.value, data);
+    };
+    /**
+     * 行编辑文本框键盘事件
+     *
+     * @param {*} $event
+     * @param {string} name
+     * @param {*} [data={}]
+     * @returns {void}
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.onKeydown = function ($event, name, data) {
+        if (data === void 0) { data = {}; }
+        if ((!$event) || Object.keys(data).length === 0) {
+            return;
+        }
+        if ($event.keyCode !== 13) {
+            return;
+        }
+        if (Object.is($event.target.value, data[name])) {
+            return;
+        }
+        this.colValueChange(name, $event.target.value, data);
+    };
+    /**
+     * 行编辑单元格值变化
+     *
+     * @param {string} name
+     * @param {*} data
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.colValueChange = function (name, value, data) {
+        var srfkey = data.srfkey;
+        var _data = this.backupData.find(function (back) { return Object.is(back.srfkey, srfkey); });
+        if (_data && !Object.is(_data[name], value)) {
+            Object.assign(this.state[srfkey][name].styleCss, { 'border': '1px solid #49a9ee', 'border-radius': '4px' });
+        }
+        else {
+            Object.assign(this.state[srfkey][name].styleCss, { 'border': '0px', 'border-radius': '0px' });
+        }
+        data[name] = value;
+        this.fire(IBizDataGrid.UPDATEGRIDITEMCHANGE, { name: name, data: data });
+    };
+    /**
+     * 更新表格编辑列值
+     *
+     * @param {string} srfufimode
+     * @param {*} [data={}]
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.updateGridEditItems = function (srfufimode, data) {
+        var _this_1 = this;
+        if (data === void 0) { data = {}; }
+        var opt = { srfaction: 'updategridedititem', srfufimode: srfufimode, srfctrlid: 'grid' };
+        var viewController = this.getViewController();
+        if (viewController && viewController.getViewParam() && Object.keys(viewController.getViewParam()).length > 0) {
+            Object.assign(opt, viewController.getViewParam());
+        }
+        var _names = Object.keys(data);
+        _names.forEach(function (name) {
+            data[name] = data[name] ? data[name] : '';
+        });
+        Object.assign(opt, { srfactivedata: JSON.stringify(data) });
+        this.iBizHttp.post(opt).subscribe(function (success) {
+            if (success.ret === 0) {
+                var index = _this_1.items.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
+                if (index !== -1) {
+                    Object.assign(_this_1.items[index], success.data);
+                }
+            }
+            else {
+                // this.$notification.error('错误', success.info);
+            }
+        }, function (error) {
+            // this.$notification.error('错误', error.info);
+        });
+    };
+    /**
+     * 新建编辑行
+     *
+     * @param {*} [param={}]
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.prototype.newRowAjax = function (param) {
+        var _this_1 = this;
+        if (param === void 0) { param = {}; }
+        var opt = {};
+        Object.assign(opt, param);
+        var viewController = this.getViewController();
+        if (viewController && viewController.getViewParam() && Object.keys(viewController.getViewParam()).length > 0) {
+            Object.assign(opt, viewController.getViewParam());
+        }
+        this.fire(IBizMDControl.BEFORELOAD, opt);
+        Object.assign(opt, { srfaction: 'loaddraft', srfctrlid: 'grid' });
+        this.iBizHttp.post(opt).subscribe(function (success) {
+            if (success.ret === 0) {
+                var srfkey = (Object.is(success.data.srfkey, '')) ? IBizUtil.createUUID() : success.data.srfkey;
+                success.data.srfkey = srfkey;
+                _this_1.setEditItemState(srfkey);
+                _this_1.setEditItemDisabled(srfkey, 1);
+                _this_1.items.push(Object.assign(success.data, { openeditrow: false }));
+            }
+            else {
+                // this.$notification.error('错误', `获取默认数据失败, ${success.info}`);
+            }
+        }, function (error) {
+            // this.$notification.error('错误', `获取默认数据失败, ${error.info}`);
+        });
+    };
+    /*****************事件声明************************/
+    /**
+     * 表格行数据变化
+     *
+     * @static
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.UPDATEGRIDITEMCHANGE = 'UPDATEGRIDITEMCHANGE';
+    /**
+     * 数据删除完成
+     *
+     * @static
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.REMOVED = 'REMOVED';
+    /**
+     * 行单击选中
+     *
+     * @static
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.ROWCLICK = 'ROWCLICK';
+    /**
+     * 行数据双击选中
+     *
+     * @static
+     * @memberof IBizDataGrid
+     */
+    IBizDataGrid.ROWDBLCLICK = 'ROWDBLCLICK';
+    return IBizDataGrid;
+}(IBizMDControl));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {

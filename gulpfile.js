@@ -15,6 +15,7 @@ gulp.task('concatibizsys', function () {
     // 目录（顺序）
     var ibizsys = [
         // util
+        'dist/util/ibiz-util.js',
         'dist/util/ibiz-http.js',
         // 基础文件
         'dist/ibiz-object.js',
@@ -25,6 +26,7 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-app-menu.js',
         'dist/widget/ibiz-toolbar.js',
         'dist/widget/ibiz-md-control.js',
+        'dist/widget/ibiz-data-grid.js',
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',

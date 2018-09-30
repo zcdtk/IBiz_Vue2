@@ -215,7 +215,7 @@ class IBizMDControl extends IBizControl {
                 if (data.info && !Object.is(data.info, '')) {
                     // this.showToast(this.$showInfoToast, '', data.info);
                 }
-                // IBizUtil.processResult(data);
+                IBizUtil.processResult(data);
             } else {
                 // this.showToast(this.$showErrorToast, '操作失败', '操作失败,执行操作发生错误,' + data.info);
             }
@@ -348,10 +348,34 @@ class IBizMDControl extends IBizControl {
     public static ADDBATCHED = 'ADDBATCHED';
 
     /**
+     * 加载之前
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    public static BEFORELOAD = 'BEFORELOAD';
+
+    /**
+     * 加载完成
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    public static LOADED = 'LOADED';
+
+    /**
      * 行数据选中
      *
      * @static
      * @memberof IBizMDControl
      */
     public static SELECTIONCHANGE = 'SELECTIONCHANGE';
+
+    /**
+     * 实体界面行为
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    public static UIACTION = 'UIACTION';
 }

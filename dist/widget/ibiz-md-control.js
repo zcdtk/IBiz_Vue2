@@ -219,7 +219,7 @@ var IBizMDControl = /** @class */ (function (_super) {
                 if (data.info && !Object.is(data.info, '')) {
                     // this.showToast(this.$showInfoToast, '', data.info);
                 }
-                // IBizUtil.processResult(data);
+                IBizUtil.processResult(data);
             }
             else {
                 // this.showToast(this.$showErrorToast, '操作失败', '操作失败,执行操作发生错误,' + data.info);
@@ -344,11 +344,32 @@ var IBizMDControl = /** @class */ (function (_super) {
      */
     IBizMDControl.ADDBATCHED = 'ADDBATCHED';
     /**
+     * 加载之前
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    IBizMDControl.BEFORELOAD = 'BEFORELOAD';
+    /**
+     * 加载完成
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    IBizMDControl.LOADED = 'LOADED';
+    /**
      * 行数据选中
      *
      * @static
      * @memberof IBizMDControl
      */
     IBizMDControl.SELECTIONCHANGE = 'SELECTIONCHANGE';
+    /**
+     * 实体界面行为
+     *
+     * @static
+     * @memberof IBizMDControl
+     */
+    IBizMDControl.UIACTION = 'UIACTION';
     return IBizMDControl;
 }(IBizControl));
