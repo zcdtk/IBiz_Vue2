@@ -24,6 +24,7 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-counter.js',
         'dist/widget/ibiz-app-menu.js',
         'dist/widget/ibiz-toolbar.js',
+        'dist/widget/ibiz-md-control.js',
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
