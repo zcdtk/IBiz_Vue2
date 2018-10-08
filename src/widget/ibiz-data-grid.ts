@@ -938,6 +938,14 @@ class IBizDataGrid extends IBizMDControl {
     /*****************事件声明************************/
 
     /**
+     * 改变启用行编辑按钮信息
+     *
+     * @static
+     * @memberof IBizDataGrid
+     */
+    public static CHANGEEDITSTATE = 'CHANGEEDITSTATE';
+
+    /**
      * 表格行数据变化
      *
      * @static

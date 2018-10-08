@@ -30,7 +30,7 @@ class IBizViewController extends IBizObject {
 
     private referData: any = {};
 
-    private viewparam: any = {};
+    public viewparam: any = {};
 
     private updatepanels: Map<string, any> = new Map();
 

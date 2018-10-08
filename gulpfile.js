@@ -31,6 +31,7 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
         'dist/app/ibiz-index-view-controller.js',
+        'dist/app/ibiz-md-view-controller.js',
         // 组件
         'dist/components/ibiz-tool-bar/ibiz-tool-bar.component.js'
     ]
