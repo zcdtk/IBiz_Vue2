@@ -1,6 +1,6 @@
-interface Observable<T> { 
+interface Observable<T> {
     subscribe(success?: Function, error?: Function): void;
- };
+};
 interface Subject<T> {
     asObservable(): any;
     next(data: any);
@@ -12,3 +12,4 @@ declare var rxjs;
 declare var Vue;
 declare var axios;
 declare var IBizEnvironment;
+declare var iview;

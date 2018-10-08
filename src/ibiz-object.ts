@@ -22,6 +22,13 @@ abstract class IBizObject {
     public iBizHttp = new IBizHttp();
 
     /**
+     * 信息提示与交互设置
+     *
+     * @memberof IBizObject
+     */
+    public iBizNotification = new IBizNotification();
+
+    /**
      * 对象id
      *
      * @private

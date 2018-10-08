@@ -28,6 +28,12 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.iBizHttp = new IBizHttp();
+        /**
+         * 信息提示与交互设置
+         *
+         * @memberof IBizObject
+         */
+        this.iBizNotification = new IBizNotification();
         this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
