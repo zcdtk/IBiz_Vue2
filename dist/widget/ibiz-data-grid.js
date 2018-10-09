@@ -180,7 +180,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.indeterminate = false;
         this.selections = [];
         this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
-        this.iBizHttp.post(opt).subscribe(function (response) {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (response) {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
                     // this.showToast(this.$showErrorToast, '', response.errorMessage);
@@ -228,7 +228,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.indeterminate = false;
         this.selections = [];
         this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
-        this.iBizHttp.post(opt).subscribe(function (response) {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (response) {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
                     // this.showToast(this.$showErrorToast, '', response.errorMessage);
@@ -257,7 +257,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         var params = {};
         Object.assign(params, arg);
         Object.assign(params, { srfaction: 'remove', srfctrlid: this.getName() });
-        this.iBizHttp.post(params).subscribe(function (response) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (response) {
             if (response.ret === 0) {
                 if (_this_1.allChecked) {
                     var rows = _this_1.curPage * _this_1.limit;
@@ -379,7 +379,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         else {
             Object.assign(params, { start: (this.curPage * this.limit) - this.limit, limit: this.curPage * this.limit });
         }
-        this.iBizHttp.post(params).subscribe(function (res) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (res) {
             if (res.ret === 0) {
                 if (res.downloadurl) {
                     var downloadurl = res.downloadurl;
@@ -755,7 +755,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
             data[name] = data[name] ? data[name] : '';
         });
         Object.assign(params, data);
-        this.iBizHttp.post(params).subscribe(function (responce) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (responce) {
             if (responce.ret === 0) {
                 data.openeditrow = !data.openeditrow;
                 var index = _this_1.backupData.findIndex(function (item) { return Object.is(data.srfkey, item.srfkey); });
@@ -880,7 +880,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
             data[name] = data[name] ? data[name] : '';
         });
         Object.assign(opt, { srfactivedata: JSON.stringify(data) });
-        this.iBizHttp.post(opt).subscribe(function (success) {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (success) {
             if (success.ret === 0) {
                 var index = _this_1.items.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
                 if (index !== -1) {
@@ -911,7 +911,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         }
         this.fire(IBizMDControl.BEFORELOAD, opt);
         Object.assign(opt, { srfaction: 'loaddraft', srfctrlid: 'grid' });
-        this.iBizHttp.post(opt).subscribe(function (success) {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (success) {
             if (success.ret === 0) {
                 var srfkey = (Object.is(success.data.srfkey, '')) ? IBizUtil.createUUID() : success.data.srfkey;
                 success.data.srfkey = srfkey;

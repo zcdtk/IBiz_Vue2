@@ -181,7 +181,7 @@ class IBizDataGrid extends IBizMDControl {
         this.selections = [];
         this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
 
-        this.iBizHttp.post(opt).subscribe(response => {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(response => {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
                     // this.showToast(this.$showErrorToast, '', response.errorMessage);
@@ -232,26 +232,23 @@ class IBizDataGrid extends IBizMDControl {
         this.selections = [];
         this.fire(IBizMDControl.SELECTIONCHANGE, this.selections);
 
-        this.iBizHttp.post(opt).subscribe(
-            response => {
-                if (!response.items || response.ret !== 0) {
-                    if (response.errorMessage) {
-                        // this.showToast(this.$showErrorToast, '', response.errorMessage);
-                    }
-                    this.loading = false;
-                    return;
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(response => {
+            if (!response.items || response.ret !== 0) {
+                if (response.errorMessage) {
+                    // this.showToast(this.$showErrorToast, '', response.errorMessage);
                 }
-
-                this.fire(IBizMDControl.LOADED, response.items);
-                this.items = this.rendererDatas(response.items);
-                this.totalrow = response.totalrow;
                 this.loading = false;
-            },
-            error => {
-                this.loading = false;
-                console.log(error.info);
+                return;
             }
-        );
+
+            this.fire(IBizMDControl.LOADED, response.items);
+            this.items = this.rendererDatas(response.items);
+            this.totalrow = response.totalrow;
+            this.loading = false;
+        }, error => {
+            this.loading = false;
+            console.log(error.info);
+        });
     }
 
     /**
@@ -264,7 +261,7 @@ class IBizDataGrid extends IBizMDControl {
         const params: any = {};
         Object.assign(params, arg);
         Object.assign(params, { srfaction: 'remove', srfctrlid: this.getName() });
-        this.iBizHttp.post(params).subscribe(response => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(response => {
             if (response.ret === 0) {
                 if (this.allChecked) {
                     const rows = this.curPage * this.limit;
@@ -386,7 +383,7 @@ class IBizDataGrid extends IBizMDControl {
         } else {
             Object.assign(params, { start: (this.curPage * this.limit) - this.limit, limit: this.curPage * this.limit });
         }
-        this.iBizHttp.post(params).subscribe(res => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(res => {
             if (res.ret === 0) {
                 if (res.downloadurl) {
                     let downloadurl: string = res.downloadurl;
@@ -769,7 +766,7 @@ class IBizDataGrid extends IBizMDControl {
             data[name] = data[name] ? data[name] : '';
         });
         Object.assign(params, data);
-        this.iBizHttp.post(params).subscribe((responce: any) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((responce: any) => {
             if (responce.ret === 0) {
                 data.openeditrow = !data.openeditrow;
                 const index: number = this.backupData.findIndex(item => Object.is(data.srfkey, item.srfkey));
@@ -891,7 +888,7 @@ class IBizDataGrid extends IBizMDControl {
             data[name] = data[name] ? data[name] : '';
         });
         Object.assign(opt, { srfactivedata: JSON.stringify(data) });
-        this.iBizHttp.post(opt).subscribe((success) => {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe((success) => {
             if (success.ret === 0) {
                 const index: number = this.items.findIndex(item => Object.is(item.srfkey, data.srfkey));
                 if (index !== -1) {
@@ -920,7 +917,7 @@ class IBizDataGrid extends IBizMDControl {
         }
         this.fire(IBizMDControl.BEFORELOAD, opt);
         Object.assign(opt, { srfaction: 'loaddraft', srfctrlid: 'grid' });
-        this.iBizHttp.post(opt).subscribe(success => {
+        this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(success => {
             if (success.ret === 0) {
                 const srfkey: string = (Object.is(success.data.srfkey, '')) ? IBizUtil.createUUID() : success.data.srfkey;
                 success.data.srfkey = srfkey;

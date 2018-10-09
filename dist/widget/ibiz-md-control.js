@@ -211,7 +211,7 @@ var IBizMDControl = /** @class */ (function (_super) {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'uiaction', srfctrlid: this.getName() });
-        this.iBizHttp.post(params, this.getBackendUrl()).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
                 if (data.reloadData) {
                     _this_1.refresh();

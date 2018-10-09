@@ -207,7 +207,7 @@ class IBizMDControl extends IBizControl {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'uiaction', srfctrlid: this.getName() });
-        this.iBizHttp.post(params, this.getBackendUrl()).subscribe((data) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
             if (data.ret === 0) {
                 if (data.reloadData) {
                     this.refresh();
