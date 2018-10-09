@@ -398,6 +398,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
      */
     IBizMDViewController.prototype.addDataBatch = function (selectedDatas) {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.ADDDATABATCH.INFO','[addDataBatch]方法必须重写！'),2);
+        this.iBizNotification.warning('警告', '[addDataBatch]方法必须重写！');
     };
     /**
      * 向导新建数据
@@ -594,6 +595,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
      */
     IBizMDViewController.prototype.getMDCtrl = function () {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.GETMDCTRL.INFO','[getMDCtrl]方法必须重写！'),2);
+        this.iBizNotification.warning('警告', '[getMDCtrl]方法必须重写！');
         return null;
     };
     IBizMDViewController.prototype.isLoadDefault = function () {
@@ -712,6 +714,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
     IBizMDViewController.prototype.doHelp = function (params) {
         if (params === void 0) { params = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOHELP.INFO','帮助操作'),0);
+        this.iBizNotification.warning('警告', '帮助操作');
     };
     /*编辑操作*/
     IBizMDViewController.prototype.doEdit = function (params) {
@@ -771,12 +774,14 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (params.itemtag == '') {
         }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOEXPORTEXCEL.INFO','导出操作（Excel）'),0);
+        this.iBizNotification.warning('警告', '导出操作（Excel）');
     };
     /*导出数据模型*/
     IBizMDViewController.prototype.doExportModel = function (params) {
         if (params === void 0) { params = {}; }
         //IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOEXPORTMODEL.INFO','导出数据模型'),0);
         var _this = this;
+        _this.iBizNotification.warning('警告', '导出数据模型');
         if (!params)
             params = {};
         params.srfaction = 'exportmodel';
@@ -814,11 +819,13 @@ var IBizMDViewController = /** @class */ (function (_super) {
     IBizMDViewController.prototype.doRemove = function (params) {
         if (params === void 0) { params = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOREMOVE.INFO','删除操作'),0);
+        this.iBizNotification.warning('警告', '删除操作');
     };
     /*数据导入栏*/
     IBizMDViewController.prototype.doImport = function (params) {
         if (params === void 0) { params = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOIMPORT.INFO','数据导入栏'),0);
+        this.iBizNotification.warning('警告', '数据导入栏');
     };
     /*刷新操作*/
     IBizMDViewController.prototype.doRefresh = function (params) {

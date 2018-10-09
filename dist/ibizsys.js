@@ -4180,6 +4180,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
      */
     IBizMDViewController.prototype.addDataBatch = function (selectedDatas) {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.ADDDATABATCH.INFO','[addDataBatch]方法必须重写！'),2);
+        this.iBizNotification.warning('警告', '[addDataBatch]方法必须重写！');
     };
     /**
      * 向导新建数据
@@ -4376,6 +4377,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
      */
     IBizMDViewController.prototype.getMDCtrl = function () {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.GETMDCTRL.INFO','[getMDCtrl]方法必须重写！'),2);
+        this.iBizNotification.warning('警告', '[getMDCtrl]方法必须重写！');
         return null;
     };
     IBizMDViewController.prototype.isLoadDefault = function () {
@@ -4494,6 +4496,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
     IBizMDViewController.prototype.doHelp = function (params) {
         if (params === void 0) { params = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOHELP.INFO','帮助操作'),0);
+        this.iBizNotification.warning('警告', '帮助操作');
     };
     /*编辑操作*/
     IBizMDViewController.prototype.doEdit = function (params) {
@@ -4553,12 +4556,14 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (params.itemtag == '') {
         }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOEXPORTEXCEL.INFO','导出操作（Excel）'),0);
+        this.iBizNotification.warning('警告', '导出操作（Excel）');
     };
     /*导出数据模型*/
     IBizMDViewController.prototype.doExportModel = function (params) {
         if (params === void 0) { params = {}; }
         //IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOEXPORTMODEL.INFO','导出数据模型'),0);
         var _this = this;
+        _this.iBizNotification.warning('警告', '导出数据模型');
         if (!params)
             params = {};
         params.srfaction = 'exportmodel';
@@ -4596,11 +4601,13 @@ var IBizMDViewController = /** @class */ (function (_super) {
     IBizMDViewController.prototype.doRemove = function (params) {
         if (params === void 0) { params = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOREMOVE.INFO','删除操作'),0);
+        this.iBizNotification.warning('警告', '删除操作');
     };
     /*数据导入栏*/
     IBizMDViewController.prototype.doImport = function (params) {
         if (params === void 0) { params = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOIMPORT.INFO','数据导入栏'),0);
+        this.iBizNotification.warning('警告', '数据导入栏');
     };
     /*刷新操作*/
     IBizMDViewController.prototype.doRefresh = function (params) {
@@ -4949,6 +4956,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
             //     	  _this.removeData({srfkeys:params.srfkey});
             //       }
             // });
+            _this.iBizNotification.confirm('警告', '确认要删除数据，删除操作将不可恢复？').subscribe(function (result) {
+                if (result && Object.is(result, 'OK')) {
+                    _this.removeData({ srfkeys: params.srfkey });
+                }
+            });
         }
         else {
             var selectedData = _this.getGrid().getSelection();
@@ -4968,9 +4980,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
             });
             if (selectedData.length < 5) {
                 // dataInfo = dataInfo+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO','共')+selectedData.length+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO2','条数据');
+                dataInfo = dataInfo + "\u5171" + selectedData.length + "\u6761\u6570\u636E";
             }
             else {
                 // dataInfo = dataInfo+'...'+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO','共')+selectedData.length+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO2','条数据');
+                dataInfo = dataInfo + "...\u5171" + selectedData.length + "\u6761\u6570\u636E";
             }
             //询问框
             if (_this.getMDCtrl() && _this.getMDCtrl().getEditState && _this.getMDCtrl().getEditState()) {
@@ -4980,6 +4994,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
                 // 		_this.removeData(null);
                 // 	}
                 // });
+                _this.iBizNotification.confirm('警告', '确定要删除选中的数据吗？').subscribe(function (result) {
+                    if (result && Object.is(result, 'OK')) {
+                        _this.removeData(null);
+                    }
+                });
             }
             else {
                 // IBiz.confirm($IGM('GRIDVIEWCONTROLLER.DOREMOVE.INFO2','确认要删除 '+dataInfo+'，删除操作将不可恢复？',[dataInfo]), function(result) {
@@ -4988,6 +5007,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
                 // 		_this.removeData(null);
                 // 	}
                 // });
+                _this.iBizNotification.confirm('警告', "\u786E\u8BA4\u8981\u5220\u9664 " + dataInfo + "\uFF0C\u5220\u9664\u64CD\u4F5C\u5C06\u4E0D\u53EF\u6062\u590D\uFF1F").subscribe(function (result) {
+                    if (result && Object.is(result, 'OK')) {
+                        _this.removeData(null);
+                    }
+                });
             }
         }
     };

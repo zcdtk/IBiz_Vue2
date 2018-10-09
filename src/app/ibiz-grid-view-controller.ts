@@ -103,6 +103,11 @@ class IBizGridViewController extends IBizMDViewController {
             //     	  _this.removeData({srfkeys:params.srfkey});
             //       }
             // });
+            _this.iBizNotification.confirm('警告', '确认要删除数据，删除操作将不可恢复？').subscribe((result) => {
+                if (result && Object.is(result, 'OK')) {
+                    _this.removeData({ srfkeys: params.srfkey });
+                }
+            });
         } else {
             var selectedData = _this.getGrid().getSelection();
             if (selectedData == null || selectedData.length == 0)
@@ -123,9 +128,11 @@ class IBizGridViewController extends IBizMDViewController {
             });
             if (selectedData.length < 5) {
                 // dataInfo = dataInfo+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO','共')+selectedData.length+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO2','条数据');
+                dataInfo = `${dataInfo}共${selectedData.length}条数据`;
             }
             else {
                 // dataInfo = dataInfo+'...'+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO','共')+selectedData.length+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO2','条数据');
+                dataInfo = `${dataInfo}...共${selectedData.length}条数据`;
             }
             //询问框
             if (_this.getMDCtrl() && _this.getMDCtrl().getEditState && _this.getMDCtrl().getEditState()) {
@@ -135,6 +142,11 @@ class IBizGridViewController extends IBizMDViewController {
                 // 		_this.removeData(null);
                 // 	}
                 // });
+                _this.iBizNotification.confirm('警告', '确定要删除选中的数据吗？').subscribe(result => {
+                    if (result && Object.is(result, 'OK')) {
+                        _this.removeData(null);
+                    }
+                });
             } else {
                 // IBiz.confirm($IGM('GRIDVIEWCONTROLLER.DOREMOVE.INFO2','确认要删除 '+dataInfo+'，删除操作将不可恢复？',[dataInfo]), function(result) {
                 // 	if(result)
@@ -142,6 +154,11 @@ class IBizGridViewController extends IBizMDViewController {
                 // 		_this.removeData(null);
                 // 	}
                 // });
+                _this.iBizNotification.confirm('警告', `确认要删除 ${dataInfo}，删除操作将不可恢复？`).subscribe(result => {
+                    if (result && Object.is(result, 'OK')) {
+                        _this.removeData(null);
+                    }
+                });
             }
         }
 

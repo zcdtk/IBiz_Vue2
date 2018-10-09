@@ -115,6 +115,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
             //     	  _this.removeData({srfkeys:params.srfkey});
             //       }
             // });
+            _this.iBizNotification.confirm('警告', '确认要删除数据，删除操作将不可恢复？').subscribe(function (result) {
+                if (result && Object.is(result, 'OK')) {
+                    _this.removeData({ srfkeys: params.srfkey });
+                }
+            });
         }
         else {
             var selectedData = _this.getGrid().getSelection();
@@ -134,9 +139,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
             });
             if (selectedData.length < 5) {
                 // dataInfo = dataInfo+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO','共')+selectedData.length+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO2','条数据');
+                dataInfo = dataInfo + "\u5171" + selectedData.length + "\u6761\u6570\u636E";
             }
             else {
                 // dataInfo = dataInfo+'...'+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO','共')+selectedData.length+$IGM('GRIDVIEWCONTROLLER.DOREMOVE.DATAINFO2','条数据');
+                dataInfo = dataInfo + "...\u5171" + selectedData.length + "\u6761\u6570\u636E";
             }
             //询问框
             if (_this.getMDCtrl() && _this.getMDCtrl().getEditState && _this.getMDCtrl().getEditState()) {
@@ -146,6 +153,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
                 // 		_this.removeData(null);
                 // 	}
                 // });
+                _this.iBizNotification.confirm('警告', '确定要删除选中的数据吗？').subscribe(function (result) {
+                    if (result && Object.is(result, 'OK')) {
+                        _this.removeData(null);
+                    }
+                });
             }
             else {
                 // IBiz.confirm($IGM('GRIDVIEWCONTROLLER.DOREMOVE.INFO2','确认要删除 '+dataInfo+'，删除操作将不可恢复？',[dataInfo]), function(result) {
@@ -154,6 +166,11 @@ var IBizGridViewController = /** @class */ (function (_super) {
                 // 		_this.removeData(null);
                 // 	}
                 // });
+                _this.iBizNotification.confirm('警告', "\u786E\u8BA4\u8981\u5220\u9664 " + dataInfo + "\uFF0C\u5220\u9664\u64CD\u4F5C\u5C06\u4E0D\u53EF\u6062\u590D\uFF1F").subscribe(function (result) {
+                    if (result && Object.is(result, 'OK')) {
+                        _this.removeData(null);
+                    }
+                });
             }
         }
     };

@@ -392,6 +392,7 @@ class IBizMDViewController extends IBizMianViewController {
 	 */
     public addDataBatch(selectedDatas: Array<any>): void {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.ADDDATABATCH.INFO','[addDataBatch]方法必须重写！'),2);
+        this.iBizNotification.warning('警告', '[addDataBatch]方法必须重写！');
     }
 	/**
 	 * 向导新建数据
@@ -581,6 +582,7 @@ class IBizMDViewController extends IBizMianViewController {
 	 */
     public getMDCtrl(): any {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.GETMDCTRL.INFO','[getMDCtrl]方法必须重写！'),2);
+        this.iBizNotification.warning('警告', '[getMDCtrl]方法必须重写！');
         return null;
     }
     public isLoadDefault(): boolean {
@@ -694,6 +696,7 @@ class IBizMDViewController extends IBizMianViewController {
     }
     public doHelp(params: any = {}): void {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOHELP.INFO','帮助操作'),0);
+        this.iBizNotification.warning('警告', '帮助操作');
     }
     /*编辑操作*/
     public doEdit(params: any = {}): void {
@@ -748,11 +751,13 @@ class IBizMDViewController extends IBizMianViewController {
 
         }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOEXPORTEXCEL.INFO','导出操作（Excel）'),0);
+        this.iBizNotification.warning('警告', '导出操作（Excel）');
     }
     /*导出数据模型*/
     public doExportModel(params: any = {}): void {
         //IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOEXPORTMODEL.INFO','导出数据模型'),0);
         var _this = this;
+        _this.iBizNotification.warning('警告', '导出数据模型');
         if (!params)
             params = {};
         params.srfaction = 'exportmodel';
@@ -790,10 +795,12 @@ class IBizMDViewController extends IBizMianViewController {
     /*删除操作*/
     public doRemove(params: any = {}): void {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOREMOVE.INFO','删除操作'),0);
+        this.iBizNotification.warning('警告', '删除操作');
     }
     /*数据导入栏*/
     public doImport(params: any = {}): void {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN','警告'),$IGM('MDVIEWCONTROLLER.DOIMPORT.INFO','数据导入栏'),0);
+        this.iBizNotification.warning('警告', '数据导入栏');
     }
     /*刷新操作*/
     public doRefresh(params: any = {}): void {
