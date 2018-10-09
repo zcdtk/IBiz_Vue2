@@ -16,6 +16,8 @@ class IBizMDViewController extends IBizMianViewController {
 
     public quickSearch: string = null;
 
+    public quickSearchEntityDEFields:Array<any> = [];
+
     /**
      * Creates an instance of IBizMDViewController.
      * 创建 IBizMDViewController 实例

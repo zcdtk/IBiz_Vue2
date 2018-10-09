@@ -35,6 +35,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         _this_1.parentDataChanged = false;
         _this_1.multiSelect = false;
         _this_1.quickSearch = null;
+        _this_1.quickSearchEntityDEFields = [];
         var _this = _this_1;
         return _this_1;
     }
