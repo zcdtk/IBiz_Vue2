@@ -56,12 +56,12 @@ class IBizViewController extends IBizObject {
     }
     public quit(): void {
     }
-    public isAutoLayout(): void {
-        // var me=this;
-        // return me.autoLayout;
-    }
-    public doLayout(): void {
-    }
+    // public isAutoLayout(): void {
+    //     // var me=this;
+    //     // return me.autoLayout;
+    // }
+    // public doLayout(): void {
+    // }
 	/**
 	 * 执行初始化
 	 */
@@ -117,9 +117,9 @@ class IBizViewController extends IBizObject {
         _this.bInited = true;
         _this.onInit();
         _this.initViewLogic();
-        if (!_this.getPController() && _this.isAutoLayout()) {
-            _this.doLayout();
-        }
+        // if (!_this.getPController() && _this.isAutoLayout()) {
+        //     _this.doLayout();
+        // }
         _this.reloadUpdatePanels();
         _this.fire(IBizViewController.INITED, {});
     }

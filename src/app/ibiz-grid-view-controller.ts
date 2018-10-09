@@ -1,6 +1,18 @@
-
+/**
+ * 表格视图控制器对象
+ *
+ * @class IBizGridViewController
+ * @extends {IBizMDViewController}
+ */
 class IBizGridViewController extends IBizMDViewController {
 
+    /**
+     * Creates an instance of IBizGridViewController.
+     * 创建 IBizGridViewController 实例
+     * 
+     * @param {*} [opts={}]
+     * @memberof IBizGridViewController
+     */
     constructor(opts: any = {}) {
         super(opts);
         let _this = this;
@@ -12,8 +24,23 @@ class IBizGridViewController extends IBizMDViewController {
     public init(params: any = {}): void {
         super.init(params);
         var _this = this;
-        if (!_this.getSearchForm()) {
-            _this.getGrid().load();
+        const grid = this.getGrid();
+        if (grid) {
+            //  表格行双击
+            grid.on(IBizDataGrid.ROWDBLCLICK).subscribe((args) => {
+                if (_this.getGridRowActiveMode() === 0) {
+                    return;
+                }
+                _this.onDataActivated(args);
+            });
+            // 表格行编辑行数据变化
+            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE).subscribe((args) => {
+                // _this.onGridRowChanged(args.dataIndx, args, args.newVal, args.oldVal);
+            });
+            // 表格批量添加
+            grid.on(IBizDataGrid.ADDBATCHED).subscribe((args) => {
+                _this.onAddBatched(args);
+            });
         }
     }
 	/**
@@ -22,6 +49,10 @@ class IBizGridViewController extends IBizMDViewController {
     public onInit(): void {
         super.onInit();
         var _this = this;
+
+        if (!_this.getSearchForm() && this.getGrid()) {
+            _this.getGrid().load({});
+        }
 
         // if(_this.hasHtmlElement('grid')){
         // 	var dataurl = _this.config.backendurl+'srfctrlid=grid&SRFSUBAPP='+_this.subapp+'&';
@@ -79,7 +110,7 @@ class IBizGridViewController extends IBizMDViewController {
     public getGrid(): any {
         return this.controls.get('grid');
     }
-    public onGridRowChanged(args: Array<any>): void {
+    public onGridRowChanged(): void {
 
     }
     /*隐藏关系列*/

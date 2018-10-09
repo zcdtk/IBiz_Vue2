@@ -1,3 +1,9 @@
+/**
+ * 表格视图控制器对象
+ *
+ * @class IBizMDViewController
+ * @extends {IBizMianViewController}
+ */
 class IBizMDViewController extends IBizMianViewController {
 
     public bQuickSearch: boolean = true;
@@ -10,6 +16,13 @@ class IBizMDViewController extends IBizMianViewController {
 
     public quickSearch: string = null;
 
+    /**
+     * Creates an instance of IBizMDViewController.
+     * 创建 IBizMDViewController 实例
+     * 
+     * @param {*} [opts={}]
+     * @memberof IBizMDViewController
+     */
     constructor(opts: any = {}) {
         super(opts);
         let _this = this;
@@ -22,28 +35,74 @@ class IBizMDViewController extends IBizMianViewController {
 
         var mdctrl = this.getMDCtrl();
         if (mdctrl) {
-            mdctrl.on(IBizDataGrid.SELECTIONCHANGE, function (sender, args, e) {
+            // 多数据部件选中变化
+            mdctrl.on(IBizDataGrid.SELECTIONCHANGE).subscribe((args) => {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 1) {
                     _this.onDataActivated(args);
                 }
-            }, _this);
-            mdctrl.on(IBizDataGrid.BEFORELOAD, function (sender, args, e) {
+            });
+            //  多数据部件加载之前
+            mdctrl.on(IBizDataGrid.BEFORELOAD).subscribe((args) => {
                 _this.onStoreBeforeLoad(args);
-            }, _this);
-            mdctrl.on(IBizDataGrid.LOADED, function (sender, args, e) {
+            });
+            // 多数据部件加载完成
+            mdctrl.on(IBizDataGrid.LOADED).subscribe((args) => {
                 _this.onStoreLoad(args);
-            }, _this);
-            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE, function (sender, args, e) {
+            });
+            // 多数据部件编辑状态改变
+            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE).subscribe((args) => {
                 _this.onGridRowEditState(args);
-            }, _this);
-            mdctrl.on(IBizDataGrid.REMOVED, function (sender, args, e) {
+            });
+            // 多数据部件删除完成
+            mdctrl.on(IBizDataGrid.REMOVED).subscribe((args) => {
                 _this.onStoreRemove(args);
-            }, _this);
+            });
         }
         if (_this.getParentMode()) {
             _this.doHideParentColumns(_this.getParentMode());
         }
+
+        var searchform = this.getSearchForm();
+        if (searchform) {
+            // searchform.on(IBizSearchForm.FORMSEARCHED, function (sender, args, e) {
+            //     _this.onSearchFormSearched();
+            // } _this);
+            // searchform.on(IBizForm.FORMLOADED, function (sender, args, e) {
+            //     if (_this.config.loaddefault != undefined && _this.config.loaddefault)
+            //         _this.onSearchFormReseted();
+            // } _this);
+            // searchform.on(IBizSearchForm.FORMRESETED, function (sender, args, e) {
+            //     _this.onSearchFormReseted();
+            // } _this);
+            // searchform.on(IBizSearchForm.FORMCONTRACT, function (sender, args, e) {
+            //     _this.onSearchFormOpen(args);
+            // } _this);
+            // searchform.on(IBizForm.FORMFIELDCHANGED, function (sender, args, e) {
+            //     var fieldname = '';
+            //     if (sender != null) fieldname = sender.getName();
+            //     if (!args) args = {};
+            //     _this.onSearchFormFieldChanged(fieldname, sender, args.newvalue, args.oldvalue);
+            // } _this);
+        }
+
+        // var searchform = this.getSearchForm();
+        // if (searchform) {
+        //     searchform.init();
+        //     searchform.autoLoad(_this.viewparam);
+        //     if (_this.hasQuickSearch() == true) {
+        //         searchform.close();
+        //     }
+        //     else {
+        //         searchform.open();
+        //     }
+        // }
+        // _this.doLayout();
+    }
+    public onInit(): void {
+        super.onInit();
+        var _this = this;
+
         var searchform = this.getSearchForm();
         if (searchform) {
             searchform.init();
@@ -54,13 +113,7 @@ class IBizMDViewController extends IBizMianViewController {
             else {
                 searchform.open();
             }
-        }
-        _this.doLayout();
-    }
-    public onInit(): void {
-        super.onInit();
-        // arguments.callee.$.onInit.call(this);
-        // var _this = this;
+        } 
 
         // //初始化快速搜索
         // if(_this.hasHtmlElement('searchcond'))

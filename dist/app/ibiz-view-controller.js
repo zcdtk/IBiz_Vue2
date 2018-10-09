@@ -53,12 +53,12 @@ var IBizViewController = /** @class */ (function (_super) {
     };
     IBizViewController.prototype.quit = function () {
     };
-    IBizViewController.prototype.isAutoLayout = function () {
-        // var me=this;
-        // return me.autoLayout;
-    };
-    IBizViewController.prototype.doLayout = function () {
-    };
+    // public isAutoLayout(): void {
+    //     // var me=this;
+    //     // return me.autoLayout;
+    // }
+    // public doLayout(): void {
+    // }
     /**
      * 执行初始化
      */
@@ -107,9 +107,9 @@ var IBizViewController = /** @class */ (function (_super) {
         _this.bInited = true;
         _this.onInit();
         _this.initViewLogic();
-        if (!_this.getPController() && _this.isAutoLayout()) {
-            _this.doLayout();
-        }
+        // if (!_this.getPController() && _this.isAutoLayout()) {
+        //     _this.doLayout();
+        // }
         _this.reloadUpdatePanels();
         _this.fire(IBizViewController.INITED, {});
     };

@@ -29,10 +29,13 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         _super.prototype.init.call(this, params);
         var appmenu = this.getAppMenu();
         if (appmenu) {
+            // 部件加载之前
             appmenu.on(IBizAppMenu.BEFORELOAD).subscribe(function (params) {
             });
+            // 部件加载完成
             appmenu.on(IBizAppMenu.LOAD).subscribe(function (items) {
             });
+            // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe(function (item) {
             });
             appmenu.load(this.getViewParam());

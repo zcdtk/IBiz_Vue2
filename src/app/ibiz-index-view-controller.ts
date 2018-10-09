@@ -13,12 +13,15 @@ class IBizIndexViewController extends IBizMianViewController {
         super.init(params)
         const appmenu = this.getAppMenu();
         if (appmenu) {
+            // 部件加载之前
             appmenu.on(IBizAppMenu.BEFORELOAD).subscribe((params) => {
 
-            })
+            });
+            // 部件加载完成
             appmenu.on(IBizAppMenu.LOAD).subscribe((items) => {
 
             });
+            // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe((item) => {
 
             })

@@ -12,8 +12,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+/**
+ * 表格视图控制器对象
+ *
+ * @class IBizGridViewController
+ * @extends {IBizMDViewController}
+ */
 var IBizGridViewController = /** @class */ (function (_super) {
     __extends(IBizGridViewController, _super);
+    /**
+     * Creates an instance of IBizGridViewController.
+     * 创建 IBizGridViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizGridViewController
+     */
     function IBizGridViewController(opts) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
@@ -27,8 +40,23 @@ var IBizGridViewController = /** @class */ (function (_super) {
         if (params === void 0) { params = {}; }
         _super.prototype.init.call(this, params);
         var _this = this;
-        if (!_this.getSearchForm()) {
-            _this.getGrid().load();
+        var grid = this.getGrid();
+        if (grid) {
+            //  表格行双击
+            grid.on(IBizDataGrid.ROWDBLCLICK).subscribe(function (args) {
+                if (_this.getGridRowActiveMode() === 0) {
+                    return;
+                }
+                _this.onDataActivated(args);
+            });
+            // 表格行编辑行数据变化
+            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE).subscribe(function (args) {
+                // _this.onGridRowChanged(args.dataIndx, args, args.newVal, args.oldVal);
+            });
+            // 表格批量添加
+            grid.on(IBizDataGrid.ADDBATCHED).subscribe(function (args) {
+                _this.onAddBatched(args);
+            });
         }
     };
     /**
@@ -37,6 +65,9 @@ var IBizGridViewController = /** @class */ (function (_super) {
     IBizGridViewController.prototype.onInit = function () {
         _super.prototype.onInit.call(this);
         var _this = this;
+        if (!_this.getSearchForm() && this.getGrid()) {
+            _this.getGrid().load({});
+        }
         // if(_this.hasHtmlElement('grid')){
         // 	var dataurl = _this.config.backendurl+'srfctrlid=grid&SRFSUBAPP='+_this.subapp+'&';
         // 	//初始化主表格
@@ -92,7 +123,7 @@ var IBizGridViewController = /** @class */ (function (_super) {
     IBizGridViewController.prototype.getGrid = function () {
         return this.controls.get('grid');
     };
-    IBizGridViewController.prototype.onGridRowChanged = function (args) {
+    IBizGridViewController.prototype.onGridRowChanged = function () {
     };
     /*隐藏关系列*/
     IBizGridViewController.prototype.doHideParentColumns = function (parentMode) {

@@ -12,8 +12,21 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+/**
+ * 表格视图控制器对象
+ *
+ * @class IBizMDViewController
+ * @extends {IBizMianViewController}
+ */
 var IBizMDViewController = /** @class */ (function (_super) {
     __extends(IBizMDViewController, _super);
+    /**
+     * Creates an instance of IBizMDViewController.
+     * 创建 IBizMDViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizMDViewController
+     */
     function IBizMDViewController(opts) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
@@ -32,28 +45,71 @@ var IBizMDViewController = /** @class */ (function (_super) {
         _this.parentDataChanged = false;
         var mdctrl = this.getMDCtrl();
         if (mdctrl) {
-            mdctrl.on(IBizDataGrid.SELECTIONCHANGE, function (sender, args, e) {
+            // 多数据部件选中变化
+            mdctrl.on(IBizDataGrid.SELECTIONCHANGE).subscribe(function (args) {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 1) {
                     _this.onDataActivated(args);
                 }
-            }, _this);
-            mdctrl.on(IBizDataGrid.BEFORELOAD, function (sender, args, e) {
+            });
+            //  多数据部件加载之前
+            mdctrl.on(IBizDataGrid.BEFORELOAD).subscribe(function (args) {
                 _this.onStoreBeforeLoad(args);
-            }, _this);
-            mdctrl.on(IBizDataGrid.LOADED, function (sender, args, e) {
+            });
+            // 多数据部件加载完成
+            mdctrl.on(IBizDataGrid.LOADED).subscribe(function (args) {
                 _this.onStoreLoad(args);
-            }, _this);
-            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE, function (sender, args, e) {
+            });
+            // 多数据部件编辑状态改变
+            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE).subscribe(function (args) {
                 _this.onGridRowEditState(args);
-            }, _this);
-            mdctrl.on(IBizDataGrid.REMOVED, function (sender, args, e) {
+            });
+            // 多数据部件删除完成
+            mdctrl.on(IBizDataGrid.REMOVED).subscribe(function (args) {
                 _this.onStoreRemove(args);
-            }, _this);
+            });
         }
         if (_this.getParentMode()) {
             _this.doHideParentColumns(_this.getParentMode());
         }
+        var searchform = this.getSearchForm();
+        if (searchform) {
+            // searchform.on(IBizSearchForm.FORMSEARCHED, function (sender, args, e) {
+            //     _this.onSearchFormSearched();
+            // } _this);
+            // searchform.on(IBizForm.FORMLOADED, function (sender, args, e) {
+            //     if (_this.config.loaddefault != undefined && _this.config.loaddefault)
+            //         _this.onSearchFormReseted();
+            // } _this);
+            // searchform.on(IBizSearchForm.FORMRESETED, function (sender, args, e) {
+            //     _this.onSearchFormReseted();
+            // } _this);
+            // searchform.on(IBizSearchForm.FORMCONTRACT, function (sender, args, e) {
+            //     _this.onSearchFormOpen(args);
+            // } _this);
+            // searchform.on(IBizForm.FORMFIELDCHANGED, function (sender, args, e) {
+            //     var fieldname = '';
+            //     if (sender != null) fieldname = sender.getName();
+            //     if (!args) args = {};
+            //     _this.onSearchFormFieldChanged(fieldname, sender, args.newvalue, args.oldvalue);
+            // } _this);
+        }
+        // var searchform = this.getSearchForm();
+        // if (searchform) {
+        //     searchform.init();
+        //     searchform.autoLoad(_this.viewparam);
+        //     if (_this.hasQuickSearch() == true) {
+        //         searchform.close();
+        //     }
+        //     else {
+        //         searchform.open();
+        //     }
+        // }
+        // _this.doLayout();
+    };
+    IBizMDViewController.prototype.onInit = function () {
+        _super.prototype.onInit.call(this);
+        var _this = this;
         var searchform = this.getSearchForm();
         if (searchform) {
             searchform.init();
@@ -65,12 +121,6 @@ var IBizMDViewController = /** @class */ (function (_super) {
                 searchform.open();
             }
         }
-        _this.doLayout();
-    };
-    IBizMDViewController.prototype.onInit = function () {
-        _super.prototype.onInit.call(this);
-        // arguments.callee.$.onInit.call(this);
-        // var _this = this;
         // //初始化快速搜索
         // if(_this.hasHtmlElement('searchcond'))
         // {
