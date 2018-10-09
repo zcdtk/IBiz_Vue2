@@ -4,10 +4,11 @@ var concat = require('gulp-concat'); // 合并插件
 // 合并资源依赖JS文件（非压缩版）
 gulp.task('js', function () {
     var assets = [
-        'node_modules/vue/dist/vue.js',
-        'node_modules/iview/dist/iview.js',
-        'node_modules/vue-router/dist/vue-router.js',
-        // 'node_modules/rxjs/Rx.js'
+        'plugins/polyfill/polyfill.min.js',
+        'plugins/vue/vue.min.js',
+        'plugins/vue/vue-router.min.js',
+        'plugins/rxjs/rxjs.umd.min.js',
+        'plugins/iview/iview.min.js'
     ];
     return gulp.src(assets)
         .pipe(concat('assets.js'))
