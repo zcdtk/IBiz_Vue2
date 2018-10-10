@@ -150,21 +150,6 @@ var IBizMDControl = /** @class */ (function (_super) {
         if (arg === void 0) { arg = {}; }
     };
     /**
-     * 单选
-     *
-     * @memberof IBizMDControl
-     */
-    IBizMDControl.prototype.onItemSelect = function (value, item) {
-    };
-    /**
-     * 全选
-     *
-     * @param {boolean} value
-     * @memberof IBizMDControl
-     */
-    IBizMDControl.prototype.selectAll = function (value) {
-    };
-    /**
      * 获取选中行
      *
      * @returns {Array<any>}

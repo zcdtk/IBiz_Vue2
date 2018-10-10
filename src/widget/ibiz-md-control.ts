@@ -145,25 +145,6 @@ class IBizMDControl extends IBizControl {
     }
 
     /**
-     * 单选
-     * 
-     * @memberof IBizMDControl
-     */
-    public onItemSelect(value: boolean, item: any): void {
-
-    }
-
-    /**
-     * 全选
-     * 
-     * @param {boolean} value 
-     * @memberof IBizMDControl
-     */
-    public selectAll(value: boolean): void {
-
-    }
-
-    /**
      * 获取选中行
      * 
      * @returns {Array<any>} 
