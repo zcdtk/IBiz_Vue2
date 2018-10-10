@@ -31,20 +31,12 @@ var IBizToolbar = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
         /**
-         * 工具栏项按钮集合
-         *
-         * @private
-         * @type {Map<string, any>}
-         * @memberof IBizToolbar
-         */
-        /**
          * 所有工具栏按钮
          *
-         * @private
-         * @type {Array<any>}
+         * @type {*}
          * @memberof IBizToolbar
          */
-        _this_1.items = [];
+        _this_1.items = {};
         _this_1.regToolBarItems();
         return _this_1;
     }
@@ -62,8 +54,21 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.regToolBarItem = function (item) {
+        var _this_1 = this;
         if (item === void 0) { item = {}; }
-        this.items.push(item);
+        if (!this.items) {
+            this.items = {};
+        }
+        if (Object.keys(item).length > 0 && !Object.is(item.name, '')) {
+            item.dataaccaction = true;
+            this.items[item.name] = item;
+        }
+        if (item.items && item.items.length > 0) {
+            var _menus = item.items.slice();
+            _menus.forEach(function (menu) {
+                _this_1.regToolBarItem(menu);
+            });
+        }
     };
     /**
      * 获取所有工具栏按钮
@@ -83,38 +88,13 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.getItem = function (name, tag) {
-        var _item = {};
-        Object.assign(this._getItem(this.items, name, tag));
-        return _item;
-    };
-    /**
-     *
-     *
-     * @private
-     * @param {Array<any>} items
-     * @param {string} [name]
-     * @param {string} [tag]
-     * @returns {*}
-     * @memberof IBizToolbar
-     */
-    IBizToolbar.prototype._getItem = function (items, name, tag) {
         var _this_1 = this;
         var _item = {};
-        items.some(function (item) {
-            if (Object.is(item.name, name)) {
-                Object.assign(_item, item);
+        var btn_names = Object.keys(this.items);
+        btn_names.some(function (_name) {
+            if (Object.is(_name, name) || Object.is(tag, _this_1.items[_name].tag)) {
+                Object.assign(_item, _this_1.items[_name]);
                 return true;
-            }
-            if (Object.is(item.tag, tag)) {
-                Object.assign(_item, item);
-                return true;
-            }
-            if (item.items) {
-                var subItem = _this_1._getItem(item.items, name, tag);
-                if (Object.keys(subItem).length > 0) {
-                    Object.assign(_item, subItem);
-                    return true;
-                }
             }
         });
         return _item;
@@ -141,15 +121,16 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.updateAccAction = function (action) {
+        var _this_1 = this;
         if (action === void 0) { action = {}; }
-        var _this = this;
-        _this.items.forEach(function (value) {
-            var priv = value.priv;
+        var _itemsName = Object.keys(this.items);
+        _itemsName.forEach(function (name) {
+            var priv = _this_1.items[name].priv;
             if ((priv && !Object.is(priv, '')) && (action && Object.keys(action).length > 0 && action[priv] !== 1)) {
-                value.dataaccaction = false;
+                _this_1.items[name].dataaccaction = false;
             }
             else {
-                value.dataaccaction = true;
+                _this_1.items[name].dataaccaction = true;
             }
         });
     };

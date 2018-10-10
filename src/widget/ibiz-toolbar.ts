@@ -7,20 +7,12 @@
 class IBizToolbar extends IBizControl {
 
     /**
-     * 工具栏项按钮集合
-     *
-     * @private
-     * @type {Map<string, any>}
-     * @memberof IBizToolbar
-     */
-    /**
      * 所有工具栏按钮
      *
-     * @private
-     * @type {Array<any>}
+     * @type {*}
      * @memberof IBizToolbar
      */
-    private items: Array<any> = [];
+    public items: any = {};
 
     /**
      * Creates an instance of IBizToolbar.
@@ -49,7 +41,19 @@ class IBizToolbar extends IBizControl {
      * @memberof IBizToolbar
      */
     public regToolBarItem(item: any = {}): void {
-        this.items.push(item);
+        if (!this.items) {
+            this.items = {};
+        }
+        if (Object.keys(item).length > 0 && !Object.is(item.name, '')) {
+            item.dataaccaction = true;
+            this.items[item.name] = item;
+        }
+        if (item.items && item.items.length > 0) {
+            const _menus: Array<any> = [...item.items];
+            _menus.forEach((menu) => {
+                this.regToolBarItem(menu);
+            });
+        }
     }
 
     /**
@@ -58,7 +62,7 @@ class IBizToolbar extends IBizControl {
      * @returns {Array<any>}
      * @memberof IBizToolbar
      */
-    public getItems(): Array<any> {
+    public getItems(): any {
         return this.items;
     }
 
@@ -72,37 +76,11 @@ class IBizToolbar extends IBizControl {
      */
     public getItem(name?: string, tag?: string): any {
         let _item = {};
-        Object.assign(this._getItem(this.items, name, tag));
-        return _item;
-    }
-
-    /**
-     * 
-     *
-     * @private
-     * @param {Array<any>} items
-     * @param {string} [name]
-     * @param {string} [tag]
-     * @returns {*}
-     * @memberof IBizToolbar
-     */
-    private _getItem(items: Array<any>, name?: string, tag?: string): any {
-        let _item = {};
-        items.some(item => {
-            if (Object.is(item.name, name)) {
-                Object.assign(_item, item);
+        const btn_names: Array<any> = Object.keys(this.items);
+        btn_names.some((_name) => {
+            if (Object.is(_name, name) || Object.is(tag, this.items[_name].tag)) {
+                Object.assign(_item, this.items[_name]);
                 return true;
-            }
-            if (Object.is(item.tag, tag)) {
-                Object.assign(_item, item);
-                return true;
-            }
-            if (item.items) {
-                const subItem = this._getItem(item.items, name, tag);
-                if (Object.keys(subItem).length > 0) {
-                    Object.assign(_item, subItem);
-                    return true;
-                }
             }
         });
         return _item;
@@ -131,13 +109,13 @@ class IBizToolbar extends IBizControl {
      * @memberof IBizToolbar
      */
     public updateAccAction(action: any = {}): void {
-        var _this = this;
-        _this.items.forEach(value => {
-            const priv = value.priv;
+        const _itemsName: Array<any> = Object.keys(this.items);
+        _itemsName.forEach((name: string) => {
+            const priv = this.items[name].priv;
             if ((priv && !Object.is(priv, '')) && (action && Object.keys(action).length > 0 && action[priv] !== 1)) {
-                value.dataaccaction = false;
+                this.items[name].dataaccaction = false;
             } else {
-                value.dataaccaction = true;
+                this.items[name].dataaccaction = true;
             }
         });
     }
