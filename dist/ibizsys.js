@@ -3681,13 +3681,21 @@ var IBizMianViewController = /** @class */ (function (_super) {
         if (dataaccaction === void 0) { dataaccaction = {}; }
         var _this = this;
         var toolbar = _this.getToolbar();
-        if (toolbar && toolbar.getItems()) {
-            toolbar.getItems().forEach(function (item) {
-                if (item.target && (Object.is(item.target, 'SINGLEKEY') || Object.is(item.target, 'MULTIKEY'))) {
+        if (!toolbar) {
+            return;
+        }
+        if (Object.keys(toolbar.getItems()).length > 0) {
+            var name_arr = Object.keys(toolbar.getItems());
+            var btn_items_1 = toolbar.getItems();
+            name_arr.forEach(function (name) {
+                // const uiaction: any = this.$uiactions[name];
+                var btn_item = btn_items_1[name];
+                if (btn_item.target && (Object.is(btn_item.target, 'SINGLEKEY') || Object.is(btn_item.target, 'MULTIKEY'))) {
                     toolbar.setItemDisabled(name, !hasdata);
                 }
             });
             toolbar.updateAccAction(dataaccaction);
+            // toolbar.updateAccAction(Object.assign({}, this.$dataaccaction, dataaccaction));
         }
     };
     /**

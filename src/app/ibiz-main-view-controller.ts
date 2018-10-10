@@ -330,14 +330,22 @@ class IBizMianViewController extends IBizViewController {
 	public calcToolbarItemState(hasdata: boolean, dataaccaction: any = {}): void {
 		var _this = this;
 		const toolbar = _this.getToolbar();
-		if (toolbar && toolbar.getItems()) {
-			toolbar.getItems().forEach(item => {
-				if (item.target && (Object.is(item.target, 'SINGLEKEY') || Object.is(item.target, 'MULTIKEY'))) {
-					toolbar.setItemDisabled(name, !hasdata);
-				}
-			});
+        if (!toolbar) {
+            return;
+        }
+        if (Object.keys(toolbar.getItems()).length > 0) {
+            const name_arr: Array<any> = Object.keys(toolbar.getItems());
+            const btn_items = toolbar.getItems();
+            name_arr.forEach((name) => {
+                // const uiaction: any = this.$uiactions[name];
+                const btn_item = btn_items[name];
+                if (btn_item.target && (Object.is(btn_item.target, 'SINGLEKEY') || Object.is(btn_item.target, 'MULTIKEY'))) {
+                    toolbar.setItemDisabled(name, !hasdata);
+                }
+            });
 			toolbar.updateAccAction(dataaccaction);
-		}
+            // toolbar.updateAccAction(Object.assign({}, this.$dataaccaction, dataaccaction));
+        }
 	}
 	/**
 	 * 获取引用视图	
