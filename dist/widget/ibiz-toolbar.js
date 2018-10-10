@@ -107,12 +107,9 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.setItemDisabled = function (name, disabled) {
-        this.items.some(function (item) {
-            if (Object.is(item.name, name)) {
-                item.disabled = disabled;
-                return true;
-            }
-        });
+        if (this.items[name]) {
+            this.items[name].disabled = disabled;
+        }
     };
     /**
      * 更新工具栏按钮状态

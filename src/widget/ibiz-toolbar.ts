@@ -94,12 +94,9 @@ class IBizToolbar extends IBizControl {
      * @memberof IBizToolbar
      */
     public setItemDisabled(name: string, disabled: boolean): void {
-        this.items.some(item => {
-            if (Object.is(item.name, name)) {
-                item.disabled = disabled;
-                return true;
-            }
-        });
+        if (this.items[name]) {
+            this.items[name].disabled = disabled;
+        }
     }
 
     /**
