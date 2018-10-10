@@ -3,7 +3,7 @@ Vue.component('ibiz-tool-bar', {
         <div class="ibiz-tool-bar">
             <template v-for="item in ctrl.items">
                 <template v-if="item.items && item.items.length > 0">
-                    <Dropdown>
+                    <Dropdown style="margin-left: 8px;">
                         <Button type="primary">
                             <span>{{item.caption}}</span>
                             <Icon type="ios-arrow-down"></Icon>
@@ -18,7 +18,7 @@ Vue.component('ibiz-tool-bar', {
                     </Dropdown>
                 </template>
                 <template v-else>
-                    <Button type="info">{{item.caption}}</Button>
+                    <Button type="info" style="margin-left: 8px;">{{item.caption}}</Button>
                 </template>
             </template>
         </div>
