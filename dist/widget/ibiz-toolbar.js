@@ -142,6 +142,31 @@ var IBizToolbar = /** @class */ (function (_super) {
         var _this = this;
         _this.fire(IBizToolbar.ITEMCLICK, { tag: type });
     };
+    IBizToolbar.prototype.itemExportExcel = function (type, itemTag) {
+        // tslint:disable-next-line:prefer-const
+        var params = { tag: type };
+        if (itemTag && Object.is(itemTag, 'all')) {
+            Object.assign(params, { itemTag: 'all' });
+        }
+        else if (itemTag && Object.is(itemTag, 'custom')) {
+            if (!this.exportStartPage || !this.exportEndPage) {
+                this.iBizNotification.warning('警告', '请输入起始页');
+                return;
+            }
+            var startPage = Number.parseInt(this.exportStartPage, 10);
+            var endPage = Number.parseInt(this.exportEndPage, 10);
+            if (Number.isNaN(startPage) || Number.isNaN(endPage)) {
+                this.iBizNotification.warning('警告', '请输入有效的起始页');
+                return;
+            }
+            if (startPage < 1 || endPage < 1 || startPage > endPage) {
+                this.iBizNotification.warning('警告', '请输入有效的起始页');
+                return;
+            }
+            Object.assign(params, { exportPageStart: startPage, exportPageEnd: endPage, itemTag: 'custom' });
+        }
+        this.fire(IBizToolbar.ITEMCLICK, params);
+    };
     /** ***************事件声明*********************** */
     /**
      * 点击按钮事件

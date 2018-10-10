@@ -7,6 +7,22 @@
 class IBizToolbar extends IBizControl {
 
     /**
+     * 导出起始页
+     *
+     * @type {*}
+     * @memberof IBizToolbar
+     */
+    public exportStartPage: any;
+
+    /**
+     * 导出结束页
+     *
+     * @type {*}
+     * @memberof IBizToolbar
+     */
+    public exportEndPage: any;
+
+    /**
      * 所有工具栏按钮
      *
      * @type {*}
@@ -127,6 +143,32 @@ class IBizToolbar extends IBizControl {
     public itemclick(name: string, type: string): void {
         var _this = this;
         _this.fire(IBizToolbar.ITEMCLICK, { tag: type });
+    }
+
+    public itemExportExcel(type: string, itemTag?: string): void {
+        // tslint:disable-next-line:prefer-const
+        let params: any = { tag: type };
+        if (itemTag && Object.is(itemTag, 'all')) {
+            Object.assign(params, { itemTag: 'all' });
+        } else if (itemTag && Object.is(itemTag, 'custom')) {
+            if (!this.exportStartPage || !this.exportEndPage) {
+                this.iBizNotification.warning('警告', '请输入起始页');
+                return;
+            }
+            const startPage: any = Number.parseInt(this.exportStartPage, 10);
+            const endPage: any = Number.parseInt(this.exportEndPage, 10);
+            if (Number.isNaN(startPage) || Number.isNaN(endPage)) {
+                this.iBizNotification.warning('警告', '请输入有效的起始页');
+                return;
+            }
+
+            if (startPage < 1 || endPage < 1 || startPage > endPage) {
+                this.iBizNotification.warning('警告', '请输入有效的起始页');
+                return;
+            }
+            Object.assign(params, { exportPageStart: startPage, exportPageEnd: endPage, itemTag: 'custom' });
+        }
+        this.fire(IBizToolbar.ITEMCLICK, params);
     }
 
     /** ***************事件声明*********************** */
