@@ -47,18 +47,18 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var mdctrl = this.getMDCtrl();
         if (mdctrl) {
             // 多数据部件选中变化
-            mdctrl.on(IBizDataGrid.SELECTIONCHANGE).subscribe(function (args) {
+            mdctrl.on(IBizMDControl.SELECTIONCHANGE).subscribe(function (args) {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 1) {
                     _this.onDataActivated(args);
                 }
             });
             //  多数据部件加载之前
-            mdctrl.on(IBizDataGrid.BEFORELOAD).subscribe(function (args) {
+            mdctrl.on(IBizMDControl.BEFORELOAD).subscribe(function (args) {
                 _this.onStoreBeforeLoad(args);
             });
             // 多数据部件加载完成
-            mdctrl.on(IBizDataGrid.LOADED).subscribe(function (args) {
+            mdctrl.on(IBizMDControl.LOADED).subscribe(function (args) {
                 _this.onStoreLoad(args);
             });
             // 多数据部件编辑状态改变
