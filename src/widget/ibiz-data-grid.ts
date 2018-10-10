@@ -417,26 +417,33 @@ class IBizDataGrid extends IBizMDControl {
      * @memberof IBizDataGrid
      */
     public clickPageIndex() {
-        this.pageChangeFlag = true;
+        let _this = this;
+        _this.pageChangeFlag = true;
     }
 
     /**
      * 分页页数改变
-     * 
+     *
+     * @param {number} page 页码
      * @memberof IBizDataGrid
      */
-    public changePageIndex() {
-        this.refresh();
+    public changePageIndex(page: number) {
+        let _this = this;
+        _this.curPage = page;
+        _this.refresh();
     }
 
     /**
      * 每页显示条数
-     * 
+     *
+     * @param {number} size 条数
      * @memberof IBizDataGrid
      */
-    public changePageSize(): void {
-        this.curPage = 1;
-        this.refresh();
+    public changePageSize(size: number): void {
+        let _this = this;
+        _this.curPage = 1;
+        _this.limit = size;
+        _this.refresh();
     }
 
     /**

@@ -2284,24 +2284,31 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizDataGrid
      */
     IBizDataGrid.prototype.clickPageIndex = function () {
-        this.pageChangeFlag = true;
+        var _this = this;
+        _this.pageChangeFlag = true;
     };
     /**
      * 分页页数改变
      *
+     * @param {number} page 页码
      * @memberof IBizDataGrid
      */
-    IBizDataGrid.prototype.changePageIndex = function () {
-        this.refresh();
+    IBizDataGrid.prototype.changePageIndex = function (page) {
+        var _this = this;
+        _this.curPage = page;
+        _this.refresh();
     };
     /**
      * 每页显示条数
      *
+     * @param {number} size 条数
      * @memberof IBizDataGrid
      */
-    IBizDataGrid.prototype.changePageSize = function () {
-        this.curPage = 1;
-        this.refresh();
+    IBizDataGrid.prototype.changePageSize = function (size) {
+        var _this = this;
+        _this.curPage = 1;
+        _this.limit = size;
+        _this.refresh();
     };
     /**
      * 单击行选中
