@@ -21,6 +21,15 @@ gulp.task('concatibizsys', function () {
         // 基础文件
         'dist/ibiz-object.js',
         'dist/util/ibiz-code-list.js',
+        // 表单界面部件
+        'dist/formitem/ibiz-form-item.js',
+        'dist/formitem/ibiz-form-field.js',
+        'dist/formitem/ibiz-form-drpanel.js',
+        'dist/formitem/ibiz-form-group.js',
+        'dist/formitem/ibiz-form-iframe.js',
+        'dist/formitem/ibiz-form-raw-item.js',
+        'dist/formitem/ibiz-form-tab-page.js',
+        'dist/formitem/ibiz-form-tab-panel.js',
         // 部件
         'dist/widget/ibiz-control.js',
         'dist/widget/ibiz-counter.js',
@@ -28,12 +37,15 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-toolbar.js',
         'dist/widget/ibiz-md-control.js',
         'dist/widget/ibiz-data-grid.js',
+        'dist/widget/ibiz-form.js',
+        'dist/widget/ibiz-edit-form.js',
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
         'dist/app/ibiz-index-view-controller.js',
         'dist/app/ibiz-md-view-controller.js',
         'dist/app/ibiz-grid-view-controller.js',
+        'dist/app/ibiz-edit-view-controller.js',
         // 组件
     ]
     return gulp.src(ibizsys)

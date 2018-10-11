@@ -31,6 +31,7 @@ var IBizControl = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
         _this_1.backendurl = '';
+        _this_1.loading = false;
         var _this = _this_1;
         _this.backendurl = opts.backendurl;
         _this.viewController = opts.viewController;
@@ -71,6 +72,14 @@ var IBizControl = /** @class */ (function (_super) {
             url = viewController.getBackendUrl();
         }
         return url;
+    };
+    IBizControl.prototype.beginLoading = function () {
+        var _this = this;
+        _this.loading = true;
+    };
+    IBizControl.prototype.endLoading = function () {
+        var _this = this;
+        _this.loading = false;
     };
     return IBizControl;
 }(IBizObject));

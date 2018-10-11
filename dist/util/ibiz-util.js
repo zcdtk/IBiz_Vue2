@@ -252,6 +252,10 @@ var IBizUtil = /** @class */ (function () {
             return -1;
         }
     };
+    IBizUtil.processResultBefore = function (o) {
+        if (o.bcode != undefined && o.bcode != null && o.bcode != '')
+            eval(o.bcode);
+    };
     /**
     *
     *
@@ -642,6 +646,18 @@ var IBizUtil = /** @class */ (function () {
                 XML.attrib(proName, proValue);
             }
         }
+    };
+    IBizUtil.encodeString = function (_1) {
+        var _2 = "";
+        if (typeof _1 == "string" && _1.length > 0) {
+            _2 = _1.replace(/&/g, "&amp;");
+            _2 = _2.replace(/</g, "&lt;");
+            _2 = _2.replace(/>/g, "&gt;");
+            _2 = _2.replace(/ /g, "&nbsp;");
+            _2 = _2.replace(/\'/g, "&#39;");
+            _2 = _2.replace(/\"/g, "&quot;");
+        }
+        return _2;
     };
     /**
      * 错误提示信息

@@ -259,6 +259,11 @@ class IBizUtil {
         }
     }
 
+    public static processResultBefore(o): void {
+        if (o.bcode!=undefined && o.bcode != null && o.bcode != '')
+            eval(o.bcode);
+        }
+
 
     /**
     * 
@@ -671,4 +676,17 @@ class IBizUtil {
             }
         }
     }
+
+    public static encodeString(_1:any): string {
+		var _2 = "";
+		if(typeof _1 == "string" && _1.length > 0) {
+			_2 = _1.replace(/&/g, "&amp;");
+			_2 = _2.replace(/</g, "&lt;");
+			_2 = _2.replace(/>/g, "&gt;");
+			_2 = _2.replace(/ /g, "&nbsp;");
+			_2 = _2.replace(/\'/g, "&#39;");
+			_2 = _2.replace(/\"/g, "&quot;");
+		}
+		return _2;
+	}
 }

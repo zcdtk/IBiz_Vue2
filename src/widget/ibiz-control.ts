@@ -6,7 +6,9 @@
  */
 class IBizControl extends IBizObject {
 
-    private backendurl: string = '';
+    public backendurl: string = '';
+
+    public loading: boolean = false;
 
     private viewController: any;
 
@@ -66,5 +68,15 @@ class IBizControl extends IBizObject {
             url = viewController.getBackendUrl();
         }
         return url;
+    }
+
+    public beginLoading(): void {
+        let _this = this;
+        _this.loading = true;
+    }
+
+    public endLoading(): void {
+        let _this = this;
+        _this.loading = false;
     }
 }

@@ -44,7 +44,7 @@ abstract class IBizObject {
      * @type {string}
      * @memberof IBizObject
      */
-    private name: string;
+    public name: string;
 
     /**
      * 对象关联名称
