@@ -248,7 +248,7 @@ class IBizForm extends IBizControl {
                     _this.fire(IBizForm.FORMFIELDCHANGED, args);
                 });
             });
-            
+
         } else {
             _this.fieldIdMap[field.getName()] = field;
             _this.fieldMap[field.getName()] = field;
@@ -302,6 +302,7 @@ class IBizForm extends IBizControl {
         if (!arg)
             arg = {};
 
+        Object.assign(arg, { srfctrlid: this.getName() });
         _this.beginLoading();
         const subject: Subject<any> = new rxjs.Subject();
         _this.iBizHttp.post(this.getBackendUrl(), arg).subscribe((data) => {
@@ -322,6 +323,7 @@ class IBizForm extends IBizControl {
         if (!arg)
             arg = {};
 
+        Object.assign(arg, { srfctrlid: this.getName() });
         _this.beginLoading();
         const subject: Subject<any> = new rxjs.Subject();
         _this.iBizHttp.post(this.getBackendUrl(), arg).subscribe((data) => {

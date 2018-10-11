@@ -311,6 +311,7 @@ var IBizForm = /** @class */ (function (_super) {
         var _this = this;
         if (!arg)
             arg = {};
+        Object.assign(arg, { srfctrlid: this.getName() });
         _this.beginLoading();
         var subject = new rxjs.Subject();
         _this.iBizHttp.post(this.getBackendUrl(), arg).subscribe(function (data) {
@@ -333,6 +334,7 @@ var IBizForm = /** @class */ (function (_super) {
         var _this = this;
         if (!arg)
             arg = {};
+        Object.assign(arg, { srfctrlid: this.getName() });
         _this.beginLoading();
         var subject = new rxjs.Subject();
         _this.iBizHttp.post(this.getBackendUrl(), arg).subscribe(function (data) {
