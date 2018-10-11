@@ -56,10 +56,15 @@ class IBizEditViewController extends IBizMianViewController {
 					_this.closeWindow();
 			});
 			form.on(IBizForm.FORMFIELDCHANGED).subscribe((args) => {
-				var fieldname = args.name;
-				// if (sender != null) fieldname = sender.getName();
-				if (!args) args = {};
-				_this.onFormFieldChanged(fieldname, args.newvalue, args.oldvalue);
+				if (args) {
+					var fieldname = args.name;
+					// if (sender != null) fieldname = sender.getName();
+					if (!args) args = {};
+					_this.onFormFieldChanged(fieldname, args.newvalue, args.oldvalue);
+				} else {
+					_this.onFormFieldChanged(null, '', '');
+				}
+
 			});
 			form.on(IBizForm.DATAACCACTIONCHANGE).subscribe((args) => {
 				_this.onDataAccActionChange(args);
@@ -178,7 +183,7 @@ class IBizEditViewController extends IBizMianViewController {
 			//判断是否已经出现过提示
 			if (!result || !result.info) {
 				// IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.INFO', '信息'), $IGM('EDITVIEWCONTROLLER.ONFORMSAVED.INFO', '数据保存成功！'), 1);
-				_this.iBizNotification.success('信息','数据保存成功！');
+				_this.iBizNotification.success('信息', '数据保存成功！');
 			}
 		}
 		_this.updateViewInfo();
@@ -311,7 +316,7 @@ class IBizEditViewController extends IBizMianViewController {
 	public doHelp(): void {
 		// IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.INFO', '信息'), $IGM('EDITVIEWCONTROLLER.DOHELP.INFO', '编辑界面_帮助操作！'), 5);
 		var _this = this;
-		_this.iBizNotification.info('信息','编辑界面_帮助操作！');
+		_this.iBizNotification.info('信息', '编辑界面_帮助操作！');
 	}
 	public doSaveAndStart(): void {
 		var _this = this;
@@ -343,7 +348,7 @@ class IBizEditViewController extends IBizMianViewController {
 	}
 	public doPrint(): void {
 		var _this = this;
-		var arg:any = {};
+		var arg: any = {};
 		arg.srfkey = '';
 		var field = _this.getForm().findField('srforikey');
 		if (field) {
@@ -361,7 +366,7 @@ class IBizEditViewController extends IBizMianViewController {
 	}
 	public doCopy(): void {
 		var _this = this;
-		var arg:any = {};
+		var arg: any = {};
 		// $.extend(arg, _this.getViewParam());
 		Object.assign(arg, _this.getViewParam());
 		arg.srfkey = '';
@@ -377,7 +382,7 @@ class IBizEditViewController extends IBizMianViewController {
 		}
 		if (arg.srfsourcekey == undefined || arg.srfsourcekey == '') {
 			// IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.INFO', '信息'), $IGM('EDITVIEWCONTROLLER.DOCOPY.INFO', '当前表单未加载数据，不能拷贝'), 0);
-			_this.iBizNotification.error('信息','当前表单未加载数据，不能拷贝');
+			_this.iBizNotification.error('信息', '当前表单未加载数据，不能拷贝');
 			return;
 		}
 		_this.getForm().autoLoad(arg);
@@ -398,12 +403,12 @@ class IBizEditViewController extends IBizMianViewController {
 	public doRefresh(): void {
 		// IBiz.alert('', $IGM('EDITVIEWCONTROLLER.DOREFRESH.INFO', '编辑界面_刷新操作！'), 0);
 		var _this = this;
-		_this.iBizNotification.info('','编辑界面_刷新操作！');
+		_this.iBizNotification.info('', '编辑界面_刷新操作！');
 	}
 	public doNew(): void {
 		// IBiz.alert('', $IGM('EDITVIEWCONTROLLER.DONEW.INFO', '编辑界面_新建操作！'), 0);
 		var _this = this;
-		_this.iBizNotification.info('','编辑界面_新建操作！');
+		_this.iBizNotification.info('', '编辑界面_新建操作！');
 	}
 	public doExit(): void {
 		var _this = this;

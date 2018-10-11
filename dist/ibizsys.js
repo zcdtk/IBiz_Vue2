@@ -7055,11 +7055,16 @@ var IBizEditViewController = /** @class */ (function (_super) {
                     _this.closeWindow();
             });
             form.on(IBizForm.FORMFIELDCHANGED).subscribe(function (args) {
-                var fieldname = args.name;
-                // if (sender != null) fieldname = sender.getName();
-                if (!args)
-                    args = {};
-                _this.onFormFieldChanged(fieldname, args.newvalue, args.oldvalue);
+                if (args) {
+                    var fieldname = args.name;
+                    // if (sender != null) fieldname = sender.getName();
+                    if (!args)
+                        args = {};
+                    _this.onFormFieldChanged(fieldname, args.newvalue, args.oldvalue);
+                }
+                else {
+                    _this.onFormFieldChanged(null, '', '');
+                }
             });
             form.on(IBizForm.DATAACCACTIONCHANGE).subscribe(function (args) {
                 _this.onDataAccActionChange(args);
