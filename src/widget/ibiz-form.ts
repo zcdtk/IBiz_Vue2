@@ -183,7 +183,7 @@ class IBizForm extends IBizControl {
         fieldNames.forEach(name => {
             var field = _this.findField(name);
             if (field) {
-                field.setAsyncConfig(config[name]);
+                field.setAsyncConfig(config[name].items);
             }
         });
 

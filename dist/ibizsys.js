@@ -3695,7 +3695,7 @@ var IBizForm = /** @class */ (function (_super) {
         fieldNames.forEach(function (name) {
             var field = _this.findField(name);
             if (field) {
-                field.setAsyncConfig(config[name]);
+                field.setAsyncConfig(config[name].items);
             }
         });
     };
