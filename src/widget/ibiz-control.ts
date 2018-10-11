@@ -6,7 +6,7 @@
  */
 class IBizControl extends IBizObject {
 
-    public backendurl: string = '';
+    private backendurl: string = '';
 
     public loading: boolean = false;
 

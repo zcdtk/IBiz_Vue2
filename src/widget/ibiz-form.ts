@@ -279,9 +279,9 @@ class IBizForm extends IBizControl {
 	/**
 	 * 获取后台服务地址
 	 */
-    public getBackendUrl(): string {
-        return this.backendurl;
-    }
+    // public getBackendUrl(): string {
+    //     return this.backendurl;
+    // }
 	/**
 	 * 根据名称获取属性
 	 */
