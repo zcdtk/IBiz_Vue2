@@ -30,6 +30,7 @@ class IBizForm extends IBizControl {
     constructor(opts: any = {}) {
         super(opts);
         let _this = this;
+        _this.regFormItems();
     }
 
     public init(): void {
@@ -224,37 +225,41 @@ class IBizForm extends IBizControl {
         var _this = this;
         return _this.formDirty;
     }
+
+    public regFormItems(): void {
+
+    }
 	/**
 	 * 注册表单属性
 	 * @param field 属性
 	 */
-    public register(field: any): void {
+    public regFormItem(field: any): void {
         var _this = this;
         if (Array.isArray(field)) {
-            // $.each(field, function (index, item) {
-            //     _this.fieldIdMap[item.getName()] = item;
-            //     _this.fieldMap[item.getName()] = item;
-            //     item.setForm(_this);
-            //     //注册事件
-            //     item.on(IBizField.VALUECHANGED, function (sender, args, e) {
-            //         if (_this.ignoreformfieldchange)
-            //             return;
-            //         _this.formDirty = true;
-            //         _this.fireEvent(IBizForm.FORMFIELDCHANGED, sender, args);
-            //     }_this);
-
-            // });
+            field.forEach(_field => {
+                _this.fieldIdMap[_field.getName()] = _field;
+                _this.fieldMap[_field.getName()] = _field;
+                _field.setForm(_this);
+                // 注册事件
+                _field.on(IBizFormItem.VALUECHANGED).subscribe((args) => {
+                    if (_this.ignoreformfieldchange)
+                        return;
+                    _this.formDirty = true;
+                    _this.fire(IBizForm.FORMFIELDCHANGED, args);
+                });
+            });
+            
         } else {
             _this.fieldIdMap[field.getName()] = field;
             _this.fieldMap[field.getName()] = field;
             field.setForm(_this);
-            //注册事件
-            // field.on(IBizField.VALUECHANGED, function (sender, args, e) {
-            //     if (_this.ignoreformfieldchange)
-            //         return;
-            //     _this.formDirty = true;
-            //     _this.fireEvent(IBizForm.FORMFIELDCHANGED, sender, args);
-            // }_this);
+            // 注册事件
+            field.on(IBizFormItem.VALUECHANGED).subscribe((args) => {
+                if (_this.ignoreformfieldchange)
+                    return;
+                _this.formDirty = true;
+                _this.fire(IBizForm.FORMFIELDCHANGED, args);
+            });
         }
     }
 	/**

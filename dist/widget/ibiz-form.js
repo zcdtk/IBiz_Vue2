@@ -38,6 +38,7 @@ var IBizForm = /** @class */ (function (_super) {
         _this_1.ignoreformfieldchange = false;
         _this_1.readonly = false;
         var _this = _this_1;
+        _this.regFormItems();
         return _this_1;
     }
     IBizForm.prototype.init = function () {
@@ -234,37 +235,39 @@ var IBizForm = /** @class */ (function (_super) {
         var _this = this;
         return _this.formDirty;
     };
+    IBizForm.prototype.regFormItems = function () {
+    };
     /**
      * 注册表单属性
      * @param field 属性
      */
-    IBizForm.prototype.register = function (field) {
+    IBizForm.prototype.regFormItem = function (field) {
         var _this = this;
         if (Array.isArray(field)) {
-            // $.each(field, function (index, item) {
-            //     _this.fieldIdMap[item.getName()] = item;
-            //     _this.fieldMap[item.getName()] = item;
-            //     item.setForm(_this);
-            //     //注册事件
-            //     item.on(IBizField.VALUECHANGED, function (sender, args, e) {
-            //         if (_this.ignoreformfieldchange)
-            //             return;
-            //         _this.formDirty = true;
-            //         _this.fireEvent(IBizForm.FORMFIELDCHANGED, sender, args);
-            //     }_this);
-            // });
+            field.forEach(function (_field) {
+                _this.fieldIdMap[_field.getName()] = _field;
+                _this.fieldMap[_field.getName()] = _field;
+                _field.setForm(_this);
+                // 注册事件
+                _field.on(IBizFormItem.VALUECHANGED).subscribe(function (args) {
+                    if (_this.ignoreformfieldchange)
+                        return;
+                    _this.formDirty = true;
+                    _this.fire(IBizForm.FORMFIELDCHANGED, args);
+                });
+            });
         }
         else {
             _this.fieldIdMap[field.getName()] = field;
             _this.fieldMap[field.getName()] = field;
             field.setForm(_this);
-            //注册事件
-            // field.on(IBizField.VALUECHANGED, function (sender, args, e) {
-            //     if (_this.ignoreformfieldchange)
-            //         return;
-            //     _this.formDirty = true;
-            //     _this.fireEvent(IBizForm.FORMFIELDCHANGED, sender, args);
-            // }_this);
+            // 注册事件
+            field.on(IBizFormItem.VALUECHANGED).subscribe(function (args) {
+                if (_this.ignoreformfieldchange)
+                    return;
+                _this.formDirty = true;
+                _this.fire(IBizForm.FORMFIELDCHANGED, args);
+            });
         }
     };
     /**
