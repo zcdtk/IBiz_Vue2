@@ -90,10 +90,10 @@ var IBizEditForm = /** @class */ (function (_super) {
                     // IBiz.alert('',action.info,1);
                     _this.iBizNotification.info('', action.info);
                 }
-                _this.fire('formsaved', action);
+                _this.fire(IBizForm.FORMSAVED, action);
                 _this.ignoreUFI = false;
                 _this.ignoreformfieldchange = false;
-                _this.fire('formfieldchanged', null);
+                _this.fire(IBizForm.FORMFIELDCHANGED, null);
                 _this.onSaved();
                 // if (successcb) {
                 //     successcb(form, action);
