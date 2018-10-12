@@ -94,7 +94,7 @@ class IBizViewController extends IBizObject {
     }
 
     public mounted(vue) {
-        this.setViewParam(vue.$route.params);
+        this.setViewParam(vue.$route.query);
     }
 
     public registerItem(itemId, item): void {

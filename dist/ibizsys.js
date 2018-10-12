@@ -4629,7 +4629,7 @@ var IBizViewController = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
     };
     IBizViewController.prototype.mounted = function (vue) {
-        this.setViewParam(vue.$route.params);
+        this.setViewParam(vue.$route.query);
     };
     IBizViewController.prototype.registerItem = function (itemId, item) {
         var _this = this;
