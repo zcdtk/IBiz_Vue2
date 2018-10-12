@@ -50,6 +50,18 @@ class IBizViewController extends IBizObject {
         this.backendurl = opts.backendurl;
     }
 
+    /**
+     * 组件绘制完成 Vue生命周期
+     *
+     * @param {*} vue
+     * @memberof IBizViewController
+     */
+    public mounted(vue: any) {
+        let _this = this;
+        _this.setViewParam(vue.$route.query);
+        _this.init(_this.getViewParam());
+    }
+
     public isClosed(): boolean {
         var _this = this;
         return true;
@@ -91,10 +103,6 @@ class IBizViewController extends IBizObject {
     }
     public regUICounters(opts: any = {}): void {
 
-    }
-
-    public mounted(vue) {
-        this.setViewParam(vue.$route.query);
     }
 
     public registerItem(itemId, item): void {

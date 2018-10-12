@@ -4590,6 +4590,17 @@ var IBizViewController = /** @class */ (function (_super) {
         _this_1.backendurl = opts.backendurl;
         return _this_1;
     }
+    /**
+     * 组件绘制完成 Vue生命周期
+     *
+     * @param {*} vue
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.mounted = function (vue) {
+        var _this = this;
+        _this.setViewParam(vue.$route.query);
+        _this.init(_this.getViewParam());
+    };
     IBizViewController.prototype.isClosed = function () {
         var _this = this;
         return true;
@@ -4627,9 +4638,6 @@ var IBizViewController = /** @class */ (function (_super) {
     };
     IBizViewController.prototype.regUICounters = function (opts) {
         if (opts === void 0) { opts = {}; }
-    };
-    IBizViewController.prototype.mounted = function (vue) {
-        this.setViewParam(vue.$route.query);
     };
     IBizViewController.prototype.registerItem = function (itemId, item) {
         var _this = this;
