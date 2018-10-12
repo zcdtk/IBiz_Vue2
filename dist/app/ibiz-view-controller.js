@@ -86,6 +86,7 @@ var IBizViewController = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
     };
     IBizViewController.prototype.mounted = function (vue) {
+        this.setViewParam(vue.$route.params);
     };
     IBizViewController.prototype.registerItem = function (itemId, item) {
         var _this = this;
@@ -340,6 +341,11 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.getViewParam = function () {
         var _this = this;
         return _this.viewparam;
+    };
+    IBizViewController.prototype.setViewParam = function (viewparam) {
+        if (viewparam === void 0) { viewparam = {}; }
+        var _this = this;
+        Object.assign(_this.viewparam, viewparam);
     };
     IBizViewController.prototype.renderCodeList_Normal = function (codeListId, value, emtpytext) {
         var codelist = this.getCodeList(codeListId);

@@ -580,6 +580,18 @@ class IBizMDViewController extends IBizMianViewController {
             view.modal = true;
         }
 
+        let url_datas:Array<string> = [];
+        const params_names = Object.keys(view.viewparam);
+        params_names.forEach(name => {
+            if (name && view.viewparam[name] && !Object.is(view.viewparam[name], '')) {
+                url_datas.push(`${name}=${view.viewparam[name]}`)
+            }
+        })
+        let url = `/${IBizEnvironment.SysName}/${IBizEnvironment.BaseUrl.toLowerCase()}${view.viewurl}`;
+        if (url_datas.length > 0) {
+            url = `${url}?${url_datas.join('&')}`;
+        }
+        window.open(url, '_blank');
         // var win = $.getIBizApp().createWindow({});
         // var viewparam = view.viewparam;
         // if(!viewparam){

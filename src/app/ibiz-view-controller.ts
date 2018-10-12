@@ -94,7 +94,7 @@ class IBizViewController extends IBizObject {
     }
 
     public mounted(vue) {
-
+        this.setViewParam(vue.$route.params);
     }
 
     public registerItem(itemId, item): void {
@@ -358,6 +358,10 @@ class IBizViewController extends IBizObject {
     public getViewParam(): any {
         var _this = this;
         return _this.viewparam;
+    }
+    public setViewParam(viewparam: any = {}): void {
+        let _this = this;
+        Object.assign(_this.viewparam, viewparam);
     }
     public renderCodeList_Normal(codeListId, value, emtpytext): any {
         var codelist = this.getCodeList(codeListId);

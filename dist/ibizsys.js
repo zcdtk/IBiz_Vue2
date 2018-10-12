@@ -4629,6 +4629,7 @@ var IBizViewController = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
     };
     IBizViewController.prototype.mounted = function (vue) {
+        this.setViewParam(vue.$route.params);
     };
     IBizViewController.prototype.registerItem = function (itemId, item) {
         var _this = this;
@@ -4883,6 +4884,11 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.getViewParam = function () {
         var _this = this;
         return _this.viewparam;
+    };
+    IBizViewController.prototype.setViewParam = function (viewparam) {
+        if (viewparam === void 0) { viewparam = {}; }
+        var _this = this;
+        Object.assign(_this.viewparam, viewparam);
     };
     IBizViewController.prototype.renderCodeList_Normal = function (codeListId, value, emtpytext) {
         var codelist = this.getCodeList(codeListId);
@@ -6085,6 +6091,18 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (_this.isShowModal()) {
             view.modal = true;
         }
+        var url_datas = [];
+        var params_names = Object.keys(view.viewparam);
+        params_names.forEach(function (name) {
+            if (name && view.viewparam[name] && !Object.is(view.viewparam[name], '')) {
+                url_datas.push(name + "=" + view.viewparam[name]);
+            }
+        });
+        var url = "/" + IBizEnvironment.SysName + "/" + IBizEnvironment.BaseUrl.toLowerCase() + view.viewurl;
+        if (url_datas.length > 0) {
+            url = url + "?" + url_datas.join('&');
+        }
+        window.open(url, '_blank');
         // var win = $.getIBizApp().createWindow({});
         // var viewparam = view.viewparam;
         // if(!viewparam){

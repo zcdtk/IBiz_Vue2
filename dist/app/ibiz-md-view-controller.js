@@ -587,6 +587,18 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (_this.isShowModal()) {
             view.modal = true;
         }
+        var url_datas = [];
+        var params_names = Object.keys(view.viewparam);
+        params_names.forEach(function (name) {
+            if (name && view.viewparam[name] && !Object.is(view.viewparam[name], '')) {
+                url_datas.push(name + "=" + view.viewparam[name]);
+            }
+        });
+        var url = "/" + IBizEnvironment.SysName + "/" + IBizEnvironment.BaseUrl.toLowerCase() + view.viewurl;
+        if (url_datas.length > 0) {
+            url = url + "?" + url_datas.join('&');
+        }
+        window.open(url, '_blank');
         // var win = $.getIBizApp().createWindow({});
         // var viewparam = view.viewparam;
         // if(!viewparam){
