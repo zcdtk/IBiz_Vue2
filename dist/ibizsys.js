@@ -1415,8 +1415,16 @@ var IBizFormField = /** @class */ (function (_super) {
     function IBizFormField(opts) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
+        /**
+         * 是否允许空输入， 默认允许
+         *
+         * @type {boolean}
+         * @memberof IBizFormField
+         */
+        _this_1.allowBlank = false;
         var _this = _this_1;
         _this.labelWidth = opts.labelWidth;
+        _this.allowBlank = opts.allowBlank ? true : false;
         return _this_1;
     }
     return IBizFormField;

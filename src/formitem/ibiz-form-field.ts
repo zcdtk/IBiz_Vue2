@@ -7,6 +7,14 @@
 class IBizFormField extends IBizFormItem {
 
     /**
+     * 是否允许空输入， 默认允许
+     *
+     * @type {boolean}
+     * @memberof IBizFormField
+     */
+    public allowBlank: boolean = false;
+
+    /**
      * label 宽度
      *
      * @type {string}
@@ -25,5 +33,6 @@ class IBizFormField extends IBizFormItem {
         super(opts);
         let _this = this;
         _this.labelWidth = opts.labelWidth;
+        _this.allowBlank = opts.allowBlank ? true : false;
     }
 }
