@@ -25,6 +25,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         return _super.call(this, opts) || this;
     }
     IBizIndexViewController.prototype.init = function (params) {
+        var _this_1 = this;
         if (params === void 0) { params = {}; }
         _super.prototype.init.call(this, params);
         var appmenu = this.getAppMenu();
@@ -37,6 +38,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             });
             // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe(function (item) {
+                _this_1.appMenuSelection(item);
             });
             appmenu.load(this.getViewParam());
         }
@@ -49,8 +51,17 @@ var IBizIndexViewController = /** @class */ (function (_super) {
     };
     IBizIndexViewController.prototype.appMenuLoad = function (items) {
     };
+    /**
+     * 菜单项选中
+     *
+     * @param {*} [item={}]
+     * @memberof IBizIndexViewController
+     */
     IBizIndexViewController.prototype.appMenuSelection = function (item) {
         if (item === void 0) { item = {}; }
+        console.log(item);
+        var _this = this;
+        _this.$router.push({ name: item.viewname, query: item.openviewparam });
     };
     return IBizIndexViewController;
 }(IBizMianViewController));

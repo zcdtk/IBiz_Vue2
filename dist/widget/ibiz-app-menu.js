@@ -29,22 +29,22 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
         /**
          * 应用菜单数据
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this.items = [];
+        _this_1.items = [];
         /**
          * 应用功能集合
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this.appFuncs = [];
-        return _this;
+        _this_1.appFuncs = [];
+        return _this_1;
     }
     /**
      * 获取菜单数据
@@ -56,6 +56,32 @@ var IBizAppMenu = /** @class */ (function (_super) {
         return this.items;
     };
     /**
+     * 获取菜单数据项
+     *
+     * @param {string} id
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getItem = function (id, items) {
+        var _this = this;
+        var _item = {};
+        items.some(function (item) {
+            if (Object.is(item.id, id)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
+                var _subItem = _this.getItem(id, item.items);
+                if (_subItem && Object.keys(_subItem).length > 0) {
+                    Object.assign(_item, _subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
+    };
+    /**
      * 获取应用功能数据
      *
      * @returns {Array<any>}
@@ -65,24 +91,38 @@ var IBizAppMenu = /** @class */ (function (_super) {
         return this.appFuncs;
     };
     IBizAppMenu.prototype.load = function (opt) {
+        var _this_1 = this;
         var _this = this;
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
         if (opt) {
             Object.assign(params, opt);
         }
-        var http = new IBizHttp();
-        http.post(this.getBackendUrl(), params).subscribe(function (success) {
+        _this.fire(IBizAppMenu.BEFORELOAD, params);
+        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             console.log(success);
             if (success.ret === 0) {
-                _this.items = success.items;
+                _this_1.items = success.items;
                 // const data = this.doMenus(success.items);
-                // this.fire(IBizEvent.IBizAppMenu_LOADED, data);
+                _this_1.fire(IBizAppMenu.LOAD, _this_1.items);
             }
         }, function (error) {
             console.log(error);
         });
     };
     IBizAppMenu.prototype.onSelectChange = function (select) {
+        var _this = this;
+        var hasView = false;
+        var appFuncs = this.getAppFuncs();
+        appFuncs.some(function (fun) {
+            if (Object.is(fun.appfuncid, select.appfuncid)) {
+                Object.assign(select, fun);
+                hasView = true;
+                return true;
+            }
+        });
+        if (hasView) {
+            _this.fire(IBizAppMenu.SELECTION, select);
+        }
     };
     /*****************事件声明************************/
     /**

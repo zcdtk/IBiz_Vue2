@@ -1,6 +1,6 @@
 Vue.component('ibiz-app-menu', {
     template: `
-    <Menu theme="dark" width="auto" class="ibiz-app-menu">
+    <Menu theme="dark" width="auto" class="ibiz-app-menu"  @on-select="onSelect($event)">
         <template v-for="(item0, index0) in ctrl.items">
             <!---  一级菜单有子项 begin  --->
             <template v-if="item0.items && item0.items.length > 0">
@@ -53,5 +53,13 @@ Vue.component('ibiz-app-menu', {
     },
     mounted: function () {
         console.log(this.ctrl);
+    },
+    methods: {
+        onSelect(name) {
+            if (this.ctrl && !Object.is(name, '')) {
+                let item = this.ctrl.getItem(name, this.ctrl.getItems());
+                this.ctrl.onSelectChange(item);
+            }
+        }
     }
 });

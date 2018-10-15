@@ -44,6 +44,33 @@ class IBizAppMenu extends IBizControl {
     }
 
     /**
+     * 获取菜单数据项
+     *
+     * @param {string} id
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    public getItem(id: string, items: Array<any>): any {
+        let _this = this;
+        let _item: any = {};
+        items.some(item => {
+            if (Object.is(item.id, id)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
+                let _subItem = _this.getItem(id, item.items);
+                if (_subItem && Object.keys(_subItem).length > 0) {
+                    Object.assign(_item, _subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
+    }
+
+    /**
      * 获取应用功能数据
      *
      * @returns {Array<any>}
@@ -54,17 +81,18 @@ class IBizAppMenu extends IBizControl {
     }
 
     public load(opt?: any): void {
+        let _this = this;
         let params: any = { srfctrlid: this.getName(), srfaction: 'FETCH' };
         if (opt) {
             Object.assign(params, opt);
         }
-        let http = new IBizHttp();
-        http.post(this.getBackendUrl(), params).subscribe(success => {
+        _this.fire(IBizAppMenu.BEFORELOAD, params);
+        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(success => {
             console.log(success)
             if (success.ret === 0) {
                 this.items = success.items;
                 // const data = this.doMenus(success.items);
-                // this.fire(IBizEvent.IBizAppMenu_LOADED, data);
+                this.fire(IBizAppMenu.LOAD, this.items);
             }
         }, error => {
             console.log(error);
@@ -72,7 +100,19 @@ class IBizAppMenu extends IBizControl {
     }
 
     public onSelectChange(select: any): any {
-
+        let _this = this;
+        let hasView = false;
+        let appFuncs: Array<any> = this.getAppFuncs();
+        appFuncs.some(fun => {
+            if (Object.is(fun.appfuncid, select.appfuncid)) {
+                Object.assign(select, fun);
+                hasView = true;
+                return true;
+            }
+        });
+        if (hasView) {
+            _this.fire(IBizAppMenu.SELECTION, select);
+        }
     }
 
     /*****************事件声明************************/

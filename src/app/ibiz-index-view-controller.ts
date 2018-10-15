@@ -23,7 +23,7 @@ class IBizIndexViewController extends IBizMianViewController {
             });
             // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe((item) => {
-
+                this.appMenuSelection(item);
             })
             appmenu.load(this.getViewParam());
         }
@@ -41,8 +41,16 @@ class IBizIndexViewController extends IBizMianViewController {
 
     }
 
+    /**
+     * 菜单项选中
+     *
+     * @param {*} [item={}]
+     * @memberof IBizIndexViewController
+     */
     public appMenuSelection(item: any = {}): void {
-
+        console.log(item);
+        let _this = this;
+        _this.$router.push({ name: item.viewname, query: item.openviewparam });
     }
 
 

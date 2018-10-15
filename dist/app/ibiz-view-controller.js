@@ -55,6 +55,9 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.mounted = function (vue) {
         var _this = this;
+        _this.$route = vue.$route;
+        _this.$router = vue.$router;
+        _this.$vue = vue;
         _this.setViewParam(vue.$route.query);
         _this.init(_this.getViewParam());
     };

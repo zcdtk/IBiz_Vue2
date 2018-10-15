@@ -1905,22 +1905,22 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
         /**
          * 应用菜单数据
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this.items = [];
+        _this_1.items = [];
         /**
          * 应用功能集合
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this.appFuncs = [];
-        return _this;
+        _this_1.appFuncs = [];
+        return _this_1;
     }
     /**
      * 获取菜单数据
@@ -1932,6 +1932,32 @@ var IBizAppMenu = /** @class */ (function (_super) {
         return this.items;
     };
     /**
+     * 获取菜单数据项
+     *
+     * @param {string} id
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getItem = function (id, items) {
+        var _this = this;
+        var _item = {};
+        items.some(function (item) {
+            if (Object.is(item.id, id)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
+                var _subItem = _this.getItem(id, item.items);
+                if (_subItem && Object.keys(_subItem).length > 0) {
+                    Object.assign(_item, _subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
+    };
+    /**
      * 获取应用功能数据
      *
      * @returns {Array<any>}
@@ -1941,24 +1967,38 @@ var IBizAppMenu = /** @class */ (function (_super) {
         return this.appFuncs;
     };
     IBizAppMenu.prototype.load = function (opt) {
+        var _this_1 = this;
         var _this = this;
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
         if (opt) {
             Object.assign(params, opt);
         }
-        var http = new IBizHttp();
-        http.post(this.getBackendUrl(), params).subscribe(function (success) {
+        _this.fire(IBizAppMenu.BEFORELOAD, params);
+        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             console.log(success);
             if (success.ret === 0) {
-                _this.items = success.items;
+                _this_1.items = success.items;
                 // const data = this.doMenus(success.items);
-                // this.fire(IBizEvent.IBizAppMenu_LOADED, data);
+                _this_1.fire(IBizAppMenu.LOAD, _this_1.items);
             }
         }, function (error) {
             console.log(error);
         });
     };
     IBizAppMenu.prototype.onSelectChange = function (select) {
+        var _this = this;
+        var hasView = false;
+        var appFuncs = this.getAppFuncs();
+        appFuncs.some(function (fun) {
+            if (Object.is(fun.appfuncid, select.appfuncid)) {
+                Object.assign(select, fun);
+                hasView = true;
+                return true;
+            }
+        });
+        if (hasView) {
+            _this.fire(IBizAppMenu.SELECTION, select);
+        }
     };
     /*****************事件声明************************/
     /**
@@ -4598,6 +4638,9 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.mounted = function (vue) {
         var _this = this;
+        _this.$route = vue.$route;
+        _this.$router = vue.$router;
+        _this.$vue = vue;
         _this.setViewParam(vue.$route.query);
         _this.init(_this.getViewParam());
     };
@@ -5480,6 +5523,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         return _super.call(this, opts) || this;
     }
     IBizIndexViewController.prototype.init = function (params) {
+        var _this_1 = this;
         if (params === void 0) { params = {}; }
         _super.prototype.init.call(this, params);
         var appmenu = this.getAppMenu();
@@ -5492,6 +5536,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             });
             // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe(function (item) {
+                _this_1.appMenuSelection(item);
             });
             appmenu.load(this.getViewParam());
         }
@@ -5504,8 +5549,17 @@ var IBizIndexViewController = /** @class */ (function (_super) {
     };
     IBizIndexViewController.prototype.appMenuLoad = function (items) {
     };
+    /**
+     * 菜单项选中
+     *
+     * @param {*} [item={}]
+     * @memberof IBizIndexViewController
+     */
     IBizIndexViewController.prototype.appMenuSelection = function (item) {
         if (item === void 0) { item = {}; }
+        console.log(item);
+        var _this = this;
+        _this.$router.push({ name: item.viewname, query: item.openviewparam });
     };
     return IBizIndexViewController;
 }(IBizMianViewController));
@@ -7721,7 +7775,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
 
 "use strict";
 Vue.component('ibiz-app-menu', {
-    template: "\n    <Menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <Submenu v-bind:name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <Submenu v-bind:name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <MenuItem v-bind:name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </MenuItem>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </Submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <MenuItem v-bind:name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </MenuItem>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </Submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <MenuItem v-bind:name=\"item0.id\">\n                    <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </MenuItem>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </Menu>\n    ",
+    template: "\n    <Menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\"  @on-select=\"onSelect($event)\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <Submenu v-bind:name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <Submenu v-bind:name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <MenuItem v-bind:name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </MenuItem>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </Submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <MenuItem v-bind:name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </MenuItem>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </Submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <MenuItem v-bind:name=\"item0.id\">\n                    <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </MenuItem>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </Menu>\n    ",
     props: ['ctrl', 'viewController'],
     data: function () {
         var data = {};
@@ -7729,5 +7783,13 @@ Vue.component('ibiz-app-menu', {
     },
     mounted: function () {
         console.log(this.ctrl);
+    },
+    methods: {
+        onSelect: function (name) {
+            if (this.ctrl && !Object.is(name, '')) {
+                var item = this.ctrl.getItem(name, this.ctrl.getItems());
+                this.ctrl.onSelectChange(item);
+            }
+        }
     }
 });

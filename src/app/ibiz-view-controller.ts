@@ -36,6 +36,12 @@ class IBizViewController extends IBizObject {
 
     public controls: Map<string, any> = new Map();
 
+    public $router: any;
+
+    public $vue: any;
+
+    public $route: any;
+
     /**
      * Creates an instance of IBizViewController.
      * 创建 IBizViewController 实例对象
@@ -58,6 +64,9 @@ class IBizViewController extends IBizObject {
      */
     public mounted(vue: any) {
         let _this = this;
+        _this.$route = vue.$route;
+		_this.$router = vue.$router;
+		_this.$vue = vue;
         _this.setViewParam(vue.$route.query);
         _this.init(_this.getViewParam());
     }
