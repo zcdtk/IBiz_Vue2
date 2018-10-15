@@ -99,7 +99,6 @@ var IBizAppMenu = /** @class */ (function (_super) {
         }
         _this.fire(IBizAppMenu.BEFORELOAD, params);
         _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
-            console.log(success);
             if (success.ret === 0) {
                 _this_1.items = success.items;
                 // const data = this.doMenus(success.items);

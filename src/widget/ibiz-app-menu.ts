@@ -88,7 +88,6 @@ class IBizAppMenu extends IBizControl {
         }
         _this.fire(IBizAppMenu.BEFORELOAD, params);
         _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(success => {
-            console.log(success)
             if (success.ret === 0) {
                 this.items = success.items;
                 // const data = this.doMenus(success.items);
