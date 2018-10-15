@@ -5557,7 +5557,6 @@ var IBizIndexViewController = /** @class */ (function (_super) {
      */
     IBizIndexViewController.prototype.appMenuSelection = function (item) {
         if (item === void 0) { item = {}; }
-        console.log(item);
         var _this = this;
         _this.$router.push({ name: item.viewname, query: item.openviewparam });
     };
@@ -7782,7 +7781,6 @@ Vue.component('ibiz-app-menu', {
         return data;
     },
     mounted: function () {
-        console.log(this.ctrl);
     },
     methods: {
         onSelect: function (name) {

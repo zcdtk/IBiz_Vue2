@@ -52,7 +52,6 @@ Vue.component('ibiz-app-menu', {
         return data;
     },
     mounted: function () {
-        console.log(this.ctrl);
     },
     methods: {
         onSelect(name) {
