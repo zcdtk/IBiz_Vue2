@@ -1,17 +1,17 @@
 Vue.component('ibiz-header-user', {
     template: `
         <div style="float:right;">
-            <dropdown>
+            <dropdown @on-click="userSelect($event)">
                 <div style="font-size: 15px;cursor: pointer;margin-right: 10px;">
                     <span>{{ user.name }} &nbsp;&nbsp;</span>
                     <span><img :src="user.avatar" style="width: 40px;padding-top: 10px;float: right;" /></span>
                 </div>
                 <dropdown-menu slot="list" style="font-size: 15px !important;">
-                    <dropdown-item style="font-size: 15px !important;" @click="installRTData">
+                    <dropdown-item name="insrt" style="font-size: 15px !important;">
                         <span> <i aria-hidden="true" class="fa fa-cogs" style="margin-right: 8px;"></i></span>
                         <span>安装依赖</span>
                     </dropdown-item>
-                    <dropdown-item style="font-size: 15px !important;" @click="logout">
+                    <dropdown-item name="logout" style="font-size: 15px !important;">
                         <span> <i aria-hidden="true" class="fa fa-cogs" style="margin-right: 8px;"></i></span>
                         <span>退出登陆</span>
                     </dropdown-item>
@@ -20,7 +20,7 @@ Vue.component('ibiz-header-user', {
         </div>
     `,
     data: function () {
-        var data = {
+        let data = {
             iBizHttp: new IBizHttp(),
             iBizNotification: new IBizNotification(),
             user: {
@@ -31,12 +31,13 @@ Vue.component('ibiz-header-user', {
         return data;
     },
     mounted: function () {
-        this.iBizHttp.post(IBizEnvironment.AppLogin, { srfaction: 'getcuruserinfo' }).subscribe((result) => {
+        let _this = this;
+        _this.iBizHttp.post(`/${IBizEnvironment.SysName}${IBizEnvironment.AppLogin}`, { srfaction: 'getcuruserinfo' }).subscribe(function (result) {
             if (result.ret === 0) {
                 if (Object.keys(result.data).length !== 0) {
                     let _data: any = {};
                     Object.assign(_data, result.data);
-                    Object.assign(this.user, {
+                    Object.assign(_this.user, {
                         name: _data.username,
                         email: _data.loginname,
                         id: _data.userid,
@@ -44,25 +45,35 @@ Vue.component('ibiz-header-user', {
                     });
                 }
             }
-        }, (error) => {
+        }, function (error) {
             console.log(error);
         });
     },
     methods: {
         installRTData() {
-            this.iBizHttp.post(IBizEnvironment.InstallRTData, {}).subscribe((result) => {
+            let _this = this;
+            _this.iBizHttp.post(`/${IBizEnvironment.SysName}${IBizEnvironment.InstallRTData}`, {}).subscribe(function (result) {
                 if (result.ret === 0) {
-                    this.iBizNotification.success('成功', result.info);
-                } else {
-                    this.iBizNotification.error('错误', result.info);
+                    _this.iBizNotification.success('成功', result.info);
                 }
-            }, (error) => {
-                this.iBizNotification.error('错误', error.info);
+                else {
+                    _this.iBizNotification.error('错误', result.info);
+                }
+            }, function (error) {
+                _this.iBizNotification.error('错误', error.info);
             });
         },
         logout() {
-            const curUrl: string = decodeURIComponent(window.location.href);
-            window.location.href = `../api/uacloginout.do?RU=${curUrl}`;
+            var curUrl = decodeURIComponent(window.location.href);
+            window.location.href = `/${IBizEnvironment.SysName}${IBizEnvironment.Logout}?RU=${curUrl}`;
+        },
+        userSelect(name) {
+            console.log(name);
+            if (Object.is(name, 'insrt')) {
+                this.installRTData();
+            } else if (Object.is(name, 'logout')) {
+                this.logout();
+            }
         }
     }
 });
