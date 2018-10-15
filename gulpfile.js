@@ -8,7 +8,9 @@ gulp.task('js', function () {
         'plugins/vue/vue.min.js',
         'plugins/vue/vue-router.min.js',
         'plugins/rxjs/rxjs.umd.min.js',
-        'plugins/iview/iview.min.js'
+        'plugins/axios/axios.min.js',
+        'plugins/iview/iview.min.js',
+        'plugins/element-ui/element-ui.js',
     ];
     return gulp.src(assets)
         .pipe(concat('assets.js'))
