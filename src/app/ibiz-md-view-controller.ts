@@ -41,7 +41,7 @@ class IBizMDViewController extends IBizMianViewController {
             mdctrl.on(IBizMDControl.SELECTIONCHANGE).subscribe((args) => {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 1) {
-                    _this.onDataActivated(args);
+                    _this.onDataActivated(args[0]);
                 }
             });
             //  多数据部件加载之前

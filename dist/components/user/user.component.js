@@ -1,24 +1,6 @@
 "use strict";
 Vue.component('ibiz-header-user', {
-    template: 
-        +'<div style="float:right;">'
-        +'    <dropdown @on-click="userSelect($event)">'
-        +'        <div style="font-size: 15px;cursor: pointer;margin-right: 10px;">'
-        +'            <span>{{ user.name }} &nbsp;&nbsp;</span>'
-        +'            <span><img :src="user.avatar" style="width: 40px;padding-top: 10px;float: right;" /></span>'
-        +'        </div>'
-        +'        <dropdown-menu slot="list" style="font-size: 15px !important;">'
-        +'            <dropdown-item name="insrt" style="font-size: 15px !important;">'
-        +'                <span> <i aria-hidden="true" class="fa fa-cogs" style="margin-right: 8px;"></i></span>'
-        +'                <span>安装依赖</span>'
-        +'            </dropdown-item>'
-        +'            <dropdown-item name="logout" style="font-size: 15px !important;">'
-        +'                <span> <i aria-hidden="true" class="fa fa-cogs" style="margin-right: 8px;"></i></span>'
-        +'                <span>退出登陆</span>'
-        +'            </dropdown-item>'
-        +'        </dropdown-menu>'
-        +'    </dropdown>'
-        +'</div>',
+    template: "\n        <div style=\"float:right;\">\n            <dropdown @on-click=\"userSelect($event)\">\n                <div style=\"font-size: 15px;cursor: pointer;margin-right: 10px;\">\n                    <span>{{ user.name }} &nbsp;&nbsp;</span>\n                    <span><img :src=\"user.avatar\" style=\"width: 40px;padding-top: 10px;float: right;\" /></span>\n                </div>\n                <dropdown-menu slot=\"list\" style=\"font-size: 15px !important;\">\n                    <dropdown-item name=\"insrt\" style=\"font-size: 15px !important;\">\n                        <span> <i aria-hidden=\"true\" class=\"fa fa-cogs\" style=\"margin-right: 8px;\"></i></span>\n                        <span>\u5B89\u88C5\u4F9D\u8D56</span>\n                    </dropdown-item>\n                    <dropdown-item name=\"logout\" style=\"font-size: 15px !important;\">\n                        <span> <i aria-hidden=\"true\" class=\"fa fa-cogs\" style=\"margin-right: 8px;\"></i></span>\n                        <span>\u9000\u51FA\u767B\u9646</span>\n                    </dropdown-item>\n                </dropdown-menu>\n            </dropdown>\n        </div>\n    ",
     data: function () {
         var data = {
             iBizHttp: new IBizHttp(),

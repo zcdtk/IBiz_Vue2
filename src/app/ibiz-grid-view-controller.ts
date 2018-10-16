@@ -31,7 +31,14 @@ class IBizGridViewController extends IBizMDViewController {
                 if (_this.getGridRowActiveMode() === 0) {
                     return;
                 }
-                _this.onDataActivated(args);
+                _this.onDataActivated(args[0]);
+            });
+            // 表哥行单击
+            grid.on(IBizDataGrid.ROWCLICK).subscribe((args) => {
+                _this.onSelectionChange(args);
+                if (_this.getGridRowActiveMode() === 1) {
+                    _this.onDataActivated(args[0]);
+                }
             });
             // 表格行编辑行数据变化
             grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE).subscribe((args) => {
