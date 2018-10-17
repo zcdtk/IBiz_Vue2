@@ -65,8 +65,8 @@ class IBizViewController extends IBizObject {
     public mounted(vue: any) {
         let _this = this;
         _this.$route = vue.$route;
-		_this.$router = vue.$router;
-		_this.$vue = vue;
+        _this.$router = vue.$router;
+        _this.$vue = vue;
         _this.setViewParam(vue.$route.query);
         _this.init(_this.getViewParam());
     }
@@ -87,6 +87,13 @@ class IBizViewController extends IBizObject {
 	 * 执行初始化
 	 */
     public onInit(): void {
+        super.onInit();
+        let _this = this;
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(_this);
+        }
     }
     public setSize(width, height): void {
 
@@ -193,11 +200,21 @@ class IBizViewController extends IBizObject {
         var _this = this;
         return _this.ctrlers.get(id);
     }
-	/**
-	 * 获取父控件
-	 */
+
+    /**
+     * 获取父视图控制器
+     *
+     * @returns {*}
+     * @memberof IBizViewController
+     */
     public getPController(): any {
-        return null;
+        let _this = this;
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        if (iBizApp) {
+            return iBizApp.getParentController(this.getId());
+        }
+        return undefined;
     }
 	/**
 	 * 注销子控制器对象
@@ -306,6 +323,12 @@ class IBizViewController extends IBizObject {
         // _this.config = null;
         // arguments.callee.$.destroy.call(this);
 
+        let _this = this;
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.unRegSRFController(_this);
+        }
     }
 
 	/**

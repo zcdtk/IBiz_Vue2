@@ -86,13 +86,17 @@ class IBizApp {
     /**
      * 获取父视图控制器
      *
+     * @param {string} id 视图控制器id
      * @returns {*}
      * @memberof IBizApp
      */
-    public getSRFPController(): any {
-        const keys: Array<any> = Object.keys(this.viewControllers);
-        let pkey = keys[keys.length - 1];
-        return this.viewControllers[pkey];
+    public getParentController(id: string): any {
+        const ctrl_ids: Array<any> = Object.keys(this.viewControllers);
+        let index = ctrl_ids.findIndex(ctrl_id => Object.is(id, ctrl_id));
+        if (index > 0) {
+            return this.viewControllers[ctrl_ids[index - 1]];
+        }
+        return null;
     }
 
     /**

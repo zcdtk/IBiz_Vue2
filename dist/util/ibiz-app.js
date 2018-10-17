@@ -80,13 +80,17 @@ var IBizApp = /** @class */ (function () {
     /**
      * 获取父视图控制器
      *
+     * @param {string} id 视图控制器id
      * @returns {*}
      * @memberof IBizApp
      */
-    IBizApp.prototype.getSRFPController = function () {
-        var keys = Object.keys(this.viewControllers);
-        var pkey = keys[keys.length - 1];
-        return this.viewControllers[pkey];
+    IBizApp.prototype.getParentController = function (id) {
+        var ctrl_ids = Object.keys(this.viewControllers);
+        var index = ctrl_ids.findIndex(function (ctrl_id) { return Object.is(id, ctrl_id); });
+        if (index > 0) {
+            return this.viewControllers[ctrl_ids[index - 1]];
+        }
+        return null;
     };
     /**
      * 注册父窗口window 对象

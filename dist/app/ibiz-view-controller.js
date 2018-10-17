@@ -77,6 +77,13 @@ var IBizViewController = /** @class */ (function (_super) {
      * 执行初始化
      */
     IBizViewController.prototype.onInit = function () {
+        _super.prototype.onInit.call(this);
+        var _this = this;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(_this);
+        }
     };
     IBizViewController.prototype.setSize = function (width, height) {
     };
@@ -180,10 +187,19 @@ var IBizViewController = /** @class */ (function (_super) {
         return _this.ctrlers.get(id);
     };
     /**
-     * 获取父控件
+     * 获取父视图控制器
+     *
+     * @returns {*}
+     * @memberof IBizViewController
      */
     IBizViewController.prototype.getPController = function () {
-        return null;
+        var _this = this;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            return iBizApp.getParentController(this.getId());
+        }
+        return undefined;
     };
     /**
      * 注销子控制器对象
@@ -286,6 +302,12 @@ var IBizViewController = /** @class */ (function (_super) {
         // $.getIBizApp().unRegSRFView(_this);
         // _this.config = null;
         // arguments.callee.$.destroy.call(this);
+        var _this = this;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.unRegSRFController(_this);
+        }
     };
     /**
      * 刷新

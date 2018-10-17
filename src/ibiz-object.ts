@@ -35,7 +35,7 @@ abstract class IBizObject {
      * @type {string}
      * @memberof IBizObject
      */
-    private id: string;
+    private id: string = IBizUtil.createUUID();
 
     /**
      * 对象名称
@@ -64,7 +64,6 @@ abstract class IBizObject {
      * @memberof IBizObject
      */
     constructor(opts: any = {}) {
-        this.id = opts.id;
         this.name = opts.name;
         this.refname = opts.refname;
     }

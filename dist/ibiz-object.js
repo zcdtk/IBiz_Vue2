@@ -34,7 +34,14 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.iBizNotification = new IBizNotification();
-        this.id = opts.id;
+        /**
+         * 对象id
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizObject
+         */
+        this.id = IBizUtil.createUUID();
         this.name = opts.name;
         this.refname = opts.refname;
     }

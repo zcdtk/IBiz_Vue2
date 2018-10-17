@@ -80,13 +80,17 @@ var IBizApp = /** @class */ (function () {
     /**
      * 获取父视图控制器
      *
+     * @param {string} id 视图控制器id
      * @returns {*}
      * @memberof IBizApp
      */
-    IBizApp.prototype.getSRFPController = function () {
-        var keys = Object.keys(this.viewControllers);
-        var pkey = keys[keys.length - 1];
-        return this.viewControllers[pkey];
+    IBizApp.prototype.getParentController = function (id) {
+        var ctrl_ids = Object.keys(this.viewControllers);
+        var index = ctrl_ids.findIndex(function (ctrl_id) { return Object.is(id, ctrl_id); });
+        if (index > 0) {
+            return this.viewControllers[ctrl_ids[index - 1]];
+        }
+        return null;
     };
     /**
      * 注册父窗口window 对象
@@ -1031,7 +1035,14 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.iBizNotification = new IBizNotification();
-        this.id = opts.id;
+        /**
+         * 对象id
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizObject
+         */
+        this.id = IBizUtil.createUUID();
         this.name = opts.name;
         this.refname = opts.refname;
     }
@@ -4806,6 +4817,13 @@ var IBizViewController = /** @class */ (function (_super) {
      * 执行初始化
      */
     IBizViewController.prototype.onInit = function () {
+        _super.prototype.onInit.call(this);
+        var _this = this;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(_this);
+        }
     };
     IBizViewController.prototype.setSize = function (width, height) {
     };
@@ -4909,10 +4927,19 @@ var IBizViewController = /** @class */ (function (_super) {
         return _this.ctrlers.get(id);
     };
     /**
-     * 获取父控件
+     * 获取父视图控制器
+     *
+     * @returns {*}
+     * @memberof IBizViewController
      */
     IBizViewController.prototype.getPController = function () {
-        return null;
+        var _this = this;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            return iBizApp.getParentController(this.getId());
+        }
+        return undefined;
     };
     /**
      * 注销子控制器对象
@@ -5015,6 +5042,12 @@ var IBizViewController = /** @class */ (function (_super) {
         // $.getIBizApp().unRegSRFView(_this);
         // _this.config = null;
         // arguments.callee.$.destroy.call(this);
+        var _this = this;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.unRegSRFController(_this);
+        }
     };
     /**
      * 刷新
