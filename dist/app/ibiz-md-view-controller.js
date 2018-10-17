@@ -598,7 +598,21 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (url_datas.length > 0) {
             url = url + "?" + url_datas.join('&');
         }
-        window.open(url, '_blank');
+        var _window = window;
+        ;
+        _window.open(url, '_blank');
+        var iBizApp = _window.getIBizApp();
+        iBizApp.onRefreshView().subscribe(function (data) {
+            _this.refresh();
+        });
+        // let iBizApp:IBizApp = _window.getIBizApp();
+        // iBizApp.refreshView().subscribe(data => {
+        //     _this.refresh();
+        // });
+        // let opener = win.opener;
+        // if (opener.getIBizApp()) {
+        //     opener.getIBizApp().regPWindow(window);
+        // }
         // var win = $.getIBizApp().createWindow({});
         // var viewparam = view.viewparam;
         // if(!viewparam){

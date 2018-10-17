@@ -16,7 +16,7 @@ class IBizMDViewController extends IBizMianViewController {
 
     public quickSearch: string = null;
 
-    public quickSearchEntityDEFields:Array<any> = [];
+    public quickSearchEntityDEFields: Array<any> = [];
 
     /**
      * Creates an instance of IBizMDViewController.
@@ -115,7 +115,7 @@ class IBizMDViewController extends IBizMianViewController {
             else {
                 searchform.open();
             }
-        } 
+        }
 
         // //初始化快速搜索
         // if(_this.hasHtmlElement('searchcond'))
@@ -580,7 +580,7 @@ class IBizMDViewController extends IBizMianViewController {
             view.modal = true;
         }
 
-        let url_datas:Array<string> = [];
+        let url_datas: Array<string> = [];
         const params_names = Object.keys(view.viewparam);
         params_names.forEach(name => {
             if (name && view.viewparam[name] && !Object.is(view.viewparam[name], '')) {
@@ -591,7 +591,22 @@ class IBizMDViewController extends IBizMianViewController {
         if (url_datas.length > 0) {
             url = `${url}?${url_datas.join('&')}`;
         }
-        window.open(url, '_blank');
+        let _window: any = window;;
+        _window.open(url, '_blank');
+
+        let iBizApp: IBizApp = _window.getIBizApp();
+        iBizApp.onRefreshView().subscribe(data => {
+            _this.refresh();
+        });
+        
+        // let iBizApp:IBizApp = _window.getIBizApp();
+        // iBizApp.refreshView().subscribe(data => {
+        //     _this.refresh();
+        // });
+        // let opener = win.opener;
+        // if (opener.getIBizApp()) {
+        //     opener.getIBizApp().regPWindow(window);
+        // }
         // var win = $.getIBizApp().createWindow({});
         // var viewparam = view.viewparam;
         // if(!viewparam){

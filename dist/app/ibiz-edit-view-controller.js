@@ -440,6 +440,16 @@ var IBizEditViewController = /** @class */ (function (_super) {
     };
     IBizEditViewController.prototype.refreshReferView = function () {
         var _this = this;
+        var _window = window;
+        var iBizApp = _window.getIBizApp();
+        if (!iBizApp) {
+            return;
+        }
+        var parentWindow = iBizApp.getParentWindow();
+        if (parentWindow) {
+            var pWinIBizApp = parentWindow.getIBizApp();
+            pWinIBizApp.fireRefreshView({});
+        }
         try {
             // if (_this.pagecontext) {
             // 	var openerid = _this.pagecontext.getParamValue('openerid');

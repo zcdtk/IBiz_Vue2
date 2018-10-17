@@ -424,6 +424,16 @@ class IBizEditViewController extends IBizMianViewController {
 	}
 	public refreshReferView(): void {
 		var _this = this;
+		let _window: any = window;
+		let iBizApp: IBizApp = _window.getIBizApp();
+		if (!iBizApp) {
+			return;
+		}
+		let parentWindow: any = iBizApp.getParentWindow();
+		if (parentWindow) {
+			let pWinIBizApp: IBizApp = parentWindow.getIBizApp();
+			pWinIBizApp.fireRefreshView({});
+		}
 		try {
 			// if (_this.pagecontext) {
 			// 	var openerid = _this.pagecontext.getParamValue('openerid');

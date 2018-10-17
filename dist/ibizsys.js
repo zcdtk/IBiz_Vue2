@@ -1,5 +1,16 @@
 "use strict";
+/**
+ * IBizApp 应用
+ *
+ * @class IBizApp
+ */
 var IBizApp = /** @class */ (function () {
+    /**
+     * Creates an instance of IBizApp.
+     * 创建 IBizApp 实例
+     *
+     * @memberof IBizApp
+     */
     function IBizApp() {
         /**
          * 当前窗口所有视图控制器
@@ -14,13 +25,31 @@ var IBizApp = /** @class */ (function () {
          * @type {*}
          * @memberof IBizApp
          */
-        this.PWin = null;
+        this.parentWindow = null;
+        /**
+         * rxjs 流观察对象
+         *
+         * @private
+         * @type {Subject<any>}
+         * @memberof IBizApp
+         */
+        this.subject = new rxjs.Subject();
     }
+    ;
+    /**
+     * 注册视图控制
+     *
+     * @param {*} ctrler
+     * @memberof IBizApp
+     */
     IBizApp.prototype.regSRFController = function (ctrler) {
         this.viewControllers[ctrler.getId()] = ctrler;
     };
     /**
-     * 注销视图
+     * 注销视图控制器
+     *
+     * @param {*} ctrler
+     * @memberof IBizApp
      */
     IBizApp.prototype.unRegSRFController = function (ctrler) {
         var id = ctrler.getId();
@@ -29,33 +58,75 @@ var IBizApp = /** @class */ (function () {
         delete this.viewControllers[id];
     };
     /**
-     * 注销视图
+     * 注销视图控制器
+     *
+     * @param {string} id
+     * @memberof IBizApp
      */
     IBizApp.prototype.unRegSRFController2 = function (id) {
         this.viewControllers[id] = null;
         delete this.viewControllers[id];
     };
     /**
-     * 获取视图
-     */
-    IBizApp.prototype.getSRFController = function (openerid) {
-        return this.viewControllers[openerid];
-    };
-    IBizApp.prototype.regPWindow = function (win) {
-        this.PWin = win;
-    };
-    IBizApp.prototype.getPWindow = function () {
-        return this.PWin;
-    };
-    /**
-     * 刷新视图
+     * 获取视图控制器
      *
-     * @static
+     * @param {string} id
+     * @returns {*}
      * @memberof IBizApp
      */
-    IBizApp.REFRESHVIEW = 'REFRESHVIEW';
+    IBizApp.prototype.getSRFController = function (id) {
+        return this.viewControllers[id];
+    };
+    /**
+     * 获取父视图控制器
+     *
+     * @returns {*}
+     * @memberof IBizApp
+     */
+    IBizApp.prototype.getSRFPController = function () {
+        var keys = Object.keys(this.viewControllers);
+        var pkey = keys[keys.length - 1];
+        return this.viewControllers[pkey];
+    };
+    /**
+     * 注册父窗口window 对象
+     *
+     * @param {Window} win
+     * @memberof IBizApp
+     */
+    IBizApp.prototype.regParentWindow = function (win) {
+        this.parentWindow = win;
+    };
+    /**
+     * 获取父窗口window 对象
+     *
+     * @returns {Window}
+     * @memberof IBizApp
+     */
+    IBizApp.prototype.getParentWindow = function () {
+        return this.parentWindow;
+    };
+    /**
+     * 订阅刷新视图事件
+     *
+     * @returns {Observable<any>}
+     * @memberof IBizApp
+     */
+    IBizApp.prototype.onRefreshView = function () {
+        return this.subject.asObservable();
+    };
+    /**
+     * 通知视图刷新事件
+     *
+     * @param {*} data
+     * @memberof IBizApp
+     */
+    IBizApp.prototype.fireRefreshView = function (data) {
+        this.subject.next(data);
+    };
     return IBizApp;
 }());
+// 初始化IBizApp 对象， 挂载在window对象下
 (function (window) {
     var win = window;
     if (!win.iBizApp) {
@@ -69,6 +140,9 @@ var IBizApp = /** @class */ (function () {
             win.iBizApp = new IBizApp();
         }
     };
+    if (window.opener && window.opener.window) {
+        win.iBizApp.regPWindow(window.opener.window);
+    }
 })(window);
 
 "use strict";
@@ -6235,7 +6309,21 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (url_datas.length > 0) {
             url = url + "?" + url_datas.join('&');
         }
-        window.open(url, '_blank');
+        var _window = window;
+        ;
+        _window.open(url, '_blank');
+        var iBizApp = _window.getIBizApp();
+        iBizApp.onRefreshView().subscribe(function (data) {
+            _this.refresh();
+        });
+        // let iBizApp:IBizApp = _window.getIBizApp();
+        // iBizApp.refreshView().subscribe(data => {
+        //     _this.refresh();
+        // });
+        // let opener = win.opener;
+        // if (opener.getIBizApp()) {
+        //     opener.getIBizApp().regPWindow(window);
+        // }
         // var win = $.getIBizApp().createWindow({});
         // var viewparam = view.viewparam;
         // if(!viewparam){
@@ -7589,6 +7677,16 @@ var IBizEditViewController = /** @class */ (function (_super) {
     };
     IBizEditViewController.prototype.refreshReferView = function () {
         var _this = this;
+        var _window = window;
+        var iBizApp = _window.getIBizApp();
+        if (!iBizApp) {
+            return;
+        }
+        var parentWindow = iBizApp.getParentWindow();
+        if (parentWindow) {
+            var pWinIBizApp = parentWindow.getIBizApp();
+            pWinIBizApp.fireRefreshView({});
+        }
         try {
             // if (_this.pagecontext) {
             // 	var openerid = _this.pagecontext.getParamValue('openerid');
