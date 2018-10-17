@@ -141,6 +141,6 @@ var IBizApp = /** @class */ (function () {
         }
     };
     if (window.opener && window.opener.window) {
-        win.iBizApp.regPWindow(window.opener.window);
+        win.iBizApp.regParentWindow(window.opener.window);
     }
 })(window);
