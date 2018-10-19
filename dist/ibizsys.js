@@ -1573,10 +1573,78 @@ var IBizFormField = /** @class */ (function (_super) {
     function IBizFormField(opts) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
+        /**
+         * label 宽度
+         *
+         * @type {number}
+         * @memberof IBizFormField
+         */
+        _this_1.labelWidth = 130;
+        /**
+         * 实体属性输入旧值
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizFormField
+         */
+        _this_1.oldVal = '';
+        /**
+         * 数据流观察对象
+         *
+         * @private
+         * @type {Subject<any>}
+         * @memberof IBizFormField
+         */
+        _this_1.subject = new rxjs.Subject();
         var _this = _this_1;
         _this.labelWidth = opts.labelWidth;
+        // 停止输入值间隔500 毫秒，进行值绑定
+        _this.subject.pipe(rxjs.operators.debounceTime(500), rxjs.operators.distinctUntilChanged(function (o, n) {
+            if (o === void 0) { o = {}; }
+            if (n === void 0) { n = {}; }
+            return !Object.is(o.oldVal, o.newVal) && !Object.is(n.oldVal, n.newVal)
+                && Object.is(o.oldVal, n.oldVal) && Object.is(o.newVal, n.newVal);
+        })).subscribe(function (data) {
+            if (data === void 0) { data = {}; }
+            _this.setOldValue(data.oldVal);
+            _this.setValue(data.newVal);
+        });
         return _this_1;
     }
+    /**
+     * 设置旧值
+     *
+     * @param {string} val
+     * @memberof IBizFormField
+     */
+    IBizFormField.prototype.setOldValue = function (val) {
+        var _this = this;
+        _this.oldVal = val;
+    };
+    /**
+     * 获取旧值
+     *
+     * @returns {string}
+     * @memberof IBizFormField
+     */
+    IBizFormField.prototype.getOldValue = function () {
+        var _this = this;
+        return _this.oldVal;
+    };
+    /**
+     * 属性值变化
+     *
+     * @param {*} event
+     * @memberof IBizFormField
+     */
+    IBizFormField.prototype.valueChange = function (event) {
+        var _this = this;
+        if (!event || !event.target) {
+            return;
+        }
+        var target = event.target;
+        _this.subject.next({ oldVal: JSON.stringify(target._value), newVal: JSON.stringify(target.value) });
+    };
     return IBizFormField;
 }(IBizFormItem));
 
