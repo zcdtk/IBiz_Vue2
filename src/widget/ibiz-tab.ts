@@ -42,4 +42,14 @@ class IBizTab extends IBizControl {
         // var me = this;
         // return $('#' + me.id).width();
     }
+
+    /*****************事件声明************************/
+
+    /**
+     * 选择变化
+     *
+     * @static
+     * @memberof IBizTab
+     */
+    public static SELECTIONCHANGE = "SELECTIONCHANGE";
 }

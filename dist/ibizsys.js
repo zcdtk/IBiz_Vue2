@@ -4873,6 +4873,14 @@ var IBizTab = /** @class */ (function (_super) {
         // var me = this;
         // return $('#' + me.id).width();
     };
+    /*****************事件声明************************/
+    /**
+     * 选择变化
+     *
+     * @static
+     * @memberof IBizTab
+     */
+    IBizTab.SELECTIONCHANGE = "SELECTIONCHANGE";
     return IBizTab;
 }(IBizControl));
 
@@ -4913,6 +4921,329 @@ var IBizExpTab = /** @class */ (function (_super) {
     }
     return IBizExpTab;
 }(IBizTab));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 树部件
+ *
+ * @class IBizTree
+ * @extends {IBizControl}
+ */
+var IBizTree = /** @class */ (function (_super) {
+    __extends(IBizTree, _super);
+    /**
+     * Creates an instance of IBizTree.
+     * 创建 IBizTree 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizTree
+     */
+    function IBizTree(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this_1 = _super.call(this, opts) || this;
+        _this_1.tableselection = null;
+        _this_1.tableselections = {};
+        var _this = _this_1;
+        return _this_1;
+    }
+    IBizTree.prototype.setSize = function (width, height) {
+    };
+    IBizTree.prototype.setCatalog = function (catalog) {
+    };
+    /**
+     *  加载
+     *
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.load = function () {
+    };
+    /**
+     * 获取选择节点数据
+     *
+     * bFull，true：返回的数据包含节点全部数据，false：返回的数组仅包含节点ID
+     */
+    IBizTree.prototype.getSelected = function (bFull) {
+        return null;
+    };
+    /**
+     * 重新加载
+     *
+     * @param {*} [node={}]
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.reload = function (node) {
+        if (node === void 0) { node = {}; }
+    };
+    /**
+     * 删除
+     *
+     * @param {*} [node={}]
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.remove = function (node) {
+        if (node === void 0) { node = {}; }
+        var _this = this;
+        var arg = { srfnodeid: node.id };
+        Object.assign(arg, { srfaction: 'remove' });
+        _this.beginLoading();
+        _this.iBizHttp.post(_this.getBackendUrl(), arg).subscribe(function (data) {
+            _this.endLoading();
+            if (data.ret === 0) {
+                _this.tableselection = null;
+                _this.tableselections = {};
+                _this.reload(node.parent);
+                if (data.info && data.info != '') {
+                    // IBiz.alert($IGM('IBIZTREE.REMOVE.TITLE', '删除成功'), $IGM('IBIZTREE.REMOVE.INFO', '删除数据成功,' + data.info, [data.info]), 1);
+                    _this.iBizNotification.success('删除成功', "\u5220\u9664\u6570\u636E\u6210\u529F" + data.info);
+                }
+                IBizUtil.processResult(data);
+            }
+            else {
+                // IBiz.alert($IGM('IBIZTREE.REMOVE.TITLE2', '删除失败'), $IGM('IBIZTREE.REMOVE.INFO2', '删除数据失败,' + data.info, [data.info]), 2);
+                _this.iBizNotification.error('删除失败', "\u5220\u9664\u6570\u636E\u5931\u8D25" + data.info);
+            }
+        }, function (error) {
+            _this.endLoading();
+            // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN', '警告'), $IGM('IBIZTREE.AJAX.INFO', '执行请求发生异常'), 2);
+            _this.iBizNotification.warning('警告', '执行请求发生异常');
+        });
+        ;
+    };
+    /**
+     * 操作界面行为
+     *
+     * @param {*} [params={}]
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.doUIAction = function (params) {
+        if (params === void 0) { params = {}; }
+        var _this = this;
+        var subject = new rxjs.Subject();
+        if (params) {
+            params = {};
+        }
+        Object.assign(params, { srfaction: 'uiaction' });
+        _this.beginLoading();
+        _this.iBizHttp.post(_this.getBackendUrl(), params).subscribe(function (data) {
+            _this.endLoading();
+            if (data.ret === 0) {
+                if (data.reloadData) {
+                    // _this.refresh();
+                }
+                if (data.info && data.info != '') {
+                    // IBiz.alert($IGM('IBIZTREE.DOUIACTION.TITLE', '操作成功'), $IGM('IBIZTREE.DOUIACTION.INFO', '操作成功,' + data.info, [data.info]), 1);
+                    _this.iBizNotification.success('操作成功', "\u64CD\u4F5C\u6210\u529F" + data.info);
+                }
+                IBizUtil.processResult(data);
+                subject.next(data);
+            }
+            else {
+                // IBiz.alert($IGM('IBIZTREE.DOUIACTION.TITLE2', '操作失败'), $IGM('IBIZTREE.DOUIACTION.INFO2', '操作失败,执行操作发生错误,' + data.info, [data.info]), 2);
+                _this.iBizNotification.error('操作失败', "\u64CD\u4F5C\u5931\u8D25,\u6267\u884C\u64CD\u4F5C\u53D1\u751F\u9519\u8BEF," + data.info);
+                subject.error(data);
+            }
+        }, function (error) {
+            _this.endLoading();
+            // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.WARN', '警告'), $IGM('IBIZTREE.AJAX.INFO', '执行请求发生异常'), 2);
+            _this.iBizNotification.warning('警告', '执行请求发生异常');
+            subject.error(error);
+        });
+        return subject.asObservable();
+    };
+    /*****************事件声明************************/
+    /**
+     * 选择变化
+     *
+     * @static
+     * @memberof IBizTree
+     */
+    IBizTree.SELECTIONCHANGE = "SELECTIONCHANGE";
+    /**
+     * 上下文菜单
+     *
+     * @static
+     * @memberof IBizTree
+     */
+    IBizTree.CONTEXTMENU = "CONTEXTMENU";
+    return IBizTree;
+}(IBizControl));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 树导航栏
+ *
+ * @class IBizTreeExpBar
+ * @extends {IBizControl}
+ */
+var IBizTreeExpBar = /** @class */ (function (_super) {
+    __extends(IBizTreeExpBar, _super);
+    /**
+     * Creates an instance of IBizTreeExpBar.
+     * 创建 IBizTreeExpBar 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizTreeExpBar
+     */
+    function IBizTreeExpBar(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this_1 = _super.call(this, opts) || this;
+        _this_1.tree = null;
+        _this_1.tabctrl = null;
+        _this_1.treeCfg = {};
+        _this_1.expframe = null;
+        _this_1.pvpanel = null;
+        return _this_1;
+    }
+    ;
+    ;
+    ;
+    IBizTreeExpBar.prototype.setSize = function (width, height) {
+    };
+    IBizTreeExpBar.prototype.getTree = function () {
+        return this.tree;
+    };
+    IBizTreeExpBar.prototype.getExpTab = function () {
+        return this.tabctrl;
+    };
+    IBizTreeExpBar.prototype.getTreeCfg = function () {
+        return this.treeCfg || {};
+    };
+    IBizTreeExpBar.prototype.getExpFrame = function () {
+        return this.expframe;
+    };
+    IBizTreeExpBar.prototype.getPVPanel = function () {
+        return this.pvpanel;
+    };
+    IBizTreeExpBar.prototype.onTreeSelectionChange = function (tree, records, eOpts) {
+        var _this = this;
+        if (records == null || records.length == 0)
+            return;
+        var record = records[0];
+        if (!record.original)
+            return;
+        var tag = record.original.tag;
+        if (!tag || !(tag.srfnodetype))
+            return;
+        //替换键值
+        var nodeids = record.id.split(';');
+        var nodetext = record.text;
+        var controller = _this.getViewController();
+        if (_this.getExpTab()) {
+            var viewarg = { viewid: tag.srfnodetype };
+            var viewItem = controller.getExpItemView(viewarg);
+            if (viewItem == null)
+                return;
+            var layoutcard = _this.getExpTab();
+            var itemid = layoutcard.id + '_' + tag.srfnodetype;
+            layoutcard.setActiveItem(itemid);
+            var viewParam = {};
+            if (viewItem.viewparam) {
+                // $.extend(viewParam, viewItem.viewparam);
+                Object.assign(viewParam, viewItem.viewparam);
+            }
+            for (var key in viewParam) {
+                var value = viewParam[key];
+                if (value) {
+                    value = value.replace(new RegExp('%NODETEXT%', 'g'), nodetext);
+                    //进行替换
+                    for (var i = 1; i < nodeids.length; i++) {
+                        value = value.replace(new RegExp('%NODEID' + ((i == 1) ? '' : i.toString()) + '%', 'g'), nodeids[i]);
+                    }
+                    viewParam[key] = value;
+                }
+            }
+            var subController = controller.getController(controller.getCId2() + viewItem.embedviewid);
+            layoutcard.setActiveSubController(subController);
+            if (!subController.isInited()) {
+                subController.asyncInit({ parentData: viewParam, renderTo: itemid, subApp: viewItem.subapp });
+                return;
+            }
+            subController.setParentData(viewParam);
+            subController.refresh();
+            return;
+        }
+        if (_this.getPVPanel()) {
+            // var viewarg = { nodetype: tag.srfnodetype };
+            Object.assign(viewarg, { nodetype: tag.srfnodetype });
+            // var viewParam = controller.getNavViewParam(viewarg);
+            Object.assign(viewParam, controller.getNavViewParam(viewarg));
+            if (viewParam == null)
+                return;
+            for (var key in viewParam) {
+                var value = viewParam[key];
+                if (value) {
+                    value = value.replace(new RegExp('%NODETEXT%', 'g'), nodetext);
+                    //进行替换
+                    for (var i = 1; i < nodeids.length; i++) {
+                        value = value.replace(new RegExp('%NODEID' + ((i == 1) ? '' : i.toString()) + '%', 'g'), nodeids[i]);
+                    }
+                    viewParam[key] = value;
+                }
+            }
+            _this.getPVPanel().setParentData(viewParam);
+            return;
+        }
+        if (_this.getExpFrame()) {
+            var viewarg = { viewid: tag.srfnodetype };
+            var viewItem = controller.getExpItemView(viewarg);
+            if (viewItem == null)
+                return;
+            var viewParam = {};
+            if (viewItem.viewparam) {
+                // $.extend(viewParam, viewItem.viewparam);
+                Object.assign(viewParam, viewItem.viewparam);
+            }
+            for (var key in viewParam) {
+                var value = viewParam[key];
+                if (value) {
+                    value = value.replace(new RegExp('%NODETEXT%', 'g'), nodetext);
+                    //进行替换
+                    for (var i = 1; i < nodeids.length; i++) {
+                        value = value.replace(new RegExp('%NODEID' + ((i == 1) ? '' : i.toString()) + '%', 'g'), nodeids[i]);
+                    }
+                    viewParam[key] = value;
+                }
+            }
+            // var url = $.getIBizApp().parseURL(BASEURL, viewItem.viewurl, {});
+            // url += "&" + $.param({ 'srfifchild': true, 'srfparentdata': JSON.stringify(viewParam) });
+            // _this.getExpFrame().attr("src", url);
+            return;
+        }
+    };
+    IBizTreeExpBar.prototype.onTreeContextMenu = function (tree, params, eOpts) {
+        var _this = this;
+        var node = params.node;
+    };
+    IBizTreeExpBar.prototype.fetchCat = function (backendurl, arg) {
+    };
+    return IBizTreeExpBar;
+}(IBizControl));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {

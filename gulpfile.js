@@ -43,6 +43,8 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-edit-form.js',
         'dist/widget/ibiz-tab.js',
         'dist/widget/ibiz-exp-tab.js',
+        'dist/widget/ibiz-tree.js',
+        'dist/widget/ibiz-tree-exp-bar.js',
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
