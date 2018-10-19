@@ -51,7 +51,8 @@ gulp.task('concatibizsys', function () {
         // 组件
         'dist/components/ibiz-app-menu/ibiz-app-menu.component.js',
         'dist/components/ibiz-form/ibiz-form.component.js',
-        'dist/components/ibiz-form-group/ibiz-form-group.component.js'
+        'dist/components/ibiz-form-group/ibiz-form-group.component.js',
+        'dist/components/ibiz-from.item/ibiz-form-item.component.js',
     ]
     return gulp.src(ibizsys)
         .pipe(concat('ibizsys.js'))

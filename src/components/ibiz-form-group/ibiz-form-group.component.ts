@@ -1,15 +1,18 @@
 Vue.component('ibiz-form-group', {
     template: `
         <card :bordered="false" :dis-hover="true">
-            <p class="" slot="title">产品基本信息</p>
+            <p class="" slot="title"> {{ group.caption }}</p>
             <row :gutter="10">
-                <slot :form="form" :fields="form.fieldMap"></slot>
+                <slot></slot>
             </row>
         </card>
     `,
-    props: ['form', 'group'],
+    props: ['form', 'group' , 'name'],
     data: function () {
         let data: any = {};
+        console.log(this.form);
+        console.log(this.group);
+        console.log(this.name);
         return data;
     }
 });

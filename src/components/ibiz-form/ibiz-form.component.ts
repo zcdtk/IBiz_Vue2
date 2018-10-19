@@ -3,7 +3,7 @@ Vue.component('ibiz-form', {
         <div>
             <i-form :model="form">
                 <row :gutter="10">
-                    <slot :form="form" :fields="form.fieldMap"></slot>
+                    <slot :fields="fields"></slot>
                 </row>
             </i-form>
         </div>
@@ -11,6 +11,7 @@ Vue.component('ibiz-form', {
     props: ['form'],
     data: function () {
         let data: any = {};
+        Object.assign(data, { fields: this.form.fieldMap })
         return data;
     }
 });
