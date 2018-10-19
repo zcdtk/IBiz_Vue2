@@ -52,6 +52,7 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-md-view-controller.js',
         'dist/app/ibiz-grid-view-controller.js',
         'dist/app/ibiz-edit-view-controller.js',
+        'dist/app/ibiz-tree-exp-view-controller.js',
         // 组件
         'dist/components/ibiz-app-menu/ibiz-app-menu.component.js',
         'dist/components/ibiz-form/ibiz-form.component.js',
