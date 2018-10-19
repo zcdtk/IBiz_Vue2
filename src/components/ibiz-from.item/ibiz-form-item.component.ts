@@ -1,14 +1,15 @@
 Vue.component('ibiz-form-item', {
     template: `
-        <form-item class="ivu-form-label-left" :label-width="130" :required="!field.allowEmpty">
-            <span slot="label" class="">{{ field.caption }}</span>
-            <slot></slot>
-        </form-item>
+        <div>
+            <form-item class="ivu-form-label-left" :label-width="130" :required="!item.allowEmpty">
+                <span slot="label" class="">{{ item.caption }}</span>
+                <slot></slot>
+            </form-item>
+        </div>
     `,
-    props: ['form', 'field', 'name'],
+    props: ['form', 'item', 'name'],
     data: function () {
         let data: any = {};
-        data.name = this.field;
         return data;
     }
 });
