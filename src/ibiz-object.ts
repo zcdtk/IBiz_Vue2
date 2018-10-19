@@ -35,7 +35,7 @@ abstract class IBizObject {
      * @type {string}
      * @memberof IBizObject
      */
-    private id: string = IBizUtil.createUUID();
+    private id: string = '';
 
     /**
      * 对象名称

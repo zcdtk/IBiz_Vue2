@@ -135,7 +135,7 @@ class IBizApp {
      * @param {*} data
      * @memberof IBizApp
      */
-    public fireRefreshView(data: any): void {
+    public fireRefreshView(data: any = {}): void { 
         this.subject.next(data);
     }
 }

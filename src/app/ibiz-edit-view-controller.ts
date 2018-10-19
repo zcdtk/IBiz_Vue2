@@ -432,7 +432,8 @@ class IBizEditViewController extends IBizMianViewController {
 		let parentWindow: any = iBizApp.getParentWindow();
 		if (parentWindow) {
 			let pWinIBizApp: IBizApp = parentWindow.getIBizApp();
-			pWinIBizApp.fireRefreshView({});
+			let viewparam = this.getViewParam();
+			pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
 		}
 		try {
 			// if (_this.pagecontext) {

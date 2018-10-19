@@ -117,6 +117,15 @@ class IBizMDViewController extends IBizMianViewController {
             }
         }
 
+        let _window: any = window;;
+
+        let iBizApp: IBizApp = _window.getIBizApp();
+        iBizApp.onRefreshView().subscribe((data:any) => {
+            if (data && Object.is(data.openerid, this.getId())) {
+                _this.refresh();
+            }
+        });
+
         // //初始化快速搜索
         // if(_this.hasHtmlElement('searchcond'))
         // {
@@ -593,11 +602,6 @@ class IBizMDViewController extends IBizMianViewController {
         }
         let _window: any = window;;
         _window.open(url, '_blank');
-
-        let iBizApp: IBizApp = _window.getIBizApp();
-        iBizApp.onRefreshView().subscribe(data => {
-            _this.refresh();
-        });
         
         // let iBizApp:IBizApp = _window.getIBizApp();
         // iBizApp.refreshView().subscribe(data => {

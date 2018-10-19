@@ -448,7 +448,8 @@ var IBizEditViewController = /** @class */ (function (_super) {
         var parentWindow = iBizApp.getParentWindow();
         if (parentWindow) {
             var pWinIBizApp = parentWindow.getIBizApp();
-            pWinIBizApp.fireRefreshView({});
+            var viewparam = this.getViewParam();
+            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
         }
         try {
             // if (_this.pagecontext) {

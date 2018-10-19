@@ -126,6 +126,7 @@ var IBizApp = /** @class */ (function () {
      * @memberof IBizApp
      */
     IBizApp.prototype.fireRefreshView = function (data) {
+        if (data === void 0) { data = {}; }
         this.subject.next(data);
     };
     return IBizApp;

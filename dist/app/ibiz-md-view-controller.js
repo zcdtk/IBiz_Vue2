@@ -109,6 +109,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         // _this.doLayout();
     };
     IBizMDViewController.prototype.onInit = function () {
+        var _this_1 = this;
         _super.prototype.onInit.call(this);
         var _this = this;
         var searchform = this.getSearchForm();
@@ -122,6 +123,14 @@ var IBizMDViewController = /** @class */ (function (_super) {
                 searchform.open();
             }
         }
+        var _window = window;
+        ;
+        var iBizApp = _window.getIBizApp();
+        iBizApp.onRefreshView().subscribe(function (data) {
+            if (data && Object.is(data.openerid, _this_1.getId())) {
+                _this.refresh();
+            }
+        });
         // //初始化快速搜索
         // if(_this.hasHtmlElement('searchcond'))
         // {
@@ -601,10 +610,6 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var _window = window;
         ;
         _window.open(url, '_blank');
-        var iBizApp = _window.getIBizApp();
-        iBizApp.onRefreshView().subscribe(function (data) {
-            _this.refresh();
-        });
         // let iBizApp:IBizApp = _window.getIBizApp();
         // iBizApp.refreshView().subscribe(data => {
         //     _this.refresh();

@@ -41,7 +41,7 @@ var IBizObject = /** @class */ (function () {
          * @type {string}
          * @memberof IBizObject
          */
-        this.id = IBizUtil.createUUID();
+        this.id = '';
         this.name = opts.name;
         this.refname = opts.refname;
     }
