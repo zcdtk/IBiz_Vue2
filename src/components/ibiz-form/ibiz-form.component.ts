@@ -3,7 +3,7 @@ Vue.component('ibiz-form', {
         <div>
             <i-form :model="form">
                 <row :gutter="10">
-                    <slot :fields="fields"></slot>
+                    <slot :scope="fields"></slot>
                 </row>
             </i-form>
         </div>
