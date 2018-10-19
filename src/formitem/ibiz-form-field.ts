@@ -91,7 +91,15 @@ class IBizFormField extends IBizFormItem {
             return;
         }
         let target: any = event.target;
-        _this.subject.next({ oldVal: JSON.stringify(target._value), newVal: JSON.stringify(target.value) });
+        let oldVal = target._value;
+        let newVal = target.value;
+        if ((typeof newVal !== 'string')) {
+            oldVal = JSON.stringify(oldVal);
+        }
+        if ((typeof newVal !== 'string')) {
+            newVal = JSON.stringify(newVal);
+        }
+        _this.subject.next({ oldVal: oldVal, newVal: newVal });
     }
 
 }

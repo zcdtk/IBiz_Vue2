@@ -4,9 +4,6 @@ Vue.component('ibiz-form-group', {
     props: ['form', 'group', 'name'],
     data: function () {
         var data = {};
-        console.log(this.form);
-        console.log(this.group);
-        console.log(this.name);
         return data;
     }
 });
