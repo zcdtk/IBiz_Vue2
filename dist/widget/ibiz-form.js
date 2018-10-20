@@ -91,34 +91,34 @@ var IBizForm = /** @class */ (function (_super) {
         Object.assign(arg, { srfaction: 'load' });
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
-        return new Promise(function (resolve, reject) {
-            _this.load(arg).subscribe(function (action) {
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                _this.fire(IBizForm.FORMLOADED, _this);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                _this.onLoaded();
-                // if (successcb) {
-                //     successcb(form, action);
-                // }
-                resolve(action);
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOAD2.INFO', "加载数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-            });
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onLoaded();
+            // if (successcb) {
+            //     successcb(form, action);
+            // }
+            subject.next(action);
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOAD2.INFO', "加载数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+            _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizForm.prototype.loadDraft = function (arg) {
         var _this_1 = this;
@@ -146,34 +146,34 @@ var IBizForm = /** @class */ (function (_super) {
             // $.extend(arg, { srfaction: 'loaddraftfrom' });
             Object.assign(arg, { srfaction: 'loaddraftfrom' });
         }
-        return new Promise(function (resole, reject) {
-            _this.load(arg).subscribe(function (action) {
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                _this.fire(IBizForm.FORMLOADED, _this);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                _this.onDraftLoaded();
-                // if (successcb) {
-                //     successcb(form, action);
-                // } 
-                resole(action);
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOADDRAFT.INFO', "加载草稿发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u8349\u7A3F\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-            });
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onDraftLoaded();
+            // if (successcb) {
+            //     successcb(form, action);
+            // } 
+            subject.next(action);
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOADDRAFT.INFO', "加载草稿发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+            _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u8349\u7A3F\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizForm.prototype.onDraftLoaded = function () {
         var _this = this;
@@ -326,7 +326,7 @@ var IBizForm = /** @class */ (function (_super) {
             _this_1.endLoading();
             subject.error(data);
         });
-        return subject.asObservable();
+        return subject;
     };
     IBizForm.prototype.submit = function (arg) {
         var _this_1 = this;
@@ -349,7 +349,7 @@ var IBizForm = /** @class */ (function (_super) {
             _this_1.endLoading();
             subject.error(data);
         });
-        return subject.asObservable();
+        return subject;
     };
     IBizForm.prototype.getActionErrorInfo = function (action) {
         if (action === void 0) { action = {}; }

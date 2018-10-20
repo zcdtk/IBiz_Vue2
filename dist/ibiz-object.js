@@ -108,10 +108,10 @@ var IBizObject = /** @class */ (function () {
         return this.refname;
     };
     /**
-     * 注册事件
+     * 事件订阅
      *
-     * @param {string} name 事件名称
-     * @returns {Observable<any>} 事件订阅对象
+     * @param {string} name
+     * @returns {Subject<any>}
      * @memberof IBizObject
      */
     IBizObject.prototype.on = function (name) {
@@ -123,7 +123,7 @@ var IBizObject = /** @class */ (function () {
             subject = new rxjs.Subject();
             this.events.set(name, subject);
         }
-        return subject.asObservable();
+        return subject;
     };
     /**
      * 呼出事件<参数会封装成JSON对象进行传递>
@@ -133,7 +133,8 @@ var IBizObject = /** @class */ (function () {
      */
     IBizObject.prototype.fire = function (name, data) {
         if (this.events.get(name)) {
-            this.events.get(name).next(data);
+            var event_1 = this.events.get(name);
+            event_1.next(data);
         }
     };
     return IBizObject;

@@ -64,7 +64,7 @@ var IBizNotification = /** @class */ (function () {
      *
      * @param {string} title 标题
      * @param {string} contant 内容
-     * @returns {Observable<any>} 可订阅对象
+     * @returns {Subject<any>} 可订阅对象
      * @memberof IBizNotification
      */
     IBizNotification.prototype.confirm = function (title, contant) {
@@ -76,7 +76,7 @@ var IBizNotification = /** @class */ (function () {
                 subject.next('OK');
             }
         });
-        return subject.asObservable();
+        return subject;
     };
     return IBizNotification;
 }());

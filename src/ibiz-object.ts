@@ -139,13 +139,13 @@ abstract class IBizObject {
     }
 
     /**
-     * 注册事件
+     * 事件订阅
      *
-     * @param {string} name 事件名称
-     * @returns {Observable<any>} 事件订阅对象
+     * @param {string} name
+     * @returns {Subject<any>}
      * @memberof IBizObject
      */
-    public on(name: string): Observable<any> {
+    public on(name: string): Subject<any> {
         let subject: Subject<any>;
         if (this.events.get(name)) {
             subject = this.events.get(name);
@@ -153,8 +153,9 @@ abstract class IBizObject {
             subject = new rxjs.Subject();
             this.events.set(name, subject);
         }
-        return subject.asObservable();
+        return subject;
     }
+    
 	/**
 	 * 呼出事件<参数会封装成JSON对象进行传递>
 	 * @param event 事件名称
@@ -163,7 +164,8 @@ abstract class IBizObject {
 	 */
     public fire(name: string, data: any): void {
         if (this.events.get(name)) {
-            this.events.get(name).next(data);
+            let event: Subject<any> = this.events.get(name);
+            event.next(data);
         }
     }
 }

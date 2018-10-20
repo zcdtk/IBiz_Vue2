@@ -113,11 +113,11 @@ var IBizApp = /** @class */ (function () {
     /**
      * 订阅刷新视图事件
      *
-     * @returns {Observable<any>}
+     * @returns {Subject<any>}
      * @memberof IBizApp
      */
     IBizApp.prototype.onRefreshView = function () {
-        return this.subject.asObservable();
+        return this.subject;
     };
     /**
      * 通知视图刷新事件

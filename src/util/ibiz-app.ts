@@ -122,11 +122,11 @@ class IBizApp {
     /**
      * 订阅刷新视图事件
      *
-     * @returns {Observable<any>}
+     * @returns {Subject<any>}
      * @memberof IBizApp
      */
-    public onRefreshView(): Observable<any> {
-        return this.subject.asObservable();
+    public onRefreshView(): Subject<any> {
+        return this.subject;
     }
 
     /**

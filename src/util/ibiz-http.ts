@@ -10,10 +10,10 @@ class IBizHttp {
      *
      * @param {string} url 请求路径
      * @param {*} [params={}] 请求参数
-     * @returns {Observable<any>} 可订阅请求对象
+     * @returns {Subject<any>} 可订阅请求对象
      * @memberof IBizHttp
      */
-    public post(url: string, params: any = {}): Observable<any> {
+    public post(url: string, params: any = {}): Subject<any> {
         const _this = this;
         const subject: Subject<any> = new rxjs.Subject();
         const params_keys = Object.keys(params);
@@ -38,7 +38,7 @@ class IBizHttp {
         }).catch(function (response) {
             subject.error(response);
         });
-        return subject.asObservable();
+        return subject;
     }
 
     /**
@@ -46,10 +46,10 @@ class IBizHttp {
      *
      * @param {string} url 请求路径
      * @param {*} [params={}] 请求参数
-     * @returns {Observable<any>} 可订阅请求对象
-     * @memberof IBizHttp 
+     * @returns {Subject<any>} 可订阅请求对象
+     * @memberof IBizHttp
      */
-    public get(url: string, params: any = {}): Observable<any> {
+    public get(url: string, params: any = {}): Subject<any> {
         const subject: Subject<any> = new rxjs.Subject();
         if (Object.keys(params).length > 0) {
             const params_keys = Object.keys(params);
@@ -63,15 +63,11 @@ class IBizHttp {
         }
         axios.get(url).
             then(function (response) {
-                // handle success
-                console.log(response);
                 subject.next(response);
             }).catch(function (error) {
-                // handle error
-                console.log(error);
                 subject.error(error);
             });
-        return subject.asObservable();
+        return subject;
     }
 
     /**

@@ -68,10 +68,10 @@ class IBizNotification {
      *
      * @param {string} title 标题
      * @param {string} contant 内容
-     * @returns {Observable<any>} 可订阅对象
+     * @returns {Subject<any>} 可订阅对象
      * @memberof IBizNotification
      */
-    public confirm(title: string, contant: string): Observable<any> {
+    public confirm(title: string, contant: string): Subject<any> {
         const subject: Subject<any> = new rxjs.Subject();
         iview.Modal.confirm({
             title: title,
@@ -80,6 +80,6 @@ class IBizNotification {
                 subject.next('OK');
             }
         });
-        return subject.asObservable();
+        return subject;
     }
 }

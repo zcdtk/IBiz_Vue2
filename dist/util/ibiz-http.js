@@ -12,7 +12,7 @@ var IBizHttp = /** @class */ (function () {
      *
      * @param {string} url 请求路径
      * @param {*} [params={}] 请求参数
-     * @returns {Observable<any>} 可订阅请求对象
+     * @returns {Subject<any>} 可订阅请求对象
      * @memberof IBizHttp
      */
     IBizHttp.prototype.post = function (url, params) {
@@ -42,14 +42,14 @@ var IBizHttp = /** @class */ (function () {
         }).catch(function (response) {
             subject.error(response);
         });
-        return subject.asObservable();
+        return subject;
     };
     /**
      * get请求
      *
      * @param {string} url 请求路径
      * @param {*} [params={}] 请求参数
-     * @returns {Observable<any>} 可订阅请求对象
+     * @returns {Subject<any>} 可订阅请求对象
      * @memberof IBizHttp
      */
     IBizHttp.prototype.get = function (url, params) {
@@ -67,15 +67,11 @@ var IBizHttp = /** @class */ (function () {
         }
         axios.get(url).
             then(function (response) {
-            // handle success
-            console.log(response);
             subject.next(response);
         }).catch(function (error) {
-            // handle error
-            console.log(error);
             subject.error(error);
         });
-        return subject.asObservable();
+        return subject;
     };
     /**
      * 模拟http拦截器 重定向登陆处理
