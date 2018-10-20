@@ -122,7 +122,8 @@ class IBizMDViewController extends IBizMianViewController {
         let _window: any = window;;
 
         let iBizApp: IBizApp = _window.getIBizApp();
-        iBizApp.onRefreshView().subscribe((data: any) => {
+        _this.refreshViewEvent = iBizApp.onRefreshView();
+        _this.refreshViewEvent.subscribe((data: any) => {
             if (data && Object.is(data.openerid, this.getId())) {
                 _this.refresh();
             }

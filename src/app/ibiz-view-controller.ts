@@ -324,6 +324,8 @@ class IBizViewController extends IBizObject {
         // _this.config = null;
         // arguments.callee.$.destroy.call(this);
 
+        super.destroy();
+
         let _this = this;
         let win: any = window;
         let iBizApp: IBizApp = win.getIBizApp();

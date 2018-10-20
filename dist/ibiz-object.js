@@ -63,6 +63,16 @@ var IBizObject = /** @class */ (function () {
     IBizObject.prototype.onInit = function () {
     };
     /**
+     * 销毁控制器
+     *
+     * @memberof IBizObject
+     */
+    IBizObject.prototype.destroy = function () {
+        this.events.forEach(function (subject) {
+            subject.unsubscribe();
+        });
+    };
+    /**
      * 设置对象id
      *
      * @param {string} id

@@ -303,6 +303,7 @@ var IBizViewController = /** @class */ (function (_super) {
         // $.getIBizApp().unRegSRFView(_this);
         // _this.config = null;
         // arguments.callee.$.destroy.call(this);
+        _super.prototype.destroy.call(this);
         var _this = this;
         var win = window;
         var iBizApp = win.getIBizApp();

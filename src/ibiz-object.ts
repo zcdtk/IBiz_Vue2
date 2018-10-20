@@ -89,6 +89,17 @@ abstract class IBizObject {
     }
 
     /**
+     * 销毁控制器
+     *
+     * @memberof IBizObject
+     */
+    public destroy(): void {
+        this.events.forEach((subject: Subject<any>) => {
+            subject.unsubscribe();
+        })
+    }
+
+    /**
      * 设置对象id
      *
      * @param {string} id
@@ -155,7 +166,7 @@ abstract class IBizObject {
         }
         return subject;
     }
-    
+
 	/**
 	 * 呼出事件<参数会封装成JSON对象进行传递>
 	 * @param event 事件名称

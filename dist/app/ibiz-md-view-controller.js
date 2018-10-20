@@ -126,7 +126,8 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var _window = window;
         ;
         var iBizApp = _window.getIBizApp();
-        iBizApp.onRefreshView().subscribe(function (data) {
+        _this.refreshViewEvent = iBizApp.onRefreshView();
+        _this.refreshViewEvent.subscribe(function (data) {
             if (data && Object.is(data.openerid, _this_1.getId())) {
                 _this.refresh();
             }
