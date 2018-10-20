@@ -4972,11 +4972,13 @@ var IBizTree = /** @class */ (function (_super) {
     IBizTree.prototype.setCatalog = function (catalog) {
     };
     /**
-     *  加载
+     * 加载
      *
+     * @param {*} [opt]
      * @memberof IBizTree
      */
-    IBizTree.prototype.load = function () {
+    IBizTree.prototype.load = function (opt) {
+        console.log('加载树数据');
     };
     /**
      * 获取选择节点数据
@@ -5126,6 +5128,22 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         _this_1.treeCfg = {};
         _this_1.expframe = null;
         _this_1.pvpanel = null;
+        var viewController = _this_1.getViewController();
+        if (viewController) {
+            viewController.on(IBizViewController.INITED, function () {
+                var tree = viewController.getControl(_this_1.getName() + '_tree');
+                _this_1.tree = tree;
+                if (_this_1.tree) {
+                    _this_1.tree.on(IBizTree.SELECTIONCHANGE).subscribe(function (args) {
+                        _this_1.onTreeSelectionChange(args);
+                    });
+                    _this_1.tree.on(IBizTree.CONTEXTMENU).subscribe(function (args) {
+                        _this_1.onTreeContextMenu(args);
+                    });
+                    _this_1.tree.load({});
+                }
+            });
+        }
         return _this_1;
     }
     ;
@@ -5133,9 +5151,30 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     ;
     IBizTreeExpBar.prototype.setSize = function (width, height) {
     };
+    /**
+     * 获取树部件
+     *
+     * @returns {IBizTree}
+     * @memberof IBizTreeExpBar
+     */
     IBizTreeExpBar.prototype.getTree = function () {
         return this.tree;
     };
+    /**
+     * 设置分页部件
+     *
+     * @param {*} tabctrl
+     * @memberof IBizTreeExpBar
+     */
+    IBizTreeExpBar.prototype.setExpTab = function (tabctrl) {
+        this.tabctrl = tabctrl;
+    };
+    /**
+     * 获取分页部件
+     *
+     * @returns {*}
+     * @memberof IBizTreeExpBar
+     */
     IBizTreeExpBar.prototype.getExpTab = function () {
         return this.tabctrl;
     };
@@ -5148,7 +5187,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getPVPanel = function () {
         return this.pvpanel;
     };
-    IBizTreeExpBar.prototype.onTreeSelectionChange = function (tree, records, eOpts) {
+    IBizTreeExpBar.prototype.onTreeSelectionChange = function (records) {
         var _this = this;
         if (records == null || records.length == 0)
             return;
@@ -5244,7 +5283,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
             return;
         }
     };
-    IBizTreeExpBar.prototype.onTreeContextMenu = function (tree, params, eOpts) {
+    IBizTreeExpBar.prototype.onTreeContextMenu = function (params) {
         var _this = this;
         var node = params.node;
     };
@@ -8549,6 +8588,28 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         var _this = _this_1;
         return _this_1;
     }
+    /**
+     * 初始化
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizTreeExpViewController
+     */
+    IBizTreeExpViewController.prototype.init = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        _super.prototype.init.call(this, opts);
+        var _this = this;
+        // 创建分页部件
+        var exptab = new IBizExpTab({
+            name: 'exptab',
+            url: opts.backendurl,
+            viewController: _this,
+        });
+        _this.controls.set('exptab', exptab);
+        if (_this.getTreeExpBar()) {
+            var treeexpbar = _this.getTreeExpBar();
+            treeexpbar.setExpTab(exptab);
+        }
+    };
     IBizTreeExpViewController.prototype.onInit = function () {
         _super.prototype.onInit.call(this);
         var _this = this;

@@ -40,11 +40,13 @@ var IBizTree = /** @class */ (function (_super) {
     IBizTree.prototype.setCatalog = function (catalog) {
     };
     /**
-     *  加载
+     * 加载
      *
+     * @param {*} [opt]
      * @memberof IBizTree
      */
-    IBizTree.prototype.load = function () {
+    IBizTree.prototype.load = function (opt) {
+        console.log('加载树数据');
     };
     /**
      * 获取选择节点数据

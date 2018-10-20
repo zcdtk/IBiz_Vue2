@@ -6,7 +6,7 @@
  */
 class IBizTreeExpBar extends IBizControl {
 
-    private tree: IBizTree = null;;
+    private tree = null;;
 
     private tabctrl = null;;
 
@@ -25,13 +25,54 @@ class IBizTreeExpBar extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
+
+        const viewController = this.getViewController();
+        if (viewController) {
+            viewController.on(IBizViewController.INITED, () => {
+                const tree = viewController.getControl(this.getName() + '_tree');
+                this.tree = tree;
+                if (this.tree) {
+                    this.tree.on(IBizTree.SELECTIONCHANGE).subscribe((args) => {
+                        this.onTreeSelectionChange(args);
+                    });
+                    this.tree.on(IBizTree.CONTEXTMENU).subscribe((args) => {
+                        this.onTreeContextMenu(args);
+                    });
+                    this.tree.load({});
+                }
+            });
+        }
     }
 
     public setSize(width, height): void {
     }
+
+    /**
+     * 获取树部件
+     *
+     * @returns {IBizTree}
+     * @memberof IBizTreeExpBar
+     */
     public getTree(): IBizTree {
         return this.tree;
     }
+
+    /**
+     * 设置分页部件
+     *
+     * @param {*} tabctrl
+     * @memberof IBizTreeExpBar
+     */
+    public setExpTab(tabctrl: any): void {
+        this.tabctrl = tabctrl;
+    }
+
+    /**
+     * 获取分页部件
+     *
+     * @returns {*}
+     * @memberof IBizTreeExpBar
+     */
     public getExpTab(): any {
         return this.tabctrl;
     }
@@ -44,7 +85,7 @@ class IBizTreeExpBar extends IBizControl {
     public getPVPanel(): any {
         return this.pvpanel;
     }
-    public onTreeSelectionChange(tree, records, eOpts): void {
+    public onTreeSelectionChange(records): void {
 
         var _this = this;
         if (records == null || records.length == 0)
@@ -157,7 +198,7 @@ class IBizTreeExpBar extends IBizControl {
             return;
         }
     }
-    public onTreeContextMenu(tree, params, eOpts): void {
+    public onTreeContextMenu(params): void {
         var _this = this;
         var node = params.node;
 

@@ -20,6 +20,28 @@ class IBizTreeExpViewController extends IBizMianViewController {
         let _this = this;
     }
 
+    /**
+     * 初始化
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizTreeExpViewController
+     */
+    public init(opts: any = {}): void {
+        super.init(opts);
+        let _this = this;
+        // 创建分页部件
+        const exptab = new IBizExpTab({
+            name: 'exptab',
+            url: opts.backendurl,
+            viewController: _this,
+        });
+        _this.controls.set('exptab', exptab);
+        if (_this.getTreeExpBar()) {
+            const treeexpbar = _this.getTreeExpBar();
+            treeexpbar.setExpTab(exptab);
+        }
+    }
+
     public onInit(): void {
         super.onInit();
         var _this = this;
@@ -30,6 +52,7 @@ class IBizTreeExpViewController extends IBizMianViewController {
         // treeExpBarCfg = $.extend(treeExpBarCfg, { id: this.getCId2() + 'treeexpbar', ctrler: this, tabctrl: _this.exptab });
         // _this.treeexpbar = new IBizTreeExpBar(treeExpBarCfg);
         // _this.registerItem('treeexpbar', _this.treeexpbar);
+
     }
     public getTreeExpBar(): any {
         return this.controls.get('treeexpbar');

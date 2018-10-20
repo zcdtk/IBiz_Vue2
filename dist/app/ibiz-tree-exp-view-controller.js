@@ -34,6 +34,28 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         var _this = _this_1;
         return _this_1;
     }
+    /**
+     * 初始化
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizTreeExpViewController
+     */
+    IBizTreeExpViewController.prototype.init = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        _super.prototype.init.call(this, opts);
+        var _this = this;
+        // 创建分页部件
+        var exptab = new IBizExpTab({
+            name: 'exptab',
+            url: opts.backendurl,
+            viewController: _this,
+        });
+        _this.controls.set('exptab', exptab);
+        if (_this.getTreeExpBar()) {
+            var treeexpbar = _this.getTreeExpBar();
+            treeexpbar.setExpTab(exptab);
+        }
+    };
     IBizTreeExpViewController.prototype.onInit = function () {
         _super.prototype.onInit.call(this);
         var _this = this;

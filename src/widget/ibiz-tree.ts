@@ -30,12 +30,13 @@ class IBizTree extends IBizControl {
     }
 
     /**
-     *  加载
+     * 加载
      *
+     * @param {*} [opt]
      * @memberof IBizTree
      */
-    public load(): void {
-
+    public load(opt?: any): void {
+        console.log('加载树数据');
     }
 	/**
 	 * 获取选择节点数据
