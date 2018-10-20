@@ -4962,8 +4962,23 @@ var IBizTree = /** @class */ (function (_super) {
     function IBizTree(opts) {
         if (opts === void 0) { opts = {}; }
         var _this_1 = _super.call(this, opts) || this;
+        /**
+         * 树数据
+         *
+         * @type {Array<any>}
+         * @memberof IBizTree
+         */
+        _this_1.items = [];
         _this_1.tableselection = null;
         _this_1.tableselections = {};
+        /**
+         *  默认节点
+         *
+         * @private
+         * @type {*}
+         * @memberof IBizTree
+         */
+        _this_1.node = {};
         var _this = _this_1;
         return _this_1;
     }
@@ -4978,7 +4993,27 @@ var IBizTree = /** @class */ (function (_super) {
      * @memberof IBizTree
      */
     IBizTree.prototype.load = function (opt) {
-        console.log('加载树数据');
+        var _this = this;
+        var param = {
+            srfnodeid: _this.node.id ? _this.node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+            srfviewparam: JSON.stringify(_this.getViewController().getViewParam()),
+            srfctrlid: _this.getName()
+        };
+        if (opt) {
+            Object.assign(param, opt);
+        }
+        _this.fire(IBizMDControl.BEFORELOAD, param);
+        _this.iBizHttp.post(_this.getBackendUrl(), param).subscribe(function (result) {
+            if (result.ret !== 0) {
+                _this.iBizNotification.error('错误', result.info);
+                return;
+            }
+            _this.items = result.items.slice();
+            _this.fire(IBizTree.CONTEXTMENU, _this.items);
+            console.log(result);
+        }, function (error) {
+            _this.iBizNotification.error('错误', error.info);
+        });
     };
     /**
      * 获取选择节点数据
@@ -5130,8 +5165,8 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         _this_1.pvpanel = null;
         var viewController = _this_1.getViewController();
         if (viewController) {
-            viewController.on(IBizViewController.INITED, function () {
-                var tree = viewController.getControl(_this_1.getName() + '_tree');
+            viewController.on(IBizViewController.INITED).subscribe(function () {
+                var tree = viewController.controls.get(_this_1.getName() + '_tree');
                 _this_1.tree = tree;
                 if (_this_1.tree) {
                     _this_1.tree.on(IBizTree.SELECTIONCHANGE).subscribe(function (args) {

@@ -6,9 +6,26 @@
  */
 class IBizTree extends IBizControl {
 
+    /**
+     * 树数据
+     *
+     * @type {Array<any>}
+     * @memberof IBizTree
+     */
+    public items: Array<any> = [];
+
     public tableselection = null;
 
     public tableselections: any = {};
+
+    /**
+     *  默认节点
+     *
+     * @private
+     * @type {*}
+     * @memberof IBizTree
+     */
+    private node: any = {};
 
     /**
      * Creates an instance of IBizTree.
@@ -36,7 +53,30 @@ class IBizTree extends IBizControl {
      * @memberof IBizTree
      */
     public load(opt?: any): void {
-        console.log('加载树数据');
+        let _this = this;
+
+        let param: any = {
+            srfnodeid: _this.node.id ? _this.node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+            srfviewparam: JSON.stringify(_this.getViewController().getViewParam()),
+            srfctrlid: _this.getName()
+        };
+        if (opt) {
+            Object.assign(param, opt);
+        }
+
+        _this.fire(IBizMDControl.BEFORELOAD, param);
+        
+        _this.iBizHttp.post(_this.getBackendUrl(), param).subscribe((result: any) => {
+            if (result.ret !== 0) {
+                _this.iBizNotification.error('错误', result.info);
+                return;
+            }
+            _this.items = [...result.items];
+            _this.fire(IBizTree.CONTEXTMENU, _this.items);
+            console.log(result);
+        }, (error: any) => {
+            _this.iBizNotification.error('错误', error.info);
+        });
     }
 	/**
 	 * 获取选择节点数据

@@ -37,8 +37,8 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         _this_1.pvpanel = null;
         var viewController = _this_1.getViewController();
         if (viewController) {
-            viewController.on(IBizViewController.INITED, function () {
-                var tree = viewController.getControl(_this_1.getName() + '_tree');
+            viewController.on(IBizViewController.INITED).subscribe(function () {
+                var tree = viewController.controls.get(_this_1.getName() + '_tree');
                 _this_1.tree = tree;
                 if (_this_1.tree) {
                     _this_1.tree.on(IBizTree.SELECTIONCHANGE).subscribe(function (args) {

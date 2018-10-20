@@ -28,8 +28,8 @@ class IBizTreeExpBar extends IBizControl {
 
         const viewController = this.getViewController();
         if (viewController) {
-            viewController.on(IBizViewController.INITED, () => {
-                const tree = viewController.getControl(this.getName() + '_tree');
+            viewController.on(IBizViewController.INITED).subscribe(() => {
+                const tree = viewController.controls.get(this.getName() + '_tree');
                 this.tree = tree;
                 if (this.tree) {
                     this.tree.on(IBizTree.SELECTIONCHANGE).subscribe((args) => {
@@ -40,7 +40,7 @@ class IBizTreeExpBar extends IBizControl {
                     });
                     this.tree.load({});
                 }
-            });
+            })
         }
     }
 
