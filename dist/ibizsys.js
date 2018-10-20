@@ -6460,7 +6460,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
     IBizMDViewController.prototype.destroy = function () {
         _super.prototype.destroy.call(this);
         var _this = this;
-        _this.refreshViewEvent.unsubscribe();
+        // _this.refreshViewEvent.unsubscribe();
     };
     IBizMDViewController.prototype.hasQuickSearch = function () {
         var _this = this;

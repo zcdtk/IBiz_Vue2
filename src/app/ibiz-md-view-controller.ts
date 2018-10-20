@@ -199,7 +199,7 @@ class IBizMDViewController extends IBizMianViewController {
     public destroy(): void {
         super.destroy();
         let _this = this;
-        _this.refreshViewEvent.unsubscribe();
+        // _this.refreshViewEvent.unsubscribe();
     }
     public hasQuickSearch(): boolean {
         var _this = this;
