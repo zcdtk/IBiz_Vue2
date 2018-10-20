@@ -18,6 +18,8 @@ class IBizMDViewController extends IBizMianViewController {
 
     public quickSearchEntityDEFields: Array<any> = [];
 
+    private refreshViewEvent: Subject<any>;
+
     /**
      * Creates an instance of IBizMDViewController.
      * 创建 IBizMDViewController 实例
@@ -120,7 +122,7 @@ class IBizMDViewController extends IBizMianViewController {
         let _window: any = window;;
 
         let iBizApp: IBizApp = _window.getIBizApp();
-        iBizApp.onRefreshView().subscribe((data:any) => {
+        iBizApp.onRefreshView().subscribe((data: any) => {
             if (data && Object.is(data.openerid, this.getId())) {
                 _this.refresh();
             }
@@ -187,9 +189,17 @@ class IBizMDViewController extends IBizMianViewController {
         // 	} _this);
         // }
     }
-    // public createSearchForm:function(config){
-    // 	return IBiz.createSearchForm(config);
-    // }
+
+    /**
+     * 视图销毁 已订阅的视图刷新设置
+     *
+     * @memberof IBizMDViewController
+     */
+    public destroy(): void {
+        super.destroy();
+        let _this = this;
+        _this.refreshViewEvent.unsubscribe();
+    }
     public hasQuickSearch(): boolean {
         var _this = this;
         return _this.bQuickSearch;
@@ -602,7 +612,7 @@ class IBizMDViewController extends IBizMianViewController {
         }
         let _window: any = window;;
         _window.open(url, '_blank');
-        
+
         // let iBizApp:IBizApp = _window.getIBizApp();
         // iBizApp.refreshView().subscribe(data => {
         //     _this.refresh();

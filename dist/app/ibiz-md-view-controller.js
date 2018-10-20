@@ -190,9 +190,16 @@ var IBizMDViewController = /** @class */ (function (_super) {
         // 	} _this);
         // }
     };
-    // public createSearchForm:function(config){
-    // 	return IBiz.createSearchForm(config);
-    // }
+    /**
+     * 视图销毁 已订阅的视图刷新设置
+     *
+     * @memberof IBizMDViewController
+     */
+    IBizMDViewController.prototype.destroy = function () {
+        _super.prototype.destroy.call(this);
+        var _this = this;
+        _this.refreshViewEvent.unsubscribe();
+    };
     IBizMDViewController.prototype.hasQuickSearch = function () {
         var _this = this;
         return _this.bQuickSearch;
