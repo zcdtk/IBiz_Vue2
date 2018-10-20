@@ -23,6 +23,20 @@
 // declare var Subject;
 
 interface Observable<T> {
+    // inherited from index/Observable
+    // static create: Function
+    // static if: typeof iif
+    // static throw: typeof throwError
+    // constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic)
+    _isScalar: boolean
+    source: Observable<any>
+    // operator: Operator<any, T>
+    // lift<R>(operator: Operator<T, R>): Observable<R>
+    subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void), error?: (error: any) => void, complete?: () => void): Subscription
+    // _trySubscribe(sink: Subscriber<T>): TeardownLogic
+    // forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void>
+    pipe(...operations: OperatorFunction<any, any>[]): Observable<any>
+    // toPromise(promiseCtor?: PromiseConstructorLike): Promise<T>
 };
 
 declare type UnaryFunction<T, R> = (source: T) => R;
@@ -50,7 +64,7 @@ interface CompletionObserver<T> {
 declare type PartialObserver<T> = NextObserver<T> | ErrorObserver<T> | CompletionObserver<T>;
 declare type Subscription = any;
 
-interface Subject<T> {
+interface Subject<T> extends Observable<T> {
     // static create: Function
     constructor()
     // observers: Observer<T>[]
@@ -66,21 +80,6 @@ interface Subject<T> {
     // _trySubscribe(subscriber: Subscriber<T>): TeardownLogic
     // _subscribe(subscriber: Subscriber<T>): Subscription
     asObservable(): Observable<T>
-
-    // inherited from index/Observable
-    // static create: Function
-    // static if: typeof iif
-    // static throw: typeof throwError
-    // constructor(subscribe?: (this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic)
-    _isScalar: boolean
-    source: Observable<any>
-    // operator: Operator<any, T>
-    // lift<R>(operator: Operator<T, R>): Observable<R>
-    subscribe(observerOrNext?: PartialObserver<T> | ((value: T) => void), error?: (error: any) => void, complete?: () => void): Subscription
-    // _trySubscribe(sink: Subscriber<T>): TeardownLogic
-    // forEach(next: (value: T) => void, promiseCtor?: PromiseConstructorLike): Promise<void>
-    pipe(...operations: OperatorFunction<any, any>[]): Observable<any>
-    // toPromise(promiseCtor?: PromiseConstructorLike): Promise<T>
 }
 
 declare var rxjs;

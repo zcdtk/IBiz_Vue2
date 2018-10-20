@@ -113,11 +113,11 @@ var IBizApp = /** @class */ (function () {
     /**
      * 订阅刷新视图事件
      *
-     * @returns {Observable<any>}
+     * @returns {Subject<any>}
      * @memberof IBizApp
      */
     IBizApp.prototype.onRefreshView = function () {
-        return this.subject.asObservable();
+        return this.subject;
     };
     /**
      * 通知视图刷新事件
@@ -836,7 +836,7 @@ var IBizHttp = /** @class */ (function () {
      *
      * @param {string} url 请求路径
      * @param {*} [params={}] 请求参数
-     * @returns {Observable<any>} 可订阅请求对象
+     * @returns {Subject<any>} 可订阅请求对象
      * @memberof IBizHttp
      */
     IBizHttp.prototype.post = function (url, params) {
@@ -866,14 +866,14 @@ var IBizHttp = /** @class */ (function () {
         }).catch(function (response) {
             subject.error(response);
         });
-        return subject.asObservable();
+        return subject;
     };
     /**
      * get请求
      *
      * @param {string} url 请求路径
      * @param {*} [params={}] 请求参数
-     * @returns {Observable<any>} 可订阅请求对象
+     * @returns {Subject<any>} 可订阅请求对象
      * @memberof IBizHttp
      */
     IBizHttp.prototype.get = function (url, params) {
@@ -891,15 +891,11 @@ var IBizHttp = /** @class */ (function () {
         }
         axios.get(url).
             then(function (response) {
-            // handle success
-            console.log(response);
             subject.next(response);
         }).catch(function (error) {
-            // handle error
-            console.log(error);
             subject.error(error);
         });
-        return subject.asObservable();
+        return subject;
     };
     /**
      * 模拟http拦截器 重定向登陆处理
@@ -983,7 +979,7 @@ var IBizNotification = /** @class */ (function () {
      *
      * @param {string} title 标题
      * @param {string} contant 内容
-     * @returns {Observable<any>} 可订阅对象
+     * @returns {Subject<any>} 可订阅对象
      * @memberof IBizNotification
      */
     IBizNotification.prototype.confirm = function (title, contant) {
@@ -995,7 +991,7 @@ var IBizNotification = /** @class */ (function () {
                 subject.next('OK');
             }
         });
-        return subject.asObservable();
+        return subject;
     };
     return IBizNotification;
 }());
@@ -1110,10 +1106,10 @@ var IBizObject = /** @class */ (function () {
         return this.refname;
     };
     /**
-     * 注册事件
+     * 事件订阅
      *
-     * @param {string} name 事件名称
-     * @returns {Observable<any>} 事件订阅对象
+     * @param {string} name
+     * @returns {Subject<any>}
      * @memberof IBizObject
      */
     IBizObject.prototype.on = function (name) {
@@ -1125,7 +1121,7 @@ var IBizObject = /** @class */ (function () {
             subject = new rxjs.Subject();
             this.events.set(name, subject);
         }
-        return subject.asObservable();
+        return subject;
     };
     /**
      * 呼出事件<参数会封装成JSON对象进行传递>
@@ -1135,7 +1131,8 @@ var IBizObject = /** @class */ (function () {
      */
     IBizObject.prototype.fire = function (name, data) {
         if (this.events.get(name)) {
-            this.events.get(name).next(data);
+            var event_1 = this.events.get(name);
+            event_1.next(data);
         }
     };
     return IBizObject;
@@ -3867,34 +3864,34 @@ var IBizForm = /** @class */ (function (_super) {
         Object.assign(arg, { srfaction: 'load' });
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
-        return new Promise(function (resolve, reject) {
-            _this.load(arg).subscribe(function (action) {
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                _this.fire(IBizForm.FORMLOADED, _this);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                _this.onLoaded();
-                // if (successcb) {
-                //     successcb(form, action);
-                // }
-                resolve(action);
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOAD2.INFO', "加载数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-            });
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onLoaded();
+            // if (successcb) {
+            //     successcb(form, action);
+            // }
+            subject.next(action);
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOAD2.INFO', "加载数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+            _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizForm.prototype.loadDraft = function (arg) {
         var _this_1 = this;
@@ -3922,34 +3919,34 @@ var IBizForm = /** @class */ (function (_super) {
             // $.extend(arg, { srfaction: 'loaddraftfrom' });
             Object.assign(arg, { srfaction: 'loaddraftfrom' });
         }
-        return new Promise(function (resole, reject) {
-            _this.load(arg).subscribe(function (action) {
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                _this.fire(IBizForm.FORMLOADED, _this);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                _this.onDraftLoaded();
-                // if (successcb) {
-                //     successcb(form, action);
-                // } 
-                resole(action);
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOADDRAFT.INFO', "加载草稿发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u8349\u7A3F\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-            });
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onDraftLoaded();
+            // if (successcb) {
+            //     successcb(form, action);
+            // } 
+            subject.next(action);
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZFORM.LOAD.TITLE', '加载失败'), $IGM('IBIZFORM.LOADDRAFT.INFO', "加载草稿发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+            _this_1.iBizNotification.error('加载失败', "\u52A0\u8F7D\u8349\u7A3F\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizForm.prototype.onDraftLoaded = function () {
         var _this = this;
@@ -4102,7 +4099,7 @@ var IBizForm = /** @class */ (function (_super) {
             _this_1.endLoading();
             subject.error(data);
         });
-        return subject.asObservable();
+        return subject;
     };
     IBizForm.prototype.submit = function (arg) {
         var _this_1 = this;
@@ -4125,7 +4122,7 @@ var IBizForm = /** @class */ (function (_super) {
             _this_1.endLoading();
             subject.error(data);
         });
-        return subject.asObservable();
+        return subject;
     };
     IBizForm.prototype.getActionErrorInfo = function (action) {
         if (action === void 0) { action = {}; }
@@ -4486,55 +4483,55 @@ var IBizEditForm = /** @class */ (function (_super) {
         }
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
-        return new Promise(function (resolve, reject) {
-            _this.submit(arg).subscribe(function (action) {
-                _this.resetFormError();
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                //判断是否有提示
-                if (action.info && action.info != '') {
-                    // IBiz.alert('',action.info,1);
-                    _this.iBizNotification.info('', action.info);
-                }
-                _this.fire(IBizForm.FORMSAVED, action);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                _this.onSaved();
-                // if (successcb) {
-                //     successcb(form, action);
-                // }
-                resolve(action);
-            }, function (action) {
-                if (action.error) {
-                    _this.setFormError(action.error);
-                }
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizEditForm.FORMSAVEERROR, null);
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-                action.failureType = 'SERVER_INVALID';
-                if (action.ret == 10) {
-                    // IBiz.confirm2($IGM('IBIZEDITFORM.SAVE2FAILED.TITLE', "保存错误信息"), $IGM('IBIZEDITFORM.SAVE2FAILED2.INFO', "保存数据发生错误," + _this.getActionErrorInfo(action) + ',是否要重新加载数据？', [_this.getActionErrorInfo(action)]), 2, function (ret) {
-                    //     if (ret)
-                    //         _this.reload();
-                    // });
-                    _this.iBizNotification.confirm('保存错误信息', "\u4FDD\u5B58\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action) + ",\u662F\u5426\u8981\u91CD\u65B0\u52A0\u8F7D\u6570\u636E\uFF1F").subscribe(function (ret) {
-                        _this.reload();
-                    });
-                }
-                else {
-                    // IBiz.alert($IGM('IBIZEDITFORM.SAVE2FAILED.TITLE', "保存错误信息"), $IGM('IBIZEDITFORM.SAVE2FAILED.INFO', "保存数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                    _this.iBizNotification.error('保存错误信息', "\u4FDD\u5B58\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                }
-            });
+        var subject = new rxjs.Subject();
+        _this.submit(arg).subscribe(function (action) {
+            _this.resetFormError();
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            //判断是否有提示
+            if (action.info && action.info != '') {
+                // IBiz.alert('',action.info,1);
+                _this.iBizNotification.info('', action.info);
+            }
+            _this.fire(IBizForm.FORMSAVED, action);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onSaved();
+            // if (successcb) {
+            //     successcb(form, action);
+            // }
+            subject.next(action);
+        }, function (action) {
+            if (action.error) {
+                _this.setFormError(action.error);
+            }
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizEditForm.FORMSAVEERROR, null);
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
+            action.failureType = 'SERVER_INVALID';
+            if (action.ret == 10) {
+                // IBiz.confirm2($IGM('IBIZEDITFORM.SAVE2FAILED.TITLE', "保存错误信息"), $IGM('IBIZEDITFORM.SAVE2FAILED2.INFO', "保存数据发生错误," + _this.getActionErrorInfo(action) + ',是否要重新加载数据？', [_this.getActionErrorInfo(action)]), 2, function (ret) {
+                //     if (ret)
+                //         _this.reload();
+                // });
+                _this.iBizNotification.confirm('保存错误信息', "\u4FDD\u5B58\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action) + ",\u662F\u5426\u8981\u91CD\u65B0\u52A0\u8F7D\u6570\u636E\uFF1F").subscribe(function (ret) {
+                    _this.reload();
+                });
+            }
+            else {
+                // IBiz.alert($IGM('IBIZEDITFORM.SAVE2FAILED.TITLE', "保存错误信息"), $IGM('IBIZEDITFORM.SAVE2FAILED.INFO', "保存数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+                _this.iBizNotification.error('保存错误信息', "\u4FDD\u5B58\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            }
         });
+        return subject;
     };
     IBizEditForm.prototype.onSaved = function () {
         var _this = this;
@@ -4570,7 +4567,7 @@ var IBizEditForm = /** @class */ (function (_super) {
         if (arg.srfkey == undefined || arg.srfkey == null || arg.srfkey == '') {
             // IBiz.alert($IGM('IBIZEDITFORM.REMOVEFAILED.TITLE',"删除错误信息"), $IGM('IBIZEDITFORM.UNLOADDATA','当前表单未加载数据！'),2);
             _this.iBizNotification.warning('删除错误信息', '当前表单未加载数据！');
-            return new Promise(null);
+            return new rxjs.Subject();
         }
         var successcb = arg.successcb;
         var errorcb = arg.errorcb;
@@ -4583,35 +4580,35 @@ var IBizEditForm = /** @class */ (function (_super) {
         // $.extend(arg, { srfaction: 'remove' });
         Object.assign(arg, { srfaction: 'remove' });
         _this.ignoreUFI = true;
-        return new Promise(function (resolve, reject) {
-            _this.load(arg).subscribe(function (action) {
-                if (action.ret == 0) {
-                    _this.setFieldAsyncConfig(action.config);
-                    _this.setFieldState(action.state);
-                    _this.fire(IBizForm.FORMREMOVED, null);
-                    // if (successcb) {
-                    //     successcb(form, action);
-                    // }
-                    resolve(action);
-                }
-                else {
-                    // if (errorcb) {
-                    //     errorcb(form, action);
-                    // }
-                    reject(action);
-                }
-                _this.ignoreUFI = false;
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZEDITFORM.REMOVEFAILED.TITLE', "删除错误信息"), $IGM('IBIZEDITFORM.REMOVEFAILED.INFO', "删除数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                _this.iBizNotification.error('删除错误信息', "\"\u5220\u9664\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                _this.ignoreUFI = false;
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            if (action.ret == 0) {
+                _this.setFieldAsyncConfig(action.config);
+                _this.setFieldState(action.state);
+                _this.fire(IBizForm.FORMREMOVED, null);
+                // if (successcb) {
+                //     successcb(form, action);
+                // }
+                subject.next(action);
+            }
+            else {
                 // if (errorcb) {
                 //     errorcb(form, action);
                 // }
-                reject(action);
-            });
+                subject.error(action);
+            }
+            _this.ignoreUFI = false;
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZEDITFORM.REMOVEFAILED.TITLE', "删除错误信息"), $IGM('IBIZEDITFORM.REMOVEFAILED.INFO', "删除数据发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+            _this.iBizNotification.error('删除错误信息', "\"\u5220\u9664\u6570\u636E\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizEditForm.prototype.wfstart = function (arg) {
         if (arg === void 0) { arg = {}; }
@@ -4636,7 +4633,7 @@ var IBizEditForm = /** @class */ (function (_super) {
         if (arg.srfkey == undefined || arg.srfkey == null || arg.srfkey == '') {
             // IBiz.alert($IGM('IBIZEDITFORM.WFSTARTFAILED.TITLE',"启动流程错误信息"), $IGM('IBIZEDITFORM.UNLOADDATA','当前表单未加载数据！'),2);
             _this.iBizNotification.error('启动流程错误信息', '当前表单未加载数据！');
-            return new Promise(null);
+            return new rxjs.Subject();
         }
         var successcb = arg.successcb;
         var errorcb = arg.errorcb;
@@ -4650,34 +4647,34 @@ var IBizEditForm = /** @class */ (function (_super) {
         Object.assign(arg, { srfaction: 'wfstart' });
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
-        return new Promise(function (resolve, reject) {
-            _this.load(arg).subscribe(function (action) {
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                //	_this.fire(IBizForm.FORMLOADED);
-                _this.fire(IBizForm.FORMWFSTARTED, action);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                // if (successcb) {
-                //     successcb(form, action);
-                // }
-                resolve(action);
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZEDITFORM.WFSTARTFAILED.TITLE', "启动流程错误信息"), $IGM('IBIZEDITFORM.WFSTARTFAILED.INFO', "启动流程发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
-                _this.iBizNotification.error('启动流程错误信息', "\u542F\u52A8\u6D41\u7A0B\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-            });
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            //	_this.fire(IBizForm.FORMLOADED);
+            _this.fire(IBizForm.FORMWFSTARTED, action);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            // if (successcb) {
+            //     successcb(form, action);
+            // }
+            subject.next(action);
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZEDITFORM.WFSTARTFAILED.TITLE', "启动流程错误信息"), $IGM('IBIZEDITFORM.WFSTARTFAILED.INFO', "启动流程发生错误," + _this.getActionErrorInfo(action), [_this.getActionErrorInfo(action)]), 2);
+            _this.iBizNotification.error('启动流程错误信息', "\u542F\u52A8\u6D41\u7A0B\u53D1\u751F\u9519\u8BEF," + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizEditForm.prototype.wfsubmit = function (arg) {
         if (arg === void 0) { arg = {}; }
@@ -4699,7 +4696,7 @@ var IBizEditForm = /** @class */ (function (_super) {
         if (arg.srfkey == undefined || arg.srfkey == null || arg.srfkey == '') {
             // IBiz.alert($IGM('IBIZEDITFORM.WFSUBMITFAILED.TITLE',"提交流程错误信息"),$IGM('IBIZEDITFORM.UNLOADDATA','当前表单未加载数据！'),2);
             _this.iBizNotification.error('提交流程错误信息', '当前表单未加载数据！');
-            return new Promise(null);
+            return new rxjs.Subject();
         }
         var successcb = arg.successcb;
         var errorcb = arg.errorcb;
@@ -4711,33 +4708,33 @@ var IBizEditForm = /** @class */ (function (_super) {
         }
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
-        return new Promise(function (resolve, reject) {
-            _this.load(arg).subscribe(function (action) {
-                _this.setFieldAsyncConfig(action.config);
-                _this.setFieldState(action.state);
-                _this.setDataAccAction(action.dataaccaction);
-                _this.fillForm(action.data);
-                _this.formDirty = false;
-                //		_this.fire(IBizForm.FORMLOADED);
-                _this.fire(IBizForm.FORMWFSUBMITTED, action);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                _this.fire(IBizForm.FORMFIELDCHANGED, null);
-                // if (successcb) {
-                //     successcb(form, action);
-                // }
-                resolve(action);
-            }, function (action) {
-                action.failureType = 'SERVER_INVALID';
-                // IBiz.alert($IGM('IBIZEDITFORM.WFSUBMITFAILED.TITLE',"提交流程错误信息"),$IGM('IBIZEDITFORM.WFSUBMITFAILED.INFO',"工作流提交发生错误,"+_this.getActionErrorInfo(action),[_this.getActionErrorInfo(action)]),2);
-                _this.ignoreUFI = false;
-                _this.ignoreformfieldchange = false;
-                // if (errorcb) {
-                //     errorcb(form, action);
-                // }
-                reject(action);
-            });
+        var subject = new rxjs.Subject();
+        _this.load(arg).subscribe(function (action) {
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
+            //		_this.fire(IBizForm.FORMLOADED);
+            _this.fire(IBizForm.FORMWFSUBMITTED, action);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            // if (successcb) {
+            //     successcb(form, action);
+            // }
+            subject.next(action);
+        }, function (action) {
+            action.failureType = 'SERVER_INVALID';
+            // IBiz.alert($IGM('IBIZEDITFORM.WFSUBMITFAILED.TITLE',"提交流程错误信息"),$IGM('IBIZEDITFORM.WFSUBMITFAILED.INFO',"工作流提交发生错误,"+_this.getActionErrorInfo(action),[_this.getActionErrorInfo(action)]),2);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
+            // if (errorcb) {
+            //     errorcb(form, action);
+            // }
+            subject.error(action);
         });
+        return subject;
     };
     IBizEditForm.prototype.doUIAction = function (arg) {
         if (arg === void 0) { arg = {}; }
@@ -4758,43 +4755,43 @@ var IBizEditForm = /** @class */ (function (_super) {
             delete arg.errorcb;
         }
         _this.beginLoading();
-        return new Promise(function (resolve, reject) {
-            _this.iBizHttp.post(_this.getBackendUrl(), arg).subscribe(function (data) {
-                _this.endLoading();
-                if (data.ret == 0) {
-                    IBizUtil.processResultBefore(data);
-                    _this.fire(IBizEditForm.UIACTIONFINISHED, data);
-                    if (data.reloadData) {
-                        _this.reload();
-                    }
-                    if (data.info && data.info != '') {
-                        // IBiz.alert('', data.info, 1);
-                        _this.iBizNotification.info('', data.info);
-                    }
-                    IBizUtil.processResult(data);
-                    if (successcb) {
-                        successcb(data);
-                    }
-                    resolve(data);
+        var subject = new rxjs.Subject();
+        _this.iBizHttp.post(_this.getBackendUrl(), arg).subscribe(function (data) {
+            _this.endLoading();
+            if (data.ret == 0) {
+                IBizUtil.processResultBefore(data);
+                _this.fire(IBizEditForm.UIACTIONFINISHED, data);
+                if (data.reloadData) {
+                    _this.reload();
                 }
-                else {
-                    // if (errorcb) {
-                    //     errorcb(data);
-                    // }
-                    reject(data);
-                    // IBiz.alert($IGM('IBIZEDITFORM.DOUIACTIONFAILED.TITLE', "界面操作错误信息"), $IGM('IBIZEDITFORM.DOUIACTIONFAILED.INFO', "操作失败," + data.errorMessage, [data.errorMessage]), 2);
-                    _this.iBizNotification.error('界面操作错误信息', "\u64CD\u4F5C\u5931\u8D25," + data.errorMessage);
+                if (data.info && data.info != '') {
+                    // IBiz.alert('', data.info, 1);
+                    _this.iBizNotification.info('', data.info);
                 }
-            }, function (data) {
-                _this.endLoading();
-                // IBiz.alert($IGM('IBIZEDITFORM.DOUIACTIONFAILED.TITLE', "界面操作错误信息"), $IGM('IBIZEDITFORM.DOUIACTIONFAILED2.INFO', "执行请求异常！"), 2);
-                _this.iBizNotification.error('界面操作错误信息', '执行请求异常！');
+                IBizUtil.processResult(data);
+                if (successcb) {
+                    successcb(data);
+                }
+                subject.next(data);
+            }
+            else {
                 // if (errorcb) {
-                //     errorcb(e);
+                //     errorcb(data);
                 // }
-                reject(data);
-            });
+                subject.error(data);
+                // IBiz.alert($IGM('IBIZEDITFORM.DOUIACTIONFAILED.TITLE', "界面操作错误信息"), $IGM('IBIZEDITFORM.DOUIACTIONFAILED.INFO', "操作失败," + data.errorMessage, [data.errorMessage]), 2);
+                _this.iBizNotification.error('界面操作错误信息', "\u64CD\u4F5C\u5931\u8D25," + data.errorMessage);
+            }
+        }, function (data) {
+            _this.endLoading();
+            // IBiz.alert($IGM('IBIZEDITFORM.DOUIACTIONFAILED.TITLE', "界面操作错误信息"), $IGM('IBIZEDITFORM.DOUIACTIONFAILED2.INFO', "执行请求异常！"), 2);
+            _this.iBizNotification.error('界面操作错误信息', '执行请求异常！');
+            // if (errorcb) {
+            //     errorcb(e);
+            // }
+            subject.error(data);
         });
+        return subject;
     };
     IBizEditForm.prototype.getFormType = function () {
         return 'EDITFORM';
