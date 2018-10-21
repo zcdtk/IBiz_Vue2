@@ -75,25 +75,26 @@ var IBizMDViewController = /** @class */ (function (_super) {
         }
         var searchform = this.getSearchForm();
         if (searchform) {
-            // searchform.on(IBizSearchForm.FORMSEARCHED, function (sender, args, e) {
-            //     _this.onSearchFormSearched();
-            // } _this);
-            // searchform.on(IBizForm.FORMLOADED, function (sender, args, e) {
-            //     if (_this.config.loaddefault != undefined && _this.config.loaddefault)
-            //         _this.onSearchFormReseted();
-            // } _this);
-            // searchform.on(IBizSearchForm.FORMRESETED, function (sender, args, e) {
-            //     _this.onSearchFormReseted();
-            // } _this);
-            // searchform.on(IBizSearchForm.FORMCONTRACT, function (sender, args, e) {
-            //     _this.onSearchFormOpen(args);
-            // } _this);
-            // searchform.on(IBizForm.FORMFIELDCHANGED, function (sender, args, e) {
-            //     var fieldname = '';
-            //     if (sender != null) fieldname = sender.getName();
-            //     if (!args) args = {};
-            //     _this.onSearchFormFieldChanged(fieldname, sender, args.newvalue, args.oldvalue);
-            // } _this);
+            searchform.on(IBizSearchForm.FORMSEARCHED).subscribe(function (args) {
+                _this.onSearchFormSearched();
+            });
+            searchform.on(IBizForm.FORMLOADED).subscribe(function (args) {
+                // if (_this.config.loaddefault != undefined && _this.config.loaddefault)
+                _this.onSearchFormReseted();
+            });
+            searchform.on(IBizSearchForm.FORMRESETED).subscribe(function (args) {
+                _this.onSearchFormReseted();
+            });
+            searchform.on(IBizSearchForm.FORMCONTRACT).subscribe(function (args) {
+                _this.onSearchFormOpen(args);
+            });
+            searchform.on(IBizSearchForm.FORMFIELDCHANGED).subscribe(function (args) {
+                var fieldname = '';
+                // if (sender != null) fieldname = sender.getName();
+                if (!args)
+                    args = {};
+                _this.onSearchFormFieldChanged(args.fieldname, args.newvalue, args.oldvalue);
+            });
         }
         // var searchform = this.getSearchForm();
         // if (searchform) {

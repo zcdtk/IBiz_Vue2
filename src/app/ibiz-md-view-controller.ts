@@ -69,25 +69,25 @@ class IBizMDViewController extends IBizMianViewController {
 
         var searchform = this.getSearchForm();
         if (searchform) {
-            // searchform.on(IBizSearchForm.FORMSEARCHED, function (sender, args, e) {
-            //     _this.onSearchFormSearched();
-            // } _this);
-            // searchform.on(IBizForm.FORMLOADED, function (sender, args, e) {
-            //     if (_this.config.loaddefault != undefined && _this.config.loaddefault)
-            //         _this.onSearchFormReseted();
-            // } _this);
-            // searchform.on(IBizSearchForm.FORMRESETED, function (sender, args, e) {
-            //     _this.onSearchFormReseted();
-            // } _this);
-            // searchform.on(IBizSearchForm.FORMCONTRACT, function (sender, args, e) {
-            //     _this.onSearchFormOpen(args);
-            // } _this);
-            // searchform.on(IBizForm.FORMFIELDCHANGED, function (sender, args, e) {
-            //     var fieldname = '';
-            //     if (sender != null) fieldname = sender.getName();
-            //     if (!args) args = {};
-            //     _this.onSearchFormFieldChanged(fieldname, sender, args.newvalue, args.oldvalue);
-            // } _this);
+            searchform.on(IBizSearchForm.FORMSEARCHED).subscribe((args) => {
+                _this.onSearchFormSearched();
+            });
+            searchform.on(IBizForm.FORMLOADED).subscribe((args) => {
+                // if (_this.config.loaddefault != undefined && _this.config.loaddefault)
+                _this.onSearchFormReseted();
+            });
+            searchform.on(IBizSearchForm.FORMRESETED).subscribe((args) => {
+                _this.onSearchFormReseted();
+            });
+            searchform.on(IBizSearchForm.FORMCONTRACT).subscribe((args) => {
+                _this.onSearchFormOpen(args);
+            });
+            searchform.on(IBizSearchForm.FORMFIELDCHANGED).subscribe((args) => {
+                var fieldname = '';
+                // if (sender != null) fieldname = sender.getName();
+                if (!args) args = {};
+                _this.onSearchFormFieldChanged(args.fieldname, args.newvalue, args.oldvalue);
+            });
         }
 
         // var searchform = this.getSearchForm();
@@ -113,8 +113,7 @@ class IBizMDViewController extends IBizMianViewController {
             searchform.autoLoad(_this.viewparam);
             if (_this.hasQuickSearch() == true) {
                 searchform.close();
-            }
-            else {
+            } else {
                 searchform.open();
             }
         }
