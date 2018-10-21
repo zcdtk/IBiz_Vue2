@@ -9187,6 +9187,13 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         }
         return {};
     };
+    /**
+     * 导航树节点选中
+     *
+     * @param {*} [data={}]
+     * @returns {void}
+     * @memberof IBizTreeExpViewController
+     */
     IBizTreeExpViewController.prototype.treeExpBarSelectionChange = function (data) {
         if (data === void 0) { data = {}; }
         console.log(data);
@@ -9200,6 +9207,8 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         var viewParam = data.viewParam;
         Object.assign(viewParam, { refreshView: true });
         // this.openView(routeString.toLocaleLowerCase(), viewParam);
+        var _this = this;
+        _this.$router.push({ name: routeString.toLocaleLowerCase(), query: viewParam });
     };
     IBizTreeExpViewController.REFRESHMODE_CURRENTNODE = 'CURRENTNODE';
     IBizTreeExpViewController.REFRESHMODE_PARENTNODE = 'PARENTNODE';

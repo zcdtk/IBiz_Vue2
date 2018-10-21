@@ -527,6 +527,13 @@ class IBizTreeExpViewController extends IBizMianViewController {
         return {};
     }
 
+    /**
+     * 导航树节点选中
+     *
+     * @param {*} [data={}]
+     * @returns {void}
+     * @memberof IBizTreeExpViewController
+     */
     public treeExpBarSelectionChange(data: any = {}): void {
         console.log(data);
         if (!data || Object.keys(data).length === 0 || !data.viewid) {
@@ -539,6 +546,9 @@ class IBizTreeExpViewController extends IBizMianViewController {
         let viewParam: any = data.viewParam;
         Object.assign(viewParam, { refreshView: true });
         // this.openView(routeString.toLocaleLowerCase(), viewParam);
+
+        let _this = this;
+        _this.$router.push({ name: routeString.toLocaleLowerCase(), query: viewParam });
     }
 
     public static REFRESHMODE_CURRENTNODE = 'CURRENTNODE';
