@@ -131,15 +131,17 @@ class IBizTreeExpBar extends IBizControl {
                 }
             }
 
-            var subController = controller.getController(controller.getCId2() + viewItem.embedviewid);
-            layoutcard.setActiveSubController(subController);
-            if (!subController.isInited()) {
-                subController.asyncInit({ parentData: viewParam, renderTo: itemid, subApp: viewItem.subapp });
-                return;
-            }
+            // var subController = controller.getController(controller.getCId2() + viewItem.embedviewid);
+            // layoutcard.setActiveSubController(subController);
+            // if (!subController.isInited()) {
+            //     subController.asyncInit({ parentData: viewParam, renderTo: itemid, subApp: viewItem.subapp });
+            //     return;
+            // }
 
-            subController.setParentData(viewParam);
-            subController.refresh();
+            // subController.setParentData(viewParam);
+            // subController.refresh();
+
+            this.fire(IBizTreeExpBar.SELECTIONCHANGE, { viewid: record.srfnodetype, viewParam: viewParam });
             return;
         }
 
@@ -206,4 +208,13 @@ class IBizTreeExpBar extends IBizControl {
     public fetchCat(backendurl, arg): void {
 
     }
+
+     /*****************事件声明************************/
+    /**
+     * 树导航部件选中
+     *
+     * @static
+     * @memberof IBizTreeExpBar
+     */
+    public static SELECTIONCHANGE = 'SELECTIONCHANGE';
 }

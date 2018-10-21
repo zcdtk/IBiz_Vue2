@@ -5274,14 +5274,15 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
                     viewParam[key] = value;
                 }
             }
-            var subController = controller.getController(controller.getCId2() + viewItem.embedviewid);
-            layoutcard.setActiveSubController(subController);
-            if (!subController.isInited()) {
-                subController.asyncInit({ parentData: viewParam, renderTo: itemid, subApp: viewItem.subapp });
-                return;
-            }
-            subController.setParentData(viewParam);
-            subController.refresh();
+            // var subController = controller.getController(controller.getCId2() + viewItem.embedviewid);
+            // layoutcard.setActiveSubController(subController);
+            // if (!subController.isInited()) {
+            //     subController.asyncInit({ parentData: viewParam, renderTo: itemid, subApp: viewItem.subapp });
+            //     return;
+            // }
+            // subController.setParentData(viewParam);
+            // subController.refresh();
+            this.fire(IBizTreeExpBar.SELECTIONCHANGE, { viewid: record.srfnodetype, viewParam: viewParam });
             return;
         }
         if (_this.getPVPanel()) {
@@ -5338,6 +5339,14 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     };
     IBizTreeExpBar.prototype.fetchCat = function (backendurl, arg) {
     };
+    /*****************事件声明************************/
+    /**
+     * 树导航部件选中
+     *
+     * @static
+     * @memberof IBizTreeExpBar
+     */
+    IBizTreeExpBar.SELECTIONCHANGE = 'SELECTIONCHANGE';
     return IBizTreeExpBar;
 }(IBizControl));
 
