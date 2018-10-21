@@ -48,10 +48,11 @@ class IBizForm extends IBizControl {
 	 * 加载
 	 * @param arg 参数
 	 */
-    public autoLoad(arg: any = {}): Subject<any> {
+    public autoLoad(opt: any = {}): Subject<any> {
         var _this = this;
-        if (!arg)
-            arg = {};
+        let arg: any = {};
+        Object.assign(arg, opt);
+
         if (arg.srfkey != undefined && arg.srfkey != '') {
             return _this.load2(arg);
         }
@@ -62,10 +63,12 @@ class IBizForm extends IBizControl {
         }
         return _this.loadDraft(arg);
     }
-    public load2(arg: any = {}): Subject<any> {
+    public load2(opt: any = {}): Subject<any> {
         var _this = this;
-        if (!arg)
-            arg = {};
+        let arg: any = {};
+        Object.assign(arg, opt);
+        // if (!arg)
+        //     arg = {};
         // if(IBizApp_Data)
         // 	arg.srfappdata=IBizApp_Data;
 
@@ -83,7 +86,7 @@ class IBizForm extends IBizControl {
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
 
-        const subject:Subject<any> = new rxjs.Subject();
+        const subject: Subject<any> = new rxjs.Subject();
 
         _this.load(arg).subscribe((action) => {
             _this.setFieldAsyncConfig(action.config);
@@ -113,10 +116,11 @@ class IBizForm extends IBizControl {
         });
         return subject;
     }
-    public loadDraft(arg: any = {}): Subject<any> {
+    public loadDraft(opt: any = {}): Subject<any> {
         var _this = this;
-        if (!arg)
-            arg = {};
+        let arg: any = {};
+        Object.assign(arg, opt);
+
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
 
@@ -139,7 +143,7 @@ class IBizForm extends IBizControl {
             Object.assign(arg, { srfaction: 'loaddraftfrom' });
         }
 
-        const subject:Subject<any> = new rxjs.Subject();
+        const subject: Subject<any> = new rxjs.Subject();
         _this.load(arg).subscribe((action) => {
             _this.setFieldAsyncConfig(action.config);
             _this.setFieldState(action.state);

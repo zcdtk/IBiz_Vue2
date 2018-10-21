@@ -56,11 +56,11 @@ var IBizForm = /** @class */ (function (_super) {
      * 加载
      * @param arg 参数
      */
-    IBizForm.prototype.autoLoad = function (arg) {
-        if (arg === void 0) { arg = {}; }
+    IBizForm.prototype.autoLoad = function (opt) {
+        if (opt === void 0) { opt = {}; }
         var _this = this;
-        if (!arg)
-            arg = {};
+        var arg = {};
+        Object.assign(arg, opt);
         if (arg.srfkey != undefined && arg.srfkey != '') {
             return _this.load2(arg);
         }
@@ -71,12 +71,14 @@ var IBizForm = /** @class */ (function (_super) {
         }
         return _this.loadDraft(arg);
     };
-    IBizForm.prototype.load2 = function (arg) {
+    IBizForm.prototype.load2 = function (opt) {
         var _this_1 = this;
-        if (arg === void 0) { arg = {}; }
+        if (opt === void 0) { opt = {}; }
         var _this = this;
-        if (!arg)
-            arg = {};
+        var arg = {};
+        Object.assign(arg, opt);
+        // if (!arg)
+        //     arg = {};
         // if(IBizApp_Data)
         // 	arg.srfappdata=IBizApp_Data;
         var successcb = arg.successcb;
@@ -120,12 +122,12 @@ var IBizForm = /** @class */ (function (_super) {
         });
         return subject;
     };
-    IBizForm.prototype.loadDraft = function (arg) {
+    IBizForm.prototype.loadDraft = function (opt) {
         var _this_1 = this;
-        if (arg === void 0) { arg = {}; }
+        if (opt === void 0) { opt = {}; }
         var _this = this;
-        if (!arg)
-            arg = {};
+        var arg = {};
+        Object.assign(arg, opt);
         _this.ignoreUFI = true;
         _this.ignoreformfieldchange = true;
         var successcb = arg.successcb;
