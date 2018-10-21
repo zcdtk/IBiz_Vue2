@@ -36,9 +36,12 @@ class IBizTreeExpViewController extends IBizMianViewController {
             viewController: _this,
         });
         _this.controls.set('exptab', exptab);
-        if (_this.getTreeExpBar()) {
-            const treeexpbar = _this.getTreeExpBar();
+        const treeexpbar = _this.getTreeExpBar();
+        if (treeexpbar) {
             treeexpbar.setExpTab(exptab);
+            treeexpbar.on(IBizTreeExpBar.SELECTIONCHANGE).subscribe((args) => {
+                this.treeExpBarSelectionChange(args);
+            });
         }
     }
 
@@ -522,6 +525,20 @@ class IBizTreeExpViewController extends IBizMianViewController {
             return data;
         }
         return {};
+    }
+
+    public treeExpBarSelectionChange(data: any = {}): void {
+        console.log(data);
+        if (!data || Object.keys(data).length === 0 || !data.viewid) {
+            return;
+        }
+        const routeString: string = data.viewid;
+        // if (!this.hasChildRoute(routeString.toLocaleLowerCase())) {
+        //     return;
+        // }
+        let viewParam: any = data.viewParam;
+        Object.assign(viewParam, { refreshView: true });
+        // this.openView(routeString.toLocaleLowerCase(), viewParam);
     }
 
     public static REFRESHMODE_CURRENTNODE = 'CURRENTNODE';

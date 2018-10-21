@@ -8653,6 +8653,7 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
      * @memberof IBizTreeExpViewController
      */
     IBizTreeExpViewController.prototype.init = function (opts) {
+        var _this_1 = this;
         if (opts === void 0) { opts = {}; }
         _super.prototype.init.call(this, opts);
         var _this = this;
@@ -8663,9 +8664,12 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
             viewController: _this,
         });
         _this.controls.set('exptab', exptab);
-        if (_this.getTreeExpBar()) {
-            var treeexpbar = _this.getTreeExpBar();
+        var treeexpbar = _this.getTreeExpBar();
+        if (treeexpbar) {
             treeexpbar.setExpTab(exptab);
+            treeexpbar.on(IBizTreeExpBar.SELECTIONCHANGE).subscribe(function (args) {
+                _this_1.treeExpBarSelectionChange(args);
+            });
         }
     };
     IBizTreeExpViewController.prototype.onInit = function () {
@@ -9169,6 +9173,20 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
             return data;
         }
         return {};
+    };
+    IBizTreeExpViewController.prototype.treeExpBarSelectionChange = function (data) {
+        if (data === void 0) { data = {}; }
+        console.log(data);
+        if (!data || Object.keys(data).length === 0 || !data.viewid) {
+            return;
+        }
+        var routeString = data.viewid;
+        // if (!this.hasChildRoute(routeString.toLocaleLowerCase())) {
+        //     return;
+        // }
+        var viewParam = data.viewParam;
+        Object.assign(viewParam, { refreshView: true });
+        // this.openView(routeString.toLocaleLowerCase(), viewParam);
     };
     IBizTreeExpViewController.REFRESHMODE_CURRENTNODE = 'CURRENTNODE';
     IBizTreeExpViewController.REFRESHMODE_PARENTNODE = 'PARENTNODE';
