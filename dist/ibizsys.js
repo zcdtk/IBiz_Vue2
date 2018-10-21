@@ -5008,7 +5008,7 @@ var IBizTree = /** @class */ (function (_super) {
                 _this.iBizNotification.error('错误', result.info);
                 return;
             }
-            _this.items = result.items.slice();
+            _this.items = _this.formatDatas(result.items).slice();
             _this.fire(IBizTree.CONTEXTMENU, _this.items);
             console.log(result);
         }, function (error) {
@@ -5031,6 +5031,20 @@ var IBizTree = /** @class */ (function (_super) {
      */
     IBizTree.prototype.reload = function (node) {
         if (node === void 0) { node = {}; }
+    };
+    /**
+     * 格式化树数据
+     *
+     * @private
+     * @param {Array<any>} datas
+     * @returns {Array<any>}
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.formatDatas = function (datas) {
+        datas.forEach(function (data) {
+            data.label = data.text;
+        });
+        return datas;
     };
     /**
      * 删除

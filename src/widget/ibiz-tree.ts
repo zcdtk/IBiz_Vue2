@@ -65,13 +65,13 @@ class IBizTree extends IBizControl {
         }
 
         _this.fire(IBizMDControl.BEFORELOAD, param);
-        
+
         _this.iBizHttp.post(_this.getBackendUrl(), param).subscribe((result: any) => {
             if (result.ret !== 0) {
                 _this.iBizNotification.error('错误', result.info);
                 return;
             }
-            _this.items = [...result.items];
+            _this.items = [..._this.formatDatas(result.items)];
             _this.fire(IBizTree.CONTEXTMENU, _this.items);
             console.log(result);
         }, (error: any) => {
@@ -94,6 +94,21 @@ class IBizTree extends IBizControl {
      * @memberof IBizTree
      */
     public reload(node: any = {}): void {
+    }
+
+    /**
+     * 格式化树数据
+     *
+     * @private
+     * @param {Array<any>} datas
+     * @returns {Array<any>}
+     * @memberof IBizTree
+     */
+    private formatDatas(datas: Array<any>): Array<any> {
+        datas.forEach((data) => {
+            data.label = data.text;
+        });
+        return datas;
     }
 
     /**
