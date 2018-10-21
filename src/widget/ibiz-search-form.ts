@@ -98,7 +98,7 @@ class IBizSearchForm extends IBizForm {
     }
     public open(): void {
         var _this = this;
-        _this.opened = true;
+        _this.opened = !_this.opened;
         // if(_this.container){
         // 	_this.container.removeClass('hidden');
         // 	_this.fire(IBizSearchForm.FORMCONTRACT, _this, {state:"show",height:_this.container.height()});
