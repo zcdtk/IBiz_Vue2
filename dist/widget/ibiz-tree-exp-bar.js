@@ -99,11 +99,12 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         if (records == null || records.length == 0)
             return;
         var record = records[0];
-        if (!record.original)
-            return;
-        var tag = record.original.tag;
-        if (!tag || !(tag.srfnodetype))
-            return;
+        // if (!record.original)
+        //     return;
+        // var tag = record.original.tag;
+        // if (!tag || !(tag.srfnodetype))
+        //     return;
+        var tag = record;
         //替换键值
         var nodeids = record.id.split(';');
         var nodetext = record.text;

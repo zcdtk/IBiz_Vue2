@@ -150,9 +150,10 @@ class IBizTree extends IBizControl {
      * 操作界面行为
      *
      * @param {*} [params={}]
+     * @returns {Subject<any>}
      * @memberof IBizTree
      */
-    public doUIAction(params: any = {}): Observable<any> {
+    public doUIAction(params: any = {}): Subject<any> {
         let _this = this;
         const subject: Subject<any> = new rxjs.Subject();
         if (params) {
@@ -186,7 +187,18 @@ class IBizTree extends IBizControl {
             subject.error(error);
         });
 
-        return subject.asObservable();
+        return subject;
+    }
+
+    /**
+     * 节点选中
+     *
+     * @param {*} [data={}]
+     * @memberof IBizTree
+     */
+    public nodeSelect(data: any = {}): void {
+        console.log(data);
+        this.fire(IBizTree.SELECTIONCHANGE, [data]);
     }
 
     /*****************事件声明************************/

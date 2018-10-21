@@ -5085,6 +5085,7 @@ var IBizTree = /** @class */ (function (_super) {
      * 操作界面行为
      *
      * @param {*} [params={}]
+     * @returns {Subject<any>}
      * @memberof IBizTree
      */
     IBizTree.prototype.doUIAction = function (params) {
@@ -5120,7 +5121,18 @@ var IBizTree = /** @class */ (function (_super) {
             _this.iBizNotification.warning('警告', '执行请求发生异常');
             subject.error(error);
         });
-        return subject.asObservable();
+        return subject;
+    };
+    /**
+     * 节点选中
+     *
+     * @param {*} [data={}]
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.nodeSelect = function (data) {
+        if (data === void 0) { data = {}; }
+        console.log(data);
+        this.fire(IBizTree.SELECTIONCHANGE, [data]);
     };
     /*****************事件声明************************/
     /**
@@ -5241,11 +5253,12 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         if (records == null || records.length == 0)
             return;
         var record = records[0];
-        if (!record.original)
-            return;
-        var tag = record.original.tag;
-        if (!tag || !(tag.srfnodetype))
-            return;
+        // if (!record.original)
+        //     return;
+        // var tag = record.original.tag;
+        // if (!tag || !(tag.srfnodetype))
+        //     return;
+        var tag = record;
         //替换键值
         var nodeids = record.id.split(';');
         var nodetext = record.text;

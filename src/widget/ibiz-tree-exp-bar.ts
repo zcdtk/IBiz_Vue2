@@ -85,19 +85,20 @@ class IBizTreeExpBar extends IBizControl {
     public getPVPanel(): any {
         return this.pvpanel;
     }
-    public onTreeSelectionChange(records): void {
+    public onTreeSelectionChange(records: Array<any>): void {
 
         var _this = this;
         if (records == null || records.length == 0)
             return;
 
         var record = records[0];
-        if (!record.original)
-            return;
+        // if (!record.original)
+        //     return;
 
-        var tag = record.original.tag;
-        if (!tag || !(tag.srfnodetype))
-            return;
+        // var tag = record.original.tag;
+        // if (!tag || !(tag.srfnodetype))
+        //     return;
+        var tag = record;
 
         //替换键值
         var nodeids = record.id.split(';');
@@ -209,7 +210,7 @@ class IBizTreeExpBar extends IBizControl {
 
     }
 
-     /*****************事件声明************************/
+    /*****************事件声明************************/
     /**
      * 树导航部件选中
      *
