@@ -41,6 +41,7 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-data-grid.js',
         'dist/widget/ibiz-form.js',
         'dist/widget/ibiz-edit-form.js',
+        'dist/widget/ibiz-search-form.js',
         'dist/widget/ibiz-tab.js',
         'dist/widget/ibiz-exp-tab.js',
         'dist/widget/ibiz-tree.js',
