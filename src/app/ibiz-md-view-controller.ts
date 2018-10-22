@@ -14,7 +14,7 @@ class IBizMDViewController extends IBizMianViewController {
 
     public multiSelect: boolean = false;
 
-    public quickSearch: string = null;
+    public quickSearch: string = '';
 
     public quickSearchEntityDEFields: Array<any> = [];
 
