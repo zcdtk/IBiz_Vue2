@@ -23,6 +23,14 @@ class IBizAppMenu extends IBizControl {
     public appFuncs: Array<any> = [];
 
     /**
+     * 选中数据
+     *
+     * @type {*}
+     * @memberof IBizAppMenu
+     */
+    public selection: any = {};
+
+    /**
      * Creates an instance of IBizAppMenu.
      * 创建 IBizAppMenu 实例
      * 
@@ -80,6 +88,35 @@ class IBizAppMenu extends IBizControl {
         return this.appFuncs;
     }
 
+    /**
+     * 获取应用功能
+     *
+     * @param {string} [appfuncid]  应用功能id 可选
+     * @param {string} [name] 名称 可选
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    public getAppFunc(appfuncid?: string, name?: string): any {
+        let _appfunc: any = {};
+        this.appFuncs.some((appfunc) => {
+            if (Object.is(appfuncid, appfunc.appfuncid)) {
+                Object.assign(_appfunc, appfunc);
+                return true;
+            }
+            if (Object.is(name, appfunc.viewname)) {
+                Object.assign(_appfunc, appfunc);
+                return true;
+            }
+        });
+        return _appfunc;
+    }
+
+    /**
+     * 数据加载
+     *
+     * @param {*} [opt]
+     * @memberof IBizAppMenu
+     */
     public load(opt?: any): void {
         let _this = this;
         let params: any = { srfctrlid: this.getName(), srfaction: 'FETCH' };
@@ -90,7 +127,6 @@ class IBizAppMenu extends IBizControl {
         _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(success => {
             if (success.ret === 0) {
                 this.items = success.items;
-                // const data = this.doMenus(success.items);
                 this.fire(IBizAppMenu.LOAD, this.items);
             }
         }, error => {
@@ -98,6 +134,13 @@ class IBizAppMenu extends IBizControl {
         });
     }
 
+    /**
+     * 选中变化
+     *
+     * @param {*} select
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
     public onSelectChange(select: any): any {
         let _this = this;
         let hasView = false;
@@ -112,6 +155,26 @@ class IBizAppMenu extends IBizControl {
         if (hasView) {
             _this.fire(IBizAppMenu.SELECTION, select);
         }
+    }
+
+    /**
+     * 设置选中效果
+     *
+     * @param {*} [appFun={}]
+     * @param {Array<any>} items
+     * @memberof IBizAppMenu
+     */
+    public setSelection(appFun: any = {}, items: Array<any>): void {
+        let _this = this;
+        items.some((item) => {
+            if (Object.is(item.appfuncid, appFun.appfuncid)) {
+                Object.assign(_this.selection, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0) {
+                _this.setSelection(appFun, item.items);
+            }
+        });
     }
 
     /*****************事件声明************************/

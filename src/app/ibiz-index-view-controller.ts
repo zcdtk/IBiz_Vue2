@@ -19,7 +19,7 @@ class IBizIndexViewController extends IBizMianViewController {
             });
             // 部件加载完成
             appmenu.on(IBizAppMenu.LOAD).subscribe((items) => {
-
+                this.appMenuLoad(items);
             });
             // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe((item) => {
@@ -27,6 +27,10 @@ class IBizIndexViewController extends IBizMianViewController {
             })
             appmenu.load(this.getViewParam());
         }
+    }
+
+    public onInit(): void {
+        super.onInit();
     }
 
     public getAppMenu(): any {
@@ -38,7 +42,21 @@ class IBizIndexViewController extends IBizMianViewController {
     }
 
     public appMenuLoad(items: Array<any>): void {
-
+        let _this = this;
+        let path: string = _this.$route.path;
+        let path_arr: Array<any> = path.split('/');
+        if (path_arr.length < 2) {
+            return ;
+        }
+        const appmenu = this.getAppMenu();
+        if (!appmenu) {
+            return ;
+        }
+        let  appFun = appmenu.getAppFunc(null, path_arr[2]);
+        if (Object.keys(appFun).length === 0) {
+            return ;
+        }
+        appmenu.setSelection(appFun, items);
     }
 
     /**

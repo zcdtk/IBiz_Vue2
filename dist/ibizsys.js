@@ -2162,6 +2162,13 @@ var IBizAppMenu = /** @class */ (function (_super) {
          * @memberof IBizAppMenu
          */
         _this_1.appFuncs = [];
+        /**
+         * 选中数据
+         *
+         * @type {*}
+         * @memberof IBizAppMenu
+         */
+        _this_1.selection = {};
         return _this_1;
     }
     /**
@@ -2208,6 +2215,34 @@ var IBizAppMenu = /** @class */ (function (_super) {
     IBizAppMenu.prototype.getAppFuncs = function () {
         return this.appFuncs;
     };
+    /**
+     * 获取应用功能
+     *
+     * @param {string} [appfuncid]  应用功能id 可选
+     * @param {string} [name] 名称 可选
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getAppFunc = function (appfuncid, name) {
+        var _appfunc = {};
+        this.appFuncs.some(function (appfunc) {
+            if (Object.is(appfuncid, appfunc.appfuncid)) {
+                Object.assign(_appfunc, appfunc);
+                return true;
+            }
+            if (Object.is(name, appfunc.viewname)) {
+                Object.assign(_appfunc, appfunc);
+                return true;
+            }
+        });
+        return _appfunc;
+    };
+    /**
+     * 数据加载
+     *
+     * @param {*} [opt]
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.prototype.load = function (opt) {
         var _this_1 = this;
         var _this = this;
@@ -2219,13 +2254,19 @@ var IBizAppMenu = /** @class */ (function (_super) {
         _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             if (success.ret === 0) {
                 _this_1.items = success.items;
-                // const data = this.doMenus(success.items);
                 _this_1.fire(IBizAppMenu.LOAD, _this_1.items);
             }
         }, function (error) {
             console.log(error);
         });
     };
+    /**
+     * 选中变化
+     *
+     * @param {*} select
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.prototype.onSelectChange = function (select) {
         var _this = this;
         var hasView = false;
@@ -2240,6 +2281,26 @@ var IBizAppMenu = /** @class */ (function (_super) {
         if (hasView) {
             _this.fire(IBizAppMenu.SELECTION, select);
         }
+    };
+    /**
+     * 设置选中效果
+     *
+     * @param {*} [appFun={}]
+     * @param {Array<any>} items
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.setSelection = function (appFun, items) {
+        if (appFun === void 0) { appFun = {}; }
+        var _this = this;
+        items.some(function (item) {
+            if (Object.is(item.appfuncid, appFun.appfuncid)) {
+                Object.assign(_this.selection, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0) {
+                _this.setSelection(appFun, item.items);
+            }
+        });
     };
     /*****************事件声明************************/
     /**
@@ -6755,6 +6816,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             });
             // 部件加载完成
             appmenu.on(IBizAppMenu.LOAD).subscribe(function (items) {
+                _this_1.appMenuLoad(items);
             });
             // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe(function (item) {
@@ -6763,6 +6825,9 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             appmenu.load(this.getViewParam());
         }
     };
+    IBizIndexViewController.prototype.onInit = function () {
+        _super.prototype.onInit.call(this);
+    };
     IBizIndexViewController.prototype.getAppMenu = function () {
         return this.getControl('appmenu');
     };
@@ -6770,6 +6835,21 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         if (params === void 0) { params = {}; }
     };
     IBizIndexViewController.prototype.appMenuLoad = function (items) {
+        var _this = this;
+        var path = _this.$route.path;
+        var path_arr = path.split('/');
+        if (path_arr.length < 2) {
+            return;
+        }
+        var appmenu = this.getAppMenu();
+        if (!appmenu) {
+            return;
+        }
+        var appFun = appmenu.getAppFunc(null, path_arr[2]);
+        if (Object.keys(appFun).length === 0) {
+            return;
+        }
+        appmenu.setSelection(appFun, items);
     };
     /**
      * 菜单项选中
@@ -9636,7 +9716,7 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
 
 "use strict";
 Vue.component('ibiz-app-menu', {
-    template: "\n    <Menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\"  @on-select=\"onSelect($event)\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <Submenu v-bind:name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <Submenu v-bind:name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <MenuItem v-bind:name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </MenuItem>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </Submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <MenuItem v-bind:name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </MenuItem>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </Submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <MenuItem v-bind:name=\"item0.id\">\n                    <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </MenuItem>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </Menu>\n    ",
+    template: "\n    <i-menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\"  @on-select=\"onSelect($event)\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <submenu v-bind:name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <submenu v-bind:name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <menu-item v-bind:name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </menu-item>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <menu-item v-bind:name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </menu-item>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <menu-item v-bind:name=\"item0.id\">\n                    <span><i v-bind:class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </menu-item>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </i-menu>\n    ",
     props: ['ctrl', 'viewController'],
     data: function () {
         var data = {};

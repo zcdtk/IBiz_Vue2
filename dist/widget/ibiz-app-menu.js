@@ -44,6 +44,13 @@ var IBizAppMenu = /** @class */ (function (_super) {
          * @memberof IBizAppMenu
          */
         _this_1.appFuncs = [];
+        /**
+         * 选中数据
+         *
+         * @type {*}
+         * @memberof IBizAppMenu
+         */
+        _this_1.selection = {};
         return _this_1;
     }
     /**
@@ -90,6 +97,34 @@ var IBizAppMenu = /** @class */ (function (_super) {
     IBizAppMenu.prototype.getAppFuncs = function () {
         return this.appFuncs;
     };
+    /**
+     * 获取应用功能
+     *
+     * @param {string} [appfuncid]  应用功能id 可选
+     * @param {string} [name] 名称 可选
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getAppFunc = function (appfuncid, name) {
+        var _appfunc = {};
+        this.appFuncs.some(function (appfunc) {
+            if (Object.is(appfuncid, appfunc.appfuncid)) {
+                Object.assign(_appfunc, appfunc);
+                return true;
+            }
+            if (Object.is(name, appfunc.viewname)) {
+                Object.assign(_appfunc, appfunc);
+                return true;
+            }
+        });
+        return _appfunc;
+    };
+    /**
+     * 数据加载
+     *
+     * @param {*} [opt]
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.prototype.load = function (opt) {
         var _this_1 = this;
         var _this = this;
@@ -101,13 +136,19 @@ var IBizAppMenu = /** @class */ (function (_super) {
         _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             if (success.ret === 0) {
                 _this_1.items = success.items;
-                // const data = this.doMenus(success.items);
                 _this_1.fire(IBizAppMenu.LOAD, _this_1.items);
             }
         }, function (error) {
             console.log(error);
         });
     };
+    /**
+     * 选中变化
+     *
+     * @param {*} select
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
     IBizAppMenu.prototype.onSelectChange = function (select) {
         var _this = this;
         var hasView = false;
@@ -122,6 +163,26 @@ var IBizAppMenu = /** @class */ (function (_super) {
         if (hasView) {
             _this.fire(IBizAppMenu.SELECTION, select);
         }
+    };
+    /**
+     * 设置选中效果
+     *
+     * @param {*} [appFun={}]
+     * @param {Array<any>} items
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.setSelection = function (appFun, items) {
+        if (appFun === void 0) { appFun = {}; }
+        var _this = this;
+        items.some(function (item) {
+            if (Object.is(item.appfuncid, appFun.appfuncid)) {
+                Object.assign(_this.selection, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0) {
+                _this.setSelection(appFun, item.items);
+            }
+        });
     };
     /*****************事件声明************************/
     /**

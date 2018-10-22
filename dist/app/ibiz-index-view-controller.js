@@ -35,6 +35,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             });
             // 部件加载完成
             appmenu.on(IBizAppMenu.LOAD).subscribe(function (items) {
+                _this_1.appMenuLoad(items);
             });
             // 部件选中
             appmenu.on(IBizAppMenu.SELECTION).subscribe(function (item) {
@@ -43,6 +44,9 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             appmenu.load(this.getViewParam());
         }
     };
+    IBizIndexViewController.prototype.onInit = function () {
+        _super.prototype.onInit.call(this);
+    };
     IBizIndexViewController.prototype.getAppMenu = function () {
         return this.getControl('appmenu');
     };
@@ -50,6 +54,21 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         if (params === void 0) { params = {}; }
     };
     IBizIndexViewController.prototype.appMenuLoad = function (items) {
+        var _this = this;
+        var path = _this.$route.path;
+        var path_arr = path.split('/');
+        if (path_arr.length < 2) {
+            return;
+        }
+        var appmenu = this.getAppMenu();
+        if (!appmenu) {
+            return;
+        }
+        var appFun = appmenu.getAppFunc(null, path_arr[2]);
+        if (Object.keys(appFun).length === 0) {
+            return;
+        }
+        appmenu.setSelection(appFun, items);
     };
     /**
      * 菜单项选中
