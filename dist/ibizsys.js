@@ -6582,7 +6582,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         _this_1.currentDataKey = null;
         _this_1.parentDataChanged = false;
         _this_1.multiSelect = false;
-        _this_1.quickSearch = null;
+        _this_1.quickSearch = '';
         _this_1.quickSearchEntityDEFields = [];
         var _this = _this_1;
         return _this_1;
@@ -6812,7 +6812,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         //获取快速搜索里的搜索参数
         if (_this.hasQuickSearch() && _this.quickSearch) {
             // args['search'] = _this.quickSearch.val();
-            Object.assign(args, { search: _this.quickSearch });
+            Object.assign(args, { query: _this.quickSearch });
         }
         // $.extend(args, fetchParam,{ srfaction: 'fetch',SRFSUBAPP:_this.subapp });
         Object.assign(args, fetchParam, { srfaction: 'fetch' });

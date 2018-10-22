@@ -263,7 +263,7 @@ class IBizMDViewController extends IBizMianViewController {
         //获取快速搜索里的搜索参数
         if (_this.hasQuickSearch() && _this.quickSearch) {
             // args['search'] = _this.quickSearch.val();
-            Object.assign(args, { search: _this.quickSearch });
+            Object.assign(args, { query: _this.quickSearch });
         }
         // $.extend(args, fetchParam,{ srfaction: 'fetch',SRFSUBAPP:_this.subapp });
         Object.assign(args, fetchParam, { srfaction: 'fetch' });
