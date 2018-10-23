@@ -5691,7 +5691,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         if (_this.getViewController()) {
             var viewController_1 = _this.getViewController();
             viewController_1.on(IBizViewController.INITED).subscribe(function () {
-                _this.UICounter = viewController_1.getUICounter(_this.getUICounterName());
+                _this.UICounter = viewController_1.uicounters.get(_this.getUICounterName());
                 _this.onCounterChanged();
                 _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe(function (data) {
                     _this.onCounterChanged();

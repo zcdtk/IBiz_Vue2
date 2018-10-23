@@ -52,7 +52,7 @@ class IBizWFExpBar extends IBizControl {
         if (_this.getViewController()) {
             const viewController = _this.getViewController();
             viewController.on(IBizViewController.INITED).subscribe(() => {
-                _this.UICounter = viewController.getUICounter(_this.getUICounterName());
+                _this.UICounter = viewController.uicounters.get(_this.getUICounterName());
                 _this.onCounterChanged();
                 _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe((data) => {
                     _this.onCounterChanged();
