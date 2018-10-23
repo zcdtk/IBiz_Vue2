@@ -67,7 +67,7 @@ class IBizIndexViewController extends IBizMianViewController {
      */
     public appMenuSelection(item: any = {}): void {
         let _this = this;
-        _this.$router.push({ name: item.viewname, query: item.openviewparam });
+        _this.openView(item.viewname, item.openviewparam);
     }
 
 

@@ -79,7 +79,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
     IBizIndexViewController.prototype.appMenuSelection = function (item) {
         if (item === void 0) { item = {}; }
         var _this = this;
-        _this.$router.push({ name: item.viewname, query: item.openviewparam });
+        _this.openView(item.viewname, item.openviewparam);
     };
     return IBizIndexViewController;
 }(IBizMianViewController));

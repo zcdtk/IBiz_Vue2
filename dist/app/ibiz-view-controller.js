@@ -540,6 +540,19 @@ var IBizViewController = /** @class */ (function (_super) {
             Object.assign(params, _this.getParentData());
         }
     };
+    /**
+     * 打开视图--路由模式
+     *
+     * @param {string} name 路由名称
+     * @param {*} [query={}] 路由参数
+     * @param {*} [params] 其他参数 可选
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.openView = function (name, query, params) {
+        if (query === void 0) { query = {}; }
+        var _this = this;
+        _this.$router.push({ name: name, query: query });
+    };
     /*****************事件声明************************/
     /**
      * 控制器初始化完成

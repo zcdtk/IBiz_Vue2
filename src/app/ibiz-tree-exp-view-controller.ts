@@ -548,7 +548,7 @@ class IBizTreeExpViewController extends IBizMianViewController {
         // this.openView(routeString.toLocaleLowerCase(), viewParam);
 
         let _this = this;
-        _this.$router.push({ name: routeString.toLocaleLowerCase(), query: viewParam });
+        _this.openView(routeString.toLocaleLowerCase(), viewParam);
     }
 
     public static REFRESHMODE_CURRENTNODE = 'CURRENTNODE';

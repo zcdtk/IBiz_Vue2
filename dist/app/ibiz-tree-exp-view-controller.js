@@ -583,7 +583,7 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         Object.assign(viewParam, { refreshView: true });
         // this.openView(routeString.toLocaleLowerCase(), viewParam);
         var _this = this;
-        _this.$router.push({ name: routeString.toLocaleLowerCase(), query: viewParam });
+        _this.openView(routeString.toLocaleLowerCase(), viewParam);
     };
     IBizTreeExpViewController.REFRESHMODE_CURRENTNODE = 'CURRENTNODE';
     IBizTreeExpViewController.REFRESHMODE_PARENTNODE = 'PARENTNODE';

@@ -6415,6 +6415,19 @@ var IBizViewController = /** @class */ (function (_super) {
             Object.assign(params, _this.getParentData());
         }
     };
+    /**
+     * 打开视图--路由模式
+     *
+     * @param {string} name 路由名称
+     * @param {*} [query={}] 路由参数
+     * @param {*} [params] 其他参数 可选
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.openView = function (name, query, params) {
+        if (query === void 0) { query = {}; }
+        var _this = this;
+        _this.$router.push({ name: name, query: query });
+    };
     /*****************事件声明************************/
     /**
      * 控制器初始化完成
@@ -6893,7 +6906,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
     IBizIndexViewController.prototype.appMenuSelection = function (item) {
         if (item === void 0) { item = {}; }
         var _this = this;
-        _this.$router.push({ name: item.viewname, query: item.openviewparam });
+        _this.openView(item.viewname, item.openviewparam);
     };
     return IBizIndexViewController;
 }(IBizMianViewController));
@@ -9738,7 +9751,7 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         Object.assign(viewParam, { refreshView: true });
         // this.openView(routeString.toLocaleLowerCase(), viewParam);
         var _this = this;
-        _this.$router.push({ name: routeString.toLocaleLowerCase(), query: viewParam });
+        _this.openView(routeString.toLocaleLowerCase(), viewParam);
     };
     IBizTreeExpViewController.REFRESHMODE_CURRENTNODE = 'CURRENTNODE';
     IBizTreeExpViewController.REFRESHMODE_PARENTNODE = 'PARENTNODE';
@@ -9980,7 +9993,7 @@ var IBizExpViewController = /** @class */ (function (_super) {
         if (exp) {
             exp.setSelectItem(item);
         }
-        // this.openView(view.routelink, data);
+        this.openView(view.routelink, data);
     };
     return IBizExpViewController;
 }(IBizMianViewController));

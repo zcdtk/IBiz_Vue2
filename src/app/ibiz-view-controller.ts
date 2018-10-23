@@ -567,6 +567,19 @@ class IBizViewController extends IBizObject {
         }
     }
 
+    /**
+     * 打开视图--路由模式
+     *
+     * @param {string} name 路由名称
+     * @param {*} [query={}] 路由参数
+     * @param {*} [params] 其他参数 可选
+     * @memberof IBizViewController
+     */
+    public openView(name: string, query: any = {}, params?: any): void {
+        let _this = this;
+        _this.$router.push({ name: name, query: query });
+    }
+
     /*****************事件声明************************/
 
     /**

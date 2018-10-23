@@ -231,7 +231,7 @@ var IBizExpViewController = /** @class */ (function (_super) {
         if (exp) {
             exp.setSelectItem(item);
         }
-        // this.openView(view.routelink, data);
+        this.openView(view.routelink, data);
     };
     return IBizExpViewController;
 }(IBizMianViewController));

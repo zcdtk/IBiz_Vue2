@@ -231,6 +231,6 @@ class IBizExpViewController extends IBizMianViewController {
         if (exp) {
             exp.setSelectItem(item);
         }
-        // this.openView(view.routelink, data);
+        this.openView(view.routelink, data);
     }
 }
