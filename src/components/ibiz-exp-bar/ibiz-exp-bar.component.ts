@@ -1,7 +1,7 @@
 Vue.component('ibiz-exp-bar', {
     template: `
-        <i-menu theme="light" width="auto" class="ibiz-app-menu" @on-select="onSelect($event)" active-name="ctrl.selection.id">
-            <template v-for="(item0, index0) in ctrl.items">
+        <i-menu theme="light" width="auto" class="ibiz-app-menu" @on-select="onSelect($event)" active-name="ctrl.selection.id" :open-names="opendata">
+            <template v-for="(item0, index0) in items">
                 <!---  一级菜单有子项 begin  --->
                 <template v-if="item0.items && item0.items.length > 0">
                     <submenu :name="item0.id">
@@ -53,12 +53,28 @@ Vue.component('ibiz-exp-bar', {
     `,
     props: ['ctrl', 'viewController'],
     data: function () {
-        let data: any = {};
+        let data: any = { opendata: [], items: [] };
         return data;
     },
     mounted: function () {
     },
     methods: {
-
+        setOpenData(arr: Array<any>) {
+            let _this = this;
+            arr.forEach(item => {
+                if (item.items && item.items.length > 0) {
+                    _this.opendata.push(item.id);
+                    _this.setOpenData(item.items);
+                }
+            })
+        }
+    },
+    watch: {
+        'ctrl.items': function (val) {
+            if (val && Array.isArray(val)) {
+                this.items = [...val];
+                this.setOpenData(val);
+            }
+        }
     }
 });
