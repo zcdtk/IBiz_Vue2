@@ -201,6 +201,43 @@ class IBizTree extends IBizControl {
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
     }
 
+    /**
+     * 加载子数据
+     *
+     * @param {*} [node={}]
+     * @param {*} resolve
+     * @memberof IBizTree
+     */
+    public loadChildren(node: any = {}, resolve: any): void {
+        let _this = this;
+        let param: any = {
+            srfnodeid: node.id ? node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+            srfviewparam: JSON.stringify(_this.getViewController().getViewParam()),
+            srfctrlid: _this.getName()
+        };
+
+        _this.fire(IBizMDControl.BEFORELOAD, param);
+
+        _this.iBizHttp.post(_this.getBackendUrl() ,param).subscribe((result) => {
+            if (result.ret !== 0) {
+                _this.iBizNotification.error('错误', result.info);
+                resolve([]);
+                // _this.node.hasChildren = false;
+                return;
+            }
+            const _items = _this.formatDatas(result.items);
+            if (_items.length === 0) {
+                // this.node.hasChildren = false;
+            }
+            resolve(_items);
+
+        }, (error) => {
+            _this.iBizNotification.error('错误', error.info);
+            // this.node.hasChildren = false;
+            resolve([]);
+        });
+    }
+
     /*****************事件声明************************/
     /**
      * 选择变化

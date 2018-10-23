@@ -5372,6 +5372,40 @@ var IBizTree = /** @class */ (function (_super) {
         console.log(data);
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
     };
+    /**
+     * 加载子数据
+     *
+     * @param {*} [node={}]
+     * @param {*} resolve
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.loadChildren = function (node, resolve) {
+        if (node === void 0) { node = {}; }
+        var _this = this;
+        var param = {
+            srfnodeid: node.id ? node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+            srfviewparam: JSON.stringify(_this.getViewController().getViewParam()),
+            srfctrlid: _this.getName()
+        };
+        _this.fire(IBizMDControl.BEFORELOAD, param);
+        _this.iBizHttp.post(_this.getBackendUrl(), param).subscribe(function (result) {
+            if (result.ret !== 0) {
+                _this.iBizNotification.error('错误', result.info);
+                resolve([]);
+                // _this.node.hasChildren = false;
+                return;
+            }
+            var _items = _this.formatDatas(result.items);
+            if (_items.length === 0) {
+                // this.node.hasChildren = false;
+            }
+            resolve(_items);
+        }, function (error) {
+            _this.iBizNotification.error('错误', error.info);
+            // this.node.hasChildren = false;
+            resolve([]);
+        });
+    };
     /*****************事件声明************************/
     /**
      * 选择变化
