@@ -553,6 +553,21 @@ var IBizViewController = /** @class */ (function (_super) {
         var _this = this;
         _this.$router.push({ name: name, query: query });
     };
+    /**
+     * 打开模态框对象
+     *
+     * @param {*} [params={}] 参数
+     * @returns {Subject<any>} 流观察对象
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.openModal = function (params) {
+        if (params === void 0) { params = {}; }
+        var _this = this;
+        var subejct = new rxjs.Subject();
+        Object.assign(params, { subejct: subejct });
+        _this.$vue.$root.addModal(params);
+        return subejct;
+    };
     /*****************事件声明************************/
     /**
      * 控制器初始化完成

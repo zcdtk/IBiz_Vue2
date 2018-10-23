@@ -580,6 +580,21 @@ class IBizViewController extends IBizObject {
         _this.$router.push({ name: name, query: query });
     }
 
+    /**
+     * 打开模态框对象 
+     *
+     * @param {*} [params={}] 参数
+     * @returns {Subject<any>} 流观察对象
+     * @memberof IBizViewController
+     */
+    public openModal(params: any = {}): Subject<any> {
+        let _this = this;
+        const subejct: Subject<any> = new rxjs.Subject();
+        Object.assign(params, { subejct: subejct });
+        _this.$vue.$root.addModal(params);
+        return subejct;
+    }
+
     /*****************事件声明************************/
 
     /**
