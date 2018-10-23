@@ -110,6 +110,8 @@ var IBizTree = /** @class */ (function (_super) {
     IBizTree.prototype.formatDatas = function (datas) {
         datas.forEach(function (data) {
             data.label = data.text;
+            data.children = [];
+            data.isLeaf = true;
         });
         return datas;
     };
@@ -198,7 +200,6 @@ var IBizTree = /** @class */ (function (_super) {
      */
     IBizTree.prototype.nodeSelect = function (data) {
         if (data === void 0) { data = {}; }
-        console.log(data);
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
     };
     /**

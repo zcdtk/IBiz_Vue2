@@ -5280,6 +5280,8 @@ var IBizTree = /** @class */ (function (_super) {
     IBizTree.prototype.formatDatas = function (datas) {
         datas.forEach(function (data) {
             data.label = data.text;
+            data.children = [];
+            data.isLeaf = true;
         });
         return datas;
     };
@@ -5368,7 +5370,6 @@ var IBizTree = /** @class */ (function (_super) {
      */
     IBizTree.prototype.nodeSelect = function (data) {
         if (data === void 0) { data = {}; }
-        console.log(data);
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
     };
     /**
@@ -5617,9 +5618,19 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
             return;
         }
     };
-    IBizTreeExpBar.prototype.onTreeContextMenu = function (params) {
+    /**
+     *  树导航选中
+     *
+     * @param {Array<any>} nodes
+     * @memberof IBizTreeExpBar
+     */
+    IBizTreeExpBar.prototype.onTreeContextMenu = function (nodes) {
         var _this = this;
-        var node = params.node;
+        // this.node = {};
+        if (nodes.length > 0) {
+            // Object.assign(this.node, nodes[0]);
+            _this.onTreeSelectionChange([nodes[0]]);
+        }
     };
     IBizTreeExpBar.prototype.fetchCat = function (backendurl, arg) {
     };

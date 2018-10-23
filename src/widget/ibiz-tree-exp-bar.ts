@@ -201,9 +201,20 @@ class IBizTreeExpBar extends IBizControl {
             return;
         }
     }
-    public onTreeContextMenu(params): void {
+
+    /**
+     *  树导航选中
+     *
+     * @param {Array<any>} nodes
+     * @memberof IBizTreeExpBar
+     */
+    public onTreeContextMenu(nodes: Array<any>): void {
         var _this = this;
-        var node = params.node;
+        // this.node = {};
+        if (nodes.length > 0) {
+            // Object.assign(this.node, nodes[0]);
+            _this.onTreeSelectionChange([nodes[0]]);
+        }
 
     }
     public fetchCat(backendurl, arg): void {

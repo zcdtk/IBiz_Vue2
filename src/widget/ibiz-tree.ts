@@ -106,6 +106,8 @@ class IBizTree extends IBizControl {
     private formatDatas(datas: Array<any>): Array<any> {
         datas.forEach((data) => {
             data.label = data.text;
+            data.children = [];
+            data.isLeaf = true;
         });
         return datas;
     }
@@ -196,7 +198,6 @@ class IBizTree extends IBizControl {
      * @memberof IBizTree
      */
     public nodeSelect(data: any = {}): void {
-        console.log(data);
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
     }
 
