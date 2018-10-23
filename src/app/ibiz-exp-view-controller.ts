@@ -38,24 +38,7 @@ class IBizExpViewController extends IBizMianViewController {
      * @memberof IBizExpViewController
      */
     public onInit(): void {
-
-    }
-
-    /**
-     * 初始化导航部件
-     * 
-     * @memberof IBizExpViewController
-     */
-    public onInitComponents(): void {
-        
-    }
-
-    /**
-     * 导航部件加载
-     * 
-     * @memberof IBizExpViewController
-     */
-    public onLoad(): void {
+        super.onInit();
         const expCtrl = this.getExpCtrl();
         if (expCtrl) {
             expCtrl.load({});

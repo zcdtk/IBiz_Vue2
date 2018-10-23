@@ -53,20 +53,7 @@ var IBizExpViewController = /** @class */ (function (_super) {
      * @memberof IBizExpViewController
      */
     IBizExpViewController.prototype.onInit = function () {
-    };
-    /**
-     * 初始化导航部件
-     *
-     * @memberof IBizExpViewController
-     */
-    IBizExpViewController.prototype.onInitComponents = function () {
-    };
-    /**
-     * 导航部件加载
-     *
-     * @memberof IBizExpViewController
-     */
-    IBizExpViewController.prototype.onLoad = function () {
+        _super.prototype.onInit.call(this);
         var expCtrl = this.getExpCtrl();
         if (expCtrl) {
             expCtrl.load({});
