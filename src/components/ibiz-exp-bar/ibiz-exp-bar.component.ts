@@ -1,7 +1,7 @@
 Vue.component('ibiz-exp-bar', {
     template: `
         <i-menu theme="light" width="auto" class="ibiz-exp-bar" @on-select="onSelect($event)"  @on-open-change="onOpenChange($event)"
-          active-name="ctrl.selection.id" :open-names="['MY', 'MY:20', 'MYWFWORK']">
+          active-name="ctrl.selection.id">
             <template v-for="(item0, index0) in ctrl.items">
                 <!---  一级菜单有子项 begin  --->
                 <template v-if="item0.items && item0.items.length > 0">

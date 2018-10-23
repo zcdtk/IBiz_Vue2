@@ -53,9 +53,9 @@ class IBizWFExpBar extends IBizControl {
             const viewController = _this.getViewController();
             viewController.on(IBizViewController.INITED).subscribe(() => {
                 _this.UICounter = viewController.uicounters.get(_this.getUICounterName());
-                _this.onCounterChanged();
+                _this.onCounterChanged(_this.items);
                 _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe((data) => {
-                    _this.onCounterChanged();
+                    _this.onCounterChanged(_this.items);
                 });
             });
         }
@@ -75,9 +75,10 @@ class IBizWFExpBar extends IBizControl {
 
         _this.iBizHttp.post(this.getBackendUrl(), opts).subscribe((result) => {
             if (result.ret === 0) {
-                this.items = result.items;
-                this.onCounterChanged();
+                // this.items = result.items;
+                this.onCounterChanged(result.items);
                 this.formarItems(this.items);
+                this.items = [...result.items];
                 // this.fire(IBizTreeExpBar.LOADED, this.items[0]);
             }
         }, error => {
@@ -94,14 +95,15 @@ class IBizWFExpBar extends IBizControl {
      * @memberof IBizWFExpBar
      */
     private formarItems(_items: any): any {
+        let _this = this;
         _items.forEach(item => {
             if (item.checked) {
-                Object.assign(this.selectItem, item);
+                Object.assign(_this.selectItem, item);
             }
             item.bchecked = item.checked ? true : false;
 
             if (item.items) {
-                const hasItemCheck = this.formarItems(item.items);
+                const hasItemCheck = _this.formarItems(item.items);
                 if (hasItemCheck) {
                     item.expanded = true;
                 }
@@ -179,7 +181,7 @@ class IBizWFExpBar extends IBizControl {
      * @returns {void}
      * @memberof IBizWFExpBar
      */
-    private onCounterChanged(): void {
+    private onCounterChanged(items: Array<any>): void {
         if (!this.UICounter) {
             return;
         }
@@ -187,7 +189,7 @@ class IBizWFExpBar extends IBizControl {
         if (!data) {
             return;
         }
-        let bNeedReSelect: boolean = this.itemSelect(this.items, data);
+        let bNeedReSelect: boolean = this.itemSelect(items, data);
 
         if (bNeedReSelect) {
             this.selectItem = {};

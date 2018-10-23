@@ -5687,14 +5687,15 @@ var IBizWFExpBar = /** @class */ (function (_super) {
          * @memberof IBizWFExpBarService
          */
         _this_1.selectItem = {};
+        _this_1.opens = [];
         var _this = _this_1;
         if (_this.getViewController()) {
             var viewController_1 = _this.getViewController();
             viewController_1.on(IBizViewController.INITED).subscribe(function () {
                 _this.UICounter = viewController_1.uicounters.get(_this.getUICounterName());
-                _this.onCounterChanged();
+                _this.onCounterChanged(_this.items);
                 _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe(function (data) {
-                    _this.onCounterChanged();
+                    _this.onCounterChanged(_this.items);
                 });
             });
         }
@@ -5714,9 +5715,10 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         Object.assign(opts, { srfaction: 'fetch', srfctrlid: this.getName() });
         _this.iBizHttp.post(this.getBackendUrl(), opts).subscribe(function (result) {
             if (result.ret === 0) {
-                _this_1.items = result.items;
-                _this_1.onCounterChanged();
+                // this.items = result.items;
+                _this_1.onCounterChanged(result.items);
                 _this_1.formarItems(_this_1.items);
+                _this_1.items = result.items.slice();
                 // this.fire(IBizTreeExpBar.LOADED, this.items[0]);
             }
         }, function (error) {
@@ -5732,17 +5734,18 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.formarItems = function (_items) {
-        var _this_1 = this;
+        var _this = this;
         _items.forEach(function (item) {
             if (item.checked) {
-                Object.assign(_this_1.selectItem, item);
+                Object.assign(_this.selectItem, item);
             }
             item.bchecked = item.checked ? true : false;
             if (item.items) {
-                var hasItemCheck = _this_1.formarItems(item.items);
+                var hasItemCheck = _this.formarItems(item.items);
                 if (hasItemCheck) {
                     item.expanded = true;
                 }
+                _this.opens.push(item.id);
             }
             item.hassubmenu = item.items ? true : false;
         });
@@ -5811,7 +5814,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @returns {void}
      * @memberof IBizWFExpBar
      */
-    IBizWFExpBar.prototype.onCounterChanged = function () {
+    IBizWFExpBar.prototype.onCounterChanged = function (items) {
         if (!this.UICounter) {
             return;
         }
@@ -5819,7 +5822,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         if (!data) {
             return;
         }
-        var bNeedReSelect = this.itemSelect(this.items, data);
+        var bNeedReSelect = this.itemSelect(items, data);
         if (bNeedReSelect) {
             this.selectItem = {};
             Object.assign(this.selectItem, this.items[0]);
@@ -10104,7 +10107,7 @@ Vue.component('ibiz-form-item', {
 
 "use strict";
 Vue.component('ibiz-exp-bar', {
-    template: "\n        <i-menu theme=\"light\" width=\"auto\" class=\"ibiz-exp-bar\" @on-select=\"onSelect($event)\"  @on-open-change=\"onOpenChange($event)\"\n          active-name=\"ctrl.selection.id\" :open-names=\"['MY', 'MY:20', 'MYWFWORK']\">\n            <template v-for=\"(item0, index0) in ctrl.items\">\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                <template v-if=\"item0.items && item0.items.length > 0\">\n                    <submenu :name=\"item0.id\">\n                        <template slot=\"title\">\n                            <span>{{ item0.text }}</span>\n                            <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                        </template>\n                        <template v-for=\"(item1, index1) in item0.items\">\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                            <template v-if=\"item1.items && item1.items.length > 0\">\n                                <submenu :name=\"item1.id\">\n                                    <template slot=\"title\">\n                                        <span>{{ item1.text }}</span>\n                                        <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                    <template v-for=\"(item2, index2) in item1.items\">\n                                        <menu-item :name=\"item2.id\">\n                                            <span>{{ item2.text }}</span>\n                                            <span>&nbsp;&nbsp;<badge :count=\"item2.counterdata\"></badge></span>\n                                        </menu-item>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                                </submenu>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                            <template v-else>\n                                <menu-item :name=\"item1.id\">\n                                    <span>{{ item1.text }}</span>\n                                    <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                </menu-item>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                        </template>\n                    </submenu>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                <template v-else>\n                    <menu-item :name=\"item0.id\">\n                        <span>{{ item0.text }}</span>\n                        <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                    </menu-item>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n            </template>\n        </i-menu>\n    ",
+    template: "\n        <i-menu theme=\"light\" width=\"auto\" class=\"ibiz-exp-bar\" @on-select=\"onSelect($event)\"  @on-open-change=\"onOpenChange($event)\"\n          active-name=\"ctrl.selection.id\" :open-names=\"ctrl.opens\">\n            <template v-for=\"(item0, index0) in ctrl.items\">\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                <template v-if=\"item0.items && item0.items.length > 0\">\n                    <submenu :name=\"item0.id\">\n                        <template slot=\"title\">\n                            <span>{{ item0.text }}</span>\n                            <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                        </template>\n                        <template v-for=\"(item1, index1) in item0.items\">\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                            <template v-if=\"item1.items && item1.items.length > 0\">\n                                <submenu :name=\"item1.id\">\n                                    <template slot=\"title\">\n                                        <span>{{ item1.text }}</span>\n                                        <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                    <template v-for=\"(item2, index2) in item1.items\">\n                                        <menu-item :name=\"item2.id\">\n                                            <span>{{ item2.text }}</span>\n                                            <span>&nbsp;&nbsp;<badge :count=\"item2.counterdata\"></badge></span>\n                                        </menu-item>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                                </submenu>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                            <template v-else>\n                                <menu-item :name=\"item1.id\">\n                                    <span>{{ item1.text }}</span>\n                                    <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                </menu-item>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                        </template>\n                    </submenu>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                <template v-else>\n                    <menu-item :name=\"item0.id\">\n                        <span>{{ item0.text }}</span>\n                        <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                    </menu-item>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n            </template>\n        </i-menu>\n    ",
     props: ['ctrl', 'viewController'],
     data: function () {
         var data = { opendata: [] };

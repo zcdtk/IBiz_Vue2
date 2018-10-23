@@ -51,14 +51,15 @@ var IBizWFExpBar = /** @class */ (function (_super) {
          * @memberof IBizWFExpBarService
          */
         _this_1.selectItem = {};
+        _this_1.opens = [];
         var _this = _this_1;
         if (_this.getViewController()) {
             var viewController_1 = _this.getViewController();
             viewController_1.on(IBizViewController.INITED).subscribe(function () {
                 _this.UICounter = viewController_1.uicounters.get(_this.getUICounterName());
-                _this.onCounterChanged();
+                _this.onCounterChanged(_this.items);
                 _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe(function (data) {
-                    _this.onCounterChanged();
+                    _this.onCounterChanged(_this.items);
                 });
             });
         }
@@ -78,9 +79,10 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         Object.assign(opts, { srfaction: 'fetch', srfctrlid: this.getName() });
         _this.iBizHttp.post(this.getBackendUrl(), opts).subscribe(function (result) {
             if (result.ret === 0) {
-                _this_1.items = result.items;
-                _this_1.onCounterChanged();
+                // this.items = result.items;
+                _this_1.onCounterChanged(result.items);
                 _this_1.formarItems(_this_1.items);
+                _this_1.items = result.items.slice();
                 // this.fire(IBizTreeExpBar.LOADED, this.items[0]);
             }
         }, function (error) {
@@ -96,17 +98,18 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.formarItems = function (_items) {
-        var _this_1 = this;
+        var _this = this;
         _items.forEach(function (item) {
             if (item.checked) {
-                Object.assign(_this_1.selectItem, item);
+                Object.assign(_this.selectItem, item);
             }
             item.bchecked = item.checked ? true : false;
             if (item.items) {
-                var hasItemCheck = _this_1.formarItems(item.items);
+                var hasItemCheck = _this.formarItems(item.items);
                 if (hasItemCheck) {
                     item.expanded = true;
                 }
+                _this.opens.push(item.id);
             }
             item.hassubmenu = item.items ? true : false;
         });
@@ -175,7 +178,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @returns {void}
      * @memberof IBizWFExpBar
      */
-    IBizWFExpBar.prototype.onCounterChanged = function () {
+    IBizWFExpBar.prototype.onCounterChanged = function (items) {
         if (!this.UICounter) {
             return;
         }
@@ -183,7 +186,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         if (!data) {
             return;
         }
-        var bNeedReSelect = this.itemSelect(this.items, data);
+        var bNeedReSelect = this.itemSelect(items, data);
         if (bNeedReSelect) {
             this.selectItem = {};
             Object.assign(this.selectItem, this.items[0]);
