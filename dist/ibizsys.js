@@ -5248,7 +5248,6 @@ var IBizTree = /** @class */ (function (_super) {
             }
             _this.items = _this.formatDatas(result.items).slice();
             _this.fire(IBizTree.CONTEXTMENU, _this.items);
-            console.log(result);
         }, function (error) {
             _this.iBizNotification.error('错误', error.info);
         });
