@@ -7,6 +7,7 @@ Vue.component('ibiz-exp-bar', {
                     <submenu :name="item0.id">
                         <template slot="title">
                             <span>{{ item0.text }}</span>
+                            <span>&nbsp;&nbsp;<badge :count="item0.counterdata"></badge></span>
                         </template>
                         <template v-for="(item1, index1) in item0.items">
                             <!---  二级菜单有子项 begin  --->
@@ -14,11 +15,13 @@ Vue.component('ibiz-exp-bar', {
                                 <submenu :name="item1.id">
                                     <template slot="title">
                                         <span>{{ item1.text }}</span>
+                                        <span>&nbsp;&nbsp;<badge :count="item1.counterdata"></badge></span>
                                     </template>
                                     <!---  三级菜单 begin  --->
                                     <template v-for="(item2, index2) in item1.items">
                                         <menu-item :name="item2.id">
                                             <span>{{ item2.text }}</span>
+                                            <span>&nbsp;&nbsp;<badge :count="item2.counterdata"></badge></span>
                                         </menu-item>
                                     </template>
                                     <!---  三级菜单有 begin  --->
@@ -29,6 +32,7 @@ Vue.component('ibiz-exp-bar', {
                             <template v-else>
                                 <menu-item :name="item1.id">
                                     <span>{{ item1.text }}</span>
+                                    <span>&nbsp;&nbsp;<badge :count="item1.counterdata"></badge></span>
                                 </menu-item>
                             </template>
                             <!---  二级菜单无子项 end  --->
@@ -40,6 +44,7 @@ Vue.component('ibiz-exp-bar', {
                 <template v-else>
                     <menu-item :name="item0.id">
                         <span>{{ item0.text }}</span>
+                        <span>&nbsp;&nbsp;<badge :count="item0.counterdata"></badge></span>
                     </menu-item>
                 </template>
                 <!---  一级菜单无子项 end  --->
