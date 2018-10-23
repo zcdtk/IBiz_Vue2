@@ -22,13 +22,12 @@ class IBizExpViewController extends IBizMianViewController {
         super.init(opts);
         const expCtrl = this.getExpCtrl();
         if (expCtrl) {
-            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE, (item) => {
+            expCtrl.on(IBizWFExpBar.SELECTIONCHANGE).subscribe((item) => {
                 this.onExpCtrlSelectionChange(item);
             });
-
-            // expCtrl.on(IBizTreeExpBar.LOADED, (item) => {
-            //     this.onExpCtrlLoaded(item);
-            // });
+            expCtrl.on(IBizWFExpBar.LOADED).subscribe((item) => {
+                this.onExpCtrlLoaded(item);
+            });
         }
     }
 
@@ -151,22 +150,6 @@ class IBizExpViewController extends IBizMianViewController {
     }
 
     /**
-     * 节点路由是否存在
-     *
-     * @param {string} routeLink
-     * @returns {boolean}
-     * @memberof IBizExpViewController
-     */
-    public hasRoute(routeLink: string): boolean {
-        let hasRoute = false;
-        // if (this.$routeActive && this.$routeActive.routeConfig && this.$routeActive.routeConfig.children !== null) {
-        //     const index: number = this.$routeActive.routeConfig.children.findIndex(item => Object.is(item.path, routeLink));
-        //     hasRoute = (index !== -1) ? true : false;
-        // }
-        return hasRoute;
-    }
-
-    /**
      * 是否需要手动跳转路由
      * 
      * @private
@@ -198,10 +181,6 @@ class IBizExpViewController extends IBizMianViewController {
         }
         const view = this.getExpItemView(item.expitem);
         if (!view) {
-            return;
-        }
-        const hasRouter: boolean = this.hasRoute(view.routelink);
-        if (!hasRouter) {
             return;
         }
 

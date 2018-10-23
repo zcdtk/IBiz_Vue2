@@ -79,7 +79,7 @@ class IBizWFExpBar extends IBizControl {
                 this.onCounterChanged(result.items);
                 this.formarItems(this.items);
                 this.items = [...result.items];
-                // this.fire(IBizTreeExpBar.LOADED, this.items[0]);
+                this.fire(IBizWFExpBar.LOADED, this.items[0]);
             }
         }, error => {
             console.log(error);
@@ -114,10 +114,10 @@ class IBizWFExpBar extends IBizControl {
 
     /**
      * 菜单项选中处理
-     * 
-     * @param {*} item 
-     * @returns {void} 
-     * @memberof IBizTreeExpBarService
+     *
+     * @param {*} [item={}]
+     * @returns {void}
+     * @memberof IBizWFExpBar
      */
     public selection(item: any = {}): void {
         if (item.items && item.items.length > 0) {
@@ -130,7 +130,7 @@ class IBizWFExpBar extends IBizControl {
         this.selectItem = {};
         Object.assign(this.selectItem, item);
 
-        this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+        this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
     }
 
 
@@ -147,7 +147,7 @@ class IBizWFExpBar extends IBizControl {
         this.selectItem = {};
         Object.assign(this.selectItem, item);
 
-        this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+        this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
     }
 
     /**
@@ -194,7 +194,7 @@ class IBizWFExpBar extends IBizControl {
         if (bNeedReSelect) {
             this.selectItem = {};
             Object.assign(this.selectItem, this.items[0]);
-            this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+            this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
         }
     }
 
@@ -243,4 +243,21 @@ class IBizWFExpBar extends IBizControl {
     public getItems(): Array<any> {
         return this.items;
     }
+
+    /*****************事件声明************************/
+    /**
+     * 选择变化
+     *
+     * @static
+     * @memberof IBizWFExpBar
+     */
+    public static SELECTIONCHANGE = "SELECTIONCHANGE";
+
+    /**
+     * 加载完成
+     *
+     * @static
+     * @memberof IBizWFExpBar
+     */
+    public static LOADED = 'LOADED';
 }

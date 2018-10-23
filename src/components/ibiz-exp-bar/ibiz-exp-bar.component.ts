@@ -69,10 +69,31 @@ Vue.component('ibiz-exp-bar', {
                 }
             })
         },
-        onSelect(name:string) {
-            console.log(name);
+        getItem(items: Array<any>, id) {
+            let _this = this;
+            let data: any = {};
+            items.some(_item => {
+                if (Object.is(id, _item.id)) {
+                    Object.assign(data, _item);
+                    return true;
+                }
+                if (_item.items && _item.items.length > 0) {
+                    let subItem = _this.getItem(_item.items, id);
+                    if (Object.keys(subItem).length > 0) {
+                        Object.assign(data, subItem);
+                        return true;
+                    }
+                }
+            });
+            return data;
         },
-        onOpenChange(submenu:Array<any>) {
+        onSelect(name: string) {
+            console.log(name);
+            let _this = this;
+            let _data = _this.getItem(_this.ctrl.items, name);
+            _this.ctrl.selection(_data);
+        },
+        onOpenChange(submenu: Array<any>) {
             console.log(submenu);
         },
     },

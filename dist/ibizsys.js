@@ -5687,7 +5687,6 @@ var IBizWFExpBar = /** @class */ (function (_super) {
          * @memberof IBizWFExpBarService
          */
         _this_1.selectItem = {};
-        _this_1.opens = [];
         var _this = _this_1;
         if (_this.getViewController()) {
             var viewController_1 = _this.getViewController();
@@ -5719,7 +5718,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
                 _this_1.onCounterChanged(result.items);
                 _this_1.formarItems(_this_1.items);
                 _this_1.items = result.items.slice();
-                // this.fire(IBizTreeExpBar.LOADED, this.items[0]);
+                _this_1.fire(IBizWFExpBar.LOADED, _this_1.items[0]);
             }
         }, function (error) {
             console.log(error);
@@ -5745,7 +5744,6 @@ var IBizWFExpBar = /** @class */ (function (_super) {
                 if (hasItemCheck) {
                     item.expanded = true;
                 }
-                _this.opens.push(item.id);
             }
             item.hassubmenu = item.items ? true : false;
         });
@@ -5753,9 +5751,9 @@ var IBizWFExpBar = /** @class */ (function (_super) {
     /**
      * 菜单项选中处理
      *
-     * @param {*} item
+     * @param {*} [item={}]
      * @returns {void}
-     * @memberof IBizTreeExpBarService
+     * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.selection = function (item) {
         if (item === void 0) { item = {}; }
@@ -5767,7 +5765,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         }
         this.selectItem = {};
         Object.assign(this.selectItem, item);
-        this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+        this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
     };
     /**
      * 菜单节点选中处理
@@ -5782,7 +5780,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         }
         this.selectItem = {};
         Object.assign(this.selectItem, item);
-        this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+        this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
     };
     /**
      * 获取计数器名称
@@ -5826,7 +5824,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         if (bNeedReSelect) {
             this.selectItem = {};
             Object.assign(this.selectItem, this.items[0]);
-            this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+            this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
         }
     };
     /**
@@ -5873,6 +5871,21 @@ var IBizWFExpBar = /** @class */ (function (_super) {
     IBizWFExpBar.prototype.getItems = function () {
         return this.items;
     };
+    /*****************事件声明************************/
+    /**
+     * 选择变化
+     *
+     * @static
+     * @memberof IBizWFExpBar
+     */
+    IBizWFExpBar.SELECTIONCHANGE = "SELECTIONCHANGE";
+    /**
+     * 加载完成
+     *
+     * @static
+     * @memberof IBizWFExpBar
+     */
+    IBizWFExpBar.LOADED = 'LOADED';
     return IBizWFExpBar;
 }(IBizControl));
 
@@ -9804,12 +9817,12 @@ var IBizExpViewController = /** @class */ (function (_super) {
         _super.prototype.init.call(this, opts);
         var expCtrl = this.getExpCtrl();
         if (expCtrl) {
-            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE, function (item) {
+            expCtrl.on(IBizWFExpBar.SELECTIONCHANGE).subscribe(function (item) {
                 _this_1.onExpCtrlSelectionChange(item);
             });
-            // expCtrl.on(IBizTreeExpBar.LOADED, (item) => {
-            //     this.onExpCtrlLoaded(item);
-            // });
+            expCtrl.on(IBizWFExpBar.LOADED).subscribe(function (item) {
+                _this_1.onExpCtrlLoaded(item);
+            });
         }
     };
     /**
@@ -9922,21 +9935,6 @@ var IBizExpViewController = /** @class */ (function (_super) {
         return undefined;
     };
     /**
-     * 节点路由是否存在
-     *
-     * @param {string} routeLink
-     * @returns {boolean}
-     * @memberof IBizExpViewController
-     */
-    IBizExpViewController.prototype.hasRoute = function (routeLink) {
-        var hasRoute = false;
-        // if (this.$routeActive && this.$routeActive.routeConfig && this.$routeActive.routeConfig.children !== null) {
-        //     const index: number = this.$routeActive.routeConfig.children.findIndex(item => Object.is(item.path, routeLink));
-        //     hasRoute = (index !== -1) ? true : false;
-        // }
-        return hasRoute;
-    };
-    /**
      * 是否需要手动跳转路由
      *
      * @private
@@ -9968,10 +9966,6 @@ var IBizExpViewController = /** @class */ (function (_super) {
         }
         var view = this.getExpItemView(item.expitem);
         if (!view) {
-            return;
-        }
-        var hasRouter = this.hasRoute(view.routelink);
-        if (!hasRouter) {
             return;
         }
         var data = {};
@@ -10107,7 +10101,7 @@ Vue.component('ibiz-form-item', {
 
 "use strict";
 Vue.component('ibiz-exp-bar', {
-    template: "\n        <i-menu theme=\"light\" width=\"auto\" class=\"ibiz-exp-bar\" @on-select=\"onSelect($event)\"  @on-open-change=\"onOpenChange($event)\"\n          active-name=\"ctrl.selection.id\" :open-names=\"ctrl.opens\">\n            <template v-for=\"(item0, index0) in ctrl.items\">\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                <template v-if=\"item0.items && item0.items.length > 0\">\n                    <submenu :name=\"item0.id\">\n                        <template slot=\"title\">\n                            <span>{{ item0.text }}</span>\n                            <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                        </template>\n                        <template v-for=\"(item1, index1) in item0.items\">\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                            <template v-if=\"item1.items && item1.items.length > 0\">\n                                <submenu :name=\"item1.id\">\n                                    <template slot=\"title\">\n                                        <span>{{ item1.text }}</span>\n                                        <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                    <template v-for=\"(item2, index2) in item1.items\">\n                                        <menu-item :name=\"item2.id\">\n                                            <span>{{ item2.text }}</span>\n                                            <span>&nbsp;&nbsp;<badge :count=\"item2.counterdata\"></badge></span>\n                                        </menu-item>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                                </submenu>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                            <template v-else>\n                                <menu-item :name=\"item1.id\">\n                                    <span>{{ item1.text }}</span>\n                                    <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                </menu-item>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                        </template>\n                    </submenu>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                <template v-else>\n                    <menu-item :name=\"item0.id\">\n                        <span>{{ item0.text }}</span>\n                        <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                    </menu-item>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n            </template>\n        </i-menu>\n    ",
+    template: "\n        <i-menu theme=\"light\" width=\"auto\" class=\"ibiz-exp-bar\" @on-select=\"onSelect($event)\"  @on-open-change=\"onOpenChange($event)\"\n          active-name=\"ctrl.selection.id\">\n            <template v-for=\"(item0, index0) in ctrl.items\">\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                <template v-if=\"item0.items && item0.items.length > 0\">\n                    <submenu :name=\"item0.id\">\n                        <template slot=\"title\">\n                            <span>{{ item0.text }}</span>\n                            <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                        </template>\n                        <template v-for=\"(item1, index1) in item0.items\">\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                            <template v-if=\"item1.items && item1.items.length > 0\">\n                                <submenu :name=\"item1.id\">\n                                    <template slot=\"title\">\n                                        <span>{{ item1.text }}</span>\n                                        <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                    <template v-for=\"(item2, index2) in item1.items\">\n                                        <menu-item :name=\"item2.id\">\n                                            <span>{{ item2.text }}</span>\n                                            <span>&nbsp;&nbsp;<badge :count=\"item2.counterdata\"></badge></span>\n                                        </menu-item>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                                </submenu>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                            <template v-else>\n                                <menu-item :name=\"item1.id\">\n                                    <span>{{ item1.text }}</span>\n                                    <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                </menu-item>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                        </template>\n                    </submenu>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                <template v-else>\n                    <menu-item :name=\"item0.id\">\n                        <span>{{ item0.text }}</span>\n                        <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                    </menu-item>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n            </template>\n        </i-menu>\n    ",
     props: ['ctrl', 'viewController'],
     data: function () {
         var data = { opendata: [] };
@@ -10125,8 +10119,29 @@ Vue.component('ibiz-exp-bar', {
                 }
             });
         },
+        getItem: function (items, id) {
+            var _this = this;
+            var data = {};
+            items.some(function (_item) {
+                if (Object.is(id, _item.id)) {
+                    Object.assign(data, _item);
+                    return true;
+                }
+                if (_item.items && _item.items.length > 0) {
+                    var subItem = _this.getItem(_item.items, id);
+                    if (Object.keys(subItem).length > 0) {
+                        Object.assign(data, subItem);
+                        return true;
+                    }
+                }
+            });
+            return data;
+        },
         onSelect: function (name) {
             console.log(name);
+            var _this = this;
+            var _data = _this.getItem(_this.ctrl.items, name);
+            _this.ctrl.selection(_data);
         },
         onOpenChange: function (submenu) {
             console.log(submenu);

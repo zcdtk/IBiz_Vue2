@@ -51,7 +51,6 @@ var IBizWFExpBar = /** @class */ (function (_super) {
          * @memberof IBizWFExpBarService
          */
         _this_1.selectItem = {};
-        _this_1.opens = [];
         var _this = _this_1;
         if (_this.getViewController()) {
             var viewController_1 = _this.getViewController();
@@ -83,7 +82,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
                 _this_1.onCounterChanged(result.items);
                 _this_1.formarItems(_this_1.items);
                 _this_1.items = result.items.slice();
-                // this.fire(IBizTreeExpBar.LOADED, this.items[0]);
+                _this_1.fire(IBizWFExpBar.LOADED, _this_1.items[0]);
             }
         }, function (error) {
             console.log(error);
@@ -109,7 +108,6 @@ var IBizWFExpBar = /** @class */ (function (_super) {
                 if (hasItemCheck) {
                     item.expanded = true;
                 }
-                _this.opens.push(item.id);
             }
             item.hassubmenu = item.items ? true : false;
         });
@@ -117,9 +115,9 @@ var IBizWFExpBar = /** @class */ (function (_super) {
     /**
      * 菜单项选中处理
      *
-     * @param {*} item
+     * @param {*} [item={}]
      * @returns {void}
-     * @memberof IBizTreeExpBarService
+     * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.selection = function (item) {
         if (item === void 0) { item = {}; }
@@ -131,7 +129,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         }
         this.selectItem = {};
         Object.assign(this.selectItem, item);
-        this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+        this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
     };
     /**
      * 菜单节点选中处理
@@ -146,7 +144,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         }
         this.selectItem = {};
         Object.assign(this.selectItem, item);
-        this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+        this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
     };
     /**
      * 获取计数器名称
@@ -190,7 +188,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         if (bNeedReSelect) {
             this.selectItem = {};
             Object.assign(this.selectItem, this.items[0]);
-            this.fire(IBizTreeExpBar.SELECTIONCHANGE, this.selectItem);
+            this.fire(IBizWFExpBar.SELECTIONCHANGE, this.selectItem);
         }
     };
     /**
@@ -237,5 +235,20 @@ var IBizWFExpBar = /** @class */ (function (_super) {
     IBizWFExpBar.prototype.getItems = function () {
         return this.items;
     };
+    /*****************事件声明************************/
+    /**
+     * 选择变化
+     *
+     * @static
+     * @memberof IBizWFExpBar
+     */
+    IBizWFExpBar.SELECTIONCHANGE = "SELECTIONCHANGE";
+    /**
+     * 加载完成
+     *
+     * @static
+     * @memberof IBizWFExpBar
+     */
+    IBizWFExpBar.LOADED = 'LOADED';
     return IBizWFExpBar;
 }(IBizControl));
