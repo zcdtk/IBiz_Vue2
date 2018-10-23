@@ -51,13 +51,13 @@ class IBizWFExpBar extends IBizControl {
 
         if (_this.getViewController()) {
             const viewController = _this.getViewController();
-            // viewController.on(IBizViewController.INITED, () => {
-            //     _this.UICounter = viewController.getUICounter(_this.getUICounterName());
-            //     _this.onCounterChanged();
-            //     _this.UICounter.on(COUNTERCHANGE, (data) => {
-            //         _this.onCounterChanged();
-            //     });
-            // });
+            viewController.on(IBizViewController.INITED).subscribe(() => {
+                _this.UICounter = viewController.getUICounter(_this.getUICounterName());
+                _this.onCounterChanged();
+                _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe((data) => {
+                    _this.onCounterChanged();
+                });
+            });
         }
     }
 

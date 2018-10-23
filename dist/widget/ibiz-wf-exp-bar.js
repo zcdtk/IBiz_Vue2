@@ -53,14 +53,14 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         _this_1.selectItem = {};
         var _this = _this_1;
         if (_this.getViewController()) {
-            var viewController = _this.getViewController();
-            // viewController.on(IBizViewController.INITED, () => {
-            //     _this.UICounter = viewController.getUICounter(_this.getUICounterName());
-            //     _this.onCounterChanged();
-            //     _this.UICounter.on(COUNTERCHANGE, (data) => {
-            //         _this.onCounterChanged();
-            //     });
-            // });
+            var viewController_1 = _this.getViewController();
+            viewController_1.on(IBizViewController.INITED).subscribe(function () {
+                _this.UICounter = viewController_1.getUICounter(_this.getUICounterName());
+                _this.onCounterChanged();
+                _this.UICounter.on(IBizCounter.COUNTERCHANGED).subscribe(function (data) {
+                    _this.onCounterChanged();
+                });
+            });
         }
         return _this_1;
     }
