@@ -42,6 +42,8 @@ class IBizViewController extends IBizObject {
 
     public $route: any;
 
+    private viewType: string = '';
+
     /**
      * Creates an instance of IBizViewController.
      * 创建 IBizViewController 实例对象
@@ -71,6 +73,9 @@ class IBizViewController extends IBizObject {
         _this.setViewParam(vue.$route.query);
         if (vue.params) {
             _this.setViewParam(vue.params);
+        }
+        if (vue.viewType) {
+            _this.setViewType(vue.viewType);
         }
         _this.init(_this.getViewParam());
     }
@@ -621,8 +626,30 @@ class IBizViewController extends IBizObject {
         let win: any = window;
         win.open(url, '_blank');
         // if (!url.startsWith('https://') || !url.startsWith('http://')) {
-           
+
         // }
+    }
+
+    /**
+     * 设置视图类型
+     *
+     * @param {string} type
+     * @memberof IBizViewController
+     */
+    public setViewType(type: string) {
+        let _this = this;
+        _this.viewType = type;
+    }
+
+    /**
+     * 获取视图类型
+     *
+     * @returns {string}
+     * @memberof IBizViewController
+     */
+    public getViewType(): string {
+        let _this = this;
+        return _this.viewType;
     }
 
     /*****************事件声明************************/

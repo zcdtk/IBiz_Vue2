@@ -5,12 +5,22 @@ Vue.component('ibiz-modal', {
     data: function () {
         var data = {
             isShow: true,
-            width: 'calc(100% - 40px)',
+            width: 0,
             title: '',
             modalviewname: '',
             subject: null,
             viewparam: {}
         };
+        var width = 600;
+        if (window && window.innerWidth > 100) {
+            if (window.innerWidth > 100) {
+                width = window.innerWidth - 100;
+            }
+            else {
+                width = window.innerWidth;
+            }
+        }
+        Object.assign(data, { width: width });
         return data;
     },
     mounted: function () {

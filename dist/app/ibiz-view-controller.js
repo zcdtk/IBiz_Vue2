@@ -42,6 +42,7 @@ var IBizViewController = /** @class */ (function (_super) {
         _this_1.viewparam = {};
         _this_1.updatepanels = new Map();
         _this_1.controls = new Map();
+        _this_1.viewType = '';
         _this_1.containerid = opts.containerid;
         _this_1.appctx = opts.appctx;
         _this_1.backendurl = opts.backendurl;
@@ -62,6 +63,9 @@ var IBizViewController = /** @class */ (function (_super) {
         _this.setViewParam(vue.$route.query);
         if (vue.params) {
             _this.setViewParam(vue.params);
+        }
+        if (vue.viewType) {
+            _this.setViewType(vue.viewType);
         }
         _this.init(_this.getViewParam());
     };
@@ -595,6 +599,26 @@ var IBizViewController = /** @class */ (function (_super) {
         win.open(url, '_blank');
         // if (!url.startsWith('https://') || !url.startsWith('http://')) {
         // }
+    };
+    /**
+     * 设置视图类型
+     *
+     * @param {string} type
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.setViewType = function (type) {
+        var _this = this;
+        _this.viewType = type;
+    };
+    /**
+     * 获取视图类型
+     *
+     * @returns {string}
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.getViewType = function () {
+        var _this = this;
+        return _this.viewType;
     };
     /*****************事件声明************************/
     /**
