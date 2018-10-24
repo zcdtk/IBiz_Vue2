@@ -1,7 +1,7 @@
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
-    props: ['params'],
+    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
+    props: ['key', 'params', 'index'],
     data: function () {
         var data = {
             showmodal: true,
@@ -39,7 +39,7 @@ Vue.component('ibiz-modal', {
         }
     },
     methods: {
-        'close': function (result) {
+        close: function (result) {
             this.$emit("on-close", this.index);
             console.log(result);
             // if (this.callback) {
@@ -52,8 +52,11 @@ Vue.component('ibiz-modal', {
                 this.subject.unsubscribe();
             }
         },
-        'dataChange': function (result) {
+        dataChange: function (result) {
             console.log(result);
+        },
+        onVisibleChange: function ($event) {
+            console.log($event);
         }
     }
 });

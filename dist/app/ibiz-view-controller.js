@@ -577,10 +577,10 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.openModal = function (params) {
         if (params === void 0) { params = {}; }
         var _this = this;
-        var subejct = new rxjs.Subject();
-        Object.assign(params, { subejct: subejct });
+        var subject = new rxjs.Subject();
+        Object.assign(params, { subject: subject });
         _this.$vue.$root.addModal(params);
-        return subejct;
+        return subject;
     };
     /**
      * 关闭模态框

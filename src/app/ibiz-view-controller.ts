@@ -604,10 +604,10 @@ class IBizViewController extends IBizObject {
      */
     public openModal(params: any = {}): Subject<any> {
         let _this = this;
-        const subejct: Subject<any> = new rxjs.Subject();
-        Object.assign(params, { subejct: subejct });
+        const subject: Subject<any> = new rxjs.Subject();
+        Object.assign(params, { subject: subject });
         _this.$vue.$root.addModal(params);
-        return subejct;
+        return subject;
     }
 
     /**
