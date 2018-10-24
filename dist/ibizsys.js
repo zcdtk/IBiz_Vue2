@@ -10233,7 +10233,7 @@ Vue.component('ibiz-exp-bar', {
 
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\"></component>\n        </modal>\n    ",
+    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
     props: ['params'],
     data: function () {
         var data = {
@@ -10278,6 +10278,15 @@ Vue.component('ibiz-modal', {
             // if (this.callback) {
             //     this.callback(result)
             // }
+            if (result && Object.is(result.ret, 'OK')) {
+                this.subject.next(result);
+            }
+            else {
+                this.subject.unsubscribe();
+            }
+        },
+        'dataChange': function (result) {
+            console.log(result);
         }
     }
 });
