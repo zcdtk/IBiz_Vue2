@@ -574,12 +574,24 @@ var IBizViewController = /** @class */ (function (_super) {
      * @param {string} url
      * @memberof IBizViewController
      */
-    IBizViewController.prototype.openWindow = function (url) {
+    IBizViewController.prototype.openWindow = function (viewurl, parsms) {
+        if (parsms === void 0) { parsms = {}; }
         var _this = this;
-        var win = window;
-        if (!Object.is(url, '') && (!url.startsWith('https://') || !url.startsWith('http://'))) {
-            win.open(url, '_blank');
+        var url_datas = [];
+        var params_names = Object.keys(parsms);
+        params_names.forEach(function (name) {
+            if (name && parsms[name] && !Object.is(parsms[name], '')) {
+                url_datas.push(name + "=" + parsms[name]);
+            }
+        });
+        var url = "/" + IBizEnvironment.SysName + "/" + IBizEnvironment.BaseUrl.toLowerCase() + viewurl;
+        if (url_datas.length > 0) {
+            url = url + "?" + url_datas.join('&');
         }
+        var win = window;
+        win.open(url, '_blank');
+        // if (!url.startsWith('https://') || !url.startsWith('http://')) {
+        // }
     };
     /*****************事件声明************************/
     /**

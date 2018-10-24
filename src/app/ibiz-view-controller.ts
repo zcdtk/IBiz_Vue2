@@ -601,12 +601,25 @@ class IBizViewController extends IBizObject {
      * @param {string} url
      * @memberof IBizViewController
      */
-    public openWindow(url: string): void {
+    public openWindow(viewurl: string, parsms: any = {}): void {
         let _this = this;
-        let win: any = window;
-        if (!Object.is(url, '') && (!url.startsWith('https://') || !url.startsWith('http://'))) {
-            win.open(url, '_blank');
+
+        let url_datas: Array<string> = [];
+        const params_names = Object.keys(parsms);
+        params_names.forEach(name => {
+            if (name && parsms[name] && !Object.is(parsms[name], '')) {
+                url_datas.push(`${name}=${parsms[name]}`)
+            }
+        })
+        let url = `/${IBizEnvironment.SysName}/${IBizEnvironment.BaseUrl.toLowerCase()}${viewurl}`;
+        if (url_datas.length > 0) {
+            url = `${url}?${url_datas.join('&')}`;
         }
+        let win: any = window;
+        win.open(url, '_blank');
+        // if (!url.startsWith('https://') || !url.startsWith('http://')) {
+           
+        // }
     }
 
     /*****************事件声明************************/

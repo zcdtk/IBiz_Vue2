@@ -602,28 +602,14 @@ var IBizMDViewController = /** @class */ (function (_super) {
                 view.modal = false;
             }
         }
-        if (_this.isShowModal()) {
-            view.modal = true;
-        }
-        var url_datas = [];
-        var params_names = Object.keys(view.viewparam);
-        params_names.forEach(function (name) {
-            if (name && view.viewparam[name] && !Object.is(view.viewparam[name], '')) {
-                url_datas.push(name + "=" + view.viewparam[name]);
-            }
-        });
-        var url = "/" + IBizEnvironment.SysName + "/" + IBizEnvironment.BaseUrl.toLowerCase() + view.viewurl;
-        if (url_datas.length > 0) {
-            url = url + "?" + url_datas.join('&');
-        }
-        var _window = window;
-        ;
-        _window.open(url, '_blank');
+        // if (_this.isShowModal()) {
+        //     view.modal = true;
+        // }
         if (view.modal) {
             _this.openModal(view);
         }
         else {
-            _this.openWindow(url);
+            _this.openWindow(view.viewurl, view.parsms);
         }
         // let iBizApp:IBizApp = _window.getIBizApp();
         // iBizApp.refreshView().subscribe(data => {
