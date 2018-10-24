@@ -595,6 +595,20 @@ class IBizViewController extends IBizObject {
         return subejct;
     }
 
+    /**
+     * 打开新标签页窗口
+     *
+     * @param {string} url
+     * @memberof IBizViewController
+     */
+    public openWindow(url: string): void {
+        let _this = this;
+        let win: any = window;
+        if (!Object.is(url, '') && (!url.startsWith('https://') || !url.startsWith('http://'))) {
+            win.open(url, '_blank');
+        }
+    }
+
     /*****************事件声明************************/
 
     /**

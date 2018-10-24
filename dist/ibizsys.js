@@ -6470,6 +6470,19 @@ var IBizViewController = /** @class */ (function (_super) {
         _this.$vue.$root.addModal(params);
         return subejct;
     };
+    /**
+     * 打开新标签页窗口
+     *
+     * @param {string} url
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.openWindow = function (url) {
+        var _this = this;
+        var win = window;
+        if (!Object.is(url, '') && (!url.startsWith('https://') || !url.startsWith('http://'))) {
+            win.open(url, '_blank');
+        }
+    };
     /*****************事件声明************************/
     /**
      * 控制器初始化完成
@@ -7574,6 +7587,12 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var _window = window;
         ;
         _window.open(url, '_blank');
+        if (view.modal) {
+            _this.openModal(view);
+        }
+        else {
+            _this.openWindow(url);
+        }
         // let iBizApp:IBizApp = _window.getIBizApp();
         // iBizApp.refreshView().subscribe(data => {
         //     _this.refresh();
@@ -10178,6 +10197,36 @@ Vue.component('ibiz-exp-bar', {
             if (val && Array.isArray(val)) {
                 this.items = val.slice();
                 this.setOpenData(val);
+            }
+        }
+    }
+});
+
+"use strict";
+Vue.component('ibiz-modal', {
+    template: "\n        <modal :width=\"width\" v-model=\"isShow\" @on-close=\"close\" :title=\"title\">\n            <component :is=\"viewname\" :params=\"params.params\" @close=\"close\"></component>\n        </modal>\n    ",
+    props: ['params'],
+    data: function () {
+        var data = { isShow: true };
+        return data;
+    },
+    mounted: function () {
+        this.viewname = this.params.viewname;
+        // if (this.params.subject) {
+        //     this.callback = this.params.callback;
+        // }
+        if (this.params.width) {
+            this.width = this.params.width;
+        }
+        if (this.params.title) {
+            this.title = this.params.title;
+        }
+    },
+    methods: {
+        'close': function (result) {
+            this.$emit("on-close", this.index);
+            if (this.callback) {
+                this.callback(result);
             }
         }
     }

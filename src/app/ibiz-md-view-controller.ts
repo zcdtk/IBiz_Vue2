@@ -613,6 +613,12 @@ class IBizMDViewController extends IBizMianViewController {
         let _window: any = window;;
         _window.open(url, '_blank');
 
+        if(view.modal){
+            _this.openModal(view);
+        }else{
+             _this.openWindow(url);
+        }
+
         // let iBizApp:IBizApp = _window.getIBizApp();
         // iBizApp.refreshView().subscribe(data => {
         //     _this.refresh();
