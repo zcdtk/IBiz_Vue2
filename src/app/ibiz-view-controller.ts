@@ -69,6 +69,9 @@ class IBizViewController extends IBizObject {
         _this.$router = vue.$router;
         _this.$vue = vue;
         _this.setViewParam(vue.$route.query);
+        if (vue.params) {
+            _this.setViewParam(vue.params);
+        }
         _this.init(_this.getViewParam());
     }
 

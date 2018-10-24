@@ -1,6 +1,6 @@
 Vue.component('ibiz-modal', {
     template: `
-        <modal :width="width" v-model="isShow" @on-close="close" :title="title">
+        <modal :width="width" v-model="isShow" @on-close="close" :title="title" :footer-hide="true" :mask-closable="false">
             <component :is="modalviewname" :params="viewparam" @close="close"></component>
         </modal>
     `,

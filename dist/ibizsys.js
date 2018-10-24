@@ -5962,6 +5962,9 @@ var IBizViewController = /** @class */ (function (_super) {
         _this.$router = vue.$router;
         _this.$vue = vue;
         _this.setViewParam(vue.$route.query);
+        if (vue.params) {
+            _this.setViewParam(vue.params);
+        }
         _this.init(_this.getViewParam());
     };
     IBizViewController.prototype.isClosed = function () {
@@ -10202,7 +10205,7 @@ Vue.component('ibiz-exp-bar', {
 
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal :width=\"width\" v-model=\"isShow\" @on-close=\"close\" :title=\"title\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" @close=\"close\"></component>\n        </modal>\n    ",
+    template: "\n        <modal :width=\"width\" v-model=\"isShow\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" @close=\"close\"></component>\n        </modal>\n    ",
     props: ['params'],
     data: function () {
         var data = {
