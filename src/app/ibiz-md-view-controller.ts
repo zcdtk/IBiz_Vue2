@@ -601,38 +601,15 @@ class IBizMDViewController extends IBizMianViewController {
         // }
 
         if (view.modal) {
-            _this.openModal(view);
+            let modalview = _this.openModal(view);
+            modalview.subscribe((result:any) => {
+                if (result) {
+                    console.log(result);
+                }
+            });
         } else {
             _this.openWindow(view.viewurl, view.parsms);
         }
-
-        // let iBizApp:IBizApp = _window.getIBizApp();
-        // iBizApp.refreshView().subscribe(data => {
-        //     _this.refresh();
-        // });
-        // let opener = win.opener;
-        // if (opener.getIBizApp()) {
-        //     opener.getIBizApp().regPWindow(window);
-        // }
-        // var win = $.getIBizApp().createWindow({});
-        // var viewparam = view.viewparam;
-        // if(!viewparam){
-        // 	viewparam = {};
-        // }
-        // viewparam['windowid'] = win.getId();
-        // viewparam['openerid'] = _this.getId();
-        // win.title = view.title;
-        // win.scope = _this;
-        // win.height = view.height?view.height:0;
-        // win.width = view.width?view.width:0;
-        // win.url = $.getIBizApp().parseURL2(view.subapp,view.viewurl,{windowid:win.getId(),openerid:_this.getId()});
-        // win.viewparam = viewparam;
-        // if(view.modal){
-        // 	 win.openModal(window);
-        // }else{
-        // 	 win.openInNewWindow(window);
-        // }
-
 
         return true;
     }
