@@ -142,10 +142,14 @@ class IBizEditViewController extends IBizMianViewController {
 		var _this = this;
 		_this.refreshReferView();
 		if (_this.afterformsaveaction == 'exit') {
-			var window = _this.getWindow();
-			if (window) {
-				window.dialogResult = 'ok';
-				window.activeData = _this.getForm().getValues();
+			// var window = _this.getWindow();
+			// if (window) {
+			// 	window.dialogResult = 'ok';
+			// 	window.activeData = _this.getForm().getValues();
+			// }
+			if (_this.isShowModal()) {
+				let result: any = { ret: 'OK', activeData: _this.getForm().getValues() };
+				_this.closeModal(result);
 			}
 			_this.closeWindow();
 			return;
@@ -616,39 +620,22 @@ class IBizEditViewController extends IBizMianViewController {
 	 * 初始化浮动工具栏
 	 */
 	public initFloatToolbar(): void {
-		// var offset = 60;
-		// var duration = 300;
-		// if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {  // ios supported
-		// 	$(window).bind("touchend touchcancel touchleave", function (e) {
-		// 		if ($(this).scrollTop() > offset) {
-		// 			$('.scroll-to-top').fadeIn(duration);
-		// 		} else {
-		// 			$('.scroll-to-top').fadeOut(duration);
-		// 		}
-		// 	});
-		// } else {
-		// 	$(window).scroll(function () {
-		// 		if ($(this).scrollTop() > offset) {
-		// 			$('.scroll-to-top').fadeIn(duration);
-		// 		} else {
-		// 			$('.scroll-to-top').fadeOut(duration);
-		// 		}
-		// 	});
-		// }
-		// $('.scroll-to-top').click(function (e) {
-		// 	e.preventDefault();
-		// 	return false;
-		// });
+
 	}
 	public onWFUIFrontWindowClosed(win, data): void {
 		var _this = this;
 		if (win.dialogResult == 'ok') {
-			var window = _this.getWindow();
-			if (window) {
-				window.dialogResult = 'ok';
-				window.activeData = _this.getForm().getValues();
-			}
+			// var window = _this.getWindow();
+			// if (window) {
+			// 	window.dialogResult = 'ok';
+			// 	window.activeData = _this.getForm().getValues();
+			// }
+			let result: any = { ret: 'OK', activeData: _this.getForm().getValues() }
 			_this.refreshReferView();
+			if (_this.isShowModal()) {
+				_this.closeModal(result);
+				return;
+			}
 			_this.closeWindow();
 			return;
 		}

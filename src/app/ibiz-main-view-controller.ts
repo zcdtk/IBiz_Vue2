@@ -255,13 +255,6 @@ class IBizMianViewController extends IBizViewController {
 	}
 
 	/**
-	 * 是否-模式框显示
-	 */
-	public isShowModal(): boolean {
-		return false;
-	}
-
-	/**
 	 * 关闭窗口
 	 */
 	public closeWindow(): void {

@@ -611,6 +611,17 @@ class IBizViewController extends IBizObject {
     }
 
     /**
+     * 关闭模态框
+     *
+     * @param {*} [result]
+     * @memberof IBizViewController
+     */
+    public closeModal(result?: any): void {
+        let _this = this;
+        _this.$vue.$emit('close', result);
+    }
+
+    /**
      * 打开新标签页窗口
      *
      * @param {string} url
@@ -636,7 +647,7 @@ class IBizViewController extends IBizObject {
 
         // }
     }
-    
+
     /**
      * 设置视图类型
      *
@@ -657,6 +668,20 @@ class IBizViewController extends IBizObject {
     public getViewType(): string {
         let _this = this;
         return _this.viewType;
+    }
+
+    /**
+     * 是否是模态框展示
+     *
+     * @returns {boolean}
+     * @memberof IBizViewController
+     */
+    public isShowModal(): boolean {
+        let _this = this;
+        if (Object.is(_this.getViewType(), 'modalview') || Object.is(_this.getViewType(), 'refview')) {
+            return true;
+        }
+        return false;
     }
 
     /*****************事件声明************************/

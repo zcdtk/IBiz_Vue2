@@ -6485,6 +6485,16 @@ var IBizViewController = /** @class */ (function (_super) {
         return subejct;
     };
     /**
+     * 关闭模态框
+     *
+     * @param {*} [result]
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.closeModal = function (result) {
+        var _this = this;
+        _this.$vue.$emit('close', result);
+    };
+    /**
      * 打开新标签页窗口
      *
      * @param {string} url
@@ -6528,6 +6538,19 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.getViewType = function () {
         var _this = this;
         return _this.viewType;
+    };
+    /**
+     * 是否是模态框展示
+     *
+     * @returns {boolean}
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.isShowModal = function () {
+        var _this = this;
+        if (Object.is(_this.getViewType(), 'modalview') || Object.is(_this.getViewType(), 'refview')) {
+            return true;
+        }
+        return false;
     };
     /*****************事件声明************************/
     /**
@@ -6812,12 +6835,6 @@ var IBizMianViewController = /** @class */ (function (_super) {
     IBizMianViewController.prototype.doBackendUIAction = function (uiaction) {
         if (uiaction === void 0) { uiaction = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.ERROR','错误'),$IGM('MAINVIEWCONTROLLER.DOBACKENDUIACTION.INFO','未处理的后台界面行为['+uiaction.tag+']',[uiaction.tag]), 2);
-    };
-    /**
-     * 是否-模式框显示
-     */
-    IBizMianViewController.prototype.isShowModal = function () {
-        return false;
     };
     /**
      * 关闭窗口
@@ -8676,10 +8693,14 @@ var IBizEditViewController = /** @class */ (function (_super) {
         var _this = this;
         _this.refreshReferView();
         if (_this.afterformsaveaction == 'exit') {
-            var window = _this.getWindow();
-            if (window) {
-                window.dialogResult = 'ok';
-                window.activeData = _this.getForm().getValues();
+            // var window = _this.getWindow();
+            // if (window) {
+            // 	window.dialogResult = 'ok';
+            // 	window.activeData = _this.getForm().getValues();
+            // }
+            if (_this.isShowModal()) {
+                var result_1 = { ret: 'OK', activeData: _this.getForm().getValues() };
+                _this.closeModal(result_1);
             }
             _this.closeWindow();
             return;
@@ -9159,39 +9180,21 @@ var IBizEditViewController = /** @class */ (function (_super) {
      * 初始化浮动工具栏
      */
     IBizEditViewController.prototype.initFloatToolbar = function () {
-        // var offset = 60;
-        // var duration = 300;
-        // if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {  // ios supported
-        // 	$(window).bind("touchend touchcancel touchleave", function (e) {
-        // 		if ($(this).scrollTop() > offset) {
-        // 			$('.scroll-to-top').fadeIn(duration);
-        // 		} else {
-        // 			$('.scroll-to-top').fadeOut(duration);
-        // 		}
-        // 	});
-        // } else {
-        // 	$(window).scroll(function () {
-        // 		if ($(this).scrollTop() > offset) {
-        // 			$('.scroll-to-top').fadeIn(duration);
-        // 		} else {
-        // 			$('.scroll-to-top').fadeOut(duration);
-        // 		}
-        // 	});
-        // }
-        // $('.scroll-to-top').click(function (e) {
-        // 	e.preventDefault();
-        // 	return false;
-        // });
     };
     IBizEditViewController.prototype.onWFUIFrontWindowClosed = function (win, data) {
         var _this = this;
         if (win.dialogResult == 'ok') {
-            var window = _this.getWindow();
-            if (window) {
-                window.dialogResult = 'ok';
-                window.activeData = _this.getForm().getValues();
-            }
+            // var window = _this.getWindow();
+            // if (window) {
+            // 	window.dialogResult = 'ok';
+            // 	window.activeData = _this.getForm().getValues();
+            // }
+            var result = { ret: 'OK', activeData: _this.getForm().getValues() };
             _this.refreshReferView();
+            if (_this.isShowModal()) {
+                _this.closeModal(result);
+                return;
+            }
             _this.closeWindow();
             return;
         }
@@ -10215,10 +10218,11 @@ Vue.component('ibiz-exp-bar', {
 
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"modalview\" @close=\"close\"></component>\n        </modal>\n    ",
+    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\"></component>\n        </modal>\n    ",
     props: ['params'],
     data: function () {
         var data = {
+            showmodal: true,
             width: 0,
             title: '',
             modalviewname: '',

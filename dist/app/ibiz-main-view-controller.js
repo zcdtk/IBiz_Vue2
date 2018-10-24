@@ -272,12 +272,6 @@ var IBizMianViewController = /** @class */ (function (_super) {
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.ERROR','错误'),$IGM('MAINVIEWCONTROLLER.DOBACKENDUIACTION.INFO','未处理的后台界面行为['+uiaction.tag+']',[uiaction.tag]), 2);
     };
     /**
-     * 是否-模式框显示
-     */
-    IBizMianViewController.prototype.isShowModal = function () {
-        return false;
-    };
-    /**
      * 关闭窗口
      */
     IBizMianViewController.prototype.closeWindow = function () {

@@ -1,9 +1,10 @@
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"modalview\" @close=\"close\"></component>\n        </modal>\n    ",
+    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\"></component>\n        </modal>\n    ",
     props: ['params'],
     data: function () {
         var data = {
+            showmodal: true,
             width: 0,
             title: '',
             modalviewname: '',

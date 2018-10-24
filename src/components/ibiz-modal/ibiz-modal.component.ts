@@ -1,12 +1,13 @@
 Vue.component('ibiz-modal', {
     template: `
-        <modal :width="width" @on-close="close" :title="title" :footer-hide="true" :mask-closable="false">
-            <component :is="modalviewname" :params="viewparam" :viewType="modalview" @close="close"></component>
+        <modal v-model="showmodal" :width="width" @on-close="close" :title="title" :footer-hide="true" :mask-closable="false">
+            <component :is="modalviewname" :params="viewparam" :viewType="'modalview'" @close="close"></component>
         </modal>
     `,
     props: ['params'],
     data: function () {
         let data: any = {
+            showmodal: true,
             width: 0,
             title: '',
             modalviewname: '',

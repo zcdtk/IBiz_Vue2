@@ -583,6 +583,16 @@ var IBizViewController = /** @class */ (function (_super) {
         return subejct;
     };
     /**
+     * 关闭模态框
+     *
+     * @param {*} [result]
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.closeModal = function (result) {
+        var _this = this;
+        _this.$vue.$emit('close', result);
+    };
+    /**
      * 打开新标签页窗口
      *
      * @param {string} url
@@ -626,6 +636,19 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.getViewType = function () {
         var _this = this;
         return _this.viewType;
+    };
+    /**
+     * 是否是模态框展示
+     *
+     * @returns {boolean}
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.isShowModal = function () {
+        var _this = this;
+        if (Object.is(_this.getViewType(), 'modalview') || Object.is(_this.getViewType(), 'refview')) {
+            return true;
+        }
+        return false;
     };
     /*****************事件声明************************/
     /**
