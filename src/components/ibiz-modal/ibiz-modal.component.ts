@@ -6,14 +6,14 @@ Vue.component('ibiz-modal', {
     `,
     props: ['params'],
     data: function () {
-        let data: any = { isShow: true };
+        let data: any = { isShow: true, width: 0, title: '', viewname: '', subject: null };
         return data;
     },
     mounted: function () {
         this.viewname = this.params.viewname;
-        // if (this.params.subject) {
-        //     this.callback = this.params.callback;
-        // }
+        if (this.params.subject) {
+            this.subject = this.params.subject;
+        }
         if (this.params.width) {
             this.width = this.params.width;
         }
@@ -24,9 +24,10 @@ Vue.component('ibiz-modal', {
     methods: {
         'close': function (result) {
             this.$emit("on-close", this.index)
-            if (this.callback) {
-                this.callback(result)
-            }
+            console.log(result);
+            // if (this.callback) {
+            //     this.callback(result)
+            // }
         }
     }
 });
