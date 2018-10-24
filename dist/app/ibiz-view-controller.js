@@ -42,6 +42,13 @@ var IBizViewController = /** @class */ (function (_super) {
         _this_1.viewparam = {};
         _this_1.updatepanels = new Map();
         _this_1.controls = new Map();
+        /**
+         * 视图类型
+         *
+         * @private
+         * @type {('' | 'modalview' | 'refview')} 通用 | 模态视图 | 引用视图（部件视图）
+         * @memberof IBizViewController
+         */
         _this_1.viewType = '';
         _this_1.containerid = opts.containerid;
         _this_1.appctx = opts.appctx;
@@ -603,7 +610,7 @@ var IBizViewController = /** @class */ (function (_super) {
     /**
      * 设置视图类型
      *
-     * @param {string} type
+     * @param {*} type
      * @memberof IBizViewController
      */
     IBizViewController.prototype.setViewType = function (type) {

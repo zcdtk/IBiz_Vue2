@@ -1,7 +1,7 @@
 Vue.component('ibiz-modal', {
     template: `
         <modal :width="width" v-model="isShow" @on-close="close" :title="title" :footer-hide="true" :mask-closable="false">
-            <component :is="modalviewname" :params="viewparam" @close="close"></component>
+            <component :is="modalviewname" :params="viewparam" :viewType="modalview" @close="close"></component>
         </modal>
     `,
     props: ['params'],

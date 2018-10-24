@@ -42,7 +42,14 @@ class IBizViewController extends IBizObject {
 
     public $route: any;
 
-    private viewType: string = '';
+    /**
+     * 视图类型
+     *
+     * @private
+     * @type {('' | 'modalview' | 'refview')} 通用 | 模态视图 | 引用视图（部件视图）
+     * @memberof IBizViewController
+     */
+    private viewType: '' | 'modalview' | 'refview' = '';
 
     /**
      * Creates an instance of IBizViewController.
@@ -629,14 +636,14 @@ class IBizViewController extends IBizObject {
 
         // }
     }
-
+    
     /**
      * 设置视图类型
      *
-     * @param {string} type
+     * @param {*} type
      * @memberof IBizViewController
      */
-    public setViewType(type: string) {
+    public setViewType(type: any): void {
         let _this = this;
         _this.viewType = type;
     }

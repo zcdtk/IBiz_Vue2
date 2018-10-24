@@ -5944,6 +5944,13 @@ var IBizViewController = /** @class */ (function (_super) {
         _this_1.viewparam = {};
         _this_1.updatepanels = new Map();
         _this_1.controls = new Map();
+        /**
+         * 视图类型
+         *
+         * @private
+         * @type {('' | 'modalview' | 'refview')} 通用 | 模态视图 | 引用视图（部件视图）
+         * @memberof IBizViewController
+         */
         _this_1.viewType = '';
         _this_1.containerid = opts.containerid;
         _this_1.appctx = opts.appctx;
@@ -6505,7 +6512,7 @@ var IBizViewController = /** @class */ (function (_super) {
     /**
      * 设置视图类型
      *
-     * @param {string} type
+     * @param {*} type
      * @memberof IBizViewController
      */
     IBizViewController.prototype.setViewType = function (type) {
@@ -10229,7 +10236,7 @@ Vue.component('ibiz-exp-bar', {
 
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal :width=\"width\" v-model=\"isShow\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" @close=\"close\"></component>\n        </modal>\n    ",
+    template: "\n        <modal :width=\"width\" v-model=\"isShow\" @on-close=\"close\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"modalview\" @close=\"close\"></component>\n        </modal>\n    ",
     props: ['params'],
     data: function () {
         var data = {
