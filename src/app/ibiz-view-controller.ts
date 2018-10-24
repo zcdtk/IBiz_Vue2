@@ -684,6 +684,17 @@ class IBizViewController extends IBizObject {
         return false;
     }
 
+    /**
+     * 数据变化
+     *
+     * @param {*} data
+     * @memberof IBizViewController
+     */
+    public dataChange(data?: any): void {
+        let _this = this;
+        _this.$vue.$emit('dataChange', data);
+    }
+
     /*****************事件声明************************/
 
     /**

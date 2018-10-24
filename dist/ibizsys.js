@@ -6552,6 +6552,16 @@ var IBizViewController = /** @class */ (function (_super) {
         }
         return false;
     };
+    /**
+     * 数据变化
+     *
+     * @param {*} data
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.dataChange = function (data) {
+        var _this = this;
+        _this.$vue.$emit('dataChange', data);
+    };
     /*****************事件声明************************/
     /**
      * 控制器初始化完成
@@ -8701,6 +8711,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
             if (_this.isShowModal()) {
                 var result_1 = { ret: 'OK', activeData: _this.getForm().getValues() };
                 _this.closeModal(result_1);
+                return;
             }
             _this.closeWindow();
             return;
@@ -8996,6 +9007,10 @@ var IBizEditViewController = /** @class */ (function (_super) {
             var pWinIBizApp = parentWindow.getIBizApp();
             var viewparam = this.getViewParam();
             pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
+        }
+        if (_this.isShowModal()) {
+            var result = { ret: 'OK', activeData: _this.getForm().getValues() };
+            _this.dataChange(result);
         }
         try {
             // if (_this.pagecontext) {

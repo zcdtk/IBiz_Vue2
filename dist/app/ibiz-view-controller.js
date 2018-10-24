@@ -650,6 +650,16 @@ var IBizViewController = /** @class */ (function (_super) {
         }
         return false;
     };
+    /**
+     * 数据变化
+     *
+     * @param {*} data
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.dataChange = function (data) {
+        var _this = this;
+        _this.$vue.$emit('dataChange', data);
+    };
     /*****************事件声明************************/
     /**
      * 控制器初始化完成

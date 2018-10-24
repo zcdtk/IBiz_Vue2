@@ -150,6 +150,7 @@ class IBizEditViewController extends IBizMianViewController {
 			if (_this.isShowModal()) {
 				let result: any = { ret: 'OK', activeData: _this.getForm().getValues() };
 				_this.closeModal(result);
+				return ;
 			}
 			_this.closeWindow();
 			return;
@@ -439,6 +440,11 @@ class IBizEditViewController extends IBizMianViewController {
 			let viewparam = this.getViewParam();
 			pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
 		}
+		if (_this.isShowModal()) {
+			let result: any = { ret: 'OK', activeData: _this.getForm().getValues() };
+			_this.dataChange(result);
+		}
+		
 		try {
 			// if (_this.pagecontext) {
 			// 	var openerid = _this.pagecontext.getParamValue('openerid');
