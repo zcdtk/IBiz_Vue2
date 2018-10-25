@@ -1,6 +1,6 @@
 Vue.component('ibiz-modal', {
     template: `
-        <modal v-model="showmodal" :width="width" @on-close="close" @on-visible-change="onVisibleChange($event)" :title="title" :footer-hide="true" :mask-closable="false">
+        <modal v-model="showmodal" @on-visible-change="onVisibleChange($event)" :title="title" :footer-hide="true" :mask-closable="false" :width="width">
             <component :is="modalviewname" :params="viewparam" :viewType="'modalview'" @close="close" @dataChange="dataChange"></component>
         </modal>
     `,
@@ -44,16 +44,16 @@ Vue.component('ibiz-modal', {
     },
     methods: {
         close: function (result) {
-            this.$emit("on-close", this.index)
             console.log(result);
-            // if (this.callback) {
-            //     this.callback(result)
-            // }
-            if (result && Object.is(result.ret, 'OK')) {
-                this.subject.next(result);
-            } else {
-                this.subject.unsubscribe();
+            if (this.subject) {
+                if (result && Object.is(result.ret, 'OK')) {
+                    this.subject.next(result);
+                } else {
+                    this.subject.unsubscribe();
+                }
             }
+            
+            // this.$emit("on-close", this.index)
         },
         dataChange: function (result) {
             console.log(result);
