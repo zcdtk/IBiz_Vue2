@@ -10233,7 +10233,7 @@ Vue.component('ibiz-exp-bar', {
 
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal v-model=\"showmodal\" :width=\"width\" @on-close=\"close\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
+    template: "\n        <modal v-model=\"showmodal\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\" :width=\"width\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
     props: ['key', 'params', 'index'],
     data: function () {
         var data = {
@@ -10242,7 +10242,8 @@ Vue.component('ibiz-modal', {
             title: '',
             modalviewname: '',
             subject: null,
-            viewparam: {}
+            viewparam: {},
+            _result: {}
         };
         var width = 600;
         if (window && window.innerWidth > 100) {
@@ -10273,23 +10274,37 @@ Vue.component('ibiz-modal', {
     },
     methods: {
         close: function (result) {
-            this.$emit("on-close", this.index);
             console.log(result);
-            // if (this.callback) {
-            //     this.callback(result)
-            // }
-            if (result && Object.is(result.ret, 'OK')) {
-                this.subject.next(result);
+            if (this.subject) {
+                if (result && Object.is(result.ret, 'OK')) {
+                    this.subject.next(result);
+                }
+                else {
+                    this.subject.unsubscribe();
+                }
             }
-            else {
-                this.subject.unsubscribe();
-            }
+            // this.$emit("on-close", this.index)
         },
         dataChange: function (result) {
             console.log(result);
+            this._result = {};
+            if (result) {
+                Object.assign(this._result, result);
+            }
         },
         onVisibleChange: function ($event) {
             console.log($event);
+            if ($event) {
+                return;
+            }
+            if (this.subject) {
+                if (this._result && Object.is(this._result.ret, 'OK')) {
+                    this.subject.next(this._result);
+                }
+                else {
+                    this.subject.unsubscribe();
+                }
+            }
         }
     }
 });

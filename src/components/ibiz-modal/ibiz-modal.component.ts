@@ -12,7 +12,8 @@ Vue.component('ibiz-modal', {
             title: '',
             modalviewname: '',
             subject: null,
-            viewparam: {}
+            viewparam: {},
+            _result: {}
         };
 
         let width = 600;
@@ -52,14 +53,29 @@ Vue.component('ibiz-modal', {
                     this.subject.unsubscribe();
                 }
             }
-            
+
             // this.$emit("on-close", this.index)
         },
         dataChange: function (result) {
             console.log(result);
+            this._result = {};
+            if (result) {
+                Object.assign(this._result, result);
+            }
         },
         onVisibleChange: function ($event) {
             console.log($event);
+            if ($event) {
+                return;
+            }
+
+            if (this.subject) {
+                if (this._result && Object.is(this._result.ret, 'OK')) {
+                    this.subject.next(this._result);
+                } else {
+                    this.subject.unsubscribe();
+                }
+            }
         }
     }
 });
