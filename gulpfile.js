@@ -43,6 +43,8 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-edit-form.js',
         'dist/widget/ibiz-search-form.js',
         'dist/widget/ibiz-tab.js',
+        'dist/widget/ibiz-view-panel.js',
+        'dist/widget/ibiz-pickup-view-panel.js',
         'dist/widget/ibiz-exp-tab.js',
         'dist/widget/ibiz-tree.js',
         'dist/widget/ibiz-tree-exp-bar.js',
@@ -58,6 +60,7 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-tree-exp-view-controller.js',
         'dist/app/ibiz-exp-view-controller.js',
         'dist/app/ibiz-wf-exp-view-controller.js',
+        'dist/app/ibiz-pickup-view-controller.js',
         // 组件
         'dist/components/ibiz-app-menu/ibiz-app-menu.component.js',
         'dist/components/ibiz-form/ibiz-form.component.js',

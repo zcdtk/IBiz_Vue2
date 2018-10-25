@@ -4,7 +4,7 @@
  * @class IBizTreeExpViewController
  * @extends {IBizMianViewController}
  */
-class IBizTreeExpViewController extends IBizMianViewController {
+class IBizTreeExpViewController extends IBizMainViewController {
 
     public treeReloadMode: string = '';
 

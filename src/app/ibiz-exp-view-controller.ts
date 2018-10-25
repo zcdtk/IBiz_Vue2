@@ -4,7 +4,7 @@
  * @class IBizExpViewController
  * @extends {IBizMianViewController}
  */
-class IBizExpViewController extends IBizMianViewController {
+class IBizExpViewController extends IBizMainViewController {
 
     /**
      * Creates an instance of IBizExpViewController.

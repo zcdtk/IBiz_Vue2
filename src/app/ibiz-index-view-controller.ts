@@ -4,7 +4,7 @@
  * @class IBizIndexViewController
  * @extends {IBizMianViewController}
  */
-class IBizIndexViewController extends IBizMianViewController {
+class IBizIndexViewController extends IBizMainViewController {
     constructor(opts: any = {}) {
         super(opts);
     }

@@ -18,8 +18,8 @@ var __extends = (this && this.__extends) || (function () {
  * @class IBizMianViewController
  * @extends {IBizViewController}
  */
-var IBizMianViewController = /** @class */ (function (_super) {
-    __extends(IBizMianViewController, _super);
+var IBizMainViewController = /** @class */ (function (_super) {
+    __extends(IBizMainViewController, _super);
     /**
      * Creates an instance of IBizMianViewController.
      * 创建 IBizMianViewController 实例对象
@@ -27,17 +27,17 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param {*} [opts={}]
      * @memberof IBizMianViewController
      */
-    function IBizMianViewController(opts) {
+    function IBizMainViewController(opts) {
         if (opts === void 0) { opts = {}; }
         return _super.call(this, opts) || this;
     }
-    IBizMianViewController.prototype.init = function (params) {
+    IBizMainViewController.prototype.init = function (params) {
         if (params === void 0) { params = {}; }
         _super.prototype.init.call(this, params);
         this.caption = null;
         this.calcToolbarItemState(false);
     };
-    IBizMianViewController.prototype.onInit = function () {
+    IBizMainViewController.prototype.onInit = function () {
         _super.prototype.onInit.call(this);
         var _this = this;
         //初始化工具栏
@@ -48,20 +48,20 @@ var IBizMianViewController = /** @class */ (function (_super) {
             });
         }
     };
-    IBizMianViewController.prototype.createToolbar = function () {
+    IBizMainViewController.prototype.createToolbar = function () {
         // return IBiz.createToolbar(config);
     };
     /**
    * 点击按钮
    * @param tag 事件源
    */
-    IBizMianViewController.prototype.onClickTBItem = function (params) {
+    IBizMainViewController.prototype.onClickTBItem = function (params) {
         if (params === void 0) { params = {}; }
         var _this = this;
         var uiaction = _this.getUIAction(params.tag);
         _this.doUIAction(uiaction, params);
     };
-    IBizMianViewController.prototype.doUIAction = function (uiaction, params) {
+    IBizMainViewController.prototype.doUIAction = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -85,7 +85,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param uiaction
      *            行为
      */
-    IBizMianViewController.prototype.getFrontUIActionParam = function (uiaction, params) {
+    IBizMainViewController.prototype.getFrontUIActionParam = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -103,7 +103,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param uiaction
      *            行为
      */
-    IBizMianViewController.prototype.getBackendUIActionParam = function (uiaction, params) {
+    IBizMainViewController.prototype.getBackendUIActionParam = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         return {};
@@ -112,7 +112,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * 打开界面行为视图
      * @param uiaction 行为
      */
-    IBizMianViewController.prototype.openUIActionView = function (frontview, viewparam) {
+    IBizMainViewController.prototype.openUIActionView = function (frontview, viewparam) {
         // var _this = this;
         // var callback;
         // if(viewparam && viewparam.callback){
@@ -148,7 +148,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * 执行实体行为
      * @param uiaction 行为
      */
-    IBizMianViewController.prototype.doDEUIAction = function (uiaction, params) {
+    IBizMainViewController.prototype.doDEUIAction = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -219,7 +219,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * 执行工作流行为
      * @param uiaction 行为
      */
-    IBizMianViewController.prototype.doWFUIAction = function (uiaction, params) {
+    IBizMainViewController.prototype.doWFUIAction = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -259,7 +259,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
         }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.ERROR','错误'),$IGM('MAINVIEWCONTROLLER.DOWFUIACTION.INFO','未处理的实体工作流行为['+uiaction.tag+']',[uiaction.tag]), 2);
     };
-    IBizMianViewController.prototype.onWFUIFrontWindowClosed = function (win, data) {
+    IBizMainViewController.prototype.onWFUIFrontWindowClosed = function (win, data) {
     };
     /**
      * 执行后台行为
@@ -267,14 +267,14 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param uiaction
      *            行为
      */
-    IBizMianViewController.prototype.doBackendUIAction = function (uiaction) {
+    IBizMainViewController.prototype.doBackendUIAction = function (uiaction) {
         if (uiaction === void 0) { uiaction = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.ERROR','错误'),$IGM('MAINVIEWCONTROLLER.DOBACKENDUIACTION.INFO','未处理的后台界面行为['+uiaction.tag+']',[uiaction.tag]), 2);
     };
     /**
      * 关闭窗口
      */
-    IBizMianViewController.prototype.closeWindow = function () {
+    IBizMainViewController.prototype.closeWindow = function () {
         var _this = this;
         var win = _this.getWindow();
         if (win) {
@@ -284,7 +284,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
             window.close();
         }
     };
-    IBizMianViewController.prototype.getWindow = function () {
+    IBizMainViewController.prototype.getWindow = function () {
         var _this = this;
         // try
         // {
@@ -306,7 +306,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
     /**
      * 获取标题
      */
-    IBizMianViewController.prototype.getCaption = function () {
+    IBizMainViewController.prototype.getCaption = function () {
         return this.caption;
     };
     /**
@@ -315,16 +315,16 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param caption
      *            标题
      */
-    IBizMianViewController.prototype.setCaption = function (caption) {
+    IBizMainViewController.prototype.setCaption = function (caption) {
         if (this.caption != caption) {
             this.caption = caption;
-            this.fire(IBizMianViewController.CAPTIONCHANGED, this.caption);
+            this.fire(IBizMainViewController.CAPTIONCHANGED, this.caption);
         }
     };
     /**
      * 获取工具栏
      */
-    IBizMianViewController.prototype.getToolbar = function () {
+    IBizMainViewController.prototype.getToolbar = function () {
         return this.getControl('toolbar');
     };
     /**
@@ -333,7 +333,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param hasdata
      *            是否有数据
      */
-    IBizMianViewController.prototype.calcToolbarItemState = function (hasdata, dataaccaction) {
+    IBizMainViewController.prototype.calcToolbarItemState = function (hasdata, dataaccaction) {
         if (dataaccaction === void 0) { dataaccaction = {}; }
         var _this = this;
         var toolbar = _this.getToolbar();
@@ -357,7 +357,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
     /**
      * 获取引用视图
      */
-    IBizMianViewController.prototype.getReferView = function () {
+    IBizMainViewController.prototype.getReferView = function () {
         var _this = this;
         // if (_this.pageparams && _this.pageparams.openerid) {
         // 	return $.getIBizApp().getSRFView(_this.pageparams.openerid);
@@ -367,13 +367,13 @@ var IBizMianViewController = /** @class */ (function (_super) {
     /**
      * 获取uiactions
      */
-    IBizMianViewController.prototype.getMoreActions = function () {
+    IBizMainViewController.prototype.getMoreActions = function () {
         return this.uiactions;
     };
     /*****************事件声明************************/
     /**
      * 选中值变化
      */
-    IBizMianViewController.CAPTIONCHANGED = 'CAPTIONCHANGED';
-    return IBizMianViewController;
+    IBizMainViewController.CAPTIONCHANGED = 'CAPTIONCHANGED';
+    return IBizMainViewController;
 }(IBizViewController));

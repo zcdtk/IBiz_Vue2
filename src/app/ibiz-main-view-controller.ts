@@ -4,7 +4,7 @@
  * @class IBizMianViewController
  * @extends {IBizViewController}
  */
-class IBizMianViewController extends IBizViewController {
+class IBizMainViewController extends IBizViewController {
 
 	private caption: string;
 
@@ -303,7 +303,7 @@ class IBizMianViewController extends IBizViewController {
 	public setCaption(caption: string): void {
 		if (this.caption != caption) {
 			this.caption = caption;
-			this.fire(IBizMianViewController.CAPTIONCHANGED, this.caption);
+			this.fire(IBizMainViewController.CAPTIONCHANGED, this.caption);
 		}
 	}
 

@@ -4,7 +4,7 @@
  * @class IBizEditViewController
  * @extends {IBizMianViewController}
  */
-class IBizEditViewController extends IBizMianViewController {
+class IBizEditViewController extends IBizMainViewController {
 
 	public afterformsaveaction: string = '';
 

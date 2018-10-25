@@ -202,4 +202,4 @@ var IBizExpViewController = /** @class */ (function (_super) {
         this.openView(view.routelink, data);
     };
     return IBizExpViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));

@@ -82,4 +82,4 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         _this.openView(item.viewname, item.openviewparam);
     };
     return IBizIndexViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));

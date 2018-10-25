@@ -1117,4 +1117,4 @@ var IBizMDViewController = /** @class */ (function (_super) {
      */
     IBizMDViewController.DATALOADED = 'DATALOADED';
     return IBizMDViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));

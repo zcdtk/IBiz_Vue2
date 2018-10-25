@@ -590,4 +590,4 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
     IBizTreeExpViewController.REFRESHMODE_ALLNODE = 'ALLNODE';
     IBizTreeExpViewController.REFRESHMODE_NONE = 'NONE';
     return IBizTreeExpViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));

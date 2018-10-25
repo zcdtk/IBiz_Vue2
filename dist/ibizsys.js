@@ -5145,6 +5145,187 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 /**
+ * 多视图面板服务对象
+ *
+ * @class IBizViewPanel
+ * @extends {IBizTab}
+ */
+var IBizViewPanel = /** @class */ (function (_super) {
+    __extends(IBizViewPanel, _super);
+    /**
+     * Creates an instance of IBizViewPanel.
+     * 创建 IBizViewPanel 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizViewPanel
+     */
+    function IBizViewPanel(opts) {
+        if (opts === void 0) { opts = {}; }
+        return _super.call(this, opts) || this;
+    }
+    return IBizViewPanel;
+}(IBizTab));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 拾取数据视图面板
+ *
+ * @class IBizPickupViewPanel
+ * @extends {IBizViewPanel}
+ */
+var IBizPickupViewPanel = /** @class */ (function (_super) {
+    __extends(IBizPickupViewPanel, _super);
+    /**
+     * Creates an instance of IBizPickupViewPanel.
+     * 创建 IBizPickupViewPanel 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizPickupViewPanel
+     */
+    function IBizPickupViewPanel(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 父数据
+         *
+         * @type {*}
+         * @memberof IBizPickupViewPanel
+         */
+        _this.$parentData = {};
+        /**
+         * 选中数据
+         *
+         * @type {Array<any>}
+         * @memberof IBizPickupViewPanel
+         */
+        _this.$selections = [];
+        /**
+         * 所有数据
+         *
+         * @type {Array<any>}
+         * @memberof IBizPickupViewPanel
+         */
+        _this.$allData = [];
+        return _this;
+    }
+    /**
+     * 获取所有数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.getAllData = function () {
+        return this.$allData;
+    };
+    /**
+     * 获取所有选中数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.getSelections = function () {
+        return this.$selections;
+    };
+    /**
+     * 数据选中
+     *
+     * @param {Array<any>} $event
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.onSelectionChange = function ($event) {
+        this.$selections = $event;
+        this.fire(IBizPickupViewPanel.SELECTIONCHANGE, this.$selections);
+    };
+    /**
+     * 数据激活
+     *
+     * @param {Array<any>} $event
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.onDataActivated = function ($event) {
+        this.$selections = $event;
+        this.fire(IBizPickupViewPanel.DATAACTIVATED, this.$selections);
+    };
+    /**
+     * 全部数据
+     *
+     * @param {Array<any>} $event
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.onAllData = function ($event) {
+        this.$allData = $event;
+        this.fire(IBizPickupViewPanel.ALLDATA, this.$allData);
+    };
+    /**
+     * 设置父数据
+     *
+     * @param {*} [parentData={}]
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.setParentData = function (parentData) {
+        if (parentData === void 0) { parentData = {}; }
+        this.$parentData = parentData;
+    };
+    /**
+     * 刷新面板
+     *
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.prototype.refreshViewPanel = function () {
+    };
+    /*****************事件声明************************/
+    /**
+     * 数据选中
+     *
+     * @static
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.SELECTIONCHANGE = 'SELECTIONCHANGE';
+    /**
+     * 数据激活
+     *
+     * @static
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.DATAACTIVATED = 'DATAACTIVATED';
+    /**
+     * 数据全选
+     *
+     * @static
+     * @memberof IBizPickupViewPanel
+     */
+    IBizPickupViewPanel.ALLDATA = 'ALLDATA';
+    return IBizPickupViewPanel;
+}(IBizViewPanel));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
  * 导航分页
  *
  * @class IBizExpTab
@@ -6593,8 +6774,8 @@ var __extends = (this && this.__extends) || (function () {
  * @class IBizMianViewController
  * @extends {IBizViewController}
  */
-var IBizMianViewController = /** @class */ (function (_super) {
-    __extends(IBizMianViewController, _super);
+var IBizMainViewController = /** @class */ (function (_super) {
+    __extends(IBizMainViewController, _super);
     /**
      * Creates an instance of IBizMianViewController.
      * 创建 IBizMianViewController 实例对象
@@ -6602,17 +6783,17 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param {*} [opts={}]
      * @memberof IBizMianViewController
      */
-    function IBizMianViewController(opts) {
+    function IBizMainViewController(opts) {
         if (opts === void 0) { opts = {}; }
         return _super.call(this, opts) || this;
     }
-    IBizMianViewController.prototype.init = function (params) {
+    IBizMainViewController.prototype.init = function (params) {
         if (params === void 0) { params = {}; }
         _super.prototype.init.call(this, params);
         this.caption = null;
         this.calcToolbarItemState(false);
     };
-    IBizMianViewController.prototype.onInit = function () {
+    IBizMainViewController.prototype.onInit = function () {
         _super.prototype.onInit.call(this);
         var _this = this;
         //初始化工具栏
@@ -6623,20 +6804,20 @@ var IBizMianViewController = /** @class */ (function (_super) {
             });
         }
     };
-    IBizMianViewController.prototype.createToolbar = function () {
+    IBizMainViewController.prototype.createToolbar = function () {
         // return IBiz.createToolbar(config);
     };
     /**
    * 点击按钮
    * @param tag 事件源
    */
-    IBizMianViewController.prototype.onClickTBItem = function (params) {
+    IBizMainViewController.prototype.onClickTBItem = function (params) {
         if (params === void 0) { params = {}; }
         var _this = this;
         var uiaction = _this.getUIAction(params.tag);
         _this.doUIAction(uiaction, params);
     };
-    IBizMianViewController.prototype.doUIAction = function (uiaction, params) {
+    IBizMainViewController.prototype.doUIAction = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -6660,7 +6841,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param uiaction
      *            行为
      */
-    IBizMianViewController.prototype.getFrontUIActionParam = function (uiaction, params) {
+    IBizMainViewController.prototype.getFrontUIActionParam = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -6678,7 +6859,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param uiaction
      *            行为
      */
-    IBizMianViewController.prototype.getBackendUIActionParam = function (uiaction, params) {
+    IBizMainViewController.prototype.getBackendUIActionParam = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         return {};
@@ -6687,7 +6868,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * 打开界面行为视图
      * @param uiaction 行为
      */
-    IBizMianViewController.prototype.openUIActionView = function (frontview, viewparam) {
+    IBizMainViewController.prototype.openUIActionView = function (frontview, viewparam) {
         // var _this = this;
         // var callback;
         // if(viewparam && viewparam.callback){
@@ -6723,7 +6904,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * 执行实体行为
      * @param uiaction 行为
      */
-    IBizMianViewController.prototype.doDEUIAction = function (uiaction, params) {
+    IBizMainViewController.prototype.doDEUIAction = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -6794,7 +6975,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * 执行工作流行为
      * @param uiaction 行为
      */
-    IBizMianViewController.prototype.doWFUIAction = function (uiaction, params) {
+    IBizMainViewController.prototype.doWFUIAction = function (uiaction, params) {
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         var _this = this;
@@ -6834,7 +7015,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
         }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.ERROR','错误'),$IGM('MAINVIEWCONTROLLER.DOWFUIACTION.INFO','未处理的实体工作流行为['+uiaction.tag+']',[uiaction.tag]), 2);
     };
-    IBizMianViewController.prototype.onWFUIFrontWindowClosed = function (win, data) {
+    IBizMainViewController.prototype.onWFUIFrontWindowClosed = function (win, data) {
     };
     /**
      * 执行后台行为
@@ -6842,14 +7023,14 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param uiaction
      *            行为
      */
-    IBizMianViewController.prototype.doBackendUIAction = function (uiaction) {
+    IBizMainViewController.prototype.doBackendUIAction = function (uiaction) {
         if (uiaction === void 0) { uiaction = {}; }
         // IBiz.alert($IGM('IBIZAPP.CONFIRM.TITLE.ERROR','错误'),$IGM('MAINVIEWCONTROLLER.DOBACKENDUIACTION.INFO','未处理的后台界面行为['+uiaction.tag+']',[uiaction.tag]), 2);
     };
     /**
      * 关闭窗口
      */
-    IBizMianViewController.prototype.closeWindow = function () {
+    IBizMainViewController.prototype.closeWindow = function () {
         var _this = this;
         var win = _this.getWindow();
         if (win) {
@@ -6859,7 +7040,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
             window.close();
         }
     };
-    IBizMianViewController.prototype.getWindow = function () {
+    IBizMainViewController.prototype.getWindow = function () {
         var _this = this;
         // try
         // {
@@ -6881,7 +7062,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
     /**
      * 获取标题
      */
-    IBizMianViewController.prototype.getCaption = function () {
+    IBizMainViewController.prototype.getCaption = function () {
         return this.caption;
     };
     /**
@@ -6890,16 +7071,16 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param caption
      *            标题
      */
-    IBizMianViewController.prototype.setCaption = function (caption) {
+    IBizMainViewController.prototype.setCaption = function (caption) {
         if (this.caption != caption) {
             this.caption = caption;
-            this.fire(IBizMianViewController.CAPTIONCHANGED, this.caption);
+            this.fire(IBizMainViewController.CAPTIONCHANGED, this.caption);
         }
     };
     /**
      * 获取工具栏
      */
-    IBizMianViewController.prototype.getToolbar = function () {
+    IBizMainViewController.prototype.getToolbar = function () {
         return this.getControl('toolbar');
     };
     /**
@@ -6908,7 +7089,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
      * @param hasdata
      *            是否有数据
      */
-    IBizMianViewController.prototype.calcToolbarItemState = function (hasdata, dataaccaction) {
+    IBizMainViewController.prototype.calcToolbarItemState = function (hasdata, dataaccaction) {
         if (dataaccaction === void 0) { dataaccaction = {}; }
         var _this = this;
         var toolbar = _this.getToolbar();
@@ -6932,7 +7113,7 @@ var IBizMianViewController = /** @class */ (function (_super) {
     /**
      * 获取引用视图
      */
-    IBizMianViewController.prototype.getReferView = function () {
+    IBizMainViewController.prototype.getReferView = function () {
         var _this = this;
         // if (_this.pageparams && _this.pageparams.openerid) {
         // 	return $.getIBizApp().getSRFView(_this.pageparams.openerid);
@@ -6942,15 +7123,15 @@ var IBizMianViewController = /** @class */ (function (_super) {
     /**
      * 获取uiactions
      */
-    IBizMianViewController.prototype.getMoreActions = function () {
+    IBizMainViewController.prototype.getMoreActions = function () {
         return this.uiactions;
     };
     /*****************事件声明************************/
     /**
      * 选中值变化
      */
-    IBizMianViewController.CAPTIONCHANGED = 'CAPTIONCHANGED';
-    return IBizMianViewController;
+    IBizMainViewController.CAPTIONCHANGED = 'CAPTIONCHANGED';
+    return IBizMainViewController;
 }(IBizViewController));
 
 "use strict";
@@ -7037,7 +7218,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         _this.openView(item.viewname, item.openviewparam);
     };
     return IBizIndexViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -8158,7 +8339,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
      */
     IBizMDViewController.DATALOADED = 'DATALOADED';
     return IBizMDViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -9407,7 +9588,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
         return null;
     };
     return IBizEditViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -10001,7 +10182,7 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
     IBizTreeExpViewController.REFRESHMODE_ALLNODE = 'ALLNODE';
     IBizTreeExpViewController.REFRESHMODE_NONE = 'NONE';
     return IBizTreeExpViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -10207,7 +10388,7 @@ var IBizExpViewController = /** @class */ (function (_super) {
         this.openView(view.routelink, data);
     };
     return IBizExpViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));
 
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -10274,6 +10455,138 @@ var IBizWFExpViewController = /** @class */ (function (_super) {
     };
     return IBizWFExpViewController;
 }(IBizExpViewController));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 单项选择视图控制器
+ *
+ * @export
+ * @class IBizPickupViewController
+ * @extends {IBizMainViewController}
+ */
+var IBizPickupViewController = /** @class */ (function (_super) {
+    __extends(IBizPickupViewController, _super);
+    /**
+     * Creates an instance of IBizPickupViewController.
+     * 创建 IBizPickupViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizPickupViewController
+     */
+    function IBizPickupViewController(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 按钮文本--确定
+         *
+         * @type {string}
+         * @memberof IBizPickupViewController IBizMianViewController
+         */
+        _this.$okBtnText = '确定';
+        /**
+         * 按钮文本--取消
+         *
+         * @type {string}
+         * @memberof IBizPickupViewController
+         */
+        _this.$cancelBtnText = '取消';
+        /**
+         * 是否选中
+         *
+         * @type {boolean}
+         * @memberof IBizPickupViewController
+         */
+        _this.$isSelect = false;
+        return _this;
+    }
+    /**
+     * 视图部件初始化
+     *
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onInitComponents = function () {
+        var _this = this;
+        // super.onInitComponents();
+        var pickupViewPanel = this.getPickupViewPanel();
+        if (pickupViewPanel) {
+            // 选择视图面板数据选中
+            pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe(function (args) {
+                _this.onSelectionChange(args);
+            });
+            // 选择视图面板数据激活
+            pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED).subscribe(function (args) {
+                _this.onDataActivated(args);
+            });
+        }
+    };
+    /**
+     * 数据选择，确定功能
+     *
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onClickOkButton = function () {
+        var pickupViewPanel = this.getPickupViewPanel();
+        if (!pickupViewPanel) {
+            return;
+        }
+        if (pickupViewPanel.getSelections().length !== 1) {
+            return;
+        }
+        // this.modalViewDataChange({ ret: 'DATACHANGE', data: pickupViewPanel.getSelections() });
+        // this.closeWindow();
+    };
+    /**
+     * 取消显示选择视图
+     *
+     * @param {string} type
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onClickCancelButton = function (type) {
+        // this.closeModal();
+    };
+    /**
+     * 接收选择视图数据传递
+     *
+     * @param {Array<any>} args
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onSelectionChange = function (args) {
+        this.$isSelect = args.length > 0 ? true : false;
+    };
+    /**
+     * 数据选中激活
+     *
+     * @param {Array<any>} args
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onDataActivated = function (args) {
+        this.onSelectionChange(args);
+        this.onClickOkButton();
+    };
+    /**
+     * 获取选择视图面板
+     *
+     * @returns {*}
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.getPickupViewPanel = function () {
+        return this.controls.get('pickupviewpanel');
+    };
+    return IBizPickupViewController;
+}(IBizMainViewController));
 
 "use strict";
 Vue.component('ibiz-app-menu', {

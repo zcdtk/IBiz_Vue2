@@ -702,4 +702,4 @@ var IBizEditViewController = /** @class */ (function (_super) {
         return null;
     };
     return IBizEditViewController;
-}(IBizMianViewController));
+}(IBizMainViewController));

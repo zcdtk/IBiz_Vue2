@@ -4,7 +4,7 @@
  * @class IBizMDViewController
  * @extends {IBizMianViewController}
  */
-class IBizMDViewController extends IBizMianViewController {
+class IBizMDViewController extends IBizMainViewController {
 
     public bQuickSearch: boolean = true;
 
