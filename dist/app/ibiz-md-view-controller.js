@@ -614,7 +614,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
             });
         }
         else {
-            _this.openWindow(view.viewurl, view.parsms);
+            _this.openWindow(view.viewurl, view.viewparam);
         }
         return true;
     };

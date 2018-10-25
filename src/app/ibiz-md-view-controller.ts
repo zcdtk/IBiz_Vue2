@@ -608,7 +608,7 @@ class IBizMDViewController extends IBizMainViewController {
                 }
             });
         } else {
-            _this.openWindow(view.viewurl, view.parsms);
+            _this.openWindow(view.viewurl, view.viewparam);
         }
 
         return true;
