@@ -33,6 +33,14 @@ class IBizFormField extends IBizFormItem {
     private subject: Subject<any> = new rxjs.Subject();
 
     /**
+     * 编辑器参数
+     *
+     * @type {*}
+     * @memberof IBizFormField
+     */
+    public editorParams: any = {};
+
+    /**
      * Creates an instance of IBizFormField.
      * 创建 IBizFormField 实例
      * 
@@ -43,6 +51,9 @@ class IBizFormField extends IBizFormItem {
         super(opts);
         let _this = this;
         _this.labelWidth = opts.labelWidth;
+        if (opts.editorParams) {
+            Object.assign(this.editorParams, opts.editorParams);
+        }
 
         // 停止输入值间隔500 毫秒，进行值绑定
         _this.subject.pipe(

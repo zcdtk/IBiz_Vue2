@@ -1604,8 +1604,18 @@ var IBizFormField = /** @class */ (function (_super) {
          * @memberof IBizFormField
          */
         _this_1.subject = new rxjs.Subject();
+        /**
+         * 编辑器参数
+         *
+         * @type {*}
+         * @memberof IBizFormField
+         */
+        _this_1.editorParams = {};
         var _this = _this_1;
         _this.labelWidth = opts.labelWidth;
+        if (opts.editorParams) {
+            Object.assign(_this_1.editorParams, opts.editorParams);
+        }
         // 停止输入值间隔500 毫秒，进行值绑定
         _this.subject.pipe(rxjs.operators.debounceTime(500), rxjs.operators.distinctUntilChanged(function (o, n) {
             if (o === void 0) { o = {}; }
