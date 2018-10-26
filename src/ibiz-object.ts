@@ -24,7 +24,7 @@ abstract class IBizObject {
      * @memberof IBizObject
      */
     constructor(opts: any = {}) {
-        
+
     }
 
     /**
