@@ -51,6 +51,9 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-wf-exp-bar.js',
         // 控制器
         'dist/app/ibiz-view-controller.js',
+        'dist/app/ibiz-main-view-controller.js',
+        'dist/app/ibiz-md-view-controller.js',
+        'dist/app/ibiz-grid-view-controller.js',
         // 组件
         'dist/components/ibiz-app-menu/ibiz-app-menu.component.js',
         'dist/components/ibiz-form/ibiz-form.component.js',
