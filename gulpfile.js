@@ -37,6 +37,7 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-app-menu.js',
         'dist/widget/ibiz-md-control.js',
         'dist/widget/ibiz-data-grid.js',
+        'dist/widget/ibiz-toolbar.js',
         // 控制器
 
         // 组件
