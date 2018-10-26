@@ -52,10 +52,13 @@ gulp.task('concatibizsys', function () {
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
+        'dist/app/ibiz-index-view-controller.js',
         'dist/app/ibiz-md-view-controller.js',
         'dist/app/ibiz-grid-view-controller.js',
+        'dist/app/ibiz-pickup-grid-view-controller.js',
         'dist/app/ibiz-edit-view-controller.js',
         'dist/app/ibiz-pickup-view-controller.js',
+        'dist/app/ibiz-tree-exp-view-controller.js',
         'dist/app/ibiz-exp-view-controller.js',
         'dist/app/ibiz-wf-exp-view-controller.js',
         // 组件
