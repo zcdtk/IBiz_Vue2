@@ -15,6 +15,22 @@ abstract class IBizObject {
      */
     private events: Map<string, any> = new Map();
 
+    /**
+     * IBizHttp 服务对象
+     *
+     * @type {IBizHttp}
+     * @memberof IBizObject
+     */
+    public iBizHttp: IBizHttp = new IBizHttp();
+
+    /**
+     * IBiz 通知对象
+     *
+     * @type {IBizNotification}
+     * @memberof IBizObject
+     */
+    public IBizNotification: IBizNotification = new IBizNotification();
+
 
     /**
      * Creates an instance of IBizObject.

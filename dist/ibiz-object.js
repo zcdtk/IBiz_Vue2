@@ -23,6 +23,20 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.events = new Map();
+        /**
+         * IBizHttp 服务对象
+         *
+         * @type {IBizHttp}
+         * @memberof IBizObject
+         */
+        this.iBizHttp = new IBizHttp();
+        /**
+         * IBiz 通知对象
+         *
+         * @type {IBizNotification}
+         * @memberof IBizObject
+         */
+        this.IBizNotification = new IBizNotification();
     }
     /**
      * 注册Rx订阅事件
