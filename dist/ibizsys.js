@@ -6192,3 +6192,289 @@ var IBizWFExpBar = /** @class */ (function (_super) {
     IBizWFExpBar.LOADED = 'LOADED';
     return IBizWFExpBar;
 }(IBizControl));
+
+"use strict";
+Vue.component('ibiz-app-menu', {
+    template: "\n    <i-menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\"  @on-select=\"onSelect($event)\" active-name=\"ctrl.selection.id\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <submenu :name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <submenu :name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <menu-item :name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </menu-item>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <menu-item :name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </menu-item>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <menu-item :name=\"item0.id\">\n                    <span><i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </menu-item>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </i-menu>\n    ",
+    props: ['ctrl', 'viewController'],
+    data: function () {
+        var data = {};
+        return data;
+    },
+    mounted: function () {
+    },
+    methods: {
+        onSelect: function (name) {
+            if (this.ctrl && !Object.is(name, '')) {
+                var item = this.ctrl.getItem(name, this.ctrl.getItems());
+                this.ctrl.onSelectChange(item);
+            }
+        }
+    }
+});
+
+"use strict";
+Vue.component('ibiz-form', {
+    template: "\n        <div>\n            <i-form :model=\"form\">\n                <row :gutter=\"10\">\n                    <slot :scope=\"fields\"></slot>\n                </row>\n            </i-form>\n        </div>\n    ",
+    props: ['form'],
+    data: function () {
+        var data = {};
+        Object.assign(data, { fields: this.form.fieldMap });
+        return data;
+    }
+});
+
+"use strict";
+Vue.component('ibiz-form-group', {
+    template: "\n        <div>\n            <template v-if=\"group.showCaption\">\n                <card :bordered=\"false\" :dis-hover=\"true\">\n                    <p class=\"\" slot=\"title\"> {{ group.caption }}</p>\n                    <row :gutter=\"10\">\n                        <slot></slot>\n                    </row>\n                </card>\n            </template>\n            <template v-else>\n                <row :gutter=\"10\">\n                    <slot></slot>\n                </row>\n            </template>\n        </div>\n    ",
+    props: ['form', 'group', 'name'],
+    data: function () {
+        var data = {};
+        return data;
+    }
+});
+
+"use strict";
+Vue.component('ibiz-form-item', {
+    template: "\n        <div>\n            <form-item class=\"ivu-form-label-left\" :label-width=\"item.labelWidth\" :required=\"!item.allowEmpty\">\n                <span slot=\"label\" class=\"\">{{ item.caption }}</span>\n                <slot></slot>\n            </form-item>\n        </div>\n    ",
+    props: ['form', 'item', 'name'],
+    data: function () {
+        var data = {};
+        return data;
+    }
+});
+
+"use strict";
+Vue.component('ibiz-exp-bar', {
+    template: "\n        <i-menu theme=\"light\" width=\"auto\" class=\"ibiz-exp-bar\" @on-select=\"onSelect($event)\"  @on-open-change=\"onOpenChange($event)\"\n          active-name=\"ctrl.selection.id\">\n            <template v-for=\"(item0, index0) in ctrl.items\">\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                <template v-if=\"item0.items && item0.items.length > 0\">\n                    <submenu :name=\"item0.id\">\n                        <template slot=\"title\">\n                            <span>{{ item0.text }}</span>\n                            <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                        </template>\n                        <template v-for=\"(item1, index1) in item0.items\">\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                            <template v-if=\"item1.items && item1.items.length > 0\">\n                                <submenu :name=\"item1.id\">\n                                    <template slot=\"title\">\n                                        <span>{{ item1.text }}</span>\n                                        <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                    <template v-for=\"(item2, index2) in item1.items\">\n                                        <menu-item :name=\"item2.id\">\n                                            <span>{{ item2.text }}</span>\n                                            <span>&nbsp;&nbsp;<badge :count=\"item2.counterdata\"></badge></span>\n                                        </menu-item>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                                </submenu>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                            <template v-else>\n                                <menu-item :name=\"item1.id\">\n                                    <span>{{ item1.text }}</span>\n                                    <span>&nbsp;&nbsp;<badge :count=\"item1.counterdata\"></badge></span>\n                                </menu-item>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                        </template>\n                    </submenu>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                <template v-else>\n                    <menu-item :name=\"item0.id\">\n                        <span>{{ item0.text }}</span>\n                        <span>&nbsp;&nbsp;<badge :count=\"item0.counterdata\"></badge></span>\n                    </menu-item>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n            </template>\n        </i-menu>\n    ",
+    props: ['ctrl', 'viewController'],
+    data: function () {
+        var data = { opendata: [] };
+        return data;
+    },
+    mounted: function () {
+    },
+    methods: {
+        setOpenData: function (arr) {
+            var _this = this;
+            arr.forEach(function (item) {
+                if (item.items && item.items.length > 0) {
+                    _this.opendata.push(item.id);
+                    _this.setOpenData(item.items);
+                }
+            });
+        },
+        getItem: function (items, id) {
+            var _this = this;
+            var data = {};
+            items.some(function (_item) {
+                if (Object.is(id, _item.id)) {
+                    Object.assign(data, _item);
+                    return true;
+                }
+                if (_item.items && _item.items.length > 0) {
+                    var subItem = _this.getItem(_item.items, id);
+                    if (Object.keys(subItem).length > 0) {
+                        Object.assign(data, subItem);
+                        return true;
+                    }
+                }
+            });
+            return data;
+        },
+        onSelect: function (name) {
+            console.log(name);
+            var _this = this;
+            var _data = _this.getItem(_this.ctrl.items, name);
+            _this.ctrl.selection(_data);
+        },
+        onOpenChange: function (submenu) {
+            console.log(submenu);
+        },
+    },
+    watch: {
+        'ctrl.items': function (val) {
+            if (val && Array.isArray(val)) {
+                this.items = val.slice();
+                this.setOpenData(val);
+            }
+        }
+    }
+});
+
+"use strict";
+Vue.component('ibiz-modal', {
+    template: "\n        <modal v-model=\"showmodal\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\" :width=\"width\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
+    props: ['key', 'params', 'index'],
+    data: function () {
+        var data = {
+            showmodal: true,
+            width: 0,
+            title: '',
+            modalviewname: '',
+            subject: null,
+            viewparam: {},
+            _result: {}
+        };
+        var width = 600;
+        if (window && window.innerWidth > 100) {
+            if (window.innerWidth > 100) {
+                width = window.innerWidth - 100;
+            }
+            else {
+                width = window.innerWidth;
+            }
+        }
+        Object.assign(data, { width: width });
+        return data;
+    },
+    mounted: function () {
+        this.modalviewname = this.params.modalviewname;
+        if (this.params.subject) {
+            this.subject = this.params.subject;
+        }
+        if (this.params.width && this.params.width !== 0) {
+            this.width = this.params.width;
+        }
+        if (this.params.title) {
+            this.title = this.params.title;
+        }
+        if (this.params.viewparam) {
+            Object.assign(this.viewparam, this.params.viewparam);
+        }
+    },
+    methods: {
+        close: function (result) {
+            console.log(result);
+            if (this.subject) {
+                if (result && Object.is(result.ret, 'OK')) {
+                    this.subject.next(result);
+                }
+                else {
+                    this.subject.unsubscribe();
+                }
+            }
+            this.showmodal = false;
+            // this.$emit("on-close", this.index)
+        },
+        dataChange: function (result) {
+            console.log(result);
+            this._result = {};
+            if (result) {
+                Object.assign(this._result, result);
+            }
+        },
+        onVisibleChange: function ($event) {
+            console.log($event);
+            if ($event) {
+                return;
+            }
+            if (this.subject) {
+                if (this._result && Object.is(this._result.ret, 'OK')) {
+                    this.subject.next(this._result);
+                }
+                else {
+                    this.subject.unsubscribe();
+                }
+            }
+        }
+    }
+});
+
+"use strict";
+Vue.component('ibiz-picker', {
+    template: "\n    <i-input style=\"width: 100%;\" :icon=\"'ios-search'\" v-model=\"field.value\" :disabled=\"field.disabled\" @on-click=\"openView\">\n    </i-input>\n    ",
+    props: ['field', 'name', 'modalviewname'],
+    data: function () {
+        var data = {};
+        Object.assign(data, this.field.editorParams);
+        Object.assign(data, { form: this.field.getForm() });
+        return data;
+    },
+    mounted: function () {
+    },
+    methods: {
+        //  填充条件
+        fillPickupCondition: function (arg) {
+            if (this.form) {
+                if (this.itemParam && this.itemParam.fetchcond) {
+                    var fetchparam = {};
+                    var fetchCond = this.itemParam.fetchcond;
+                    if (fetchCond) {
+                        for (var cond in fetchCond) {
+                            var field = this.form.findField(fetchCond[cond]);
+                            if (!field) {
+                                this.iBizNotification.error('操作失败', '未能找到当前表单项' + fetchCond[cond] + '，无法继续操作');
+                                return false;
+                            }
+                            var value = field.getValue();
+                            if (!value == null || Object.is(value, '')) {
+                                return false;
+                            }
+                            fetchparam[cond] = value;
+                        }
+                    }
+                    Object.assign(arg, { srffetchcond: JSON.stringify(fetchparam) });
+                }
+                if (this.itemParam && this.itemParam.temprs) {
+                    // if (form.tempMode) {
+                    // 	arg.srftempmode = true;
+                    // }
+                }
+                Object.assign(arg, { srfreferitem: this.name });
+                Object.assign(arg, { srfreferdata: JSON.stringify(this.form.getActiveData()) });
+                return true;
+            }
+            else {
+                this.iBizNotification.error('操作失败', '部件对象异常');
+                return false;
+            }
+        },
+        openView: function () {
+            var _this = this;
+            var view = { viewparam: {} };
+            var viewController;
+            if (this.form) {
+                viewController = this.form.getViewController();
+                var _srfkey = this.form.findField('srfkey');
+                if (_srfkey) {
+                    Object.assign(view.viewparam, { srfkey: _srfkey.getValue() });
+                }
+            }
+            if (viewController) {
+                Object.assign(view.viewparam, viewController.getViewParam());
+                // Object.assign(view, { modalZIndex: viewController.modalZIndex });
+            }
+            var bcancel = this.fillPickupCondition(view.viewparam);
+            if (!bcancel) {
+                this.iBizNotification.warning('异常', '条件不满足');
+                return;
+            }
+            if (this.pickupView && Object.keys(this.pickupView).length > 0) {
+                var subject = new rxjs.Subject();
+                Object.assign(view, this.pickupView, { subject: subject });
+                this.$root.addModal(view);
+                subject.subscribe(function (result) {
+                    console.log(result);
+                    if (!result || !Object.is(result.ret, 'OK')) {
+                        return;
+                    }
+                    var item = {};
+                    if (result.selections && Array.isArray(result.selections)) {
+                        Object.assign(item, result.selections[0]);
+                    }
+                    if (_this.form) {
+                        var valueField = _this.form.findField(_this.valueItem);
+                        if (valueField) {
+                            valueField.setValue(item.srfkey);
+                        }
+                        var itemField = _this.form.findField(_this.name);
+                        if (itemField) {
+                            itemField.setValue(item.srfmajortext);
+                        }
+                    }
+                });
+            }
+        }
+    }
+});
