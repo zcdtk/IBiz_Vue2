@@ -50,6 +50,7 @@ Vue.component('ibiz-modal', {
                     this.subject.unsubscribe();
                 }
             }
+            this.showmodal = false;
             // this.$emit("on-close", this.index)
         },
         dataChange: function (result) {

@@ -93,6 +93,8 @@ class IBizPickupViewController extends IBizMainViewController {
         }
         // this.modalViewDataChange({ ret: 'DATACHANGE', data: pickupViewPanel.getSelections() });
         // this.closeWindow();
+        let _this = this;
+        _this.closeModal({ ret: 'OK', selections: pickupViewPanel.getSelections() });
     }
 
     /**
@@ -103,6 +105,8 @@ class IBizPickupViewController extends IBizMainViewController {
      */
     public onClickCancelButton(type: string): void {
         // this.closeModal();
+        let _this = this;
+        _this.closeModal();
     }
 
     /**

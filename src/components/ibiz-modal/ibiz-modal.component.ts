@@ -54,6 +54,7 @@ Vue.component('ibiz-modal', {
                 }
             }
 
+            this.showmodal = false;
             // this.$emit("on-close", this.index)
         },
         dataChange: function (result) {

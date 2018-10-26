@@ -75,8 +75,26 @@ Vue.component('ibiz-picker', {
                 const subject: Subject<any> = new rxjs.Subject();
                 Object.assign(view, this.pickupView, { subject: subject });
                 this.$root.addModal(view);
-                subject.subscribe((selections: Array<any>) => {
-                    console.log(selections);
+                subject.subscribe((result: any) => {
+                    console.log(result);
+                    if (!result || !Object.is(result.ret, 'OK')) {
+                        return;
+                    }
+                    let item: any = {};
+                    if (result.selections && Array.isArray(result.selections)) {
+                        Object.assign(item, result.selections[0]);
+                    }
+
+                    if (this.form) {
+                        let valueField = this.form.findField(this.valueItem);
+                        if (valueField) {
+                            valueField.setValue(item.srfkey);
+                        }
+                        let itemField = this.form.findField(this.name);
+                        if (itemField) {
+                            itemField.setValue(item.srfmajortext);
+                        }
+                    }
                 })
             }
         }

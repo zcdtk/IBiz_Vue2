@@ -104,6 +104,8 @@ var IBizPickupViewController = /** @class */ (function (_super) {
         }
         // this.modalViewDataChange({ ret: 'DATACHANGE', data: pickupViewPanel.getSelections() });
         // this.closeWindow();
+        var _this = this;
+        _this.closeModal({ ret: 'OK', selections: pickupViewPanel.getSelections() });
     };
     /**
      * 取消显示选择视图
@@ -113,6 +115,8 @@ var IBizPickupViewController = /** @class */ (function (_super) {
      */
     IBizPickupViewController.prototype.onClickCancelButton = function (type) {
         // this.closeModal();
+        var _this = this;
+        _this.closeModal();
     };
     /**
      * 接收选择视图数据传递

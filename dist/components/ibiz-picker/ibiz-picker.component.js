@@ -48,6 +48,7 @@ Vue.component('ibiz-picker', {
             }
         },
         openView: function () {
+            var _this = this;
             var view = { viewparam: {} };
             var viewController;
             if (this.form) {
@@ -70,8 +71,25 @@ Vue.component('ibiz-picker', {
                 var subject = new rxjs.Subject();
                 Object.assign(view, this.pickupView, { subject: subject });
                 this.$root.addModal(view);
-                subject.subscribe(function (selections) {
-                    console.log(selections);
+                subject.subscribe(function (result) {
+                    console.log(result);
+                    if (!result || !Object.is(result.ret, 'OK')) {
+                        return;
+                    }
+                    var item = {};
+                    if (result.selections && Array.isArray(result.selections)) {
+                        Object.assign(item, result.selections[0]);
+                    }
+                    if (_this.form) {
+                        var valueField = _this.form.findField(_this.valueItem);
+                        if (valueField) {
+                            valueField.setValue(item.srfkey);
+                        }
+                        var itemField = _this.form.findField(_this.name);
+                        if (itemField) {
+                            itemField.setValue(item.srfmajortext);
+                        }
+                    }
                 });
             }
         }

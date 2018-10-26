@@ -10576,6 +10576,8 @@ var IBizPickupViewController = /** @class */ (function (_super) {
         }
         // this.modalViewDataChange({ ret: 'DATACHANGE', data: pickupViewPanel.getSelections() });
         // this.closeWindow();
+        var _this = this;
+        _this.closeModal({ ret: 'OK', selections: pickupViewPanel.getSelections() });
     };
     /**
      * 取消显示选择视图
@@ -10585,6 +10587,8 @@ var IBizPickupViewController = /** @class */ (function (_super) {
      */
     IBizPickupViewController.prototype.onClickCancelButton = function (type) {
         // this.closeModal();
+        var _this = this;
+        _this.closeModal();
     };
     /**
      * 接收选择视图数据传递
@@ -10778,6 +10782,7 @@ Vue.component('ibiz-modal', {
                     this.subject.unsubscribe();
                 }
             }
+            this.showmodal = false;
             // this.$emit("on-close", this.index)
         },
         dataChange: function (result) {
@@ -10854,6 +10859,7 @@ Vue.component('ibiz-picker', {
             }
         },
         openView: function () {
+            var _this = this;
             var view = { viewparam: {} };
             var viewController;
             if (this.form) {
@@ -10876,8 +10882,25 @@ Vue.component('ibiz-picker', {
                 var subject = new rxjs.Subject();
                 Object.assign(view, this.pickupView, { subject: subject });
                 this.$root.addModal(view);
-                subject.subscribe(function (selections) {
-                    console.log(selections);
+                subject.subscribe(function (result) {
+                    console.log(result);
+                    if (!result || !Object.is(result.ret, 'OK')) {
+                        return;
+                    }
+                    var item = {};
+                    if (result.selections && Array.isArray(result.selections)) {
+                        Object.assign(item, result.selections[0]);
+                    }
+                    if (_this.form) {
+                        var valueField = _this.form.findField(_this.valueItem);
+                        if (valueField) {
+                            valueField.setValue(item.srfkey);
+                        }
+                        var itemField = _this.form.findField(_this.name);
+                        if (itemField) {
+                            itemField.setValue(item.srfmajortext);
+                        }
+                    }
                 });
             }
         }
