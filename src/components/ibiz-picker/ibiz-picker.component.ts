@@ -6,28 +6,22 @@ Vue.component('ibiz-picker', {
     props: ['field', 'name', 'modalviewname'],
     data: function () {
         let data: any = {};
+        Object.assign(data, this.field.editorParams);
         return data;
     },
     mounted: function () {
-        
     },
     methods: {
-        onSearch(){
-            console.log();
-            let data = {
-                height: 0,
-                layout: "fit",
-                maximizable: true,
-                modal: true,
-                modalviewname: "org-pickup-view_modalview",
-                openMode: "POPUPMODAL",
-                title: "产品编辑视图（vue)",
-                viewname: "product-edit-view-vue",
-                viewparam: {  },
-                viewurl: "/pages/common/product-edit-view-vue/product-edit-view-vue.html#/product-edit-view-vue",
-                width: 0
-            };
-            this.$root.addModal(data);
+        onSearch() {
+            let viewParams = {};
+            if (this.pickupView && Object.keys(this.pickupView).length > 0) {
+                const subject: Subject<any> = new rxjs.Subject();
+                Object.assign(viewParams, this.pickupView, { subject: subject });
+                this.$root.addModal(viewParams);
+                subject.subscribe((selections: Array<any>) => {
+                    console.log(selections);
+                })
+            }
         },
     }
 });
