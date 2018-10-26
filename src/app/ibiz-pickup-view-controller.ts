@@ -48,6 +48,7 @@ class IBizPickupViewController extends IBizMainViewController {
      */
     public onInitComponents(): void {
         super.onInitComponents();
+
         const pickupViewPanel = this.getPickupViewPanel();
         if (pickupViewPanel) {
             // 选择视图面板数据选中

@@ -67,31 +67,31 @@ var IBizEditViewController = /** @class */ (function (_super) {
         var form = this.getForm();
         if (form) {
             // 表单保存之前
-            form.on(IBizEditForm.FORMBEFORESAVE, function (data) {
+            form.on(IBizEditForm.FORMBEFORESAVE).subscribe(function (data) {
                 _this.onFormBeforeSaved(data);
             });
             // 表单保存完成
-            form.on(IBizForm.FORMSAVED, function (data) {
+            form.on(IBizForm.FORMSAVED).subscribe(function (data) {
                 _this.onFormSaved(data);
             });
             // 表单加载完成
-            form.on(IBizForm.FORMLOADED, function (data) {
+            form.on(IBizForm.FORMLOADED).subscribe(function (data) {
                 _this.onFormLoaded();
             });
             // 表单删除完成
-            form.on(IBizForm.FORMREMOVED, function (data) {
+            form.on(IBizForm.FORMREMOVED).subscribe(function (data) {
                 _this.onFormRemoved();
             });
             // 工作流启动完成
-            form.on(IBizForm.FORMWFSTARTED, function (data) {
+            form.on(IBizForm.FORMWFSTARTED).subscribe(function (data) {
                 _this.onFormWFStarted();
             });
             // 工作流提交完成
-            form.on(IBizForm.FORMWFSUBMITTED, function (data) {
+            form.on(IBizForm.FORMWFSUBMITTED).subscribe(function (data) {
                 _this.onFormWFSubmitted();
             });
             // 编辑表单实体界面行为
-            form.on(IBizEditForm.UIACTIONFINISHED, function (data) {
+            form.on(IBizEditForm.UIACTIONFINISHED).subscribe(function (data) {
                 if (data.reloadData) {
                     _this.refreshReferView();
                 }
@@ -100,7 +100,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
                 }
             });
             // 表单属性值变化
-            form.on(IBizForm.FORMFIELDCHANGED, function (data) {
+            form.on(IBizForm.FORMFIELDCHANGED).subscribe(function (data) {
                 if (data == null) {
                     _this.onFormFieldChanged('', null, null);
                 }
@@ -110,7 +110,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
                 }
             });
             // 表单权限发生变化
-            form.on(IBizForm.DATAACCACTIONCHANGE, function (data) {
+            form.on(IBizForm.DATAACCACTIONCHANGE).subscribe(function (data) {
                 _this.onDataAccActionChange(data);
             });
         }

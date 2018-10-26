@@ -15,13 +15,6 @@ var __extends = (this && this.__extends) || (function () {
 /**
  *
  *
- * @export
- * @class IBizMainViewController
- * @extends {IBizViewController}
- */
-/**
- *
- *
  * @class IBizMainViewController
  * @extends {IBizViewController}
  */
@@ -70,7 +63,8 @@ var IBizMainViewController = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var toolbar = this.getToolBar();
         if (toolbar) {
-            toolbar.on(IBizToolbar.ITEMCLICK, function (params) {
+            // 工具栏点击
+            toolbar.on(IBizToolbar.ITEMCLICK).subscribe(function (params) {
                 _this.onClickTBItem(params);
             });
         }

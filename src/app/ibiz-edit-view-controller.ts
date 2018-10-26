@@ -60,34 +60,35 @@ class IBizEditViewController extends IBizMainViewController {
      */
     public onInitComponents(): void {
         super.onInitComponents();
+
         const form: any = this.getForm();
         if (form) {
             // 表单保存之前
-            form.on(IBizEditForm.FORMBEFORESAVE, (data) => {
+            form.on(IBizEditForm.FORMBEFORESAVE).subscribe((data) => {
                 this.onFormBeforeSaved(data);
             });
             // 表单保存完成
-            form.on(IBizForm.FORMSAVED, (data) => {
+            form.on(IBizForm.FORMSAVED).subscribe((data) => {
                 this.onFormSaved(data);
             });
             // 表单加载完成
-            form.on(IBizForm.FORMLOADED, (data) => {
+            form.on(IBizForm.FORMLOADED).subscribe((data) => {
                 this.onFormLoaded();
             });
             // 表单删除完成
-            form.on(IBizForm.FORMREMOVED, (data) => {
+            form.on(IBizForm.FORMREMOVED).subscribe((data) => {
                 this.onFormRemoved();
             });
             // 工作流启动完成
-            form.on(IBizForm.FORMWFSTARTED, (data) => {
+            form.on(IBizForm.FORMWFSTARTED).subscribe((data) => {
                 this.onFormWFStarted();
             });
             // 工作流提交完成
-            form.on(IBizForm.FORMWFSUBMITTED, (data) => {
+            form.on(IBizForm.FORMWFSUBMITTED).subscribe((data) => {
                 this.onFormWFSubmitted();
             });
             // 编辑表单实体界面行为
-            form.on(IBizEditForm.UIACTIONFINISHED, (data) => {
+            form.on(IBizEditForm.UIACTIONFINISHED).subscribe((data) => {
                 if (data.reloadData) {
                     this.refreshReferView();
                 }
@@ -96,7 +97,7 @@ class IBizEditViewController extends IBizMainViewController {
                 }
             });
             // 表单属性值变化
-            form.on(IBizForm.FORMFIELDCHANGED, (data) => {
+            form.on(IBizForm.FORMFIELDCHANGED).subscribe((data) => {
                 if (data == null) {
                     this.onFormFieldChanged('', null, null);
                 } else {
@@ -105,7 +106,7 @@ class IBizEditViewController extends IBizMainViewController {
                 }
             });
             // 表单权限发生变化
-            form.on(IBizForm.DATAACCACTIONCHANGE, (data) => {
+            form.on(IBizForm.DATAACCACTIONCHANGE).subscribe((data) => {
                 this.onDataAccActionChange(data);
             });
         }
@@ -118,6 +119,7 @@ class IBizEditViewController extends IBizMainViewController {
      */
     public onLoad(): void {
         super.onLoad();
+
         const editForm: any = this.getForm();
         if (editForm) {
             editForm.autoLoad(this.getViewParam());
@@ -617,7 +619,7 @@ class IBizEditViewController extends IBizMainViewController {
      * @memberof IBizEditViewController
      */
     public refreshReferView(): void {
-     
+
     }
 
     /**

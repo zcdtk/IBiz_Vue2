@@ -1,12 +1,5 @@
 /**
  * 
- * 
- * @export
- * @class IBizMainViewController
- * @extends {IBizViewController}
- */
-/**
- * 
  *
  * @class IBizMainViewController
  * @extends {IBizViewController}
@@ -58,7 +51,8 @@ class IBizMainViewController extends IBizViewController {
 
         const toolbar: any = this.getToolBar();
         if (toolbar) {
-            toolbar.on(IBizToolbar.ITEMCLICK, (params) => {
+            // 工具栏点击
+            toolbar.on(IBizToolbar.ITEMCLICK).subscribe((params) => {
                 this.onClickTBItem(params);
             });
         }
@@ -71,6 +65,7 @@ class IBizMainViewController extends IBizViewController {
      */
     public onLoad(): void {
         super.onLoad();
+        
         this.loadModel();
     }
 
@@ -127,15 +122,13 @@ class IBizMainViewController extends IBizViewController {
     private addOptionsForUrl(url: string, opt: any = {}): string {
         const keys: string[] = Object.keys(opt);
         const isOpt: number = url.indexOf('?');
-        keys.forEach(
-            (key, index) => {
-                if (index === 0 && isOpt === -1) {
-                    url += `?{key}={opt[key]}`;
-                } else {
-                    url += `&{key}={opt[key]}`;
-                }
+        keys.forEach((key, index) => {
+            if (index === 0 && isOpt === -1) {
+                url += `?{key}={opt[key]}`;
+            } else {
+                url += `&{key}={opt[key]}`;
             }
-        );
+        });
         return url;
     }
 

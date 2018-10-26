@@ -71,6 +71,7 @@ class IBizMDViewController extends IBizMainViewController {
      */
     constructor(opts: any = {}) {
         super(opts);
+        
         this.regQuickSearchDEFileds();
     }
 
@@ -87,25 +88,25 @@ class IBizMDViewController extends IBizMainViewController {
         const mdctrl: any = this.getMDCtrl();
         if (mdctrl) {
             // 多数据部件选中
-            mdctrl.on(IBizMDControl.SELECTIONCHANGE, (args) => {
+            mdctrl.on(IBizMDControl.SELECTIONCHANGE).subscribe((args) => {
                 this.onSelectionChange(args);
             });
             // 多数据部件加载之前
-            mdctrl.on(IBizMDControl.BEFORELOAD, (args) => {
+            mdctrl.on(IBizMDControl.BEFORELOAD).subscribe((args) => {
                 this.onStoreBeforeLoad(args);
             });
             // 多数据部件加载完成
-            mdctrl.on(IBizMDControl.LOADED, (args) => {
+            mdctrl.on(IBizMDControl.LOADED).subscribe((args) => {
                 this.onStoreLoad(args);
             });
             // 多数据部件状态改变
-            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE, (args) => {
+            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE).subscribe((args) => {
                 this.onGridRowEditChange(undefined, args, undefined);
             });
             // 多数据界面行为
-            mdctrl.on(IBizMDControl.UIACTION, (agrs) => {
-                if (agrs.tag) {
-                    this.doUIAction(agrs.tag, agrs.data);
+            mdctrl.on(IBizMDControl.UIACTION).subscribe((args) => {
+                if (args.tag) {
+                    this.doUIAction(args.tag, args.data);
                 }
             });
 
@@ -127,19 +128,19 @@ class IBizMDViewController extends IBizMainViewController {
         const searchform: any = this.getSearchForm();
         if (searchform) {
             // 搜索表单加载完成
-            searchform.on(IBizForm.FORMLOADED, (form) => {
+            searchform.on(IBizForm.FORMLOADED).subscribe((args) => {
                 this.onSearchFormSearched(this.isLoadDefault());
             });
             // 搜索表单搜索触发，手动触发
-            searchform.on(IBizSearchForm.FORMSEARCHED, (args) => {
+            searchform.on(IBizSearchForm.FORMSEARCHED).subscribe((args) => {
                 this.onSearchFormSearched(true);
             });
             // 搜索表单重置
-            searchform.on(IBizSearchForm.FORMRESETED, (args) => {
+            searchform.on(IBizSearchForm.FORMRESETED).subscribe((args) => {
                 this.onSearchFormReseted();
             });
             // 搜索表单值变化
-            searchform.on(IBizForm.FORMFIELDCHANGED, (args) => {
+            searchform.on(IBizForm.FORMFIELDCHANGED).subscribe((args) => {
                 if (args == null) {
                     this.onSearchFormFieldChanged('', null, null);
                 } else {
@@ -159,6 +160,7 @@ class IBizMDViewController extends IBizMainViewController {
      */
     public onLoad(): void {
         super.onLoad();
+
         if (this.getSearchForm()) {
             let viewparams: any = {};
             Object.assign(viewparams, this.getViewParam());

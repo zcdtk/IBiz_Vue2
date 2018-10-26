@@ -24,6 +24,7 @@ class IBizExpViewController extends IBizMainViewController {
      */
     public onInitComponents(): void {
         super.onInitComponents();
+
         const expCtrl = this.getExpCtrl();
         if (expCtrl) {
             expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE, (item) => {
@@ -42,6 +43,8 @@ class IBizExpViewController extends IBizMainViewController {
      * @memberof IBizExpViewController
      */
     public onLoad(): void {
+        super.onLoad();
+
         const expCtrl = this.getExpCtrl();
         if (expCtrl) {
             expCtrl.load({});

@@ -49,7 +49,8 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var appMenu = this.getAppMenu();
         if (appMenu) {
-            appMenu.on(IBizAppMenu.LOADED, function (items) {
+            // 菜单加载完成
+            appMenu.on(IBizAppMenu.LOADED).subscribe(function (items) {
                 _this.appMenuLoaded(items);
             });
         }

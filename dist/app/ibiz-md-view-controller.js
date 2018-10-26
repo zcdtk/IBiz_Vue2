@@ -87,25 +87,25 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var mdctrl = this.getMDCtrl();
         if (mdctrl) {
             // 多数据部件选中
-            mdctrl.on(IBizMDControl.SELECTIONCHANGE, function (args) {
+            mdctrl.on(IBizMDControl.SELECTIONCHANGE).subscribe(function (args) {
                 _this.onSelectionChange(args);
             });
             // 多数据部件加载之前
-            mdctrl.on(IBizMDControl.BEFORELOAD, function (args) {
+            mdctrl.on(IBizMDControl.BEFORELOAD).subscribe(function (args) {
                 _this.onStoreBeforeLoad(args);
             });
             // 多数据部件加载完成
-            mdctrl.on(IBizMDControl.LOADED, function (args) {
+            mdctrl.on(IBizMDControl.LOADED).subscribe(function (args) {
                 _this.onStoreLoad(args);
             });
             // 多数据部件状态改变
-            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE, function (args) {
+            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE).subscribe(function (args) {
                 _this.onGridRowEditChange(undefined, args, undefined);
             });
             // 多数据界面行为
-            mdctrl.on(IBizMDControl.UIACTION, function (agrs) {
-                if (agrs.tag) {
-                    _this.doUIAction(agrs.tag, agrs.data);
+            mdctrl.on(IBizMDControl.UIACTION).subscribe(function (args) {
+                if (args.tag) {
+                    _this.doUIAction(args.tag, args.data);
                 }
             });
             if (this.isEnableQuickSearch()) {
@@ -124,19 +124,19 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var searchform = this.getSearchForm();
         if (searchform) {
             // 搜索表单加载完成
-            searchform.on(IBizForm.FORMLOADED, function (form) {
+            searchform.on(IBizForm.FORMLOADED).subscribe(function (args) {
                 _this.onSearchFormSearched(_this.isLoadDefault());
             });
             // 搜索表单搜索触发，手动触发
-            searchform.on(IBizSearchForm.FORMSEARCHED, function (args) {
+            searchform.on(IBizSearchForm.FORMSEARCHED).subscribe(function (args) {
                 _this.onSearchFormSearched(true);
             });
             // 搜索表单重置
-            searchform.on(IBizSearchForm.FORMRESETED, function (args) {
+            searchform.on(IBizSearchForm.FORMRESETED).subscribe(function (args) {
                 _this.onSearchFormReseted();
             });
             // 搜索表单值变化
-            searchform.on(IBizForm.FORMFIELDCHANGED, function (args) {
+            searchform.on(IBizForm.FORMFIELDCHANGED).subscribe(function (args) {
                 if (args == null) {
                     _this.onSearchFormFieldChanged('', null, null);
                 }

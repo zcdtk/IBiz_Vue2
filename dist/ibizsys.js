@@ -7096,13 +7096,6 @@ var __extends = (this && this.__extends) || (function () {
 /**
  *
  *
- * @export
- * @class IBizMainViewController
- * @extends {IBizViewController}
- */
-/**
- *
- *
  * @class IBizMainViewController
  * @extends {IBizViewController}
  */
@@ -7151,7 +7144,8 @@ var IBizMainViewController = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var toolbar = this.getToolBar();
         if (toolbar) {
-            toolbar.on(IBizToolbar.ITEMCLICK, function (params) {
+            // 工具栏点击
+            toolbar.on(IBizToolbar.ITEMCLICK).subscribe(function (params) {
                 _this.onClickTBItem(params);
             });
         }
@@ -7699,7 +7693,8 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var appMenu = this.getAppMenu();
         if (appMenu) {
-            appMenu.on(IBizAppMenu.LOADED, function (items) {
+            // 菜单加载完成
+            appMenu.on(IBizAppMenu.LOADED).subscribe(function (items) {
                 _this.appMenuLoaded(items);
             });
         }
@@ -7844,25 +7839,25 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var mdctrl = this.getMDCtrl();
         if (mdctrl) {
             // 多数据部件选中
-            mdctrl.on(IBizMDControl.SELECTIONCHANGE, function (args) {
+            mdctrl.on(IBizMDControl.SELECTIONCHANGE).subscribe(function (args) {
                 _this.onSelectionChange(args);
             });
             // 多数据部件加载之前
-            mdctrl.on(IBizMDControl.BEFORELOAD, function (args) {
+            mdctrl.on(IBizMDControl.BEFORELOAD).subscribe(function (args) {
                 _this.onStoreBeforeLoad(args);
             });
             // 多数据部件加载完成
-            mdctrl.on(IBizMDControl.LOADED, function (args) {
+            mdctrl.on(IBizMDControl.LOADED).subscribe(function (args) {
                 _this.onStoreLoad(args);
             });
             // 多数据部件状态改变
-            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE, function (args) {
+            mdctrl.on(IBizDataGrid.CHANGEEDITSTATE).subscribe(function (args) {
                 _this.onGridRowEditChange(undefined, args, undefined);
             });
             // 多数据界面行为
-            mdctrl.on(IBizMDControl.UIACTION, function (agrs) {
-                if (agrs.tag) {
-                    _this.doUIAction(agrs.tag, agrs.data);
+            mdctrl.on(IBizMDControl.UIACTION).subscribe(function (args) {
+                if (args.tag) {
+                    _this.doUIAction(args.tag, args.data);
                 }
             });
             if (this.isEnableQuickSearch()) {
@@ -7881,19 +7876,19 @@ var IBizMDViewController = /** @class */ (function (_super) {
         var searchform = this.getSearchForm();
         if (searchform) {
             // 搜索表单加载完成
-            searchform.on(IBizForm.FORMLOADED, function (form) {
+            searchform.on(IBizForm.FORMLOADED).subscribe(function (args) {
                 _this.onSearchFormSearched(_this.isLoadDefault());
             });
             // 搜索表单搜索触发，手动触发
-            searchform.on(IBizSearchForm.FORMSEARCHED, function (args) {
+            searchform.on(IBizSearchForm.FORMSEARCHED).subscribe(function (args) {
                 _this.onSearchFormSearched(true);
             });
             // 搜索表单重置
-            searchform.on(IBizSearchForm.FORMRESETED, function (args) {
+            searchform.on(IBizSearchForm.FORMRESETED).subscribe(function (args) {
                 _this.onSearchFormReseted();
             });
             // 搜索表单值变化
-            searchform.on(IBizForm.FORMFIELDCHANGED, function (args) {
+            searchform.on(IBizForm.FORMFIELDCHANGED).subscribe(function (args) {
                 if (args == null) {
                     _this.onSearchFormFieldChanged('', null, null);
                 }
@@ -9157,7 +9152,7 @@ var IBizGridViewController = /** @class */ (function (_super) {
         var grid = this.getMDCtrl();
         if (grid) {
             // 双击行数据
-            grid.on(IBizDataGrid.ROWDBLCLICK, function (args) {
+            grid.on(IBizDataGrid.ROWDBLCLICK).subscribe(function (args) {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 0) {
                     return;
@@ -9165,14 +9160,14 @@ var IBizGridViewController = /** @class */ (function (_super) {
                 _this.onDataActivated(args[0]);
             });
             // 单击行数据
-            grid.on(IBizDataGrid.ROWCLICK, function (args) {
+            grid.on(IBizDataGrid.ROWCLICK).subscribe(function (args) {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 1) {
                     _this.onDataActivated(args[0]);
                 }
             });
             // 表格行数据变化
-            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE, function (param) {
+            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE).subscribe(function (param) {
                 if (!_this.isEnableRowEdit()) {
                     return;
                 }
@@ -9691,31 +9686,31 @@ var IBizEditViewController = /** @class */ (function (_super) {
         var form = this.getForm();
         if (form) {
             // 表单保存之前
-            form.on(IBizEditForm.FORMBEFORESAVE, function (data) {
+            form.on(IBizEditForm.FORMBEFORESAVE).subscribe(function (data) {
                 _this.onFormBeforeSaved(data);
             });
             // 表单保存完成
-            form.on(IBizForm.FORMSAVED, function (data) {
+            form.on(IBizForm.FORMSAVED).subscribe(function (data) {
                 _this.onFormSaved(data);
             });
             // 表单加载完成
-            form.on(IBizForm.FORMLOADED, function (data) {
+            form.on(IBizForm.FORMLOADED).subscribe(function (data) {
                 _this.onFormLoaded();
             });
             // 表单删除完成
-            form.on(IBizForm.FORMREMOVED, function (data) {
+            form.on(IBizForm.FORMREMOVED).subscribe(function (data) {
                 _this.onFormRemoved();
             });
             // 工作流启动完成
-            form.on(IBizForm.FORMWFSTARTED, function (data) {
+            form.on(IBizForm.FORMWFSTARTED).subscribe(function (data) {
                 _this.onFormWFStarted();
             });
             // 工作流提交完成
-            form.on(IBizForm.FORMWFSUBMITTED, function (data) {
+            form.on(IBizForm.FORMWFSUBMITTED).subscribe(function (data) {
                 _this.onFormWFSubmitted();
             });
             // 编辑表单实体界面行为
-            form.on(IBizEditForm.UIACTIONFINISHED, function (data) {
+            form.on(IBizEditForm.UIACTIONFINISHED).subscribe(function (data) {
                 if (data.reloadData) {
                     _this.refreshReferView();
                 }
@@ -9724,7 +9719,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
                 }
             });
             // 表单属性值变化
-            form.on(IBizForm.FORMFIELDCHANGED, function (data) {
+            form.on(IBizForm.FORMFIELDCHANGED).subscribe(function (data) {
                 if (data == null) {
                     _this.onFormFieldChanged('', null, null);
                 }
@@ -9734,7 +9729,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
                 }
             });
             // 表单权限发生变化
-            form.on(IBizForm.DATAACCACTIONCHANGE, function (data) {
+            form.on(IBizForm.DATAACCACTIONCHANGE).subscribe(function (data) {
                 _this.onDataAccActionChange(data);
             });
         }
@@ -11267,6 +11262,7 @@ var IBizExpViewController = /** @class */ (function (_super) {
      * @memberof IBizExpViewController
      */
     IBizExpViewController.prototype.onLoad = function () {
+        _super.prototype.onLoad.call(this);
         var expCtrl = this.getExpCtrl();
         if (expCtrl) {
             expCtrl.load({});

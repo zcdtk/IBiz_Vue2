@@ -42,7 +42,7 @@ var IBizGridViewController = /** @class */ (function (_super) {
         var grid = this.getMDCtrl();
         if (grid) {
             // 双击行数据
-            grid.on(IBizDataGrid.ROWDBLCLICK, function (args) {
+            grid.on(IBizDataGrid.ROWDBLCLICK).subscribe(function (args) {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 0) {
                     return;
@@ -50,14 +50,14 @@ var IBizGridViewController = /** @class */ (function (_super) {
                 _this.onDataActivated(args[0]);
             });
             // 单击行数据
-            grid.on(IBizDataGrid.ROWCLICK, function (args) {
+            grid.on(IBizDataGrid.ROWCLICK).subscribe(function (args) {
                 _this.onSelectionChange(args);
                 if (_this.getGridRowActiveMode() === 1) {
                     _this.onDataActivated(args[0]);
                 }
             });
             // 表格行数据变化
-            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE, function (param) {
+            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE).subscribe(function (param) {
                 if (!_this.isEnableRowEdit()) {
                     return;
                 }

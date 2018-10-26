@@ -32,9 +32,11 @@ class IBizIndexViewController extends IBizMainViewController {
      */
     public onInitComponents(): void {
         super.onInitComponents();
+
         const appMenu = this.getAppMenu();
         if (appMenu) {
-            appMenu.on(IBizAppMenu.LOADED, (items) => {
+            // 菜单加载完成
+            appMenu.on(IBizAppMenu.LOADED).subscribe((items) => {
                 this.appMenuLoaded(items);
             });
         }
@@ -47,6 +49,7 @@ class IBizIndexViewController extends IBizMainViewController {
      */
     public onLoad(): void {
         super.onLoad();
+
         const appMenu = this.getAppMenu();
         if (appMenu) {
             appMenu.load();

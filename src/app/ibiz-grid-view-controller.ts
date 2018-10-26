@@ -28,7 +28,7 @@ class IBizGridViewController extends IBizMDViewController {
         const grid = this.getMDCtrl();
         if (grid) {
             // 双击行数据
-            grid.on(IBizDataGrid.ROWDBLCLICK, (args) => {
+            grid.on(IBizDataGrid.ROWDBLCLICK).subscribe((args) => {
                 this.onSelectionChange(args);
                 if (this.getGridRowActiveMode() === 0) {
                     return;
@@ -36,14 +36,14 @@ class IBizGridViewController extends IBizMDViewController {
                 this.onDataActivated(args[0]);
             });
             // 单击行数据
-            grid.on(IBizDataGrid.ROWCLICK, (args) => {
+            grid.on(IBizDataGrid.ROWCLICK).subscribe((args) => {
                 this.onSelectionChange(args);
                 if (this.getGridRowActiveMode() === 1) {
                     this.onDataActivated(args[0]);
                 }
             });
             // 表格行数据变化
-            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE, (param) => {
+            grid.on(IBizDataGrid.UPDATEGRIDITEMCHANGE).subscribe((param) => {
                 if (!this.isEnableRowEdit()) {
                     return;
                 }

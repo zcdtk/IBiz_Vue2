@@ -105,6 +105,7 @@ class IBizPickupGridViewController extends IBizGridViewController {
      */
     public onInited(): void {
         super.onInited();
+
         const grid: any = this.getGrid();
         // if (grid) {
         //     grid.setMultiSelect(this.multiselect);

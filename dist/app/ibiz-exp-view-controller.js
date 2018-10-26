@@ -55,6 +55,7 @@ var IBizExpViewController = /** @class */ (function (_super) {
      * @memberof IBizExpViewController
      */
     IBizExpViewController.prototype.onLoad = function () {
+        _super.prototype.onLoad.call(this);
         var expCtrl = this.getExpCtrl();
         if (expCtrl) {
             expCtrl.load({});
