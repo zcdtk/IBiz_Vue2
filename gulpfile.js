@@ -15,10 +15,13 @@ gulp.task('concatibizsys', function () {
     // 目录（顺序）
     var ibizsys = [
         // app
-
+        'dist/util/ibiz-app.js',
         // util
-
+        'dist/util/ibiz-util.js',
+        'dist/util/ibiz-http.js',
+        'dist/util/ibiz-notification.js',
         // 基础文件
+        'dist/ibiz-object.js',
 
         // 表单界面部件
 
