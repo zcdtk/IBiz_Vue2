@@ -5928,6 +5928,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         return undefined;
     };
     IBizTreeExpBar.SELECTIONCHANGE = 'SELECTIONCHANGE';
+    IBizTreeExpBar.LOADED = 'LOADED';
     return IBizTreeExpBar;
 }(IBizControl));
 
@@ -6429,27 +6430,26 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.onClickTBItem = function (params) {
     };
     /**
-     * 设置部件service
+     * 设置部件
      *
      * @param {string} name
      * @param {*} control
      * @memberof IBizViewController
      */
     IBizViewController.prototype.regControl = function (name, control) {
-        this.controls[name] = control;
+        var _this = this;
+        _this.controls.set(name, control);
     };
     /**
-     * 获取部件service
+     * 获取部件
      *
      * @param {string} name
      * @returns {*}
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getControl = function (name) {
-        if (this.controls[name]) {
-            return this.controls[name];
-        }
-        return undefined;
+        var _this = this;
+        _this.controls.get(name);
     };
     /**
      * 关闭
@@ -10272,6 +10272,407 @@ var IBizEditViewController = /** @class */ (function (_super) {
     };
     return IBizEditViewController;
 }(IBizMainViewController));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 单项选择视图控制器
+ *
+ * @class IBizPickupViewController
+ * @extends {IBizMainViewController}
+ */
+var IBizPickupViewController = /** @class */ (function (_super) {
+    __extends(IBizPickupViewController, _super);
+    /**
+     * Creates an instance of IBizPickupViewController.
+     * 创建 IBizPickupViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizPickupViewController
+     */
+    function IBizPickupViewController(opts) {
+        if (opts === void 0) { opts = {}; }
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 按钮文本--确定
+         *
+         * @type {string}
+         * @memberof IBizPickupViewController
+         */
+        _this.okBtnText = '确定';
+        /**
+         * 按钮文本--取消
+         *
+         * @type {string}
+         * @memberof IBizPickupViewController
+         */
+        _this.cancelBtnText = '取消';
+        /**
+         * 是否选中
+         *
+         * @type {boolean}
+         * @memberof IBizPickupViewController
+         */
+        _this.isSelect = false;
+        return _this;
+    }
+    /**
+     * 视图部件初始化
+     *
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onInitComponents = function () {
+        var _this = this;
+        _super.prototype.onInitComponents.call(this);
+        var pickupViewPanel = this.getPickupViewPanel();
+        if (pickupViewPanel) {
+            // 选择视图面板数据选中
+            pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE, function (args) {
+                _this.onSelectionChange(args);
+            });
+            // 选择视图面板数据激活
+            pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED, function (args) {
+                _this.onDataActivated(args);
+            });
+        }
+    };
+    /**
+     * 数据选择，确定功能
+     *
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onClickOkButton = function () {
+        var pickupViewPanel = this.getPickupViewPanel();
+        if (!pickupViewPanel) {
+            return;
+        }
+        if (pickupViewPanel.getSelections().length !== 1) {
+            return;
+        }
+        // this.nzModalSubject.next({ ret: 'OK', selection: pickupViewPanel.getSelections() });
+        // this.nzModalSubject.next('DATACHANGE');
+        // this.closeWindow();
+    };
+    /**
+     * 取消显示选择视图
+     *
+     * @param {string} type
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onClickCancelButton = function (type) {
+        // this.nzModalSubject.destroy(type);
+    };
+    /**
+     * 接收选择视图数据传递
+     *
+     * @param {Array<any>} args
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onSelectionChange = function (args) {
+        this.isSelect = args.length > 0 ? true : false;
+    };
+    /**
+     * 数据选中激活
+     *
+     * @param {Array<any>} args
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.onDataActivated = function (args) {
+        this.onSelectionChange(args);
+        this.onClickOkButton();
+    };
+    /**
+     * 获取选择视图面板
+     *
+     * @returns {*}
+     * @memberof IBizPickupViewController
+     */
+    IBizPickupViewController.prototype.getPickupViewPanel = function () {
+        return this.getControl('pickupviewpanel');
+    };
+    return IBizPickupViewController;
+}(IBizMainViewController));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 导航视图控制器
+ *
+ * @class IBizExpViewController
+ * @extends {IBizMainViewController}
+ */
+var IBizExpViewController = /** @class */ (function (_super) {
+    __extends(IBizExpViewController, _super);
+    /**
+     * Creates an instance of IBizExpViewController.
+     * 创建 IBizExpViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizExpViewController
+     */
+    function IBizExpViewController(opts) {
+        if (opts === void 0) { opts = {}; }
+        return _super.call(this, opts) || this;
+    }
+    /**
+     * 初始化导航部件
+     *
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.onInitComponents = function () {
+        var _this = this;
+        _super.prototype.onInitComponents.call(this);
+        var expCtrl = this.getExpCtrl();
+        if (expCtrl) {
+            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE, function (item) {
+                _this.onExpCtrlSelectionChange(item);
+            });
+            expCtrl.on(IBizTreeExpBar.LOADED, function (item) {
+                _this.onExpCtrlLoaded(item);
+            });
+        }
+    };
+    /**
+     * 导航部件加载
+     *
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.onLoad = function () {
+        var expCtrl = this.getExpCtrl();
+        if (expCtrl) {
+            expCtrl.load({});
+        }
+    };
+    /**
+     * 获取导航部件
+     *
+     * @returns {*}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.getExpCtrl = function () {
+        var expctrl = this.getExpBar();
+        if (expctrl) {
+            return expctrl;
+        }
+        expctrl = this.getExpTab();
+        if (expctrl) {
+            return expctrl;
+        }
+        return undefined;
+    };
+    /**
+     * 获取导航部件
+     *
+     * @returns {*}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.getExpBar = function () {
+        return this.getControl('expbar');
+    };
+    /**
+     * 获取导航分页部件
+     *
+     * @returns {*}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.getExpTab = function () {
+        return this.getControl('exptab');
+    };
+    /**
+     * 导航部件值选中变化
+     *
+     * @param {*} [item={}]
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.onExpCtrlSelectionChange = function (item) {
+        if (item === void 0) { item = {}; }
+    };
+    /**
+     * 导航树部件加载完成
+     *
+     * @param {*} [item={}]
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.onExpCtrlLoaded = function (item) {
+        if (item === void 0) { item = {}; }
+    };
+    /**
+     * 获取导航项视图参数，在发布视图控制器内重写
+     *
+     * @param {*} [arg={}]
+     * @returns {*}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.getExpItemView = function (arg) {
+        if (arg === void 0) { arg = {}; }
+        return undefined;
+    };
+    /**
+     * 获取新建导航视图参数，在发布视图控制器中重写
+     *
+     * @param {*} [arg={}]
+     * @returns {*}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.getNewDataView = function (arg) {
+        if (arg === void 0) { arg = {}; }
+        return undefined;
+    };
+    /**
+     * 获取编辑导航视图参数，在发布视图控制器中重写
+     *
+     * @param {*} [arg={}]
+     * @returns {*}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.getEditDataView = function (arg) {
+        if (arg === void 0) { arg = {}; }
+        return undefined;
+    };
+    /**
+     * 节点路由是否存在
+     *
+     * @param {string} routeLink
+     * @returns {boolean}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.hasRoute = function (routeLink) {
+        var hasRoute = false;
+        return hasRoute;
+    };
+    /**
+     * 是否需要手动跳转路由
+     *
+     * @private
+     * @param {*} [item={}]
+     * @returns {boolean}
+     * @memberof IBizTreeExpViewController
+     */
+    IBizExpViewController.prototype.isRefreshView = function (routeSting) {
+        var refreshView = false;
+        return refreshView;
+    };
+    /**
+     * 打开导航子视图
+     *
+     * @param {*} [item={}]
+     * @returns {void}
+     * @memberof IBizExpViewController
+     */
+    IBizExpViewController.prototype.openExpChildView = function (item) {
+        if (item === void 0) { item = {}; }
+        if (!item || Object.keys(item).length === 0) {
+            return;
+        }
+        var view = this.getExpItemView(item.expitem);
+        if (!view) {
+            return;
+        }
+        var hasRouter = this.hasRoute(view.routelink);
+        if (!hasRouter) {
+            return;
+        }
+        var data = {};
+        Object.assign(data, item.expitem.viewparam);
+        if (this.isRefreshView(view.routelink)) {
+            Object.assign(data, { refreshView: true });
+        }
+        var exp = this.getExpBar();
+        if (exp) {
+            exp.setSelectItem(item);
+        }
+        this.openView(view.routelink, data);
+    };
+    return IBizExpViewController;
+}(IBizMainViewController));
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 树导航视图控制器
+ *
+ * @class IBizWFExpViewController
+ * @extends {IBizExpViewController}
+ */
+var IBizWFExpViewController = /** @class */ (function (_super) {
+    __extends(IBizWFExpViewController, _super);
+    /**
+     * Creates an instance of IBizWFExpViewController.
+     * 创建 IBizWFExpViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizWFExpViewController
+     */
+    function IBizWFExpViewController(opts) {
+        if (opts === void 0) { opts = {}; }
+        return _super.call(this, opts) || this;
+    }
+    /**
+     * 获取树导航部件
+     *
+     * @memberof IBizTreeExpViewController
+     */
+    IBizWFExpViewController.prototype.getExpBar = function () {
+        return this.getControl('expbar');
+    };
+    /**
+     * 导航视图部件加载完成
+     *
+     * @param {*} [item={}]
+     * @memberof IBizWFExpViewController
+     */
+    IBizWFExpViewController.prototype.onExpCtrlLoaded = function (item) {
+        if (item === void 0) { item = {}; }
+        this.openExpChildView(item);
+    };
+    /**
+     * 导航树选中导航变化
+     *
+     * @param {*} [item={}]
+     * @memberof IBizWFExpViewController
+     */
+    IBizWFExpViewController.prototype.onExpCtrlSelectionChange = function (item) {
+        if (item === void 0) { item = {}; }
+        this.openExpChildView(item);
+    };
+    return IBizWFExpViewController;
+}(IBizExpViewController));
 
 "use strict";
 Vue.component('ibiz-app-menu', {

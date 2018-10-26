@@ -249,28 +249,27 @@ class IBizViewController extends IBizObject {
     }
 
     /**
-     * 设置部件service
+     * 设置部件
      * 
      * @param {string} name 
      * @param {*} control 
      * @memberof IBizViewController
      */
     public regControl(name: string, control: any): void {
-        this.controls[name] = control;
+        let _this = this;
+        _this.controls.set(name, control);
     }
 
     /**
-     * 获取部件service
+     * 获取部件
      * 
      * @param {string} name 
      * @returns {*} 
      * @memberof IBizViewController
      */
     public getControl(name: string): any {
-        if (this.controls[name]) {
-            return this.controls[name];
-        }
-        return undefined;
+        let _this = this;
+        _this.controls.get(name);
     }
 
     /**

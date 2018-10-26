@@ -302,4 +302,6 @@ class IBizTreeExpBar extends IBizControl {
 
     public static SELECTIONCHANGE = 'SELECTIONCHANGE';
 
+    public static LOADED = 'LOADED';
+
 }

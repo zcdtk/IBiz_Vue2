@@ -271,5 +271,6 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         return undefined;
     };
     IBizTreeExpBar.SELECTIONCHANGE = 'SELECTIONCHANGE';
+    IBizTreeExpBar.LOADED = 'LOADED';
     return IBizTreeExpBar;
 }(IBizControl));

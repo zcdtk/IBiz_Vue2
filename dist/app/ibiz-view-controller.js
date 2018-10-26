@@ -234,27 +234,26 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.onClickTBItem = function (params) {
     };
     /**
-     * 设置部件service
+     * 设置部件
      *
      * @param {string} name
      * @param {*} control
      * @memberof IBizViewController
      */
     IBizViewController.prototype.regControl = function (name, control) {
-        this.controls[name] = control;
+        var _this = this;
+        _this.controls.set(name, control);
     };
     /**
-     * 获取部件service
+     * 获取部件
      *
      * @param {string} name
      * @returns {*}
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getControl = function (name) {
-        if (this.controls[name]) {
-            return this.controls[name];
-        }
-        return undefined;
+        var _this = this;
+        _this.controls.get(name);
     };
     /**
      * 关闭
