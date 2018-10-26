@@ -47,7 +47,7 @@ abstract class IBizObject {
      * 注册Rx订阅事件
      *
      * @param {string} eventName
-     * @returns {Observable<any>}
+     * @returns {Subject<any>}
      * @memberof IBizObject
      */
     public on(eventName: string): Subject<any> {

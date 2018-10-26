@@ -42,7 +42,7 @@ var IBizObject = /** @class */ (function () {
      * 注册Rx订阅事件
      *
      * @param {string} eventName
-     * @returns {Observable<any>}
+     * @returns {Subject<any>}
      * @memberof IBizObject
      */
     IBizObject.prototype.on = function (eventName) {
