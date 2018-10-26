@@ -1,6 +1,6 @@
 "use strict";
 Vue.component('ibiz-picker', {
-    template: "\n        <i-input search icon=\"ios-search\" v-model=\"field.value\" \n        :disabled=\"field.disabled\" @on-search=\"onSearch\"></i-input>\n    ",
+    template: "\n    <i-input style=\"width: 100%;\" :icon=\"'ios-search'\" v-model=\"field.value\" :disabled=\"field.disabled\" @on-click=\"onClick\">\n    </i-input>\n    ",
     props: ['field', 'name', 'modalviewname'],
     data: function () {
         var data = {};
@@ -10,7 +10,7 @@ Vue.component('ibiz-picker', {
     mounted: function () {
     },
     methods: {
-        onSearch: function () {
+        onClick: function () {
             var viewParams = {};
             if (this.pickupView && Object.keys(this.pickupView).length > 0) {
                 var subject = new rxjs.Subject();
@@ -20,6 +20,6 @@ Vue.component('ibiz-picker', {
                     console.log(selections);
                 });
             }
-        },
+        }
     }
 });

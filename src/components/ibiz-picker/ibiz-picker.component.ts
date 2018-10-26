@@ -1,7 +1,7 @@
 Vue.component('ibiz-picker', {
     template: `
-        <i-input search icon="ios-search" v-model="field.value" 
-        :disabled="field.disabled" @on-search="onSearch"></i-input>
+    <i-input style="width: 100%;" :icon="'ios-search'" v-model="field.value" :disabled="field.disabled" @on-click="onClick">
+    </i-input>
     `,
     props: ['field', 'name', 'modalviewname'],
     data: function () {
@@ -12,7 +12,7 @@ Vue.component('ibiz-picker', {
     mounted: function () {
     },
     methods: {
-        onSearch() {
+        onClick() {
             let viewParams = {};
             if (this.pickupView && Object.keys(this.pickupView).length > 0) {
                 const subject: Subject<any> = new rxjs.Subject();
@@ -22,6 +22,6 @@ Vue.component('ibiz-picker', {
                     console.log(selections);
                 })
             }
-        },
+        }
     }
 });
