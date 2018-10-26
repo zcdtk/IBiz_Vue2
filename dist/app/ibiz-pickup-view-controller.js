@@ -30,39 +30,35 @@ var IBizPickupViewController = /** @class */ (function (_super) {
      */
     function IBizPickupViewController(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
         /**
          * 按钮文本--确定
          *
          * @type {string}
          * @memberof IBizPickupViewController IBizMianViewController
          */
-        _this.okBtnText = '确定';
+        _this_1.okBtnText = '确定';
         /**
          * 按钮文本--取消
          *
          * @type {string}
          * @memberof IBizPickupViewController
          */
-        _this.cancelBtnText = '取消';
+        _this_1.cancelBtnText = '取消';
         /**
          * 是否选中
          *
          * @type {boolean}
          * @memberof IBizPickupViewController
          */
-        _this.isSelect = false;
-        return _this;
+        _this_1.isSelect = false;
+        return _this_1;
     }
-    /**
-     * 视图部件初始化
-     *
-     * @memberof IBizPickupViewController
-     */
-    IBizPickupViewController.prototype.onInitComponents = function () {
+    IBizPickupViewController.prototype.init = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        _super.prototype.init.call(this, opts);
         var _this = this;
-        // super.onInitComponents();
-        var pickupViewPanel = this.getPickupViewPanel();
+        var pickupViewPanel = _this.getPickupViewPanel();
         if (pickupViewPanel) {
             // 选择视图面板数据选中
             pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe(function (args) {
@@ -74,6 +70,25 @@ var IBizPickupViewController = /** @class */ (function (_super) {
             });
         }
     };
+    // /**
+    //  * 视图部件初始化
+    //  *
+    //  * @memberof IBizPickupViewController
+    //  */
+    // public onInitComponents(): void {
+    //     // super.onInitComponents();
+    //     const pickupViewPanel = this.getPickupViewPanel();
+    //     if (pickupViewPanel) {
+    //         // 选择视图面板数据选中
+    //         pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe((args) => {
+    //             this.onSelectionChange(args);
+    //         });
+    //         // 选择视图面板数据激活
+    //         pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED).subscribe((args) => {
+    //             this.onDataActivated(args);
+    //         });
+    //     }
+    // }
     /**
      * 数据选择，确定功能
      *

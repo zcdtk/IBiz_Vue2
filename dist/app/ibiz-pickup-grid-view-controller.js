@@ -133,7 +133,7 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
     IBizPickupGridViewController.prototype.onSelectionChange = function (selection) {
         // this.selectionChange.emit(selection);
         var _this = this;
-        _this.$vue.emit('selection-change', selection);
+        _this.$vue.$emit('selection-change', selection);
     };
     /**
      * 数据被激活<最典型的情况就是行双击>
@@ -150,7 +150,7 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
             return;
         }
         // _this.dataActivated.emit([data]);
-        _this.$vue.emit('data-activated', [data]);
+        _this.$vue.$emit('data-activated', [data]);
     };
     return IBizPickupGridViewController;
 }(IBizGridViewController));

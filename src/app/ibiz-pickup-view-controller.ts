@@ -42,25 +42,41 @@ class IBizPickupViewController extends IBizMainViewController {
         super(opts);
     }
 
-    /**
-     * 视图部件初始化
-     *
-     * @memberof IBizPickupViewController
-     */
-    public onInitComponents(): void {
-        // super.onInitComponents();
-        const pickupViewPanel = this.getPickupViewPanel();
+    public init(opts: any = {}): void {
+        super.init(opts);
+        let _this = this;
+        const pickupViewPanel = _this.getPickupViewPanel();
         if (pickupViewPanel) {
             // 选择视图面板数据选中
             pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe((args) => {
-                this.onSelectionChange(args);
+                _this.onSelectionChange(args);
             });
             // 选择视图面板数据激活
             pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED).subscribe((args) => {
-                this.onDataActivated(args);
+                _this.onDataActivated(args);
             });
         }
     }
+
+    // /**
+    //  * 视图部件初始化
+    //  *
+    //  * @memberof IBizPickupViewController
+    //  */
+    // public onInitComponents(): void {
+    //     // super.onInitComponents();
+    //     const pickupViewPanel = this.getPickupViewPanel();
+    //     if (pickupViewPanel) {
+    //         // 选择视图面板数据选中
+    //         pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe((args) => {
+    //             this.onSelectionChange(args);
+    //         });
+    //         // 选择视图面板数据激活
+    //         pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED).subscribe((args) => {
+    //             this.onDataActivated(args);
+    //         });
+    //     }
+    // }
 
     /**
      * 数据选择，确定功能
