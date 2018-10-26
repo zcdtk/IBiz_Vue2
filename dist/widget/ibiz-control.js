@@ -29,7 +29,7 @@ var IBizControl = /** @class */ (function (_super) {
      */
     function IBizControl(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
         /**
          * 部件名称
          *
@@ -37,7 +37,7 @@ var IBizControl = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizControl
          */
-        _this.name = '';
+        _this_1.name = '';
         /**
          * 后台交互URL
          *
@@ -45,7 +45,7 @@ var IBizControl = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizControl
          */
-        _this.url = '';
+        _this_1.url = '';
         /**
          * 视图控制器对象
          *
@@ -53,18 +53,19 @@ var IBizControl = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizControl
          */
-        _this.viewController = null;
+        _this_1.viewController = null;
         /**
          * 部件http请求状态
          *
          * @type {boolean}
          * @memberof IBizControl
          */
-        _this.isLoading = false;
+        _this_1.isLoading = false;
+        var _this = _this_1;
         _this.name = opts.name;
         _this.url = opts.url;
         _this.viewController = opts.viewController;
-        return _this;
+        return _this_1;
     }
     ;
     /**

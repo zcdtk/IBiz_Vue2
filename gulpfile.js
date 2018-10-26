@@ -34,6 +34,7 @@ gulp.task('concatibizsys', function () {
         'dist/formitem/ibiz-form-tab-panel.js',
         // 部件
         'dist/widget/ibiz-control.js',
+        'dist/widget/ibiz-app-menu.js',
         // 控制器
 
         // 组件
