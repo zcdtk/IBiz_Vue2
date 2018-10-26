@@ -29,7 +29,7 @@ abstract class IBizObject {
      * @type {IBizNotification}
      * @memberof IBizObject
      */
-    public IBizNotification: IBizNotification = new IBizNotification();
+    public iBizNotification: IBizNotification = new IBizNotification();
 
 
     /**

@@ -36,7 +36,7 @@ var IBizObject = /** @class */ (function () {
          * @type {IBizNotification}
          * @memberof IBizObject
          */
-        this.IBizNotification = new IBizNotification();
+        this.iBizNotification = new IBizNotification();
     }
     /**
      * 注册Rx订阅事件
