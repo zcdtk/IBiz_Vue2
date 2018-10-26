@@ -13,7 +13,7 @@ class IBizPickupViewController extends IBizMainViewController {
      * @type {string}
      * @memberof IBizPickupViewController IBizMianViewController
      */
-    public $okBtnText: string = '确定';
+    public okBtnText: string = '确定';
 
     /**
      * 按钮文本--取消
@@ -21,7 +21,7 @@ class IBizPickupViewController extends IBizMainViewController {
      * @type {string}
      * @memberof IBizPickupViewController
      */
-    public $cancelBtnText: string = '取消';
+    public cancelBtnText: string = '取消';
 
     /**
      * 是否选中
@@ -29,7 +29,7 @@ class IBizPickupViewController extends IBizMainViewController {
      * @type {boolean}
      * @memberof IBizPickupViewController
      */
-    public $isSelect: boolean = false;
+    public isSelect: boolean = false;
 
     /**
      * Creates an instance of IBizPickupViewController.
@@ -96,7 +96,7 @@ class IBizPickupViewController extends IBizMainViewController {
      * @memberof IBizPickupViewController
      */
     public onSelectionChange(args: Array<any>): void {
-        this.$isSelect = args.length > 0 ? true : false;
+        this.isSelect = args.length > 0 ? true : false;
     }
 
     /**

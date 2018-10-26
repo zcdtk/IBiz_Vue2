@@ -10495,21 +10495,21 @@ var IBizPickupViewController = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizPickupViewController IBizMianViewController
          */
-        _this.$okBtnText = '确定';
+        _this.okBtnText = '确定';
         /**
          * 按钮文本--取消
          *
          * @type {string}
          * @memberof IBizPickupViewController
          */
-        _this.$cancelBtnText = '取消';
+        _this.cancelBtnText = '取消';
         /**
          * 是否选中
          *
          * @type {boolean}
          * @memberof IBizPickupViewController
          */
-        _this.$isSelect = false;
+        _this.isSelect = false;
         return _this;
     }
     /**
@@ -10564,7 +10564,7 @@ var IBizPickupViewController = /** @class */ (function (_super) {
      * @memberof IBizPickupViewController
      */
     IBizPickupViewController.prototype.onSelectionChange = function (args) {
-        this.$isSelect = args.length > 0 ? true : false;
+        this.isSelect = args.length > 0 ? true : false;
     };
     /**
      * 数据选中激活
@@ -10777,7 +10777,7 @@ Vue.component('ibiz-modal', {
 
 "use strict";
 Vue.component('ibiz-picker', {
-    template: "\n        <i-input icon=\"ios-search\" v-model=\"field.value\" \n        :disabled=\"field.disabled\" @on-search=\"onSearch\"></i-input>\n    ",
+    template: "\n        <i-input search icon=\"ios-search\" v-model=\"field.value\" \n        :disabled=\"field.disabled\" @on-search=\"onSearch\"></i-input>\n    ",
     props: ['field', 'name', 'modalviewname'],
     data: function () {
         var data = {};

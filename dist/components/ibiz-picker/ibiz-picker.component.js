@@ -1,6 +1,6 @@
 "use strict";
 Vue.component('ibiz-picker', {
-    template: "\n        <i-input icon=\"ios-search\" v-model=\"field.value\" \n        :disabled=\"field.disabled\" @on-search=\"onSearch\"></i-input>\n    ",
+    template: "\n        <i-input search icon=\"ios-search\" v-model=\"field.value\" \n        :disabled=\"field.disabled\" @on-search=\"onSearch\"></i-input>\n    ",
     props: ['field', 'name', 'modalviewname'],
     data: function () {
         var data = {};

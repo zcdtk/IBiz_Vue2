@@ -1,6 +1,6 @@
 Vue.component('ibiz-picker', {
     template: `
-        <i-input icon="ios-search" v-model="field.value" 
+        <i-input search icon="ios-search" v-model="field.value" 
         :disabled="field.disabled" @on-search="onSearch"></i-input>
     `,
     props: ['field', 'name', 'modalviewname'],
