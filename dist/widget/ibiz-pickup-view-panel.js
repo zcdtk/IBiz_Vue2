@@ -36,21 +36,21 @@ var IBizPickupViewPanel = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizPickupViewPanel
          */
-        _this.$parentData = {};
+        _this.parentData = {};
         /**
          * 选中数据
          *
          * @type {Array<any>}
          * @memberof IBizPickupViewPanel
          */
-        _this.$selections = [];
+        _this.selections = [];
         /**
          * 所有数据
          *
          * @type {Array<any>}
          * @memberof IBizPickupViewPanel
          */
-        _this.$allData = [];
+        _this.allData = [];
         return _this;
     }
     /**
@@ -60,7 +60,7 @@ var IBizPickupViewPanel = /** @class */ (function (_super) {
      * @memberof IBizPickupViewPanel
      */
     IBizPickupViewPanel.prototype.getAllData = function () {
-        return this.$allData;
+        return this.allData;
     };
     /**
      * 获取所有选中数据
@@ -69,37 +69,37 @@ var IBizPickupViewPanel = /** @class */ (function (_super) {
      * @memberof IBizPickupViewPanel
      */
     IBizPickupViewPanel.prototype.getSelections = function () {
-        return this.$selections;
+        return this.selections;
     };
     /**
      * 数据选中
      *
-     * @param {Array<any>} $event
+     * @param {Array<any>} event
      * @memberof IBizPickupViewPanel
      */
-    IBizPickupViewPanel.prototype.onSelectionChange = function ($event) {
-        this.$selections = $event;
-        this.fire(IBizPickupViewPanel.SELECTIONCHANGE, this.$selections);
+    IBizPickupViewPanel.prototype.onSelectionChange = function (event) {
+        this.selections = event;
+        this.fire(IBizPickupViewPanel.SELECTIONCHANGE, this.selections);
     };
     /**
      * 数据激活
      *
-     * @param {Array<any>} $event
+     * @param {Array<any>} event
      * @memberof IBizPickupViewPanel
      */
-    IBizPickupViewPanel.prototype.onDataActivated = function ($event) {
-        this.$selections = $event;
-        this.fire(IBizPickupViewPanel.DATAACTIVATED, this.$selections);
+    IBizPickupViewPanel.prototype.onDataActivated = function (event) {
+        this.selections = event;
+        this.fire(IBizPickupViewPanel.DATAACTIVATED, this.selections);
     };
     /**
      * 全部数据
      *
-     * @param {Array<any>} $event
+     * @param {Array<any>} event
      * @memberof IBizPickupViewPanel
      */
-    IBizPickupViewPanel.prototype.onAllData = function ($event) {
-        this.$allData = $event;
-        this.fire(IBizPickupViewPanel.ALLDATA, this.$allData);
+    IBizPickupViewPanel.prototype.onAllData = function (event) {
+        this.allData = event;
+        this.fire(IBizPickupViewPanel.ALLDATA, this.allData);
     };
     /**
      * 设置父数据
@@ -109,7 +109,7 @@ var IBizPickupViewPanel = /** @class */ (function (_super) {
      */
     IBizPickupViewPanel.prototype.setParentData = function (parentData) {
         if (parentData === void 0) { parentData = {}; }
-        this.$parentData = parentData;
+        this.parentData = parentData;
     };
     /**
      * 刷新面板

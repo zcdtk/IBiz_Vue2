@@ -12,7 +12,7 @@ class IBizPickupViewPanel extends IBizViewPanel {
      * @type {*}
      * @memberof IBizPickupViewPanel
      */
-    public $parentData: any = {};
+    public parentData: any = {};
 
     /**
      * 选中数据
@@ -20,7 +20,7 @@ class IBizPickupViewPanel extends IBizViewPanel {
      * @type {Array<any>}
      * @memberof IBizPickupViewPanel
      */
-    public $selections: Array<any> = [];
+    public selections: Array<any> = [];
 
     /**
      * 所有数据
@@ -28,7 +28,7 @@ class IBizPickupViewPanel extends IBizViewPanel {
      * @type {Array<any>}
      * @memberof IBizPickupViewPanel
      */
-    public $allData: Array<any> = [];
+    public allData: Array<any> = [];
 
     /**
      * Creates an instance of IBizPickupViewPanel.
@@ -48,7 +48,7 @@ class IBizPickupViewPanel extends IBizViewPanel {
      * @memberof IBizPickupViewPanel
      */
     public getAllData(): Array<any> {
-        return this.$allData;
+        return this.allData;
     }
 
     /**
@@ -58,40 +58,40 @@ class IBizPickupViewPanel extends IBizViewPanel {
      * @memberof IBizPickupViewPanel
      */
     public getSelections(): Array<any> {
-        return this.$selections;
+        return this.selections;
     }
 
     /**
      * 数据选中
      *
-     * @param {Array<any>} $event
+     * @param {Array<any>} event
      * @memberof IBizPickupViewPanel
      */
-    public onSelectionChange($event: Array<any>): void {
-        this.$selections = $event;
-        this.fire(IBizPickupViewPanel.SELECTIONCHANGE, this.$selections);
+    public onSelectionChange(event: Array<any>): void {
+        this.selections = event;
+        this.fire(IBizPickupViewPanel.SELECTIONCHANGE, this.selections);
     }
 
     /**
      * 数据激活
      *
-     * @param {Array<any>} $event
+     * @param {Array<any>} event
      * @memberof IBizPickupViewPanel
      */
-    public onDataActivated($event: Array<any>): void {
-        this.$selections = $event;
-        this.fire(IBizPickupViewPanel.DATAACTIVATED, this.$selections);
+    public onDataActivated(event: Array<any>): void {
+        this.selections = event;
+        this.fire(IBizPickupViewPanel.DATAACTIVATED, this.selections);
     }
 
     /**
      * 全部数据
      *
-     * @param {Array<any>} $event
+     * @param {Array<any>} event
      * @memberof IBizPickupViewPanel
      */
-    public onAllData($event: Array<any>): void {
-        this.$allData = $event;
-        this.fire(IBizPickupViewPanel.ALLDATA, this.$allData);
+    public onAllData(event: Array<any>): void {
+        this.allData = event;
+        this.fire(IBizPickupViewPanel.ALLDATA, this.allData);
     }
 
     /**
@@ -101,7 +101,7 @@ class IBizPickupViewPanel extends IBizViewPanel {
      * @memberof IBizPickupViewPanel
      */
     public setParentData(parentData: any = {}): void {
-        this.$parentData = parentData;
+        this.parentData = parentData;
     }
 
     /**
