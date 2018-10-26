@@ -39,8 +39,7 @@ class IBizToolbar extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.regToolBarItems();
+        this.regToolBarItems();
     }
 
     /**

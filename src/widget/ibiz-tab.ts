@@ -30,8 +30,7 @@ class IBizTab extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.regTabs();
+        this.regTabs();
     }
 
     /**

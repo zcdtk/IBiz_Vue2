@@ -50,10 +50,9 @@ class IBizControl extends IBizObject {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.name = opts.name;
-        _this.url = opts.url;
-        _this.viewController = opts.viewController;
+        this.name = opts.name;
+        this.url = opts.url;
+        this.viewController = opts.viewController;
     }
 
     /**

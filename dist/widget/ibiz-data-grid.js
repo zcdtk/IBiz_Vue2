@@ -38,50 +38,50 @@ var IBizDataGrid = /** @class */ (function (_super) {
      */
     function IBizDataGrid(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 查询开始条数
          *
          * @memberof IBizGrid
          */
-        _this_1.start = 0;
+        _this.start = 0;
         /**
          * 每次加载条数
          *
          * @memberof IBizGrid
          */
-        _this_1.limit = 20;
+        _this.limit = 20;
         /**
          * 总条数
          *
          * @memberof IBizGrid
          */
-        _this_1.totalrow = 0;
+        _this.totalrow = 0;
         /**
          * 当前显示页码
          *
          * @memberof IBizGrid
          */
-        _this_1.curPage = 1;
+        _this.curPage = 1;
         /**
          * 是否全选
          *
          * @memberof IBizGrid
          */
-        _this_1.allChecked = false;
+        _this.allChecked = false;
         /**
          * 表格行选中动画
          *
          * @memberof IBizGrid
          */
-        _this_1.indeterminate = false;
+        _this.indeterminate = false;
         /**
          * 表格全部排序字段
          *
          * @type {Array<any>}
          * @memberof IBizGrid
          */
-        _this_1.gridSortField = [];
+        _this.gridSortField = [];
         /**
          * 行多项选中设置，用于阻塞多次触发选中效果
          *
@@ -89,59 +89,58 @@ var IBizDataGrid = /** @class */ (function (_super) {
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.rowsSelection = false;
+        _this.rowsSelection = false;
         /**
          * 是否支持多项
          *
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.multiSelect = true;
+        _this.multiSelect = true;
         /**
          * 是否启用行编辑
          *
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.isEnableRowEdit = false;
+        _this.isEnableRowEdit = false;
         /**
          * 打开行编辑
          *
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.openRowEdit = false;
+        _this.openRowEdit = false;
         /**
          * 表格编辑项集合
          *
          * @type {*}
          * @memberof IBizGrid
          */
-        _this_1.editItems = {};
+        _this.editItems = {};
         /**
          * 编辑行数据处理
          *
          * @type {*}
          * @memberof IBizGrid
          */
-        _this_1.state = {};
+        _this.state = {};
         /**
          * 备份数据
          *
          * @type {Array<any>}
          * @memberof IBizGrid
          */
-        _this_1.backupData = [];
+        _this.backupData = [];
         /**
          * 最大导出行数
          *
          * @type {number}
          * @memberof IBizGrid
          */
-        _this_1.maxExportRow = 1000;
-        var _this = _this_1;
+        _this.maxExportRow = 1000;
         _this.regEditItems();
-        return _this_1;
+        return _this;
     }
     /**
      * 加载数据
@@ -151,7 +150,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.load = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = {};
@@ -176,13 +175,13 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (response) {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
-                    _this_1.iBizNotification.error('', response.errorMessage);
+                    _this.iBizNotification.error('', response.errorMessage);
                 }
                 return;
             }
-            _this_1.items = _this_1.rendererDatas(response.items);
-            _this_1.totalrow = response.totalrow;
-            _this_1.fire(IBizMDControl.LOADED, response.items);
+            _this.items = _this.rendererDatas(response.items);
+            _this.totalrow = response.totalrow;
+            _this.fire(IBizMDControl.LOADED, response.items);
         }, function (error) {
             console.log(error.info);
         });
@@ -195,7 +194,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.refresh = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = {};
@@ -220,13 +219,13 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (response) {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
-                    _this_1.iBizNotification.error('', response.errorMessage);
+                    _this.iBizNotification.error('', response.errorMessage);
                 }
                 return;
             }
-            _this_1.fire(IBizMDControl.LOADED, response.items);
-            _this_1.items = _this_1.rendererDatas(response.items);
-            _this_1.totalrow = response.totalrow;
+            _this.fire(IBizMDControl.LOADED, response.items);
+            _this.items = _this.rendererDatas(response.items);
+            _this.totalrow = response.totalrow;
         }, function (error) {
             console.log(error.info);
         });
@@ -238,34 +237,34 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.remove = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         var params = {};
         Object.assign(params, arg);
         Object.assign(params, { srfaction: 'remove', srfctrlid: this.getName() });
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (response) {
             if (response.ret !== 0) {
-                _this_1.iBizNotification.error('', '删除数据失败,' + response.info);
+                _this.iBizNotification.error('', '删除数据失败,' + response.info);
                 return;
             }
-            if (_this_1.allChecked) {
-                var rows = _this_1.curPage * _this_1.limit;
-                if (_this_1.totalrow <= rows) {
-                    _this_1.curPage = _this_1.curPage - 1;
-                    if (_this_1.curPage === 0) {
-                        _this_1.curPage = 1;
+            if (_this.allChecked) {
+                var rows = _this.curPage * _this.limit;
+                if (_this.totalrow <= rows) {
+                    _this.curPage = _this.curPage - 1;
+                    if (_this.curPage === 0) {
+                        _this.curPage = 1;
                     }
                 }
             }
-            _this_1.load({});
-            _this_1.fire(IBizDataGrid.REMOVED, {});
+            _this.load({});
+            _this.fire(IBizDataGrid.REMOVED, {});
             if (response.info && response.info !== '') {
-                _this_1.iBizNotification.success('', '删除成功!');
+                _this.iBizNotification.success('', '删除成功!');
             }
-            _this_1.selection = [];
+            _this.selection = [];
             IBizUtil.processResult(response);
         }, function (error) {
-            _this_1.iBizNotification.error('', '删除数据失败');
+            _this.iBizNotification.error('', '删除数据失败');
         });
     };
     /**
@@ -313,13 +312,13 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizDataGrid.prototype.selectAll = function (value) {
-        var _this_1 = this;
+        var _this = this;
         if (this.isEnableRowEdit && this.openRowEdit) {
             return;
         }
         if (!this.multiSelect) {
             setTimeout(function () {
-                _this_1.allChecked = false;
+                _this.allChecked = false;
             });
             return;
         }
@@ -342,7 +341,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.exportData = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         // tslint:disable-next-line:prefer-const
         var params = {};
@@ -368,7 +367,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         }
         this.iBizHttp.post(params).subscribe(function (res) {
             if (res.ret !== 0) {
-                _this_1.iBizNotification.warning('警告', res.info);
+                _this.iBizNotification.warning('警告', res.info);
                 return;
             }
             if (res.downloadurl) {
@@ -547,14 +546,14 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.rendererDatas = function (items) {
-        var _this_1 = this;
+        var _this = this;
         _super.prototype.rendererDatas.call(this, items);
         items.forEach(function (item) {
             var names = Object.keys(item);
             names.forEach(function (name) { item[name] = item[name] ? item[name] : ''; });
         });
         if (this.isEnableRowEdit) {
-            items.forEach(function (item) { item.openeditrow = (_this_1.isEnableRowEdit) ? true : false; });
+            items.forEach(function (item) { item.openeditrow = (_this.isEnableRowEdit) ? true : false; });
         }
         return items;
     };
@@ -587,7 +586,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.setEditItemState = function (srfkey) {
-        var _this_1 = this;
+        var _this = this;
         if (!this.state) {
             return;
         }
@@ -600,7 +599,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         itemsName.forEach(function (name) {
             // tslint:disable-next-line:prefer-const
             var item = {};
-            var _editor = JSON.stringify(_this_1.editItems[name]);
+            var _editor = JSON.stringify(_this.editItems[name]);
             Object.assign(item, JSON.parse(_editor));
             editItems[name] = item;
         });
@@ -659,7 +658,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.isOpenEdit = function (tag) {
-        var _this_1 = this;
+        var _this = this;
         if (!this.isEnableRowEdit) {
             this.iBizNotification.info('提示', '未启用行编辑');
             return;
@@ -675,14 +674,14 @@ var IBizDataGrid = /** @class */ (function (_super) {
             this.fire(IBizMDControl.SELECTIONCHANGE, this.selection);
             this.items.forEach(function (item) {
                 var data = __rest(item, []);
-                _this_1.backupData.push(data);
-                _this_1.setEditItemState(item.srfkey);
+                _this.backupData.push(data);
+                _this.setEditItemState(item.srfkey);
             });
         }
         else {
             this.items = [];
             this.backupData.forEach(function (data) {
-                _this_1.items.push(data);
+                _this.items.push(data);
             });
             this.backupData = [];
             this.state = {};
@@ -720,7 +719,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.editRowSave = function (data, rowindex) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         var _index = this.backupData.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
         var srfaction = (_index !== -1) ? 'update' : 'create';
@@ -734,17 +733,17 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (responce) {
             if (responce.ret === 0) {
                 data.openeditrow = !data.openeditrow;
-                var index = _this_1.backupData.findIndex(function (item) { return Object.is(data.srfkey, item.srfkey); });
+                var index = _this.backupData.findIndex(function (item) { return Object.is(data.srfkey, item.srfkey); });
                 if (index !== -1) {
-                    Object.assign(_this_1.backupData[index], responce.data);
+                    Object.assign(_this.backupData[index], responce.data);
                 }
                 else {
-                    _this_1.deleteEditItemState(data.srfkey);
-                    _this_1.setEditItemState(responce.data.srfkey);
-                    _this_1.backupData.push(data);
+                    _this.deleteEditItemState(data.srfkey);
+                    _this.setEditItemState(responce.data.srfkey);
+                    _this.backupData.push(data);
                 }
                 Object.assign(data, responce.data);
-                _this_1.iBizNotification.info('提示', '保存成功');
+                _this.iBizNotification.info('提示', '保存成功');
             }
         }, function (error) {
             var info = '';
@@ -755,10 +754,10 @@ var IBizDataGrid = /** @class */ (function (_super) {
                         info += '\n';
                     }
                     info += item.info;
-                    Object.assign(_this_1.state[data.srfkey][item.id].styleCss, { 'border': '1px solid #f04134', 'border-radius': '4px' });
+                    Object.assign(_this.state[data.srfkey][item.id].styleCss, { 'border': '1px solid #f04134', 'border-radius': '4px' });
                 });
             }
-            _this_1.iBizNotification.error('错误', !Object.is(info, '') ? info : '行编辑保存失败');
+            _this.iBizNotification.error('错误', !Object.is(info, '') ? info : '行编辑保存失败');
         });
     };
     /**
@@ -829,7 +828,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.updateGridEditItems = function (srfufimode, data) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = { srfaction: 'updategridedititem', srfufimode: srfufimode, srfctrlid: 'grid' };
@@ -840,16 +839,16 @@ var IBizDataGrid = /** @class */ (function (_super) {
         Object.assign(opt, { srfactivedata: JSON.stringify(data) });
         this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (success) {
             if (success.ret === 0) {
-                var index = _this_1.items.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
+                var index = _this.items.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
                 if (index !== -1) {
-                    Object.assign(_this_1.items[index], success.data);
+                    Object.assign(_this.items[index], success.data);
                 }
             }
             else {
-                _this_1.iBizNotification.error('错误', success.info);
+                _this.iBizNotification.error('错误', success.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('错误', error.info);
+            _this.iBizNotification.error('错误', error.info);
         });
     };
     /**
@@ -859,7 +858,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.newRowAjax = function (param) {
-        var _this_1 = this;
+        var _this = this;
         if (param === void 0) { param = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = {};
@@ -870,15 +869,15 @@ var IBizDataGrid = /** @class */ (function (_super) {
             if (success.ret === 0) {
                 var srfkey = (Object.is(success.data.srfkey, '')) ? IBizUtil.createUUID() : success.data.srfkey;
                 success.data.srfkey = srfkey;
-                _this_1.setEditItemState(srfkey);
-                _this_1.setEditItemDisabled(srfkey, 1);
-                _this_1.items.push(Object.assign(success.data, { openeditrow: false }));
+                _this.setEditItemState(srfkey);
+                _this.setEditItemDisabled(srfkey, 1);
+                _this.items.push(Object.assign(success.data, { openeditrow: false }));
             }
             else {
-                _this_1.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {success.info}");
+                _this.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {success.info}");
             }
         }, function (error) {
-            _this_1.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {error.info}");
+            _this.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {error.info}");
         });
     };
     /*****************事件声明************************/

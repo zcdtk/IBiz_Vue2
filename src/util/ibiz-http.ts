@@ -14,7 +14,6 @@ class IBizHttp {
      * @memberof IBizHttp
      */
     public post(url: string, params: any = {}): Subject<any> {
-        const _this = this;
         const subject: Subject<any> = new rxjs.Subject();
         const params_keys = Object.keys(params);
         let form_arr: Array<any> = [];
@@ -29,7 +28,7 @@ class IBizHttp {
         }).then(function (response) {
             if (response.status === 200) {
                 if (response.data.ret === 2 && response.data.notlogin) {
-                    _this.httpDefaultInterceptor(response.data);
+                    this.httpDefaultInterceptor(response.data);
                 }
                 subject.next(response.data);
             } else {

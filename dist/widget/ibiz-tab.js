@@ -28,24 +28,23 @@ var IBizTab = /** @class */ (function (_super) {
      */
     function IBizTab(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 激活分页部件分页数
          *
          * @type {number}
          * @memberof IBizTab
          */
-        _this_1.activeTabIndex = 0;
+        _this.activeTabIndex = 0;
         /**
          * 分页部件对象
          *
          * @type {*}
          * @memberof IBizTab
          */
-        _this_1.tabs = {};
-        var _this = _this_1;
+        _this.tabs = {};
         _this.regTabs();
-        return _this_1;
+        return _this;
     }
     /**
      * 注册所有分页部件对象
@@ -86,9 +85,9 @@ var IBizTab = /** @class */ (function (_super) {
      * @memberof IBizTab
      */
     IBizTab.prototype.setActiveTab = function (index) {
-        var _this_1 = this;
+        var _this = this;
         setTimeout(function () {
-            _this_1.activeTabIndex = index;
+            _this.activeTabIndex = index;
         });
     };
     return IBizTab;

@@ -29,17 +29,16 @@ var IBizToolbar = /** @class */ (function (_super) {
      */
     function IBizToolbar(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 工具栏按钮
          *
          * @type {Array<any>}
          * @memberof IBizToolbar
          */
-        _this_1.items = {};
-        var _this = _this_1;
+        _this.items = {};
         _this.regToolBarItems();
-        return _this_1;
+        return _this;
     }
     /**
      * 注册所有工具栏按钮
@@ -55,7 +54,7 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.regToolBarItem = function (item) {
-        var _this_1 = this;
+        var _this = this;
         if (item === void 0) { item = {}; }
         if (!this.items) {
             this.items = {};
@@ -67,7 +66,7 @@ var IBizToolbar = /** @class */ (function (_super) {
         if (item.menu && item.menu.length > 0) {
             var _menus = item.menu.slice();
             _menus.forEach(function (menu) {
-                _this_1.regToolBarItem(menu);
+                _this.regToolBarItem(menu);
             });
         }
     };
@@ -102,16 +101,16 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.updateAccAction = function (action) {
-        var _this_1 = this;
+        var _this = this;
         if (action === void 0) { action = {}; }
         var _itemsName = Object.keys(this.items);
         _itemsName.forEach(function (name) {
-            var priv = _this_1.items[name].priv;
+            var priv = _this.items[name].priv;
             if ((priv && !Object.is(priv, '')) && (action && Object.keys(action).length > 0 && action[priv] !== 1)) {
-                _this_1.items[name].dataaccaction = false;
+                _this.items[name].dataaccaction = false;
             }
             else {
-                _this_1.items[name].dataaccaction = true;
+                _this.items[name].dataaccaction = true;
             }
         });
     };

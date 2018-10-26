@@ -120,9 +120,7 @@ class IBizViewController extends IBizObject {
      */
     constructor(opts: any = {}) {
         super(opts);
-
-        let _this = this;
-        _this.url = opts.url;
+        this.url = opts.url;
     }
 
     /**
@@ -189,13 +187,12 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public onInit(): void {
-        let _this = this;
-        _this.regUIActions();
-        _this.regUICounters();
-        _this.regCodeLists();
-        _this.onInitComponents();
-        _this.onLoad();
-        _this.fire(IBizViewController.INITED, _this);
+        this.regUIActions();
+        this.regUICounters();
+        this.regCodeLists();
+        this.onInitComponents();
+        this.onLoad();
+        this.fire(IBizViewController.INITED, this);
     }
 
     /**
@@ -256,8 +253,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public regControl(name: string, control: any): void {
-        let _this = this;
-        _this.controls.set(name, control);
+        this.controls.set(name, control);
     }
 
     /**
@@ -268,8 +264,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getControl(name: string): any {
-        let _this = this;
-        _this.controls.get(name);
+        this.controls.get(name);
     }
 
     /**
@@ -576,11 +571,11 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public setParentData(data: any = {}): void {
-        let _this = this;
-        _this.srfParentData = {};
-        Object.assign(_this.srfParentData, data);
-        _this.onSetParentData();
-        _this.reloadUpdatePanels();
+        
+        this.srfParentData = {};
+        Object.assign(this.srfParentData, data);
+        this.onSetParentData();
+        this.reloadUpdatePanels();
     }
 
     /**
@@ -598,8 +593,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getParentData(): any {
-        let _this = this
-        return _this.srfParentData;
+        return this.srfParentData;
     }
 
     /**
@@ -609,8 +603,8 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getParentMode(): any {
-        let _this = this;
-        return _this.srfParentMode;
+        
+        return this.srfParentMode;
     }
 
     /**
@@ -630,8 +624,8 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public setReferData(data: any = {}): void {
-        let _this = this;
-        Object.assign(_this.srfReferData, data);
+        
+        Object.assign(this.srfReferData, data);
     }
 
     /**
@@ -641,8 +635,8 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getReferData(): any {
-        let _this = this;
-        return _this.srfReferData;
+        
+        return this.srfReferData;
     }
 
     /**

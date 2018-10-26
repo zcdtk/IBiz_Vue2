@@ -39,8 +39,7 @@ class IBizAppMenu extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.setAppFunctions();
+        this.setAppFunctions();
     }
 
     /**
@@ -57,9 +56,8 @@ class IBizAppMenu extends IBizControl {
      * @memberof IBizAppMenu
      */
     public load(): void {
-        let _this = this;
         const params: any = { srfctrlid: this.getName(), srfaction: 'FETCH' };
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe((success: any) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((success: any) => {
             if (success.ret === 0) {
                 this.items = success.items;
                 this.fire(IBizAppMenu.LOADED, this.items);

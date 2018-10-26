@@ -149,17 +149,16 @@ class IBizFormItem extends IBizObject {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.allowEmpty = opts.allowEmpty ? true : false;
-        _this.caption = opts.caption;
-        _this.disabled = opts.disabled ? true : false;
-        _this.emptyCaption = opts.emptyCaption ? true : false;
-        _this.fieldType = opts.fieldType;
-        _this.form = opts.form;
-        _this.hidden = opts.hidden ? true : false;
-        _this.name = opts.name;
-        _this.showCaption = opts.showCaption ? true : false;
-        _this.visible = opts.visible ? true : false;
+        this.allowEmpty = opts.allowEmpty ? true : false;
+        this.caption = opts.caption;
+        this.disabled = opts.disabled ? true : false;
+        this.emptyCaption = opts.emptyCaption ? true : false;
+        this.fieldType = opts.fieldType;
+        this.form = opts.form;
+        this.hidden = opts.hidden ? true : false;
+        this.name = opts.name;
+        this.showCaption = opts.showCaption ? true : false;
+        this.visible = opts.visible ? true : false;
     }
 
     /**

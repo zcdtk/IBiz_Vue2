@@ -31,8 +31,7 @@ class IBizFormGroup extends IBizFormItem {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.titleBarCloseMode = opts.titleBarCloseMode;
+        this.titleBarCloseMode = opts.titleBarCloseMode;
     }
 
     /**

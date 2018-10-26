@@ -30,31 +30,30 @@ var IBizMDControl = /** @class */ (function (_super) {
      */
     function IBizMDControl(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 多数据列头
          *
          * @type {*}
          * @memberof IBizMDControl
          */
-        _this_1.columns = {};
+        _this.columns = {};
         /**
          * 所有数据项
          *
          * @type {Array<any>}
          * @memberof IBizMDControl
          */
-        _this_1.items = [];
+        _this.items = [];
         /**
          * 选中数据项
          *
          * @type {Array<any>}
          * @memberof IBizMDControl
          */
-        _this_1.selection = [];
-        var _this = _this_1;
+        _this.selection = [];
         _this.regColumns();
-        return _this_1;
+        return _this;
     }
     /**
      * 加载数据
@@ -163,22 +162,21 @@ var IBizMDControl = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizMDControl.prototype.wfsubmit = function (params) {
-        var _this_1 = this;
-        if (params === void 0) { params = {}; }
         var _this = this;
+        if (params === void 0) { params = {}; }
         if (!params) {
             params = {};
         }
         Object.assign(params, { srfaction: 'wfsubmit', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
-                _this_1.refresh();
+                _this.refresh();
             }
             else {
-                _this_1.iBizNotification.error('', '执行工作流操作失败,' + data.info);
+                _this.iBizNotification.error('', '执行工作流操作失败,' + data.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('', '执行工作流操作失败,' + error.info);
+            _this.iBizNotification.error('', '执行工作流操作失败,' + error.info);
         });
     };
     /**
@@ -188,29 +186,28 @@ var IBizMDControl = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizMDControl.prototype.doUIAction = function (arg) {
-        var _this_1 = this;
-        if (arg === void 0) { arg = {}; }
         var _this = this;
+        if (arg === void 0) { arg = {}; }
         var params = {};
         if (arg) {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'uiaction', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
                 if (data.reloadData) {
-                    _this_1.refresh();
+                    _this.refresh();
                 }
                 if (data.info && !Object.is(data.info, '')) {
-                    _this_1.iBizNotification.success('', '操作成功');
+                    _this.iBizNotification.success('', '操作成功');
                 }
                 IBizUtil.processResult(data);
             }
             else {
-                _this_1.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + data.info);
+                _this.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + data.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + error.info);
+            _this.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + error.info);
         });
     };
     /**
@@ -220,24 +217,23 @@ var IBizMDControl = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizMDControl.prototype.addBatch = function (arg) {
-        var _this_1 = this;
-        if (arg === void 0) { arg = {}; }
         var _this = this;
+        if (arg === void 0) { arg = {}; }
         var params = {};
         if (arg) {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'addbatch', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
-                _this_1.refresh();
-                _this_1.fire(IBizMDControl.ADDBATCHED, data);
+                _this.refresh();
+                _this.fire(IBizMDControl.ADDBATCHED, data);
             }
             else {
-                _this_1.iBizNotification.error('添加失败', '执行批量添加失败,' + data.info);
+                _this.iBizNotification.error('添加失败', '执行批量添加失败,' + data.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('添加失败', '执行批量添加失败,' + error.info);
+            _this.iBizNotification.error('添加失败', '执行批量添加失败,' + error.info);
         });
     };
     /**

@@ -29,83 +29,83 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     function IBizViewController(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 模态框打开视图注入参数
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.modalViewParam = {};
+        _this.modalViewParam = {};
         /**
          * 模态框打开视图注入视图层级参数
          *
          * @memberof IBizViewController
          */
-        _this_1.modalZIndex = 300;
+        _this.modalZIndex = 300;
         /**
          * 关系数据
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.srfReferData = {};
+        _this.srfReferData = {};
         /**
          * 视图控制器父对象数据
          *
          * @type {*}implements OnInit, OnDestroy, OnChanges
          * @memberof IBizViewController
          */
-        _this_1.srfParentData = {};
+        _this.srfParentData = {};
         /**
          * 视图控制器父对象模型
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.srfParentMode = {};
+        _this.srfParentMode = {};
         /**
          * 视图控制器是否初始化
          *
          * @type {boolean}
          * @memberof IBizViewController
          */
-        _this_1.bInited = false;
+        _this.bInited = false;
         /**
          * 暂时废弃
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.itemMap = {};
+        _this.itemMap = {};
         /**
          * 视图控制器代码表
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.codelists = {};
+        _this.codelists = {};
         /**
          * 部件控制器
          *
          * @type {Map<string, any>}
          * @memberof IBizViewController
          */
-        _this_1.controls = new Map();
+        _this.controls = new Map();
         /**
          * 实体界面行为
          *
          * @type {Map<string, any>}
          * @memberof IBizViewController
          */
-        _this_1.uiactions = new Map();
+        _this.uiactions = new Map();
         /**
          * 计数器
          *
          * @type {Map<string, any>}
          * @memberof IBizViewController
          */
-        _this_1.uicounters = new Map();
+        _this.uicounters = new Map();
         /**
          * 视图控制器url
          *
@@ -113,17 +113,16 @@ var IBizViewController = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizViewController
          */
-        _this_1.url = '';
+        _this.url = '';
         /**
          * 视图控制器参数
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.viewParam = {};
-        var _this = _this_1;
+        _this.viewParam = {};
         _this.url = opts.url;
-        return _this_1;
+        return _this;
     }
     /**
      * Angular生命周期
@@ -183,13 +182,12 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.onInit = function () {
-        var _this = this;
-        _this.regUIActions();
-        _this.regUICounters();
-        _this.regCodeLists();
-        _this.onInitComponents();
-        _this.onLoad();
-        _this.fire(IBizViewController.INITED, _this);
+        this.regUIActions();
+        this.regUICounters();
+        this.regCodeLists();
+        this.onInitComponents();
+        this.onLoad();
+        this.fire(IBizViewController.INITED, this);
     };
     /**
      * 部件初始化
@@ -241,8 +239,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.regControl = function (name, control) {
-        var _this = this;
-        _this.controls.set(name, control);
+        this.controls.set(name, control);
     };
     /**
      * 获取部件
@@ -252,8 +249,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getControl = function (name) {
-        var _this = this;
-        _this.controls.get(name);
+        this.controls.get(name);
     };
     /**
      * 关闭
@@ -528,11 +524,10 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.setParentData = function (data) {
         if (data === void 0) { data = {}; }
-        var _this = this;
-        _this.srfParentData = {};
-        Object.assign(_this.srfParentData, data);
-        _this.onSetParentData();
-        _this.reloadUpdatePanels();
+        this.srfParentData = {};
+        Object.assign(this.srfParentData, data);
+        this.onSetParentData();
+        this.reloadUpdatePanels();
     };
     /**
      * 设置父数据
@@ -548,8 +543,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getParentData = function () {
-        var _this = this;
-        return _this.srfParentData;
+        return this.srfParentData;
     };
     /**
      * 获取父模式
@@ -558,8 +552,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getParentMode = function () {
-        var _this = this;
-        return _this.srfParentMode;
+        return this.srfParentMode;
     };
     /**
      * 获取引用数据
@@ -578,8 +571,7 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.setReferData = function (data) {
         if (data === void 0) { data = {}; }
-        var _this = this;
-        Object.assign(_this.srfReferData, data);
+        Object.assign(this.srfReferData, data);
     };
     /**
      * 获取关系数据
@@ -588,8 +580,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getReferData = function () {
-        var _this = this;
-        return _this.srfReferData;
+        return this.srfReferData;
     };
     /**
      * 正常代码表模式
@@ -666,7 +657,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.renderCodeList_StrOr = function (codeListId, value, emtpytext, textSeparator, valueSeparator) {
-        var _this_1 = this;
+        var _this = this;
         if (!textSeparator || Object.is(textSeparator, '')) {
             textSeparator = '、';
         }
@@ -678,7 +669,7 @@ var IBizViewController = /** @class */ (function (_super) {
         var arrayValue = value.split(valueSeparator);
         arrayValue.forEach(function (value) {
             var strText = '';
-            strText = _this_1.renderCodeList_Normal(codeListId, value, emtpytext);
+            strText = _this.renderCodeList_Normal(codeListId, value, emtpytext);
             if (strTextOr.length > 0) {
                 strTextOr += (textSeparator);
             }
@@ -783,13 +774,13 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.unRegUICounters = function () {
-        var _this_1 = this;
+        var _this = this;
         if (Object.keys(this.uicounters).length == 0) {
             return;
         }
         var _nameArr = Object.keys(this.uicounters);
         _nameArr.forEach(function (name) {
-            var _counter = _this_1.getUICounter(name);
+            var _counter = _this.getUICounter(name);
             if (_counter) {
                 _counter.close();
             }

@@ -29,14 +29,14 @@ var IBizFormField = /** @class */ (function (_super) {
      */
     function IBizFormField(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * label 宽度
          *
          * @type {number}
          * @memberof IBizFormField
          */
-        _this_1.labelWidth = 130;
+        _this.labelWidth = 130;
         /**
          * 实体属性输入旧值
          *
@@ -44,7 +44,7 @@ var IBizFormField = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizFormField
          */
-        _this_1.oldVal = '';
+        _this.oldVal = '';
         /**
          * 数据流观察对象
          *
@@ -52,18 +52,17 @@ var IBizFormField = /** @class */ (function (_super) {
          * @type {Subject<any>}
          * @memberof IBizFormField
          */
-        _this_1.subject = new rxjs.Subject();
+        _this.subject = new rxjs.Subject();
         /**
          * 编辑器参数
          *
          * @type {*}
          * @memberof IBizFormField
          */
-        _this_1.editorParams = {};
-        var _this = _this_1;
+        _this.editorParams = {};
         _this.labelWidth = opts.labelWidth;
         if (opts.editorParams) {
-            Object.assign(_this_1.editorParams, opts.editorParams);
+            Object.assign(_this.editorParams, opts.editorParams);
         }
         // 停止输入值间隔500 毫秒，进行值绑定
         _this.subject.pipe(rxjs.operators.debounceTime(500), rxjs.operators.distinctUntilChanged(function (o, n) {
@@ -76,7 +75,7 @@ var IBizFormField = /** @class */ (function (_super) {
             _this.setOldValue(data.oldVal);
             _this.setValue(data.newVal);
         });
-        return _this_1;
+        return _this;
     }
     /**
      * 设置旧值
@@ -85,8 +84,7 @@ var IBizFormField = /** @class */ (function (_super) {
      * @memberof IBizFormField
      */
     IBizFormField.prototype.setOldValue = function (val) {
-        var _this = this;
-        _this.oldVal = val;
+        this.oldVal = val;
     };
     /**
      * 获取旧值
@@ -95,8 +93,7 @@ var IBizFormField = /** @class */ (function (_super) {
      * @memberof IBizFormField
      */
     IBizFormField.prototype.getOldValue = function () {
-        var _this = this;
-        return _this.oldVal;
+        return this.oldVal;
     };
     /**
      * 属性值变化
@@ -105,7 +102,6 @@ var IBizFormField = /** @class */ (function (_super) {
      * @memberof IBizFormField
      */
     IBizFormField.prototype.valueChange = function (event) {
-        var _this = this;
         if (!event || !event.target) {
             return;
         }
@@ -118,7 +114,7 @@ var IBizFormField = /** @class */ (function (_super) {
         if ((typeof newVal !== 'string')) {
             newVal = JSON.stringify(newVal);
         }
-        _this.subject.next({ oldVal: oldVal, newVal: newVal });
+        this.subject.next({ oldVal: oldVal, newVal: newVal });
     };
     return IBizFormField;
 }(IBizFormItem));

@@ -49,22 +49,21 @@ class IBizFormField extends IBizFormItem {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.labelWidth = opts.labelWidth;
+        this.labelWidth = opts.labelWidth;
         if (opts.editorParams) {
             Object.assign(this.editorParams, opts.editorParams);
         }
 
         // 停止输入值间隔500 毫秒，进行值绑定
-        _this.subject.pipe(
+        this.subject.pipe(
             rxjs.operators.debounceTime(500),
             rxjs.operators.distinctUntilChanged((o: any = {}, n: any = {}) =>
                 !Object.is(o.oldVal, o.newVal) && !Object.is(n.oldVal, n.newVal)
                 && Object.is(o.oldVal, n.oldVal) && Object.is(o.newVal, n.newVal)
             ),
         ).subscribe((data: any = {}) => {
-            _this.setOldValue(data.oldVal);
-            _this.setValue(data.newVal);
+            this.setOldValue(data.oldVal);
+            this.setValue(data.newVal);
         });
     }
 
@@ -75,8 +74,7 @@ class IBizFormField extends IBizFormItem {
      * @memberof IBizFormField
      */
     public setOldValue(val: string): void {
-        let _this = this;
-        _this.oldVal = val;
+        this.oldVal = val;
     }
 
     /**
@@ -86,8 +84,7 @@ class IBizFormField extends IBizFormItem {
      * @memberof IBizFormField
      */
     public getOldValue(): string {
-        let _this = this;
-        return _this.oldVal;
+        return this.oldVal;
     }
 
     /**
@@ -97,7 +94,6 @@ class IBizFormField extends IBizFormItem {
      * @memberof IBizFormField
      */
     public valueChange(event: any): void {
-        let _this = this;
         if (!event || !event.target) {
             return;
         }
@@ -110,7 +106,7 @@ class IBizFormField extends IBizFormItem {
         if ((typeof newVal !== 'string')) {
             newVal = JSON.stringify(newVal);
         }
-        _this.subject.next({ oldVal: oldVal, newVal: newVal });
+        this.subject.next({ oldVal: oldVal, newVal: newVal });
     }
 
 }

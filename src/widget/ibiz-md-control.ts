@@ -41,8 +41,7 @@ class IBizMDControl extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.regColumns();
+        this.regColumns();
     }
 
     /**
@@ -164,12 +163,11 @@ class IBizMDControl extends IBizControl {
      * @memberof IBizMDControl
      */
     public wfsubmit(params: any = {}): void {
-        let _this = this;
         if (!params) {
             params = {};
         }
         Object.assign(params, { srfaction: 'wfsubmit', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
             if (data.ret === 0) {
                 this.refresh();
             } else {
@@ -187,13 +185,12 @@ class IBizMDControl extends IBizControl {
      * @memberof IBizMDControl
      */
     public doUIAction(arg: any = {}): void {
-        let _this = this;
         let params: any = {};
         if (arg) {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'uiaction', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
             if (data.ret === 0) {
                 if (data.reloadData) {
                     this.refresh();
@@ -217,14 +214,13 @@ class IBizMDControl extends IBizControl {
      * @memberof IBizMDControl
      */
     public addBatch(arg: any = {}): void {
-        let _this = this;
         let params: any = {};
         if (arg) {
             Object.assign(params, arg);
         }
 
         Object.assign(params, { srfaction: 'addbatch', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((data) => {
             if (data.ret === 0) {
                 this.refresh();
                 this.fire(IBizMDControl.ADDBATCHED, data);

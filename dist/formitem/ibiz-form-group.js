@@ -29,17 +29,16 @@ var IBizFormGroup = /** @class */ (function (_super) {
      */
     function IBizFormGroup(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 部件集合
          *
          * @type {*}
          * @memberof IBizFormGroup
          */
-        _this_1.$editor = {};
-        var _this = _this_1;
+        _this.$editor = {};
         _this.titleBarCloseMode = opts.titleBarCloseMode;
-        return _this_1;
+        return _this;
     }
     /**
      * 注册部件

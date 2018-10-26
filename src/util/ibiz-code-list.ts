@@ -32,9 +32,8 @@ class IBizCodeList extends IBizObject {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.data = [...opts.datas];
-        _this.id = opts.id;
+        this.data = [...opts.datas];
+        this.id = opts.id;
     }
 
     /**

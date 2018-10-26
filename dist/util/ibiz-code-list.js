@@ -40,7 +40,7 @@ var IBizCodeList = /** @class */ (function (_super) {
      */
     function IBizCodeList(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 代码表ID
          *
@@ -48,18 +48,17 @@ var IBizCodeList = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizCodeList
          */
-        _this_1.id = '';
+        _this.id = '';
         /**
          * 静态代码表数据
          *
          * @type {Array<any>}
          * @memberof IBizCodeList
          */
-        _this_1.data = [];
-        var _this = _this_1;
+        _this.data = [];
         _this.data = opts.datas.slice();
         _this.id = opts.id;
-        return _this_1;
+        return _this;
     }
     /**
      * 获取代码表ID

@@ -29,47 +29,46 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      */
     function IBizWFExpBar(otps) {
         if (otps === void 0) { otps = {}; }
-        var _this_1 = _super.call(this, otps) || this;
+        var _this = _super.call(this, otps) || this;
         /**
      * 导航树部件是否收缩，默认展开
      *
      * @type {boolean}
      * @memberof IBizWFExpBarService
      */
-        _this_1.isCollapsed = true;
+        _this.isCollapsed = true;
         /**
          * 导航菜单数据项
          *
          * @type {Array<any>}
          * @memberof IBizWFExpBarService
          */
-        _this_1.items = [];
+        _this.items = [];
         /**
          * 选中菜单项
          *
          * @type {*}
          * @memberof IBizWFExpBarService
          */
-        _this_1.selectItem = {};
+        _this.selectItem = {};
         /**
          * 计数器
          *
          * @type {IBizUICounterService}
          * @memberof IBizWFExpBarService
          */
-        _this_1.UICounter = null;
-        var _this = _this_1;
+        _this.UICounter = null;
         if (_this.getViewController()) {
             var viewController = _this.getViewController();
             // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     _this.UICounter = viewController.uicounters.get(_this.getUICounterName());
-            //     _this.onCounterChanged(_this.items);
-            //     _this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe((data) => {
-            //         _this.onCounterChanged(_this.items);
+            //     this.UICounter = viewController.uicounters.get(this.getUICounterName());
+            //     this.onCounterChanged(this.items);
+            //     this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe((data) => {
+            //         this.onCounterChanged(this.items);
             //     });
             // });
         }
-        return _this_1;
+        return _this;
     }
     /**
      * 加载导航树数据
@@ -78,18 +77,17 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.load = function (_opt) {
-        var _this_1 = this;
         var _this = this;
         var opts = {};
         Object.assign(opts, _opt);
         Object.assign(opts, { srfaction: 'fetch', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), opts).subscribe(function (result) {
+        this.iBizHttp.post(this.getBackendUrl(), opts).subscribe(function (result) {
             if (result.ret === 0) {
                 // this.items = result.items;
-                _this_1.onCounterChanged(result.items);
-                _this_1.formarItems(_this_1.items);
-                _this_1.items = result.items.slice();
-                _this_1.fire(IBizWFExpBar.LOADED, _this_1.items[0]);
+                _this.onCounterChanged(result.items);
+                _this.formarItems(_this.items);
+                _this.items = result.items.slice();
+                _this.fire(IBizWFExpBar.LOADED, _this.items[0]);
             }
         }, function (error) {
             console.log(error);
@@ -208,7 +206,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.itemSelect = function (items, data) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         var bNeedReSelect = false;
         items.forEach(function (item) {
@@ -222,13 +220,13 @@ var IBizWFExpBar = /** @class */ (function (_super) {
             if (count === 0 && countermode && countermode === 1) {
                 item.show = false;
                 // 判断是否选中列，如果是则重置选中
-                if (_this_1.selectItem && Object.is(_this_1.selectItem.id, item.id)) {
+                if (_this.selectItem && Object.is(_this.selectItem.id, item.id)) {
                     bNeedReSelect = true;
                 }
             }
             item.counterdata = count;
             if (item.items) {
-                bNeedReSelect = _this_1.itemSelect(item.items, data);
+                bNeedReSelect = _this.itemSelect(item.items, data);
             }
         });
         return bNeedReSelect;

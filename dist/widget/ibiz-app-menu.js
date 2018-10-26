@@ -29,31 +29,30 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 应用功能数据
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this_1.appFunctions = [];
+        _this.appFunctions = [];
         /**
          * 菜单数据项
          *
          * @type {any[]}
          * @memberof IBizAppMenu
          */
-        _this_1.items = [];
+        _this.items = [];
         /**
          * 选中项
          *
          * @type {*}
          * @memberof IBizAppMenu
          */
-        _this_1.selectItem = {};
-        var _this = _this_1;
+        _this.selectItem = {};
         _this.setAppFunctions();
-        return _this_1;
+        return _this;
     }
     /**
      * 设置应用功能参数
@@ -68,13 +67,12 @@ var IBizAppMenu = /** @class */ (function (_super) {
      * @memberof IBizAppMenu
      */
     IBizAppMenu.prototype.load = function () {
-        var _this_1 = this;
         var _this = this;
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             if (success.ret === 0) {
-                _this_1.items = success.items;
-                _this_1.fire(IBizAppMenu.LOADED, _this_1.items);
+                _this.items = success.items;
+                _this.fire(IBizAppMenu.LOADED, _this.items);
             }
         }, function (error) {
             console.log(error);
@@ -130,7 +128,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
      * @memberof IBizAppMenu
      */
     IBizAppMenu.prototype.getSelectMenuItem = function (items, appfunction) {
-        var _this_1 = this;
+        var _this = this;
         if (appfunction === void 0) { appfunction = {}; }
         // tslint:disable-next-line:prefer-const
         var item = {};
@@ -140,7 +138,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
                 return true;
             }
             if (_item.items) {
-                var subItem = _this_1.getSelectMenuItem(_item.items, appfunction);
+                var subItem = _this.getSelectMenuItem(_item.items, appfunction);
                 if (subItem && Object.keys(subItem).length > 0) {
                     Object.assign(item, subItem);
                     return true;

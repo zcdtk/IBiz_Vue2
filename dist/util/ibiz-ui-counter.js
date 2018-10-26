@@ -29,7 +29,7 @@ var IBizUICounter = /** @class */ (function (_super) {
      */
     function IBizUICounter(config) {
         if (config === void 0) { config = {}; }
-        var _this_1 = _super.call(this, config) || this;
+        var _this = _super.call(this, config) || this;
         /**
          * 定时器时间
          *
@@ -37,7 +37,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.timer = null;
+        _this.timer = null;
         /**
          * 定时器
          *
@@ -45,7 +45,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.timerTag = null;
+        _this.timerTag = null;
         /**
          * 计数器id
          *
@@ -53,7 +53,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.counterId = '';
+        _this.counterId = '';
         /**
          * 计数器参数
          *
@@ -61,7 +61,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.counterParam = {};
+        _this.counterParam = {};
         /**
          * 最后加载数据
          *
@@ -69,7 +69,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.lastReloadArg = {};
+        _this.lastReloadArg = {};
         /**
          * 计数器结果
          *
@@ -77,7 +77,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.result = {};
+        _this.result = {};
         /**
          * 计数器交互数据
          *
@@ -85,13 +85,12 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.data = {};
-        var _this = _this_1;
-        _this_1.counterId = config.counterId;
-        Object.assign(_this_1.counterParam, config.counterParam);
-        _this_1.timer = config.timer;
-        _this_1.load();
-        return _this_1;
+        _this.data = {};
+        _this.counterId = config.counterId;
+        Object.assign(_this.counterParam, config.counterParam);
+        _this.timer = config.timer;
+        _this.load();
+        return _this;
     }
     /**
      * 加载定时器
@@ -99,10 +98,10 @@ var IBizUICounter = /** @class */ (function (_super) {
      * @memberof IBizUICounter
      */
     IBizUICounter.prototype.load = function () {
-        var _this_1 = this;
+        var _this = this;
         if (this.timer > 1000) {
             this.timerTag = setInterval(function () {
-                _this_1.reload();
+                _this.reload();
             }, this.timer);
         }
         this.reload();
@@ -115,7 +114,7 @@ var IBizUICounter = /** @class */ (function (_super) {
      * @memberof IBizUICounter
      */
     IBizUICounter.prototype.reload = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         var params = {};
         Object.assign(this.lastReloadArg, arg);
@@ -123,7 +122,7 @@ var IBizUICounter = /** @class */ (function (_super) {
         Object.assign(params, { srfcounterid: this.counterId, srfaction: 'FETCH', srfcounterparam: JSON.stringify(this.counterParam) });
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (res) {
             if (res.ret === 0) {
-                _this_1.setData(res);
+                _this.setData(res);
             }
         }, function (error) {
             console.log('加载计数器异常');

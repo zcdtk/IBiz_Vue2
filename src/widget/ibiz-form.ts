@@ -56,8 +56,7 @@ class IBizForm extends IBizControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.regFields();
+        this.regFields();
     }
 
     /**

@@ -29,43 +29,42 @@ var IBizFormItem = /** @class */ (function (_super) {
      */
     function IBizFormItem(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 属性动态配置值<代码表>
          *
          * @type {Array<any>}
          * @memberof IBizFormItem
          */
-        _this_1.config = [];
+        _this.config = [];
         /**
          * 属性动态配置值<用户字典>
          *
          * @type {Array<any>}
          * @memberof IBizFormItem
          */
-        _this_1.dictitems = [];
+        _this.dictitems = [];
         /**
          * 表达校验错误信息
          *
          * @type {string}
          * @memberof IBizFormItem
          */
-        _this_1.errorInfo = '';
+        _this.errorInfo = '';
         /**
          * 是否有错误信息
          *
          * @type {boolean}
          * @memberof IBizFormItem
          */
-        _this_1.hasError = false;
+        _this.hasError = false;
         /**
          * 表单项校验状态
          *
          * @type {string}
          * @memberof IBizFormItem
          */
-        _this_1.validateStatus = 'success';
-        var _this = _this_1;
+        _this.validateStatus = 'success';
         _this.allowEmpty = opts.allowEmpty ? true : false;
         _this.caption = opts.caption;
         _this.disabled = opts.disabled ? true : false;
@@ -76,7 +75,7 @@ var IBizFormItem = /** @class */ (function (_super) {
         _this.name = opts.name;
         _this.showCaption = opts.showCaption ? true : false;
         _this.visible = opts.visible ? true : false;
-        return _this_1;
+        return _this;
     }
     Object.defineProperty(IBizFormItem.prototype, "value", {
         /**

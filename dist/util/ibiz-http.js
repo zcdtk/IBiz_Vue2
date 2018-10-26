@@ -17,7 +17,6 @@ var IBizHttp = /** @class */ (function () {
      */
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
-        var _this = this;
         var subject = new rxjs.Subject();
         var params_keys = Object.keys(params);
         var form_arr = [];
@@ -32,7 +31,7 @@ var IBizHttp = /** @class */ (function () {
         }).then(function (response) {
             if (response.status === 200) {
                 if (response.data.ret === 2 && response.data.notlogin) {
-                    _this.httpDefaultInterceptor(response.data);
+                    this.httpDefaultInterceptor(response.data);
                 }
                 subject.next(response.data);
             }

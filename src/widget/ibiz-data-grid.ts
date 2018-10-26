@@ -138,8 +138,7 @@ class IBizDataGrid extends IBizMDControl {
      */
     constructor(opts: any = {}) {
         super(opts);
-        let _this = this;
-        _this.regEditItems();
+        this.regEditItems();
     }
 
     /**

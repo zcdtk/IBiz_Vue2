@@ -30,45 +30,44 @@ var IBizForm = /** @class */ (function (_super) {
      */
     function IBizForm(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 是否忽略表单变化
          *
          * @type {boolean}
          * @memberof IBizForm
          */
-        _this_1.ignoreformfieldchange = false;
+        _this.ignoreformfieldchange = false;
         /**
          * 是否忽略表单项更新
          *
          * @type {boolean}
          * @memberof IBizForm
          */
-        _this_1.ignoreUFI = false;
+        _this.ignoreUFI = false;
         /**
          * 当前表单权限
          *
          * @type {*}
          * @memberof IBizForm
          */
-        _this_1.dataaccaction = {};
+        _this.dataaccaction = {};
         /**
          * 表单是否改变
          *
          * @type {boolean}
          * @memberof IBizForm
          */
-        _this_1.formDirty = false;
+        _this.formDirty = false;
         /**
          * 表单表单项
          *
          * @type {*}
          * @memberof IBizForm
          */
-        _this_1.fields = {};
-        var _this = _this_1;
+        _this.fields = {};
         _this.regFields();
-        return _this_1;
+        return _this;
     }
     /**
      * 注册表单项
@@ -107,7 +106,7 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.load2 = function (opt) {
-        var _this_1 = this;
+        var _this = this;
         if (opt === void 0) { opt = {}; }
         // tslint:disable-next-line:prefer-const
         var arg = {};
@@ -117,24 +116,24 @@ var IBizForm = /** @class */ (function (_super) {
         this.ignoreUFI = true;
         this.ignoreformfieldchange = true;
         this.load(arg).subscribe(function (action) {
-            _this_1.setFieldAsyncConfig(action.config);
-            _this_1.setFieldState(action.state);
-            _this_1.setDataAccAction(action.dataaccaction);
-            _this_1.fillForm(action.data);
-            _this_1.formDirty = false;
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
             // this.fireEvent(IBizForm.FORMLOADED, this);
-            _this_1.fire(IBizForm.FORMLOADED, _this_1);
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
             // this.fireEvent(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.fire(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.onLoaded();
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onLoaded();
         }, function (action) {
             action.failureType = 'SERVER_INVALID';
-            _this_1.iBizNotification.error('加载失败', '加载数据发生错误, ' + _this_1.getActionErrorInfo(action));
+            _this.iBizNotification.error('加载失败', '加载数据发生错误, ' + _this.getActionErrorInfo(action));
             // IBiz.alert(IGM('IBIZFORM.LOAD.TITLE', '加载失败'), IGM('IBIZFORM.LOAD2.INFO', '加载数据发生错误,' + this.getActionErrorInfo(action), [this.getActionErrorInfo(action)]), 2);
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
         });
     };
     /**
@@ -144,7 +143,7 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.loadDraft = function (opt) {
-        var _this_1 = this;
+        var _this = this;
         if (opt === void 0) { opt = {}; }
         // tslint:disable-next-line:prefer-const
         var arg = {};
@@ -160,24 +159,24 @@ var IBizForm = /** @class */ (function (_super) {
             Object.assign(arg, { srfaction: 'loaddraftfrom', srfctrlid: this.getName() });
         }
         this.load(arg).subscribe(function (action) {
-            _this_1.setFieldAsyncConfig(action.config);
-            _this_1.setFieldState(action.state);
-            _this_1.setDataAccAction(action.dataaccaction);
-            _this_1.fillForm(action.data);
-            _this_1.formDirty = false;
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
             // this.fireEvent(IBizForm.FORMLOADED, this);
-            _this_1.fire(IBizForm.FORMLOADED, _this_1);
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
             // this.fireEvent(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.fire(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.onDraftLoaded();
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onDraftLoaded();
         }, function (action) {
             action.failureType = 'SERVER_INVALID';
             // IBiz.alert(IGM('IBIZFORM.LOAD.TITLE', '加载失败'), IGM('IBIZFORM.LOADDRAFT.INFO', '加载草稿发生错误,' + this.getActionErrorInfo(action), [this.getActionErrorInfo(action)]), 2);
-            _this_1.iBizNotification.error('加载失败', '加载草稿发生错误, ' + _this_1.getActionErrorInfo(action));
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.iBizNotification.error('加载失败', '加载草稿发生错误, ' + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
         });
     };
     /**
@@ -201,14 +200,14 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.setFieldAsyncConfig = function (config) {
-        var _this_1 = this;
+        var _this = this;
         if (config === void 0) { config = {}; }
         if (!config) {
             return;
         }
         var _names = Object.keys(config);
         _names.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (!field) {
                 return;
             }
@@ -247,14 +246,14 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.setFieldState = function (state) {
-        var _this_1 = this;
+        var _this = this;
         if (state === void 0) { state = {}; }
         if (!state) {
             return;
         }
         var stateDats = Object.keys(state);
         stateDats.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field) {
                 // tslint:disable-next-line:no-bitwise
                 var disabled = ((state[name] & 1) === 0);
@@ -280,18 +279,18 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.regField = function (field) {
-        var _this_1 = this;
+        var _this = this;
         if (!this.fields) {
             this.fields = {};
         }
         if (field) {
             field.on(IBizFormItem.VALUECHANGED).subscribe(function (data) {
                 if (data === void 0) { data = {}; }
-                if (_this_1.ignoreformfieldchange) {
+                if (_this.ignoreformfieldchange) {
                     return;
                 }
-                _this_1.formDirty = true;
-                _this_1.fire(IBizForm.FORMFIELDCHANGED, data);
+                _this.formDirty = true;
+                _this.fire(IBizForm.FORMFIELDCHANGED, data);
             });
             this.fields[field.getName()] = field;
         }
@@ -432,11 +431,11 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.fillForm = function (data) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         var fillDatas = Object.keys(data);
         fillDatas.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field) {
                 var _value = data[name];
                 if (_value instanceof Array || _value instanceof Object) {
@@ -508,14 +507,14 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.setFormError = function (formerror) {
-        var _this_1 = this;
+        var _this = this;
         this.resetFormError();
         if (formerror && formerror.items) {
             var errorItems = formerror.items;
             errorItems.forEach(function (item) {
                 var name = item.id;
                 if (name) {
-                    var _item = _this_1.fields[name];
+                    var _item = _this.fields[name];
                     _item.setErrorInfo({ validateStatus: 'error', hasError: true, errorInfo: item.info });
                 }
             });
@@ -527,10 +526,10 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.resetFormError = function () {
-        var _this_1 = this;
+        var _this = this;
         var itemsData = Object.keys(this.fields);
         itemsData.forEach(function (name) {
-            var item = _this_1.fields[name];
+            var item = _this.fields[name];
             item.setErrorInfo({ validateStatus: 'success', hasError: false, errorInfo: '' });
         });
     };
@@ -554,12 +553,12 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.getActiveData = function () {
-        var _this_1 = this;
+        var _this = this;
         // tslint:disable-next-line:prefer-const
         var values = {};
         var items = Object.keys(this.fields);
         items.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field && (Object.is(field.fieldType, 'FORMITEM') || Object.is(field.fieldType, 'HIDDENFORMITEM'))) {
                 var value = field.getValue();
                 if (Object.keys(values).length <= 1000) {
@@ -576,12 +575,12 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.getValues = function () {
-        var _this_1 = this;
+        var _this = this;
         // tslint:disable-next-line:prefer-const
         var values = {};
         var items = Object.keys(this.fields);
         items.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field && (Object.is(field.fieldType, 'FORMITEM') || Object.is(field.fieldType, 'HIDDENFORMITEM'))) {
                 var value = field.getValue();
                 values[name] = value;
@@ -607,7 +606,7 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.updateFormItems = function (mode) {
-        var _this_1 = this;
+        var _this = this;
         if (this.ignoreUFI) {
             return;
         }
@@ -619,20 +618,20 @@ var IBizForm = /** @class */ (function (_super) {
         this.ignoreUFI = true;
         // this.ignoreformfieldchange=true;
         this.load(arg).subscribe(function (action) {
-            _this_1.fire(IBizForm.UPDATEFORMITEMED, action.data);
-            _this_1.setFieldAsyncConfig(action.config);
-            _this_1.setFieldState(action.state);
+            _this.fire(IBizForm.UPDATEFORMITEMED, action.data);
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
             if (action.dataaccaction) {
-                _this_1.setDataAccAction(action.dataaccaction);
+                _this.setDataAccAction(action.dataaccaction);
             }
-            _this_1.fillForm(action.data);
-            _this_1.ignoreUFI = false;
+            _this.fillForm(action.data);
+            _this.ignoreUFI = false;
             // this.ignoreformfieldchange=false;
         }, function (action) {
             action.failureType = 'SERVER_INVALID';
             // IBiz.alert(IGM('IBIZFORM.UPDATEFORMITEMS.TITLE', '更新失败'), IGM('IBIZFORM.UPDATEFORMITEMS.INFO', '更新表单项发生错误,' + action.info, [action.info]), 2);
-            _this_1.iBizNotification.error('更新失败', '更新表单项发生错误, ' + action.info);
-            _this_1.ignoreUFI = false;
+            _this.iBizNotification.error('更新失败', '更新表单项发生错误, ' + action.info);
+            _this.ignoreUFI = false;
             // this.ignoreformfieldchange=false;
         });
     };

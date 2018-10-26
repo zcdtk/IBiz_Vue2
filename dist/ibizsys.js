@@ -825,7 +825,6 @@ var IBizHttp = /** @class */ (function () {
      */
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
-        var _this = this;
         var subject = new rxjs.Subject();
         var params_keys = Object.keys(params);
         var form_arr = [];
@@ -840,7 +839,7 @@ var IBizHttp = /** @class */ (function () {
         }).then(function (response) {
             if (response.status === 200) {
                 if (response.data.ret === 2 && response.data.notlogin) {
-                    _this.httpDefaultInterceptor(response.data);
+                    this.httpDefaultInterceptor(response.data);
                 }
                 subject.next(response.data);
             }
@@ -1098,7 +1097,7 @@ var IBizCodeList = /** @class */ (function (_super) {
      */
     function IBizCodeList(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 代码表ID
          *
@@ -1106,18 +1105,17 @@ var IBizCodeList = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizCodeList
          */
-        _this_1.id = '';
+        _this.id = '';
         /**
          * 静态代码表数据
          *
          * @type {Array<any>}
          * @memberof IBizCodeList
          */
-        _this_1.data = [];
-        var _this = _this_1;
+        _this.data = [];
         _this.data = opts.datas.slice();
         _this.id = opts.id;
-        return _this_1;
+        return _this;
     }
     /**
      * 获取代码表ID
@@ -1222,7 +1220,7 @@ var IBizUICounter = /** @class */ (function (_super) {
      */
     function IBizUICounter(config) {
         if (config === void 0) { config = {}; }
-        var _this_1 = _super.call(this, config) || this;
+        var _this = _super.call(this, config) || this;
         /**
          * 定时器时间
          *
@@ -1230,7 +1228,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.timer = null;
+        _this.timer = null;
         /**
          * 定时器
          *
@@ -1238,7 +1236,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.timerTag = null;
+        _this.timerTag = null;
         /**
          * 计数器id
          *
@@ -1246,7 +1244,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.counterId = '';
+        _this.counterId = '';
         /**
          * 计数器参数
          *
@@ -1254,7 +1252,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.counterParam = {};
+        _this.counterParam = {};
         /**
          * 最后加载数据
          *
@@ -1262,7 +1260,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.lastReloadArg = {};
+        _this.lastReloadArg = {};
         /**
          * 计数器结果
          *
@@ -1270,7 +1268,7 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.result = {};
+        _this.result = {};
         /**
          * 计数器交互数据
          *
@@ -1278,13 +1276,12 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizUICounter
          */
-        _this_1.data = {};
-        var _this = _this_1;
-        _this_1.counterId = config.counterId;
-        Object.assign(_this_1.counterParam, config.counterParam);
-        _this_1.timer = config.timer;
-        _this_1.load();
-        return _this_1;
+        _this.data = {};
+        _this.counterId = config.counterId;
+        Object.assign(_this.counterParam, config.counterParam);
+        _this.timer = config.timer;
+        _this.load();
+        return _this;
     }
     /**
      * 加载定时器
@@ -1292,10 +1289,10 @@ var IBizUICounter = /** @class */ (function (_super) {
      * @memberof IBizUICounter
      */
     IBizUICounter.prototype.load = function () {
-        var _this_1 = this;
+        var _this = this;
         if (this.timer > 1000) {
             this.timerTag = setInterval(function () {
-                _this_1.reload();
+                _this.reload();
             }, this.timer);
         }
         this.reload();
@@ -1308,7 +1305,7 @@ var IBizUICounter = /** @class */ (function (_super) {
      * @memberof IBizUICounter
      */
     IBizUICounter.prototype.reload = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         var params = {};
         Object.assign(this.lastReloadArg, arg);
@@ -1316,7 +1313,7 @@ var IBizUICounter = /** @class */ (function (_super) {
         Object.assign(params, { srfcounterid: this.counterId, srfaction: 'FETCH', srfcounterparam: JSON.stringify(this.counterParam) });
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (res) {
             if (res.ret === 0) {
-                _this_1.setData(res);
+                _this.setData(res);
             }
         }, function (error) {
             console.log('加载计数器异常');
@@ -1404,43 +1401,42 @@ var IBizFormItem = /** @class */ (function (_super) {
      */
     function IBizFormItem(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 属性动态配置值<代码表>
          *
          * @type {Array<any>}
          * @memberof IBizFormItem
          */
-        _this_1.config = [];
+        _this.config = [];
         /**
          * 属性动态配置值<用户字典>
          *
          * @type {Array<any>}
          * @memberof IBizFormItem
          */
-        _this_1.dictitems = [];
+        _this.dictitems = [];
         /**
          * 表达校验错误信息
          *
          * @type {string}
          * @memberof IBizFormItem
          */
-        _this_1.errorInfo = '';
+        _this.errorInfo = '';
         /**
          * 是否有错误信息
          *
          * @type {boolean}
          * @memberof IBizFormItem
          */
-        _this_1.hasError = false;
+        _this.hasError = false;
         /**
          * 表单项校验状态
          *
          * @type {string}
          * @memberof IBizFormItem
          */
-        _this_1.validateStatus = 'success';
-        var _this = _this_1;
+        _this.validateStatus = 'success';
         _this.allowEmpty = opts.allowEmpty ? true : false;
         _this.caption = opts.caption;
         _this.disabled = opts.disabled ? true : false;
@@ -1451,7 +1447,7 @@ var IBizFormItem = /** @class */ (function (_super) {
         _this.name = opts.name;
         _this.showCaption = opts.showCaption ? true : false;
         _this.visible = opts.visible ? true : false;
-        return _this_1;
+        return _this;
     }
     Object.defineProperty(IBizFormItem.prototype, "value", {
         /**
@@ -1732,14 +1728,14 @@ var IBizFormField = /** @class */ (function (_super) {
      */
     function IBizFormField(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * label 宽度
          *
          * @type {number}
          * @memberof IBizFormField
          */
-        _this_1.labelWidth = 130;
+        _this.labelWidth = 130;
         /**
          * 实体属性输入旧值
          *
@@ -1747,7 +1743,7 @@ var IBizFormField = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizFormField
          */
-        _this_1.oldVal = '';
+        _this.oldVal = '';
         /**
          * 数据流观察对象
          *
@@ -1755,18 +1751,17 @@ var IBizFormField = /** @class */ (function (_super) {
          * @type {Subject<any>}
          * @memberof IBizFormField
          */
-        _this_1.subject = new rxjs.Subject();
+        _this.subject = new rxjs.Subject();
         /**
          * 编辑器参数
          *
          * @type {*}
          * @memberof IBizFormField
          */
-        _this_1.editorParams = {};
-        var _this = _this_1;
+        _this.editorParams = {};
         _this.labelWidth = opts.labelWidth;
         if (opts.editorParams) {
-            Object.assign(_this_1.editorParams, opts.editorParams);
+            Object.assign(_this.editorParams, opts.editorParams);
         }
         // 停止输入值间隔500 毫秒，进行值绑定
         _this.subject.pipe(rxjs.operators.debounceTime(500), rxjs.operators.distinctUntilChanged(function (o, n) {
@@ -1779,7 +1774,7 @@ var IBizFormField = /** @class */ (function (_super) {
             _this.setOldValue(data.oldVal);
             _this.setValue(data.newVal);
         });
-        return _this_1;
+        return _this;
     }
     /**
      * 设置旧值
@@ -1788,8 +1783,7 @@ var IBizFormField = /** @class */ (function (_super) {
      * @memberof IBizFormField
      */
     IBizFormField.prototype.setOldValue = function (val) {
-        var _this = this;
-        _this.oldVal = val;
+        this.oldVal = val;
     };
     /**
      * 获取旧值
@@ -1798,8 +1792,7 @@ var IBizFormField = /** @class */ (function (_super) {
      * @memberof IBizFormField
      */
     IBizFormField.prototype.getOldValue = function () {
-        var _this = this;
-        return _this.oldVal;
+        return this.oldVal;
     };
     /**
      * 属性值变化
@@ -1808,7 +1801,6 @@ var IBizFormField = /** @class */ (function (_super) {
      * @memberof IBizFormField
      */
     IBizFormField.prototype.valueChange = function (event) {
-        var _this = this;
         if (!event || !event.target) {
             return;
         }
@@ -1821,7 +1813,7 @@ var IBizFormField = /** @class */ (function (_super) {
         if ((typeof newVal !== 'string')) {
             newVal = JSON.stringify(newVal);
         }
-        _this.subject.next({ oldVal: oldVal, newVal: newVal });
+        this.subject.next({ oldVal: oldVal, newVal: newVal });
     };
     return IBizFormField;
 }(IBizFormItem));
@@ -1893,17 +1885,16 @@ var IBizFormGroup = /** @class */ (function (_super) {
      */
     function IBizFormGroup(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 部件集合
          *
          * @type {*}
          * @memberof IBizFormGroup
          */
-        _this_1.$editor = {};
-        var _this = _this_1;
+        _this.$editor = {};
         _this.titleBarCloseMode = opts.titleBarCloseMode;
-        return _this_1;
+        return _this;
     }
     /**
      * 注册部件
@@ -2134,7 +2125,7 @@ var IBizControl = /** @class */ (function (_super) {
      */
     function IBizControl(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 部件名称
          *
@@ -2142,7 +2133,7 @@ var IBizControl = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizControl
          */
-        _this_1.name = '';
+        _this.name = '';
         /**
          * 后台交互URL
          *
@@ -2150,7 +2141,7 @@ var IBizControl = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizControl
          */
-        _this_1.url = '';
+        _this.url = '';
         /**
          * 视图控制器对象
          *
@@ -2158,19 +2149,18 @@ var IBizControl = /** @class */ (function (_super) {
          * @type {*}
          * @memberof IBizControl
          */
-        _this_1.viewController = null;
+        _this.viewController = null;
         /**
          * 部件http请求状态
          *
          * @type {boolean}
          * @memberof IBizControl
          */
-        _this_1.isLoading = false;
-        var _this = _this_1;
+        _this.isLoading = false;
         _this.name = opts.name;
         _this.url = opts.url;
         _this.viewController = opts.viewController;
-        return _this_1;
+        return _this;
     }
     ;
     /**
@@ -2264,31 +2254,30 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 应用功能数据
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this_1.appFunctions = [];
+        _this.appFunctions = [];
         /**
          * 菜单数据项
          *
          * @type {any[]}
          * @memberof IBizAppMenu
          */
-        _this_1.items = [];
+        _this.items = [];
         /**
          * 选中项
          *
          * @type {*}
          * @memberof IBizAppMenu
          */
-        _this_1.selectItem = {};
-        var _this = _this_1;
+        _this.selectItem = {};
         _this.setAppFunctions();
-        return _this_1;
+        return _this;
     }
     /**
      * 设置应用功能参数
@@ -2303,13 +2292,12 @@ var IBizAppMenu = /** @class */ (function (_super) {
      * @memberof IBizAppMenu
      */
     IBizAppMenu.prototype.load = function () {
-        var _this_1 = this;
         var _this = this;
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             if (success.ret === 0) {
-                _this_1.items = success.items;
-                _this_1.fire(IBizAppMenu.LOADED, _this_1.items);
+                _this.items = success.items;
+                _this.fire(IBizAppMenu.LOADED, _this.items);
             }
         }, function (error) {
             console.log(error);
@@ -2365,7 +2353,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
      * @memberof IBizAppMenu
      */
     IBizAppMenu.prototype.getSelectMenuItem = function (items, appfunction) {
-        var _this_1 = this;
+        var _this = this;
         if (appfunction === void 0) { appfunction = {}; }
         // tslint:disable-next-line:prefer-const
         var item = {};
@@ -2375,7 +2363,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
                 return true;
             }
             if (_item.items) {
-                var subItem = _this_1.getSelectMenuItem(_item.items, appfunction);
+                var subItem = _this.getSelectMenuItem(_item.items, appfunction);
                 if (subItem && Object.keys(subItem).length > 0) {
                     Object.assign(item, subItem);
                     return true;
@@ -2433,31 +2421,30 @@ var IBizMDControl = /** @class */ (function (_super) {
      */
     function IBizMDControl(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 多数据列头
          *
          * @type {*}
          * @memberof IBizMDControl
          */
-        _this_1.columns = {};
+        _this.columns = {};
         /**
          * 所有数据项
          *
          * @type {Array<any>}
          * @memberof IBizMDControl
          */
-        _this_1.items = [];
+        _this.items = [];
         /**
          * 选中数据项
          *
          * @type {Array<any>}
          * @memberof IBizMDControl
          */
-        _this_1.selection = [];
-        var _this = _this_1;
+        _this.selection = [];
         _this.regColumns();
-        return _this_1;
+        return _this;
     }
     /**
      * 加载数据
@@ -2566,22 +2553,21 @@ var IBizMDControl = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizMDControl.prototype.wfsubmit = function (params) {
-        var _this_1 = this;
-        if (params === void 0) { params = {}; }
         var _this = this;
+        if (params === void 0) { params = {}; }
         if (!params) {
             params = {};
         }
         Object.assign(params, { srfaction: 'wfsubmit', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
-                _this_1.refresh();
+                _this.refresh();
             }
             else {
-                _this_1.iBizNotification.error('', '执行工作流操作失败,' + data.info);
+                _this.iBizNotification.error('', '执行工作流操作失败,' + data.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('', '执行工作流操作失败,' + error.info);
+            _this.iBizNotification.error('', '执行工作流操作失败,' + error.info);
         });
     };
     /**
@@ -2591,29 +2577,28 @@ var IBizMDControl = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizMDControl.prototype.doUIAction = function (arg) {
-        var _this_1 = this;
-        if (arg === void 0) { arg = {}; }
         var _this = this;
+        if (arg === void 0) { arg = {}; }
         var params = {};
         if (arg) {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'uiaction', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
                 if (data.reloadData) {
-                    _this_1.refresh();
+                    _this.refresh();
                 }
                 if (data.info && !Object.is(data.info, '')) {
-                    _this_1.iBizNotification.success('', '操作成功');
+                    _this.iBizNotification.success('', '操作成功');
                 }
                 IBizUtil.processResult(data);
             }
             else {
-                _this_1.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + data.info);
+                _this.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + data.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + error.info);
+            _this.iBizNotification.error('操作失败', '操作失败,执行操作发生错误,' + error.info);
         });
     };
     /**
@@ -2623,24 +2608,23 @@ var IBizMDControl = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizMDControl.prototype.addBatch = function (arg) {
-        var _this_1 = this;
-        if (arg === void 0) { arg = {}; }
         var _this = this;
+        if (arg === void 0) { arg = {}; }
         var params = {};
         if (arg) {
             Object.assign(params, arg);
         }
         Object.assign(params, { srfaction: 'addbatch', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
+        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (data) {
             if (data.ret === 0) {
-                _this_1.refresh();
-                _this_1.fire(IBizMDControl.ADDBATCHED, data);
+                _this.refresh();
+                _this.fire(IBizMDControl.ADDBATCHED, data);
             }
             else {
-                _this_1.iBizNotification.error('添加失败', '执行批量添加失败,' + data.info);
+                _this.iBizNotification.error('添加失败', '执行批量添加失败,' + data.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('添加失败', '执行批量添加失败,' + error.info);
+            _this.iBizNotification.error('添加失败', '执行批量添加失败,' + error.info);
         });
     };
     /**
@@ -2806,50 +2790,50 @@ var IBizDataGrid = /** @class */ (function (_super) {
      */
     function IBizDataGrid(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 查询开始条数
          *
          * @memberof IBizGrid
          */
-        _this_1.start = 0;
+        _this.start = 0;
         /**
          * 每次加载条数
          *
          * @memberof IBizGrid
          */
-        _this_1.limit = 20;
+        _this.limit = 20;
         /**
          * 总条数
          *
          * @memberof IBizGrid
          */
-        _this_1.totalrow = 0;
+        _this.totalrow = 0;
         /**
          * 当前显示页码
          *
          * @memberof IBizGrid
          */
-        _this_1.curPage = 1;
+        _this.curPage = 1;
         /**
          * 是否全选
          *
          * @memberof IBizGrid
          */
-        _this_1.allChecked = false;
+        _this.allChecked = false;
         /**
          * 表格行选中动画
          *
          * @memberof IBizGrid
          */
-        _this_1.indeterminate = false;
+        _this.indeterminate = false;
         /**
          * 表格全部排序字段
          *
          * @type {Array<any>}
          * @memberof IBizGrid
          */
-        _this_1.gridSortField = [];
+        _this.gridSortField = [];
         /**
          * 行多项选中设置，用于阻塞多次触发选中效果
          *
@@ -2857,59 +2841,58 @@ var IBizDataGrid = /** @class */ (function (_super) {
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.rowsSelection = false;
+        _this.rowsSelection = false;
         /**
          * 是否支持多项
          *
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.multiSelect = true;
+        _this.multiSelect = true;
         /**
          * 是否启用行编辑
          *
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.isEnableRowEdit = false;
+        _this.isEnableRowEdit = false;
         /**
          * 打开行编辑
          *
          * @type {boolean}
          * @memberof IBizGrid
          */
-        _this_1.openRowEdit = false;
+        _this.openRowEdit = false;
         /**
          * 表格编辑项集合
          *
          * @type {*}
          * @memberof IBizGrid
          */
-        _this_1.editItems = {};
+        _this.editItems = {};
         /**
          * 编辑行数据处理
          *
          * @type {*}
          * @memberof IBizGrid
          */
-        _this_1.state = {};
+        _this.state = {};
         /**
          * 备份数据
          *
          * @type {Array<any>}
          * @memberof IBizGrid
          */
-        _this_1.backupData = [];
+        _this.backupData = [];
         /**
          * 最大导出行数
          *
          * @type {number}
          * @memberof IBizGrid
          */
-        _this_1.maxExportRow = 1000;
-        var _this = _this_1;
+        _this.maxExportRow = 1000;
         _this.regEditItems();
-        return _this_1;
+        return _this;
     }
     /**
      * 加载数据
@@ -2919,7 +2902,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.load = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = {};
@@ -2944,13 +2927,13 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (response) {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
-                    _this_1.iBizNotification.error('', response.errorMessage);
+                    _this.iBizNotification.error('', response.errorMessage);
                 }
                 return;
             }
-            _this_1.items = _this_1.rendererDatas(response.items);
-            _this_1.totalrow = response.totalrow;
-            _this_1.fire(IBizMDControl.LOADED, response.items);
+            _this.items = _this.rendererDatas(response.items);
+            _this.totalrow = response.totalrow;
+            _this.fire(IBizMDControl.LOADED, response.items);
         }, function (error) {
             console.log(error.info);
         });
@@ -2963,7 +2946,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.refresh = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = {};
@@ -2988,13 +2971,13 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (response) {
             if (!response.items || response.ret !== 0) {
                 if (response.errorMessage) {
-                    _this_1.iBizNotification.error('', response.errorMessage);
+                    _this.iBizNotification.error('', response.errorMessage);
                 }
                 return;
             }
-            _this_1.fire(IBizMDControl.LOADED, response.items);
-            _this_1.items = _this_1.rendererDatas(response.items);
-            _this_1.totalrow = response.totalrow;
+            _this.fire(IBizMDControl.LOADED, response.items);
+            _this.items = _this.rendererDatas(response.items);
+            _this.totalrow = response.totalrow;
         }, function (error) {
             console.log(error.info);
         });
@@ -3006,34 +2989,34 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.remove = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         var params = {};
         Object.assign(params, arg);
         Object.assign(params, { srfaction: 'remove', srfctrlid: this.getName() });
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (response) {
             if (response.ret !== 0) {
-                _this_1.iBizNotification.error('', '删除数据失败,' + response.info);
+                _this.iBizNotification.error('', '删除数据失败,' + response.info);
                 return;
             }
-            if (_this_1.allChecked) {
-                var rows = _this_1.curPage * _this_1.limit;
-                if (_this_1.totalrow <= rows) {
-                    _this_1.curPage = _this_1.curPage - 1;
-                    if (_this_1.curPage === 0) {
-                        _this_1.curPage = 1;
+            if (_this.allChecked) {
+                var rows = _this.curPage * _this.limit;
+                if (_this.totalrow <= rows) {
+                    _this.curPage = _this.curPage - 1;
+                    if (_this.curPage === 0) {
+                        _this.curPage = 1;
                     }
                 }
             }
-            _this_1.load({});
-            _this_1.fire(IBizDataGrid.REMOVED, {});
+            _this.load({});
+            _this.fire(IBizDataGrid.REMOVED, {});
             if (response.info && response.info !== '') {
-                _this_1.iBizNotification.success('', '删除成功!');
+                _this.iBizNotification.success('', '删除成功!');
             }
-            _this_1.selection = [];
+            _this.selection = [];
             IBizUtil.processResult(response);
         }, function (error) {
-            _this_1.iBizNotification.error('', '删除数据失败');
+            _this.iBizNotification.error('', '删除数据失败');
         });
     };
     /**
@@ -3081,13 +3064,13 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizMDControl
      */
     IBizDataGrid.prototype.selectAll = function (value) {
-        var _this_1 = this;
+        var _this = this;
         if (this.isEnableRowEdit && this.openRowEdit) {
             return;
         }
         if (!this.multiSelect) {
             setTimeout(function () {
-                _this_1.allChecked = false;
+                _this.allChecked = false;
             });
             return;
         }
@@ -3110,7 +3093,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.exportData = function (arg) {
-        var _this_1 = this;
+        var _this = this;
         if (arg === void 0) { arg = {}; }
         // tslint:disable-next-line:prefer-const
         var params = {};
@@ -3136,7 +3119,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         }
         this.iBizHttp.post(params).subscribe(function (res) {
             if (res.ret !== 0) {
-                _this_1.iBizNotification.warning('警告', res.info);
+                _this.iBizNotification.warning('警告', res.info);
                 return;
             }
             if (res.downloadurl) {
@@ -3315,14 +3298,14 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.rendererDatas = function (items) {
-        var _this_1 = this;
+        var _this = this;
         _super.prototype.rendererDatas.call(this, items);
         items.forEach(function (item) {
             var names = Object.keys(item);
             names.forEach(function (name) { item[name] = item[name] ? item[name] : ''; });
         });
         if (this.isEnableRowEdit) {
-            items.forEach(function (item) { item.openeditrow = (_this_1.isEnableRowEdit) ? true : false; });
+            items.forEach(function (item) { item.openeditrow = (_this.isEnableRowEdit) ? true : false; });
         }
         return items;
     };
@@ -3355,7 +3338,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.setEditItemState = function (srfkey) {
-        var _this_1 = this;
+        var _this = this;
         if (!this.state) {
             return;
         }
@@ -3368,7 +3351,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
         itemsName.forEach(function (name) {
             // tslint:disable-next-line:prefer-const
             var item = {};
-            var _editor = JSON.stringify(_this_1.editItems[name]);
+            var _editor = JSON.stringify(_this.editItems[name]);
             Object.assign(item, JSON.parse(_editor));
             editItems[name] = item;
         });
@@ -3427,7 +3410,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.isOpenEdit = function (tag) {
-        var _this_1 = this;
+        var _this = this;
         if (!this.isEnableRowEdit) {
             this.iBizNotification.info('提示', '未启用行编辑');
             return;
@@ -3443,14 +3426,14 @@ var IBizDataGrid = /** @class */ (function (_super) {
             this.fire(IBizMDControl.SELECTIONCHANGE, this.selection);
             this.items.forEach(function (item) {
                 var data = __rest(item, []);
-                _this_1.backupData.push(data);
-                _this_1.setEditItemState(item.srfkey);
+                _this.backupData.push(data);
+                _this.setEditItemState(item.srfkey);
             });
         }
         else {
             this.items = [];
             this.backupData.forEach(function (data) {
-                _this_1.items.push(data);
+                _this.items.push(data);
             });
             this.backupData = [];
             this.state = {};
@@ -3488,7 +3471,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.editRowSave = function (data, rowindex) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         var _index = this.backupData.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
         var srfaction = (_index !== -1) ? 'update' : 'create';
@@ -3502,17 +3485,17 @@ var IBizDataGrid = /** @class */ (function (_super) {
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (responce) {
             if (responce.ret === 0) {
                 data.openeditrow = !data.openeditrow;
-                var index = _this_1.backupData.findIndex(function (item) { return Object.is(data.srfkey, item.srfkey); });
+                var index = _this.backupData.findIndex(function (item) { return Object.is(data.srfkey, item.srfkey); });
                 if (index !== -1) {
-                    Object.assign(_this_1.backupData[index], responce.data);
+                    Object.assign(_this.backupData[index], responce.data);
                 }
                 else {
-                    _this_1.deleteEditItemState(data.srfkey);
-                    _this_1.setEditItemState(responce.data.srfkey);
-                    _this_1.backupData.push(data);
+                    _this.deleteEditItemState(data.srfkey);
+                    _this.setEditItemState(responce.data.srfkey);
+                    _this.backupData.push(data);
                 }
                 Object.assign(data, responce.data);
-                _this_1.iBizNotification.info('提示', '保存成功');
+                _this.iBizNotification.info('提示', '保存成功');
             }
         }, function (error) {
             var info = '';
@@ -3523,10 +3506,10 @@ var IBizDataGrid = /** @class */ (function (_super) {
                         info += '\n';
                     }
                     info += item.info;
-                    Object.assign(_this_1.state[data.srfkey][item.id].styleCss, { 'border': '1px solid #f04134', 'border-radius': '4px' });
+                    Object.assign(_this.state[data.srfkey][item.id].styleCss, { 'border': '1px solid #f04134', 'border-radius': '4px' });
                 });
             }
-            _this_1.iBizNotification.error('错误', !Object.is(info, '') ? info : '行编辑保存失败');
+            _this.iBizNotification.error('错误', !Object.is(info, '') ? info : '行编辑保存失败');
         });
     };
     /**
@@ -3597,7 +3580,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.updateGridEditItems = function (srfufimode, data) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = { srfaction: 'updategridedititem', srfufimode: srfufimode, srfctrlid: 'grid' };
@@ -3608,16 +3591,16 @@ var IBizDataGrid = /** @class */ (function (_super) {
         Object.assign(opt, { srfactivedata: JSON.stringify(data) });
         this.iBizHttp.post(this.getBackendUrl(), opt).subscribe(function (success) {
             if (success.ret === 0) {
-                var index = _this_1.items.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
+                var index = _this.items.findIndex(function (item) { return Object.is(item.srfkey, data.srfkey); });
                 if (index !== -1) {
-                    Object.assign(_this_1.items[index], success.data);
+                    Object.assign(_this.items[index], success.data);
                 }
             }
             else {
-                _this_1.iBizNotification.error('错误', success.info);
+                _this.iBizNotification.error('错误', success.info);
             }
         }, function (error) {
-            _this_1.iBizNotification.error('错误', error.info);
+            _this.iBizNotification.error('错误', error.info);
         });
     };
     /**
@@ -3627,7 +3610,7 @@ var IBizDataGrid = /** @class */ (function (_super) {
      * @memberof IBizGrid
      */
     IBizDataGrid.prototype.newRowAjax = function (param) {
-        var _this_1 = this;
+        var _this = this;
         if (param === void 0) { param = {}; }
         // tslint:disable-next-line:prefer-const
         var opt = {};
@@ -3638,15 +3621,15 @@ var IBizDataGrid = /** @class */ (function (_super) {
             if (success.ret === 0) {
                 var srfkey = (Object.is(success.data.srfkey, '')) ? IBizUtil.createUUID() : success.data.srfkey;
                 success.data.srfkey = srfkey;
-                _this_1.setEditItemState(srfkey);
-                _this_1.setEditItemDisabled(srfkey, 1);
-                _this_1.items.push(Object.assign(success.data, { openeditrow: false }));
+                _this.setEditItemState(srfkey);
+                _this.setEditItemDisabled(srfkey, 1);
+                _this.items.push(Object.assign(success.data, { openeditrow: false }));
             }
             else {
-                _this_1.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {success.info}");
+                _this.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {success.info}");
             }
         }, function (error) {
-            _this_1.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {error.info}");
+            _this.iBizNotification.error('错误', "\u83B7\u53D6\u9ED8\u8BA4\u6570\u636E\u5931\u8D25, {error.info}");
         });
     };
     /*****************事件声明************************/
@@ -3719,17 +3702,16 @@ var IBizToolbar = /** @class */ (function (_super) {
      */
     function IBizToolbar(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 工具栏按钮
          *
          * @type {Array<any>}
          * @memberof IBizToolbar
          */
-        _this_1.items = {};
-        var _this = _this_1;
+        _this.items = {};
         _this.regToolBarItems();
-        return _this_1;
+        return _this;
     }
     /**
      * 注册所有工具栏按钮
@@ -3745,7 +3727,7 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.regToolBarItem = function (item) {
-        var _this_1 = this;
+        var _this = this;
         if (item === void 0) { item = {}; }
         if (!this.items) {
             this.items = {};
@@ -3757,7 +3739,7 @@ var IBizToolbar = /** @class */ (function (_super) {
         if (item.menu && item.menu.length > 0) {
             var _menus = item.menu.slice();
             _menus.forEach(function (menu) {
-                _this_1.regToolBarItem(menu);
+                _this.regToolBarItem(menu);
             });
         }
     };
@@ -3792,16 +3774,16 @@ var IBizToolbar = /** @class */ (function (_super) {
      * @memberof IBizToolbar
      */
     IBizToolbar.prototype.updateAccAction = function (action) {
-        var _this_1 = this;
+        var _this = this;
         if (action === void 0) { action = {}; }
         var _itemsName = Object.keys(this.items);
         _itemsName.forEach(function (name) {
-            var priv = _this_1.items[name].priv;
+            var priv = _this.items[name].priv;
             if ((priv && !Object.is(priv, '')) && (action && Object.keys(action).length > 0 && action[priv] !== 1)) {
-                _this_1.items[name].dataaccaction = false;
+                _this.items[name].dataaccaction = false;
             }
             else {
-                _this_1.items[name].dataaccaction = true;
+                _this.items[name].dataaccaction = true;
             }
         });
     };
@@ -3892,45 +3874,44 @@ var IBizForm = /** @class */ (function (_super) {
      */
     function IBizForm(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 是否忽略表单变化
          *
          * @type {boolean}
          * @memberof IBizForm
          */
-        _this_1.ignoreformfieldchange = false;
+        _this.ignoreformfieldchange = false;
         /**
          * 是否忽略表单项更新
          *
          * @type {boolean}
          * @memberof IBizForm
          */
-        _this_1.ignoreUFI = false;
+        _this.ignoreUFI = false;
         /**
          * 当前表单权限
          *
          * @type {*}
          * @memberof IBizForm
          */
-        _this_1.dataaccaction = {};
+        _this.dataaccaction = {};
         /**
          * 表单是否改变
          *
          * @type {boolean}
          * @memberof IBizForm
          */
-        _this_1.formDirty = false;
+        _this.formDirty = false;
         /**
          * 表单表单项
          *
          * @type {*}
          * @memberof IBizForm
          */
-        _this_1.fields = {};
-        var _this = _this_1;
+        _this.fields = {};
         _this.regFields();
-        return _this_1;
+        return _this;
     }
     /**
      * 注册表单项
@@ -3969,7 +3950,7 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.load2 = function (opt) {
-        var _this_1 = this;
+        var _this = this;
         if (opt === void 0) { opt = {}; }
         // tslint:disable-next-line:prefer-const
         var arg = {};
@@ -3979,24 +3960,24 @@ var IBizForm = /** @class */ (function (_super) {
         this.ignoreUFI = true;
         this.ignoreformfieldchange = true;
         this.load(arg).subscribe(function (action) {
-            _this_1.setFieldAsyncConfig(action.config);
-            _this_1.setFieldState(action.state);
-            _this_1.setDataAccAction(action.dataaccaction);
-            _this_1.fillForm(action.data);
-            _this_1.formDirty = false;
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
             // this.fireEvent(IBizForm.FORMLOADED, this);
-            _this_1.fire(IBizForm.FORMLOADED, _this_1);
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
             // this.fireEvent(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.fire(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.onLoaded();
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onLoaded();
         }, function (action) {
             action.failureType = 'SERVER_INVALID';
-            _this_1.iBizNotification.error('加载失败', '加载数据发生错误, ' + _this_1.getActionErrorInfo(action));
+            _this.iBizNotification.error('加载失败', '加载数据发生错误, ' + _this.getActionErrorInfo(action));
             // IBiz.alert(IGM('IBIZFORM.LOAD.TITLE', '加载失败'), IGM('IBIZFORM.LOAD2.INFO', '加载数据发生错误,' + this.getActionErrorInfo(action), [this.getActionErrorInfo(action)]), 2);
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
         });
     };
     /**
@@ -4006,7 +3987,7 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.loadDraft = function (opt) {
-        var _this_1 = this;
+        var _this = this;
         if (opt === void 0) { opt = {}; }
         // tslint:disable-next-line:prefer-const
         var arg = {};
@@ -4022,24 +4003,24 @@ var IBizForm = /** @class */ (function (_super) {
             Object.assign(arg, { srfaction: 'loaddraftfrom', srfctrlid: this.getName() });
         }
         this.load(arg).subscribe(function (action) {
-            _this_1.setFieldAsyncConfig(action.config);
-            _this_1.setFieldState(action.state);
-            _this_1.setDataAccAction(action.dataaccaction);
-            _this_1.fillForm(action.data);
-            _this_1.formDirty = false;
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
+            _this.setDataAccAction(action.dataaccaction);
+            _this.fillForm(action.data);
+            _this.formDirty = false;
             // this.fireEvent(IBizForm.FORMLOADED, this);
-            _this_1.fire(IBizForm.FORMLOADED, _this_1);
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.fire(IBizForm.FORMLOADED, _this);
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
             // this.fireEvent(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.fire(IBizForm.FORMFIELDCHANGED, null);
-            _this_1.onDraftLoaded();
+            _this.fire(IBizForm.FORMFIELDCHANGED, null);
+            _this.onDraftLoaded();
         }, function (action) {
             action.failureType = 'SERVER_INVALID';
             // IBiz.alert(IGM('IBIZFORM.LOAD.TITLE', '加载失败'), IGM('IBIZFORM.LOADDRAFT.INFO', '加载草稿发生错误,' + this.getActionErrorInfo(action), [this.getActionErrorInfo(action)]), 2);
-            _this_1.iBizNotification.error('加载失败', '加载草稿发生错误, ' + _this_1.getActionErrorInfo(action));
-            _this_1.ignoreUFI = false;
-            _this_1.ignoreformfieldchange = false;
+            _this.iBizNotification.error('加载失败', '加载草稿发生错误, ' + _this.getActionErrorInfo(action));
+            _this.ignoreUFI = false;
+            _this.ignoreformfieldchange = false;
         });
     };
     /**
@@ -4063,14 +4044,14 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.setFieldAsyncConfig = function (config) {
-        var _this_1 = this;
+        var _this = this;
         if (config === void 0) { config = {}; }
         if (!config) {
             return;
         }
         var _names = Object.keys(config);
         _names.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (!field) {
                 return;
             }
@@ -4109,14 +4090,14 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.setFieldState = function (state) {
-        var _this_1 = this;
+        var _this = this;
         if (state === void 0) { state = {}; }
         if (!state) {
             return;
         }
         var stateDats = Object.keys(state);
         stateDats.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field) {
                 // tslint:disable-next-line:no-bitwise
                 var disabled = ((state[name] & 1) === 0);
@@ -4142,18 +4123,18 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.regField = function (field) {
-        var _this_1 = this;
+        var _this = this;
         if (!this.fields) {
             this.fields = {};
         }
         if (field) {
             field.on(IBizFormItem.VALUECHANGED).subscribe(function (data) {
                 if (data === void 0) { data = {}; }
-                if (_this_1.ignoreformfieldchange) {
+                if (_this.ignoreformfieldchange) {
                     return;
                 }
-                _this_1.formDirty = true;
-                _this_1.fire(IBizForm.FORMFIELDCHANGED, data);
+                _this.formDirty = true;
+                _this.fire(IBizForm.FORMFIELDCHANGED, data);
             });
             this.fields[field.getName()] = field;
         }
@@ -4294,11 +4275,11 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.fillForm = function (data) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         var fillDatas = Object.keys(data);
         fillDatas.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field) {
                 var _value = data[name];
                 if (_value instanceof Array || _value instanceof Object) {
@@ -4370,14 +4351,14 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.setFormError = function (formerror) {
-        var _this_1 = this;
+        var _this = this;
         this.resetFormError();
         if (formerror && formerror.items) {
             var errorItems = formerror.items;
             errorItems.forEach(function (item) {
                 var name = item.id;
                 if (name) {
-                    var _item = _this_1.fields[name];
+                    var _item = _this.fields[name];
                     _item.setErrorInfo({ validateStatus: 'error', hasError: true, errorInfo: item.info });
                 }
             });
@@ -4389,10 +4370,10 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.resetFormError = function () {
-        var _this_1 = this;
+        var _this = this;
         var itemsData = Object.keys(this.fields);
         itemsData.forEach(function (name) {
-            var item = _this_1.fields[name];
+            var item = _this.fields[name];
             item.setErrorInfo({ validateStatus: 'success', hasError: false, errorInfo: '' });
         });
     };
@@ -4416,12 +4397,12 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.getActiveData = function () {
-        var _this_1 = this;
+        var _this = this;
         // tslint:disable-next-line:prefer-const
         var values = {};
         var items = Object.keys(this.fields);
         items.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field && (Object.is(field.fieldType, 'FORMITEM') || Object.is(field.fieldType, 'HIDDENFORMITEM'))) {
                 var value = field.getValue();
                 if (Object.keys(values).length <= 1000) {
@@ -4438,12 +4419,12 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.getValues = function () {
-        var _this_1 = this;
+        var _this = this;
         // tslint:disable-next-line:prefer-const
         var values = {};
         var items = Object.keys(this.fields);
         items.forEach(function (name) {
-            var field = _this_1.findField(name);
+            var field = _this.findField(name);
             if (field && (Object.is(field.fieldType, 'FORMITEM') || Object.is(field.fieldType, 'HIDDENFORMITEM'))) {
                 var value = field.getValue();
                 values[name] = value;
@@ -4469,7 +4450,7 @@ var IBizForm = /** @class */ (function (_super) {
      * @memberof IBizForm
      */
     IBizForm.prototype.updateFormItems = function (mode) {
-        var _this_1 = this;
+        var _this = this;
         if (this.ignoreUFI) {
             return;
         }
@@ -4481,20 +4462,20 @@ var IBizForm = /** @class */ (function (_super) {
         this.ignoreUFI = true;
         // this.ignoreformfieldchange=true;
         this.load(arg).subscribe(function (action) {
-            _this_1.fire(IBizForm.UPDATEFORMITEMED, action.data);
-            _this_1.setFieldAsyncConfig(action.config);
-            _this_1.setFieldState(action.state);
+            _this.fire(IBizForm.UPDATEFORMITEMED, action.data);
+            _this.setFieldAsyncConfig(action.config);
+            _this.setFieldState(action.state);
             if (action.dataaccaction) {
-                _this_1.setDataAccAction(action.dataaccaction);
+                _this.setDataAccAction(action.dataaccaction);
             }
-            _this_1.fillForm(action.data);
-            _this_1.ignoreUFI = false;
+            _this.fillForm(action.data);
+            _this.ignoreUFI = false;
             // this.ignoreformfieldchange=false;
         }, function (action) {
             action.failureType = 'SERVER_INVALID';
             // IBiz.alert(IGM('IBIZFORM.UPDATEFORMITEMS.TITLE', '更新失败'), IGM('IBIZFORM.UPDATEFORMITEMS.INFO', '更新表单项发生错误,' + action.info, [action.info]), 2);
-            _this_1.iBizNotification.error('更新失败', '更新表单项发生错误, ' + action.info);
-            _this_1.ignoreUFI = false;
+            _this.iBizNotification.error('更新失败', '更新表单项发生错误, ' + action.info);
+            _this.ignoreUFI = false;
             // this.ignoreformfieldchange=false;
         });
     };
@@ -5103,24 +5084,23 @@ var IBizTab = /** @class */ (function (_super) {
      */
     function IBizTab(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 激活分页部件分页数
          *
          * @type {number}
          * @memberof IBizTab
          */
-        _this_1.activeTabIndex = 0;
+        _this.activeTabIndex = 0;
         /**
          * 分页部件对象
          *
          * @type {*}
          * @memberof IBizTab
          */
-        _this_1.tabs = {};
-        var _this = _this_1;
+        _this.tabs = {};
         _this.regTabs();
-        return _this_1;
+        return _this;
     }
     /**
      * 注册所有分页部件对象
@@ -5161,9 +5141,9 @@ var IBizTab = /** @class */ (function (_super) {
      * @memberof IBizTab
      */
     IBizTab.prototype.setActiveTab = function (index) {
-        var _this_1 = this;
+        var _this = this;
         setTimeout(function () {
-            _this_1.activeTabIndex = index;
+            _this.activeTabIndex = index;
         });
     };
     return IBizTab;
@@ -5963,47 +5943,46 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      */
     function IBizWFExpBar(otps) {
         if (otps === void 0) { otps = {}; }
-        var _this_1 = _super.call(this, otps) || this;
+        var _this = _super.call(this, otps) || this;
         /**
      * 导航树部件是否收缩，默认展开
      *
      * @type {boolean}
      * @memberof IBizWFExpBarService
      */
-        _this_1.isCollapsed = true;
+        _this.isCollapsed = true;
         /**
          * 导航菜单数据项
          *
          * @type {Array<any>}
          * @memberof IBizWFExpBarService
          */
-        _this_1.items = [];
+        _this.items = [];
         /**
          * 选中菜单项
          *
          * @type {*}
          * @memberof IBizWFExpBarService
          */
-        _this_1.selectItem = {};
+        _this.selectItem = {};
         /**
          * 计数器
          *
          * @type {IBizUICounterService}
          * @memberof IBizWFExpBarService
          */
-        _this_1.UICounter = null;
-        var _this = _this_1;
+        _this.UICounter = null;
         if (_this.getViewController()) {
             var viewController = _this.getViewController();
             // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     _this.UICounter = viewController.uicounters.get(_this.getUICounterName());
-            //     _this.onCounterChanged(_this.items);
-            //     _this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe((data) => {
-            //         _this.onCounterChanged(_this.items);
+            //     this.UICounter = viewController.uicounters.get(this.getUICounterName());
+            //     this.onCounterChanged(this.items);
+            //     this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe((data) => {
+            //         this.onCounterChanged(this.items);
             //     });
             // });
         }
-        return _this_1;
+        return _this;
     }
     /**
      * 加载导航树数据
@@ -6012,18 +5991,17 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.load = function (_opt) {
-        var _this_1 = this;
         var _this = this;
         var opts = {};
         Object.assign(opts, _opt);
         Object.assign(opts, { srfaction: 'fetch', srfctrlid: this.getName() });
-        _this.iBizHttp.post(this.getBackendUrl(), opts).subscribe(function (result) {
+        this.iBizHttp.post(this.getBackendUrl(), opts).subscribe(function (result) {
             if (result.ret === 0) {
                 // this.items = result.items;
-                _this_1.onCounterChanged(result.items);
-                _this_1.formarItems(_this_1.items);
-                _this_1.items = result.items.slice();
-                _this_1.fire(IBizWFExpBar.LOADED, _this_1.items[0]);
+                _this.onCounterChanged(result.items);
+                _this.formarItems(_this.items);
+                _this.items = result.items.slice();
+                _this.fire(IBizWFExpBar.LOADED, _this.items[0]);
             }
         }, function (error) {
             console.log(error);
@@ -6142,7 +6120,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
      * @memberof IBizWFExpBar
      */
     IBizWFExpBar.prototype.itemSelect = function (items, data) {
-        var _this_1 = this;
+        var _this = this;
         if (data === void 0) { data = {}; }
         var bNeedReSelect = false;
         items.forEach(function (item) {
@@ -6156,13 +6134,13 @@ var IBizWFExpBar = /** @class */ (function (_super) {
             if (count === 0 && countermode && countermode === 1) {
                 item.show = false;
                 // 判断是否选中列，如果是则重置选中
-                if (_this_1.selectItem && Object.is(_this_1.selectItem.id, item.id)) {
+                if (_this.selectItem && Object.is(_this.selectItem.id, item.id)) {
                     bNeedReSelect = true;
                 }
             }
             item.counterdata = count;
             if (item.items) {
-                bNeedReSelect = _this_1.itemSelect(item.items, data);
+                bNeedReSelect = _this.itemSelect(item.items, data);
             }
         });
         return bNeedReSelect;
@@ -6225,83 +6203,83 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     function IBizViewController(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this_1 = _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
         /**
          * 模态框打开视图注入参数
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.modalViewParam = {};
+        _this.modalViewParam = {};
         /**
          * 模态框打开视图注入视图层级参数
          *
          * @memberof IBizViewController
          */
-        _this_1.modalZIndex = 300;
+        _this.modalZIndex = 300;
         /**
          * 关系数据
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.srfReferData = {};
+        _this.srfReferData = {};
         /**
          * 视图控制器父对象数据
          *
          * @type {*}implements OnInit, OnDestroy, OnChanges
          * @memberof IBizViewController
          */
-        _this_1.srfParentData = {};
+        _this.srfParentData = {};
         /**
          * 视图控制器父对象模型
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.srfParentMode = {};
+        _this.srfParentMode = {};
         /**
          * 视图控制器是否初始化
          *
          * @type {boolean}
          * @memberof IBizViewController
          */
-        _this_1.bInited = false;
+        _this.bInited = false;
         /**
          * 暂时废弃
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.itemMap = {};
+        _this.itemMap = {};
         /**
          * 视图控制器代码表
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.codelists = {};
+        _this.codelists = {};
         /**
          * 部件控制器
          *
          * @type {Map<string, any>}
          * @memberof IBizViewController
          */
-        _this_1.controls = new Map();
+        _this.controls = new Map();
         /**
          * 实体界面行为
          *
          * @type {Map<string, any>}
          * @memberof IBizViewController
          */
-        _this_1.uiactions = new Map();
+        _this.uiactions = new Map();
         /**
          * 计数器
          *
          * @type {Map<string, any>}
          * @memberof IBizViewController
          */
-        _this_1.uicounters = new Map();
+        _this.uicounters = new Map();
         /**
          * 视图控制器url
          *
@@ -6309,17 +6287,16 @@ var IBizViewController = /** @class */ (function (_super) {
          * @type {string}
          * @memberof IBizViewController
          */
-        _this_1.url = '';
+        _this.url = '';
         /**
          * 视图控制器参数
          *
          * @type {*}
          * @memberof IBizViewController
          */
-        _this_1.viewParam = {};
-        var _this = _this_1;
+        _this.viewParam = {};
         _this.url = opts.url;
-        return _this_1;
+        return _this;
     }
     /**
      * Angular生命周期
@@ -6379,13 +6356,12 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.onInit = function () {
-        var _this = this;
-        _this.regUIActions();
-        _this.regUICounters();
-        _this.regCodeLists();
-        _this.onInitComponents();
-        _this.onLoad();
-        _this.fire(IBizViewController.INITED, _this);
+        this.regUIActions();
+        this.regUICounters();
+        this.regCodeLists();
+        this.onInitComponents();
+        this.onLoad();
+        this.fire(IBizViewController.INITED, this);
     };
     /**
      * 部件初始化
@@ -6437,8 +6413,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.regControl = function (name, control) {
-        var _this = this;
-        _this.controls.set(name, control);
+        this.controls.set(name, control);
     };
     /**
      * 获取部件
@@ -6448,8 +6423,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getControl = function (name) {
-        var _this = this;
-        _this.controls.get(name);
+        this.controls.get(name);
     };
     /**
      * 关闭
@@ -6724,11 +6698,10 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.setParentData = function (data) {
         if (data === void 0) { data = {}; }
-        var _this = this;
-        _this.srfParentData = {};
-        Object.assign(_this.srfParentData, data);
-        _this.onSetParentData();
-        _this.reloadUpdatePanels();
+        this.srfParentData = {};
+        Object.assign(this.srfParentData, data);
+        this.onSetParentData();
+        this.reloadUpdatePanels();
     };
     /**
      * 设置父数据
@@ -6744,8 +6717,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getParentData = function () {
-        var _this = this;
-        return _this.srfParentData;
+        return this.srfParentData;
     };
     /**
      * 获取父模式
@@ -6754,8 +6726,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getParentMode = function () {
-        var _this = this;
-        return _this.srfParentMode;
+        return this.srfParentMode;
     };
     /**
      * 获取引用数据
@@ -6774,8 +6745,7 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.setReferData = function (data) {
         if (data === void 0) { data = {}; }
-        var _this = this;
-        Object.assign(_this.srfReferData, data);
+        Object.assign(this.srfReferData, data);
     };
     /**
      * 获取关系数据
@@ -6784,8 +6754,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getReferData = function () {
-        var _this = this;
-        return _this.srfReferData;
+        return this.srfReferData;
     };
     /**
      * 正常代码表模式
@@ -6862,7 +6831,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.renderCodeList_StrOr = function (codeListId, value, emtpytext, textSeparator, valueSeparator) {
-        var _this_1 = this;
+        var _this = this;
         if (!textSeparator || Object.is(textSeparator, '')) {
             textSeparator = '、';
         }
@@ -6874,7 +6843,7 @@ var IBizViewController = /** @class */ (function (_super) {
         var arrayValue = value.split(valueSeparator);
         arrayValue.forEach(function (value) {
             var strText = '';
-            strText = _this_1.renderCodeList_Normal(codeListId, value, emtpytext);
+            strText = _this.renderCodeList_Normal(codeListId, value, emtpytext);
             if (strTextOr.length > 0) {
                 strTextOr += (textSeparator);
             }
@@ -6979,13 +6948,13 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.unRegUICounters = function () {
-        var _this_1 = this;
+        var _this = this;
         if (Object.keys(this.uicounters).length == 0) {
             return;
         }
         var _nameArr = Object.keys(this.uicounters);
         _nameArr.forEach(function (name) {
-            var _counter = _this_1.getUICounter(name);
+            var _counter = _this.getUICounter(name);
             if (_counter) {
                 _counter.close();
             }

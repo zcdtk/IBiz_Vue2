@@ -78,8 +78,6 @@ class IBizUICounter extends IBizControl {
      */
     constructor(config: any = {}) {
         super(config);
-
-        let _this = this;
         this.counterId = config.counterId;
         Object.assign(this.counterParam, config.counterParam);
         this.timer = config.timer;
