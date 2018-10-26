@@ -23,6 +23,7 @@ gulp.task('concatibizsys', function () {
         // 基础文件
         'dist/ibiz-object.js',
         'dist/util/ibiz-code-list.js',
+        'dist/util/ibiz-ui-counter.js',
         // 表单界面部件
         'dist/formitem/ibiz-form-item.js',
         'dist/formitem/ibiz-form-field.js',
