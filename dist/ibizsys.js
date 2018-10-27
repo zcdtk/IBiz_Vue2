@@ -8594,6 +8594,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (arg.data.srfmstag) {
             loadParam.srfeditmode2 = arg.data.srfmstag;
         }
+        Object.assign(loadParam, { openerid: this.getId() });
         this.doEditDataNormal(loadParam);
     };
     /**
@@ -8659,14 +8660,10 @@ var IBizMDViewController = /** @class */ (function (_super) {
                 view.modal = false;
             }
         }
-        // if (_this.isShowModal()) {
-        //     view.modal = true;
-        // }
         if (view.modal) {
             var modalview = this.openModal(view);
             modalview.subscribe(function (result) {
                 if (result && Object.is(result.ret, 'OK')) {
-                    console.log(result);
                     _this.onRefresh();
                 }
             });

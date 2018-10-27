@@ -71,7 +71,7 @@ class IBizMDViewController extends IBizMainViewController {
      */
     constructor(opts: any = {}) {
         super(opts);
-        
+
         this.regQuickSearchDEFileds();
     }
 
@@ -656,6 +656,7 @@ class IBizMDViewController extends IBizMainViewController {
             loadParam.srfeditmode2 = arg.data.srfmstag;
         }
 
+        Object.assign(loadParam, { openerid: this.getId() });
         this.doEditDataNormal(loadParam);
     }
 
@@ -725,16 +726,11 @@ class IBizMDViewController extends IBizMainViewController {
                 view.modal = false;
             }
         }
-        
-        // if (_this.isShowModal()) {
-        //     view.modal = true;
-        // }
 
         if (view.modal) {
             let modalview = this.openModal(view);
-            modalview.subscribe((result:any) => {
+            modalview.subscribe((result: any) => {
                 if (result && Object.is(result.ret, 'OK')) {
-                    console.log(result);
                     this.onRefresh();
                 }
             });
