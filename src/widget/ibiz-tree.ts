@@ -69,7 +69,7 @@ class IBizTree extends IBizControl {
                 this.iBizNotification.error('错误', result.info);
                 return;
             }
-            this.items = [...result.items];
+            this.items = [...this.formatDatas(result.items)];
             this.items.forEach((item) => {
                 // this.nodes.push(new NzTreeNode({ title: item.text, key: item.srfkey, children: [] }));
             });
@@ -234,17 +234,30 @@ class IBizTree extends IBizControl {
     }
 
     /**
-     * 树节点激活选中数据
+     * 格式化树数据
      *
-     * @param {*} event
+     * @private
+     * @param {Array<any>} datas
+     * @returns {Array<any>}
      * @memberof IBizTree
      */
-    public onEvent(event: any): void {
-        if (event && Object.is(event.eventName, 'click')) {
-            const record = event.node.origin;
-            const _item = this.getTreeItem(this.items, record.key);
-            this.fire(IBizTree.SELECTIONCHANGE, [_item]);
-        }
+    private formatDatas(datas: Array<any>): Array<any> {
+        datas.forEach((data) => {
+            data.label = data.text;
+            data.children = [];
+            data.isLeaf = true;
+        });
+        return datas;
+    }
+
+    /**
+     * 节点选中
+     *
+     * @param {*} [data={}]
+     * @memberof IBizTree
+     */
+    public nodeSelect(data: any = {}): void {
+        this.fire(IBizTree.SELECTIONCHANGE, [data]);
     }
 
     /*****************事件声明************************/

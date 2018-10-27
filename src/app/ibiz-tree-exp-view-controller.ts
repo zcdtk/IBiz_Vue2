@@ -49,7 +49,8 @@ class IBizTreeExpViewController extends IBizMainViewController {
         super.onInitComponents();
         const treeExpBar = this.getTreeExpBar();
         if (treeExpBar) {
-            treeExpBar.on(IBizTreeExpBar.SELECTIONCHANGE, (data) => {
+            //  树导航选中
+            treeExpBar.on(IBizTreeExpBar.SELECTIONCHANGE).subscribe((data) => {
                 this.treeExpBarSelectionChange(data);
             });
         }
@@ -548,9 +549,9 @@ class IBizTreeExpViewController extends IBizMainViewController {
             return;
         }
         const routeString: string = data.viewid;
-        if (!this.hasChildRoute(routeString.toLocaleLowerCase())) {
-            return;
-        }
+        // if (!this.hasChildRoute(routeString.toLocaleLowerCase())) {
+        //     return;
+        // }
         let viewParam: any = data.viewParam;
         Object.assign(viewParam, { refreshView: true });
         this.openView(routeString.toLocaleLowerCase(), viewParam);

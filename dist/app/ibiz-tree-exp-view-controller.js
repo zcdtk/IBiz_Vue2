@@ -62,7 +62,8 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var treeExpBar = this.getTreeExpBar();
         if (treeExpBar) {
-            treeExpBar.on(IBizTreeExpBar.SELECTIONCHANGE, function (data) {
+            //  树导航选中
+            treeExpBar.on(IBizTreeExpBar.SELECTIONCHANGE).subscribe(function (data) {
                 _this.treeExpBarSelectionChange(data);
             });
         }
@@ -517,9 +518,9 @@ var IBizTreeExpViewController = /** @class */ (function (_super) {
             return;
         }
         var routeString = data.viewid;
-        if (!this.hasChildRoute(routeString.toLocaleLowerCase())) {
-            return;
-        }
+        // if (!this.hasChildRoute(routeString.toLocaleLowerCase())) {
+        //     return;
+        // }
         var viewParam = data.viewParam;
         Object.assign(viewParam, { refreshView: true });
         this.openView(routeString.toLocaleLowerCase(), viewParam);

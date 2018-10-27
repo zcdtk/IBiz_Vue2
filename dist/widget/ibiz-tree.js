@@ -81,7 +81,7 @@ var IBizTree = /** @class */ (function (_super) {
                 _this.iBizNotification.error('错误', result.info);
                 return;
             }
-            _this.items = result.items.slice();
+            _this.items = _this.formatDatas(result.items).slice();
             _this.items.forEach(function (item) {
                 // this.nodes.push(new NzTreeNode({ title: item.text, key: item.srfkey, children: [] }));
             });
@@ -237,17 +237,30 @@ var IBizTree = /** @class */ (function (_super) {
         this.selectedKeys.push(item.srfkey);
     };
     /**
-     * 树节点激活选中数据
+     * 格式化树数据
      *
-     * @param {*} event
+     * @private
+     * @param {Array<any>} datas
+     * @returns {Array<any>}
      * @memberof IBizTree
      */
-    IBizTree.prototype.onEvent = function (event) {
-        if (event && Object.is(event.eventName, 'click')) {
-            var record = event.node.origin;
-            var _item = this.getTreeItem(this.items, record.key);
-            this.fire(IBizTree.SELECTIONCHANGE, [_item]);
-        }
+    IBizTree.prototype.formatDatas = function (datas) {
+        datas.forEach(function (data) {
+            data.label = data.text;
+            data.children = [];
+            data.isLeaf = true;
+        });
+        return datas;
+    };
+    /**
+     * 节点选中
+     *
+     * @param {*} [data={}]
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.nodeSelect = function (data) {
+        if (data === void 0) { data = {}; }
+        this.fire(IBizTree.SELECTIONCHANGE, [data]);
     };
     /*****************事件声明************************/
     /**
