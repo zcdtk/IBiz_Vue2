@@ -112,6 +112,30 @@ class IBizViewController extends IBizObject {
     public viewParam: any = {};
 
     /**
+     * vue 路由对象
+     *
+     * @type {*}
+     * @memberof IBizViewController
+     */
+    public $router: any = null;;
+
+    /**
+     * vue 实例对象
+     *
+     * @type {*}
+     * @memberof IBizViewController
+     */
+    public $vue: any = null;
+
+    /**
+     * vue 当前路由对象
+     *
+     * @type {*}
+     * @memberof IBizViewController
+     */
+    public $route: any = null;;
+
+    /**
      *Creates an instance of IBizViewController.
      * 创建 IBizViewController 实例
      * 
@@ -130,6 +154,9 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     VueOnInit(vue: any): void {
+        this.$route = vue.$route;
+        this.$router = vue.$router;
+        this.$vue = vue;
         this.parseViewParams();
         this.onInit();
         this.onInited();
@@ -868,8 +895,10 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     private parseViewParams(): void {
-
-
+        this.addViewParam(this.$route.query);
+        if (this.$vue.params) {
+            this.addViewParam(this.$vue.params);
+        }
     }
 
     /**
@@ -911,9 +940,30 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openView(routeString: string, routeParam: any = {}, queryParams?: any) {
-        let params: any = {};
+        this.$router.pussh({ name: routeString, query: routeParam });
+    }
 
-
+    /**
+     * 打开新窗口
+     *
+     * @param {string} viewurl
+     * @param {*} [parsms={}]
+     * @memberof IBizViewController
+     */
+    public openWindow(viewurl: string, parsms: any = {}): void {
+        let url_datas: Array<string> = [];
+        const params_names = Object.keys(parsms);
+        params_names.forEach(name => {
+            if (name && parsms[name] && !Object.is(parsms[name], '')) {
+                url_datas.push(`${name}=${parsms[name]}`)
+            }
+        })
+        let url = `/${IBizEnvironment.SysName}/${IBizEnvironment.BaseUrl.toLowerCase()}${viewurl}`;
+        if (url_datas.length > 0) {
+            url = `${url}?${url_datas.join('&')}`;
+        }
+        let win: any = window;
+        win.open(url, '_blank');
     }
 
     /**

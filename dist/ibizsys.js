@@ -6386,9 +6386,32 @@ var IBizViewController = /** @class */ (function (_super) {
          * @memberof IBizViewController
          */
         _this.viewParam = {};
+        /**
+         * vue 路由对象
+         *
+         * @type {*}
+         * @memberof IBizViewController
+         */
+        _this.$router = null;
+        /**
+         * vue 实例对象
+         *
+         * @type {*}
+         * @memberof IBizViewController
+         */
+        _this.$vue = null;
+        /**
+         * vue 当前路由对象
+         *
+         * @type {*}
+         * @memberof IBizViewController
+         */
+        _this.$route = null;
         _this.url = opts.url;
         return _this;
     }
+    ;
+    ;
     /**
      * 初始化
      * 模拟vue生命周期
@@ -6396,6 +6419,9 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.VueOnInit = function (vue) {
+        this.$route = vue.$route;
+        this.$router = vue.$router;
+        this.$vue = vue;
         this.parseViewParams();
         this.onInit();
         this.onInited();
@@ -7056,6 +7082,10 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.parseViewParams = function () {
+        this.addViewParam(this.$route.query);
+        if (this.$vue.params) {
+            this.addViewParam(this.$vue.params);
+        }
     };
     /**
      * 添加视图参数, 处理视图刷新操作
@@ -7096,7 +7126,30 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openView = function (routeString, routeParam, queryParams) {
         if (routeParam === void 0) { routeParam = {}; }
-        var params = {};
+        this.$router.pussh({ name: routeString, query: routeParam });
+    };
+    /**
+     * 打开新窗口
+     *
+     * @param {string} viewurl
+     * @param {*} [parsms={}]
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.openWindow = function (viewurl, parsms) {
+        if (parsms === void 0) { parsms = {}; }
+        var url_datas = [];
+        var params_names = Object.keys(parsms);
+        params_names.forEach(function (name) {
+            if (name && parsms[name] && !Object.is(parsms[name], '')) {
+                url_datas.push(name + "=" + parsms[name]);
+            }
+        });
+        var url = "/" + IBizEnvironment.SysName + "/" + IBizEnvironment.BaseUrl.toLowerCase() + viewurl;
+        if (url_datas.length > 0) {
+            url = url + "?" + url_datas.join('&');
+        }
+        var win = window;
+        win.open(url, '_blank');
     };
     /**
     * 视图是否是模态框对象
