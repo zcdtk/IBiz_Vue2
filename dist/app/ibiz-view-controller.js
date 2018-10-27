@@ -852,7 +852,7 @@ var IBizViewController = /** @class */ (function (_super) {
         return null;
     };
     /**
-     * 打开数据视图;打开方式,路由打开
+     * 打开视图;打开方式,路由打开
      *
      * @param {string} routeString 相对路由地址
      * @param {*} [routeParam={}] 激活路由参数
@@ -861,7 +861,7 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openView = function (routeString, routeParam, queryParams) {
         if (routeParam === void 0) { routeParam = {}; }
-        this.$router.pussh({ name: routeString, query: routeParam });
+        this.$router.push({ name: routeString, query: routeParam });
     };
     /**
      * 打开新窗口

@@ -2376,7 +2376,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
             return;
         }
         Object.assign(_item, _appFunction);
-        this.fire(IBizAppMenu.MENUSELECTION, _item);
+        this.fire(IBizAppMenu.MENUSELECTION, [_item]);
     };
     /**
      * 设置选中菜单
@@ -7117,7 +7117,7 @@ var IBizViewController = /** @class */ (function (_super) {
         return null;
     };
     /**
-     * 打开数据视图;打开方式,路由打开
+     * 打开视图;打开方式,路由打开
      *
      * @param {string} routeString 相对路由地址
      * @param {*} [routeParam={}] 激活路由参数
@@ -7126,7 +7126,7 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openView = function (routeString, routeParam, queryParams) {
         if (routeParam === void 0) { routeParam = {}; }
-        this.$router.pussh({ name: routeString, query: routeParam });
+        this.$router.push({ name: routeString, query: routeParam });
     };
     /**
      * 打开新窗口
@@ -7801,6 +7801,10 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             appMenu.on(IBizAppMenu.LOADED).subscribe(function (items) {
                 _this.appMenuLoaded(items);
             });
+            // 菜单选中
+            appMenu.on(IBizAppMenu.MENUSELECTION).subscribe(function (items) {
+                _this.appMenuSelection(items);
+            });
         }
     };
     /**
@@ -7824,6 +7828,17 @@ var IBizIndexViewController = /** @class */ (function (_super) {
      * @memberof IBizIndexViewController
      */
     IBizIndexViewController.prototype.appMenuLoaded = function (items) {
+    };
+    /**
+     * 应用菜单选中
+     *
+     * @param {Array<any>} items
+     * @memberof IBizIndexViewController
+     */
+    IBizIndexViewController.prototype.appMenuSelection = function (items) {
+        var item = {};
+        Object.assign(item, items[0]);
+        this.openView(item.viewname, item.openviewparam);
     };
     /**
      * 获取表单项

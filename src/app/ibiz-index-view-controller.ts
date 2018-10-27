@@ -39,6 +39,10 @@ class IBizIndexViewController extends IBizMainViewController {
             appMenu.on(IBizAppMenu.LOADED).subscribe((items) => {
                 this.appMenuLoaded(items);
             });
+            // 菜单选中
+            appMenu.on(IBizAppMenu.MENUSELECTION).subscribe((items) => {
+                this.appMenuSelection(items);
+            });
         }
     }
 
@@ -66,6 +70,18 @@ class IBizIndexViewController extends IBizMainViewController {
      */
     public appMenuLoaded(items: any[]): void {
 
+    }
+
+    /**
+     * 应用菜单选中
+     *
+     * @param {Array<any>} items
+     * @memberof IBizIndexViewController
+     */
+    public appMenuSelection(items: Array<any>): void {
+        let item: any = {};
+        Object.assign(item, items[0]);
+        this.openView(item.viewname, item.openviewparam);
     }
 
     /**

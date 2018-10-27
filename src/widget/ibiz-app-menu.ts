@@ -83,7 +83,7 @@ class IBizAppMenu extends IBizControl {
             return;
         }
         Object.assign(_item, _appFunction);
-        this.fire(IBizAppMenu.MENUSELECTION, _item);
+        this.fire(IBizAppMenu.MENUSELECTION, [_item]);
     }
 
     /**

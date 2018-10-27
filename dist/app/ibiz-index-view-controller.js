@@ -53,6 +53,10 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             appMenu.on(IBizAppMenu.LOADED).subscribe(function (items) {
                 _this.appMenuLoaded(items);
             });
+            // 菜单选中
+            appMenu.on(IBizAppMenu.MENUSELECTION).subscribe(function (items) {
+                _this.appMenuSelection(items);
+            });
         }
     };
     /**
@@ -76,6 +80,17 @@ var IBizIndexViewController = /** @class */ (function (_super) {
      * @memberof IBizIndexViewController
      */
     IBizIndexViewController.prototype.appMenuLoaded = function (items) {
+    };
+    /**
+     * 应用菜单选中
+     *
+     * @param {Array<any>} items
+     * @memberof IBizIndexViewController
+     */
+    IBizIndexViewController.prototype.appMenuSelection = function (items) {
+        var item = {};
+        Object.assign(item, items[0]);
+        this.openView(item.viewname, item.openviewparam);
     };
     /**
      * 获取表单项

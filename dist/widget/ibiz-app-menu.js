@@ -95,7 +95,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
             return;
         }
         Object.assign(_item, _appFunction);
-        this.fire(IBizAppMenu.MENUSELECTION, _item);
+        this.fire(IBizAppMenu.MENUSELECTION, [_item]);
     };
     /**
      * 设置选中菜单

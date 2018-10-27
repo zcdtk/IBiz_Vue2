@@ -932,7 +932,7 @@ class IBizViewController extends IBizObject {
     }
 
     /**
-     * 打开数据视图;打开方式,路由打开
+     * 打开视图;打开方式,路由打开
      * 
      * @param {string} routeString 相对路由地址
      * @param {*} [routeParam={}] 激活路由参数
@@ -940,7 +940,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openView(routeString: string, routeParam: any = {}, queryParams?: any) {
-        this.$router.pussh({ name: routeString, query: routeParam });
+        this.$router.push({ name: routeString, query: routeParam });
     }
 
     /**
