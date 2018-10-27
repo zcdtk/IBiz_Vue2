@@ -849,7 +849,10 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openModal = function (view) {
         if (view === void 0) { view = {}; }
-        return null;
+        var subject = new rxjs.Subject();
+        Object.assign(view, { subject: subject });
+        this.$vue.$root.addModal(view);
+        return subject;
     };
     /**
      * 打开视图;打开方式,路由打开

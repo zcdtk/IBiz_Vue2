@@ -928,7 +928,10 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openModal(view: any = {}): Subject<any> {
-        return null
+        const subject: Subject<any> = new rxjs.Subject();
+        Object.assign(view, { subject: subject });
+        this.$vue.$root.addModal(view);
+        return subject;
     }
 
     /**

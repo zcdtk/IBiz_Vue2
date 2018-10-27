@@ -5760,19 +5760,19 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         var _this = _super.call(this, opts) || this;
         var viewController = _this.getViewController();
         if (viewController) {
-            // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     const tree = viewController.$controls.get(this.getName() + '_tree');
-            //     this.tree = tree;
-            //     if (this.tree) {
-            //         this.tree.on(IBizTree.SELECTIONCHANGE).subscribe((args) => {
-            //             this.onTreeSelectionChange(args);
-            //         });
-            //         this.tree.on(IBizTree.CONTEXTMENU).subscribe((args) => {
-            //             this.onTreeContextMenu(args);
-            //         });
-            //         this.tree.load({});
-            //     }
-            // });
+            viewController.on(IBizViewController.INITED).subscribe(function () {
+                var tree = viewController.controls.get(_this.getName() + '_tree');
+                _this.tree = tree;
+                if (_this.tree) {
+                    _this.tree.on(IBizTree.SELECTIONCHANGE).subscribe(function (args) {
+                        _this.onTreeSelectionChange(args);
+                    });
+                    _this.tree.on(IBizTree.CONTEXTMENU).subscribe(function (args) {
+                        _this.onTreeContextMenu(args);
+                    });
+                    _this.tree.load({});
+                }
+            });
         }
         return _this;
     }
@@ -5785,7 +5785,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getTree = function () {
         var viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get(this.getName() + '_tree');
+            return viewController.controls.get(this.getName() + '_tree');
         }
         return undefined;
     };
@@ -5798,7 +5798,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getExpTab = function () {
         var viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get('exptab');
+            return viewController.controls.get('exptab');
         }
         return undefined;
     };
@@ -5830,7 +5830,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getPVPanel = function () {
         var viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get('pickupviewpanel');
+            return viewController.controls.get('pickupviewpanel');
         }
         return undefined;
     };
@@ -5982,7 +5982,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         if (item === void 0) { item = {}; }
         var viewController = this.getViewController();
         if (viewController) {
-            var tree = viewController.$controls.get(this.getName() + '_tree');
+            var tree = viewController.controls.get(this.getName() + '_tree');
             this.tree = tree;
             if (this.tree) {
                 this.tree.setSelectTreeItem(item);
@@ -7114,7 +7114,10 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openModal = function (view) {
         if (view === void 0) { view = {}; }
-        return null;
+        var subject = new rxjs.Subject();
+        Object.assign(view, { subject: subject });
+        this.$vue.$root.addModal(view);
+        return subject;
     };
     /**
      * 打开视图;打开方式,路由打开
@@ -8532,36 +8535,37 @@ var IBizMDViewController = /** @class */ (function (_super) {
      * @memberof IBizMDViewController
      */
     IBizMDViewController.prototype.openDataView = function (view) {
-        var _this = this;
         if (view === void 0) { view = {}; }
         var openMode = view.openMode;
         if (view.redirect) {
             this.redirectOpenView(view);
             return false;
         }
-        if (!openMode || Object.is(openMode, 'INDEXVIEWTAB')) {
-            var data = {};
-            Object.assign(data, view.viewParam);
-            this.openView(view.state, data);
-            return false;
-        }
-        if (Object.is(openMode, 'POPUPMODAL')) {
-            view.modal = true;
-        }
-        else if (Object.is(openMode, 'POPUP')) {
-            view.modal = true;
-        }
-        else if (Object.is(openMode, '') || Object.is(openMode, 'INDEXVIEWTAB')) {
-            view.modal = false;
-        }
-        if (!view.modal) {
-            return false;
-        }
-        this.openModal(view).subscribe(function (result) {
-            if (result && Object.is(result.ret, 'OK')) {
-                _this.onRefresh();
+        if (openMode != undefined) {
+            if (openMode == 'POPUPMODAL') {
+                view.modal = true;
             }
-        });
+            else if (openMode == 'POPUP') {
+                view.modal = true;
+            }
+            else if (openMode == '' || openMode == 'INDEXVIEWTAB') {
+                view.modal = false;
+            }
+        }
+        // if (_this.isShowModal()) {
+        //     view.modal = true;
+        // }
+        if (view.modal) {
+            var modalview = this.openModal(view);
+            modalview.subscribe(function (result) {
+                if (result) {
+                    console.log(result);
+                }
+            });
+        }
+        else {
+            this.openWindow(view.viewurl, view.viewparam);
+        }
         return true;
     };
     /**

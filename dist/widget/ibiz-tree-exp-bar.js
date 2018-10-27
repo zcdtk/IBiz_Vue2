@@ -32,19 +32,19 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         var _this = _super.call(this, opts) || this;
         var viewController = _this.getViewController();
         if (viewController) {
-            // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     const tree = viewController.$controls.get(this.getName() + '_tree');
-            //     this.tree = tree;
-            //     if (this.tree) {
-            //         this.tree.on(IBizTree.SELECTIONCHANGE).subscribe((args) => {
-            //             this.onTreeSelectionChange(args);
-            //         });
-            //         this.tree.on(IBizTree.CONTEXTMENU).subscribe((args) => {
-            //             this.onTreeContextMenu(args);
-            //         });
-            //         this.tree.load({});
-            //     }
-            // });
+            viewController.on(IBizViewController.INITED).subscribe(function () {
+                var tree = viewController.controls.get(_this.getName() + '_tree');
+                _this.tree = tree;
+                if (_this.tree) {
+                    _this.tree.on(IBizTree.SELECTIONCHANGE).subscribe(function (args) {
+                        _this.onTreeSelectionChange(args);
+                    });
+                    _this.tree.on(IBizTree.CONTEXTMENU).subscribe(function (args) {
+                        _this.onTreeContextMenu(args);
+                    });
+                    _this.tree.load({});
+                }
+            });
         }
         return _this;
     }
@@ -57,7 +57,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getTree = function () {
         var viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get(this.getName() + '_tree');
+            return viewController.controls.get(this.getName() + '_tree');
         }
         return undefined;
     };
@@ -70,7 +70,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getExpTab = function () {
         var viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get('exptab');
+            return viewController.controls.get('exptab');
         }
         return undefined;
     };
@@ -102,7 +102,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
     IBizTreeExpBar.prototype.getPVPanel = function () {
         var viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get('pickupviewpanel');
+            return viewController.controls.get('pickupviewpanel');
         }
         return undefined;
     };
@@ -254,7 +254,7 @@ var IBizTreeExpBar = /** @class */ (function (_super) {
         if (item === void 0) { item = {}; }
         var viewController = this.getViewController();
         if (viewController) {
-            var tree = viewController.$controls.get(this.getName() + '_tree');
+            var tree = viewController.controls.get(this.getName() + '_tree');
             this.tree = tree;
             if (this.tree) {
                 this.tree.setSelectTreeItem(item);

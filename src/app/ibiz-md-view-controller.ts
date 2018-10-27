@@ -716,31 +716,30 @@ class IBizMDViewController extends IBizMainViewController {
             return false;
         }
 
-        if (!openMode || Object.is(openMode, 'INDEXVIEWTAB')) {
-            let data: any = {};
-            Object.assign(data, view.viewParam);
-            this.openView(view.state, data);
-            return false;
-        }
-
-
-        if (Object.is(openMode, 'POPUPMODAL')) {
-            view.modal = true;
-        } else if (Object.is(openMode, 'POPUP')) {
-            view.modal = true;
-        } else if (Object.is(openMode, '') || Object.is(openMode, 'INDEXVIEWTAB')) {
-            view.modal = false;
-        }
-
-        if (!view.modal) {
-            return false;
-        }
-        this.openModal(view).subscribe((result) => {
-            if (result && Object.is(result.ret, 'OK')) {
-                this.onRefresh();
+        if (openMode != undefined) {
+            if (openMode == 'POPUPMODAL') {
+                view.modal = true;
+            } else if (openMode == 'POPUP') {
+                view.modal = true;
+            } else if (openMode == '' || openMode == 'INDEXVIEWTAB') {
+                view.modal = false;
             }
-        });
+        }
+        
+        // if (_this.isShowModal()) {
+        //     view.modal = true;
+        // }
 
+        if (view.modal) {
+            let modalview = this.openModal(view);
+            modalview.subscribe((result:any) => {
+                if (result) {
+                    console.log(result);
+                }
+            });
+        } else {
+            this.openWindow(view.viewurl, view.viewparam);
+        }
 
         return true;
     }

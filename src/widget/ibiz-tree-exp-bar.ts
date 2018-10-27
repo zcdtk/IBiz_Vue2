@@ -36,20 +36,20 @@ class IBizTreeExpBar extends IBizControl {
 
         const viewController = this.getViewController();
         if (viewController) {
-            // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     const tree = viewController.$controls.get(this.getName() + '_tree');
-            //     this.tree = tree;
-            //     if (this.tree) {
-            //         this.tree.on(IBizTree.SELECTIONCHANGE).subscribe((args) => {
-            //             this.onTreeSelectionChange(args);
-            //         });
+            viewController.on(IBizViewController.INITED).subscribe(() => {
+                const tree = viewController.controls.get(this.getName() + '_tree');
+                this.tree = tree;
+                if (this.tree) {
+                    this.tree.on(IBizTree.SELECTIONCHANGE).subscribe((args) => {
+                        this.onTreeSelectionChange(args);
+                    });
 
-            //         this.tree.on(IBizTree.CONTEXTMENU).subscribe((args) => {
-            //             this.onTreeContextMenu(args);
-            //         });
-            //         this.tree.load({});
-            //     }
-            // });
+                    this.tree.on(IBizTree.CONTEXTMENU).subscribe((args) => {
+                        this.onTreeContextMenu(args);
+                    });
+                    this.tree.load({});
+                }
+            });
         }
     }
 
@@ -62,7 +62,7 @@ class IBizTreeExpBar extends IBizControl {
     public getTree(): any {
         const viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get(this.getName() + '_tree');
+            return viewController.controls.get(this.getName() + '_tree');
         }
         return undefined;
     }
@@ -76,7 +76,7 @@ class IBizTreeExpBar extends IBizControl {
     public getExpTab(): any {
         const viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get('exptab');
+            return viewController.controls.get('exptab');
         }
         return undefined;
     }
@@ -111,7 +111,7 @@ class IBizTreeExpBar extends IBizControl {
     public getPVPanel(): any {
         const viewController = this.getViewController();
         if (viewController) {
-            return viewController.$controls.get('pickupviewpanel');
+            return viewController.controls.get('pickupviewpanel');
         }
         return undefined;
     }
@@ -282,7 +282,7 @@ class IBizTreeExpBar extends IBizControl {
     private setTreeSelect(item: any = {}): void {
         const viewController = this.getViewController();
         if (viewController) {
-            const tree = viewController.$controls.get(this.getName() + '_tree');
+            const tree = viewController.controls.get(this.getName() + '_tree');
             this.tree = tree;
             if (this.tree) {
                 this.tree.setSelectTreeItem(item);

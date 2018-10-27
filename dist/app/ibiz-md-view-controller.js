@@ -661,36 +661,37 @@ var IBizMDViewController = /** @class */ (function (_super) {
      * @memberof IBizMDViewController
      */
     IBizMDViewController.prototype.openDataView = function (view) {
-        var _this = this;
         if (view === void 0) { view = {}; }
         var openMode = view.openMode;
         if (view.redirect) {
             this.redirectOpenView(view);
             return false;
         }
-        if (!openMode || Object.is(openMode, 'INDEXVIEWTAB')) {
-            var data = {};
-            Object.assign(data, view.viewParam);
-            this.openView(view.state, data);
-            return false;
-        }
-        if (Object.is(openMode, 'POPUPMODAL')) {
-            view.modal = true;
-        }
-        else if (Object.is(openMode, 'POPUP')) {
-            view.modal = true;
-        }
-        else if (Object.is(openMode, '') || Object.is(openMode, 'INDEXVIEWTAB')) {
-            view.modal = false;
-        }
-        if (!view.modal) {
-            return false;
-        }
-        this.openModal(view).subscribe(function (result) {
-            if (result && Object.is(result.ret, 'OK')) {
-                _this.onRefresh();
+        if (openMode != undefined) {
+            if (openMode == 'POPUPMODAL') {
+                view.modal = true;
             }
-        });
+            else if (openMode == 'POPUP') {
+                view.modal = true;
+            }
+            else if (openMode == '' || openMode == 'INDEXVIEWTAB') {
+                view.modal = false;
+            }
+        }
+        // if (_this.isShowModal()) {
+        //     view.modal = true;
+        // }
+        if (view.modal) {
+            var modalview = this.openModal(view);
+            modalview.subscribe(function (result) {
+                if (result) {
+                    console.log(result);
+                }
+            });
+        }
+        else {
+            this.openWindow(view.viewurl, view.viewparam);
+        }
         return true;
     };
     /**
