@@ -249,7 +249,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getControl = function (name) {
-        this.controls.get(name);
+        return this.controls.get(name);
     };
     /**
      * 关闭
@@ -403,13 +403,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getUIAction = function (uiactionId) {
-        if (!this.uiactions) {
-            return undefined;
-        }
-        if (this.uiactions[uiactionId]) {
-            return this.uiactions[uiactionId];
-        }
-        return undefined;
+        return this.uiactions.get(uiactionId);
     };
     /**
      * 注册界面计数器
@@ -429,10 +423,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getUICounter = function (name) {
-        if (this.uicounters.get(name)) {
-            return this.uicounters.get(name);
-        }
-        return undefined;
+        return this.uicounters.get(name);
     };
     /**
      * 刷新全部界面计数器

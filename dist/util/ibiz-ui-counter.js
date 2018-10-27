@@ -96,8 +96,8 @@ var IBizUICounter = /** @class */ (function (_super) {
         _this.counterId = config.counterId;
         Object.assign(_this.counterParam, config.counterParam);
         _this.timer = config.timer;
-        _this.load();
         _this.url = config.url;
+        _this.load();
         return _this;
     }
     /**

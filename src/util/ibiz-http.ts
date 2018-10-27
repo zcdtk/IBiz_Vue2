@@ -14,21 +14,18 @@ class IBizHttp {
      * @memberof IBizHttp
      */
     public post(url: string, params: any = {}): Subject<any> {
+        let _this = this;
         const subject: Subject<any> = new rxjs.Subject();
-        const params_keys = Object.keys(params);
-        let form_arr: Array<any> = [];
-        params_keys.forEach(key => {
-            form_arr.push(`${key}=${params[key]}`)
-        })
+        const _strParams: string = this.transformationOpt(params);
         axios({
             method: 'post',
             url: url,
-            data: form_arr.join('&'),
+            data: _strParams,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'Accept': 'application/json' },
         }).then(function (response) {
             if (response.status === 200) {
                 if (response.data.ret === 2 && response.data.notlogin) {
-                    this.httpDefaultInterceptor(response.data);
+                    _this.httpDefaultInterceptor(response.data);
                 }
                 subject.next(response.data);
             } else {
@@ -51,14 +48,8 @@ class IBizHttp {
     public get(url: string, params: any = {}): Subject<any> {
         const subject: Subject<any> = new rxjs.Subject();
         if (Object.keys(params).length > 0) {
-            const params_keys = Object.keys(params);
-            let params_arr: Array<any> = [];
-            params_keys.forEach(key => {
-                if (params[key]) {
-                    params_arr.push(`${key}=${params[key]}`)
-                }
-            });
-            url = url.indexOf('?') ? `${url}&${params_arr.join('&')}` : `${url}?&${params_arr.join('&')}`
+            const _strParams: string = this.transformationOpt(params);
+            url = url.indexOf('?') ? `${url}&${_strParams}` : `${url}?&${_strParams}`
         }
         axios.get(url).
             then(function (response) {
@@ -80,5 +71,30 @@ class IBizHttp {
         if (window.location.href.indexOf('/ibizutil/login.html') === -1) {
             window.location.href = `/${IBizEnvironment.SysName}${IBizEnvironment.LoginRedirect}?RU=${curUrl}`;
         }
+    }
+
+    /**
+     * 请求参数转义处理
+     *
+     * @private
+     * @param {*} [opt={}]
+     * @returns {string}
+     * @memberof IBizHttp
+     */
+    private transformationOpt(opt: any = {}): string {
+        let params: any = {};
+        let postData: Array<string> = [];
+
+        Object.assign(params, opt);
+        let keys: string[] = Object.keys(params);
+        keys.forEach((key: string, index: number) => {
+            let val: any = params[key];
+            if (val instanceof Array || val instanceof Object) {
+                postData.push(`${key}=${encodeURIComponent(JSON.stringify(val))}`);
+            } else {
+                postData.push(`${key}=${encodeURIComponent(val)}`);
+            }
+        });
+        return postData.join('&');
     }
 }

@@ -264,7 +264,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getControl(name: string): any {
-        this.controls.get(name);
+        return this.controls.get(name);
     }
 
     /**
@@ -434,16 +434,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getUIAction(uiactionId: string): any {
-
-        if (!this.uiactions) {
-            return undefined;
-        }
-
-        if (this.uiactions[uiactionId]) {
-            return this.uiactions[uiactionId];
-        }
-
-        return undefined;
+        return this.uiactions.get(uiactionId);
     }
 
     /**
@@ -465,11 +456,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getUICounter(name: string): any {
-        if (this.uicounters.get(name)) {
-            return this.uicounters.get(name);
-        }
-
-        return undefined;
+        return this.uicounters.get(name);
     }
 
     /**

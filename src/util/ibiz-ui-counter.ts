@@ -89,8 +89,8 @@ class IBizUICounter extends IBizObject {
         this.counterId = config.counterId;
         Object.assign(this.counterParam, config.counterParam);
         this.timer = config.timer;
-        this.load();
         this.url = config.url;
+        this.load();
     }
 
     /**

@@ -17,21 +17,18 @@ var IBizHttp = /** @class */ (function () {
      */
     IBizHttp.prototype.post = function (url, params) {
         if (params === void 0) { params = {}; }
+        var _this = this;
         var subject = new rxjs.Subject();
-        var params_keys = Object.keys(params);
-        var form_arr = [];
-        params_keys.forEach(function (key) {
-            form_arr.push(key + "=" + params[key]);
-        });
+        var _strParams = this.transformationOpt(params);
         axios({
             method: 'post',
             url: url,
-            data: form_arr.join('&'),
+            data: _strParams,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'Accept': 'application/json' },
         }).then(function (response) {
             if (response.status === 200) {
                 if (response.data.ret === 2 && response.data.notlogin) {
-                    this.httpDefaultInterceptor(response.data);
+                    _this.httpDefaultInterceptor(response.data);
                 }
                 subject.next(response.data);
             }
@@ -55,14 +52,8 @@ var IBizHttp = /** @class */ (function () {
         if (params === void 0) { params = {}; }
         var subject = new rxjs.Subject();
         if (Object.keys(params).length > 0) {
-            var params_keys = Object.keys(params);
-            var params_arr_1 = [];
-            params_keys.forEach(function (key) {
-                if (params[key]) {
-                    params_arr_1.push(key + "=" + params[key]);
-                }
-            });
-            url = url.indexOf('?') ? url + "&" + params_arr_1.join('&') : url + "?&" + params_arr_1.join('&');
+            var _strParams = this.transformationOpt(params);
+            url = url.indexOf('?') ? url + "&" + _strParams : url + "?&" + _strParams;
         }
         axios.get(url).
             then(function (response) {
@@ -84,6 +75,31 @@ var IBizHttp = /** @class */ (function () {
         if (window.location.href.indexOf('/ibizutil/login.html') === -1) {
             window.location.href = "/" + IBizEnvironment.SysName + IBizEnvironment.LoginRedirect + "?RU=" + curUrl;
         }
+    };
+    /**
+     * 请求参数转义处理
+     *
+     * @private
+     * @param {*} [opt={}]
+     * @returns {string}
+     * @memberof IBizHttp
+     */
+    IBizHttp.prototype.transformationOpt = function (opt) {
+        if (opt === void 0) { opt = {}; }
+        var params = {};
+        var postData = [];
+        Object.assign(params, opt);
+        var keys = Object.keys(params);
+        keys.forEach(function (key, index) {
+            var val = params[key];
+            if (val instanceof Array || val instanceof Object) {
+                postData.push(key + "=" + encodeURIComponent(JSON.stringify(val)));
+            }
+            else {
+                postData.push(key + "=" + encodeURIComponent(val));
+            }
+        });
+        return postData.join('&');
     };
     return IBizHttp;
 }());
