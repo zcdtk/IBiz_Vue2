@@ -178,10 +178,13 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public onDestroy(): void {
-        // if (this.ibizAppService) {
-        //     this.ibizAppService.deleteViewController(this.getUUID());
-        // }
         this.unRegUICounters();
+
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.unRegSRFController(this);
+        }
     }
 
     /**
@@ -247,9 +250,12 @@ class IBizViewController extends IBizObject {
      */
     public onInited(): void {
         this.bInited = true;
-        // if (this.ibizAppService) {
-        //     this.ibizAppService.setViewController(this);
-        // }
+
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(this);
+        }
     }
 
     /**

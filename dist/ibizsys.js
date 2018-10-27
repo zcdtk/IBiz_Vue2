@@ -6527,10 +6527,12 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.onDestroy = function () {
-        // if (this.ibizAppService) {
-        //     this.ibizAppService.deleteViewController(this.getUUID());
-        // }
         this.unRegUICounters();
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.unRegSRFController(this);
+        }
     };
     /**
      * Angular生命周期
@@ -6587,9 +6589,11 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.onInited = function () {
         this.bInited = true;
-        // if (this.ibizAppService) {
-        //     this.ibizAppService.setViewController(this);
-        // }
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(this);
+        }
     };
     /**
      * 开始触发界面行为
