@@ -27,11 +27,12 @@ class IBizExpViewController extends IBizMainViewController {
 
         const expCtrl = this.getExpCtrl();
         if (expCtrl) {
-            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE, (item) => {
+            // 导航节点选中
+            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE).subscribe((item) => {
                 this.onExpCtrlSelectionChange(item);
             });
-
-            expCtrl.on(IBizTreeExpBar.LOADED, (item) => {
+            // 导航节点加载完成
+            expCtrl.on(IBizTreeExpBar.LOADED).subscribe((item) => {
                 this.onExpCtrlLoaded(item);
             });
         }
@@ -186,16 +187,16 @@ class IBizExpViewController extends IBizMainViewController {
         if (!view) {
             return;
         }
-        const hasRouter: boolean = this.hasRoute(view.routelink);
-        if (!hasRouter) {
-            return;
-        }
+        // const hasRouter: boolean = this.hasRoute(view.routelink);
+        // if (!hasRouter) {
+        //     return;
+        // }
 
         let data: any = {};
         Object.assign(data, item.expitem.viewparam);
-        if (this.isRefreshView(view.routelink)) {
-            Object.assign(data, { refreshView: true });
-        }
+        // if (this.isRefreshView(view.routelink)) {
+        //     Object.assign(data, { refreshView: true });
+        // }
         const exp = this.getExpBar();
         if (exp) {
             exp.setSelectItem(item);

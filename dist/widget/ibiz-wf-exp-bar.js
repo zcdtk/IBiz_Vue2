@@ -59,14 +59,14 @@ var IBizWFExpBar = /** @class */ (function (_super) {
          */
         _this.UICounter = null;
         if (_this.getViewController()) {
-            var viewController = _this.getViewController();
-            // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     this.UICounter = viewController.uicounters.get(this.getUICounterName());
-            //     this.onCounterChanged(this.items);
-            //     this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe((data) => {
-            //         this.onCounterChanged(this.items);
-            //     });
-            // });
+            var viewController_1 = _this.getViewController();
+            viewController_1.on(IBizViewController.INITED).subscribe(function () {
+                _this.UICounter = viewController_1.uicounters.get(_this.getUICounterName());
+                _this.onCounterChanged(_this.items);
+                _this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe(function (data) {
+                    _this.onCounterChanged(_this.items);
+                });
+            });
         }
         return _this;
     }

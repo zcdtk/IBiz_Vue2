@@ -6077,14 +6077,14 @@ var IBizWFExpBar = /** @class */ (function (_super) {
          */
         _this.UICounter = null;
         if (_this.getViewController()) {
-            var viewController = _this.getViewController();
-            // viewController.on(IBizViewController.INITED).subscribe(() => {
-            //     this.UICounter = viewController.uicounters.get(this.getUICounterName());
-            //     this.onCounterChanged(this.items);
-            //     this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe((data) => {
-            //         this.onCounterChanged(this.items);
-            //     });
-            // });
+            var viewController_1 = _this.getViewController();
+            viewController_1.on(IBizViewController.INITED).subscribe(function () {
+                _this.UICounter = viewController_1.uicounters.get(_this.getUICounterName());
+                _this.onCounterChanged(_this.items);
+                _this.UICounter.on(IBizUICounter.COUNTERCHANGED).subscribe(function (data) {
+                    _this.onCounterChanged(_this.items);
+                });
+            });
         }
         return _this;
     }
@@ -11385,10 +11385,12 @@ var IBizExpViewController = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var expCtrl = this.getExpCtrl();
         if (expCtrl) {
-            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE, function (item) {
+            // 导航节点选中
+            expCtrl.on(IBizTreeExpBar.SELECTIONCHANGE).subscribe(function (item) {
                 _this.onExpCtrlSelectionChange(item);
             });
-            expCtrl.on(IBizTreeExpBar.LOADED, function (item) {
+            // 导航节点加载完成
+            expCtrl.on(IBizTreeExpBar.LOADED).subscribe(function (item) {
                 _this.onExpCtrlLoaded(item);
             });
         }
@@ -11530,15 +11532,15 @@ var IBizExpViewController = /** @class */ (function (_super) {
         if (!view) {
             return;
         }
-        var hasRouter = this.hasRoute(view.routelink);
-        if (!hasRouter) {
-            return;
-        }
+        // const hasRouter: boolean = this.hasRoute(view.routelink);
+        // if (!hasRouter) {
+        //     return;
+        // }
         var data = {};
         Object.assign(data, item.expitem.viewparam);
-        if (this.isRefreshView(view.routelink)) {
-            Object.assign(data, { refreshView: true });
-        }
+        // if (this.isRefreshView(view.routelink)) {
+        //     Object.assign(data, { refreshView: true });
+        // }
         var exp = this.getExpBar();
         if (exp) {
             exp.setSelectItem(item);
