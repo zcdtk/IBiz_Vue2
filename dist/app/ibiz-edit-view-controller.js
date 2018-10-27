@@ -222,6 +222,11 @@ var IBizEditViewController = /** @class */ (function (_super) {
             //     window.dialogResult = 'ok';
             //     window.activeData = this.getForm().getValues();
             // }
+            if (this.isModal()) {
+                var result_1 = { ret: 'OK', activeData: this.getForm().getValues() };
+                this.closeModal(result_1);
+                return;
+            }
             this.closeWindow();
             return;
         }
@@ -578,6 +583,21 @@ var IBizEditViewController = /** @class */ (function (_super) {
      * @memberof IBizEditViewController
      */
     IBizEditViewController.prototype.refreshReferView = function () {
+        var _window = window;
+        var iBizApp = _window.getIBizApp();
+        if (!iBizApp) {
+            return;
+        }
+        var parentWindow = iBizApp.getParentWindow();
+        if (parentWindow) {
+            var pWinIBizApp = parentWindow.getIBizApp();
+            var viewparam = this.getViewParam();
+            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
+        }
+        if (this.isModal()) {
+            var result = { ret: 'OK', activeData: this.getForm().getValues() };
+            this.dataChange(result);
+        }
     };
     /**
      * 更新表单项

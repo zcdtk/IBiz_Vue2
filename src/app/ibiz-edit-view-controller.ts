@@ -232,6 +232,12 @@ class IBizEditViewController extends IBizMainViewController {
             //     window.dialogResult = 'ok';
             //     window.activeData = this.getForm().getValues();
             // }
+
+            if (this.isModal()) {
+				let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
+				this.closeModal(result);
+				return ;
+			}
             this.closeWindow();
             return;
         }
@@ -619,7 +625,21 @@ class IBizEditViewController extends IBizMainViewController {
      * @memberof IBizEditViewController
      */
     public refreshReferView(): void {
-
+		let _window: any = window;
+		let iBizApp: IBizApp = _window.getIBizApp();
+		if (!iBizApp) {
+			return;
+		}
+		let parentWindow: any = iBizApp.getParentWindow();
+		if (parentWindow) {
+			let pWinIBizApp: IBizApp = parentWindow.getIBizApp();
+			let viewparam = this.getViewParam();
+			pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
+		}
+		if (this.isModal()) {
+			let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
+			this.dataChange(result);
+		}
     }
 
     /**
