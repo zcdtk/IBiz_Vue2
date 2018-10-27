@@ -78,8 +78,7 @@ class IBizPickupViewController extends IBizMainViewController {
         // this.nzModalSubject.next({ ret: 'OK', selection: pickupViewPanel.getSelections() });
         // this.nzModalSubject.next('DATACHANGE');
         // this.closeWindow();
-        this.dataChange({ ret: 'OK', selections: pickupViewPanel.getSelections() });
-        this.closeModal();
+        this.closeModal({ ret: 'OK', selections: pickupViewPanel.getSelections() });
     }
 
     /**

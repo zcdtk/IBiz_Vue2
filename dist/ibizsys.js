@@ -10873,8 +10873,7 @@ var IBizPickupViewController = /** @class */ (function (_super) {
         // this.nzModalSubject.next({ ret: 'OK', selection: pickupViewPanel.getSelections() });
         // this.nzModalSubject.next('DATACHANGE');
         // this.closeWindow();
-        this.dataChange({ ret: 'OK', selections: pickupViewPanel.getSelections() });
-        this.closeModal();
+        this.closeModal({ ret: 'OK', selections: pickupViewPanel.getSelections() });
     };
     /**
      * 取消显示选择视图
