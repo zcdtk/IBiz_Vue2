@@ -7,15 +7,6 @@
 class IBizControl extends IBizObject {
 
     /**
-     * 部件名称
-     * 
-     * @private
-     * @type {string}
-     * @memberof IBizControl
-     */
-    private name: string = '';
-
-    /**
      * 后台交互URL
      * 
      * @private
@@ -50,19 +41,8 @@ class IBizControl extends IBizObject {
      */
     constructor(opts: any = {}) {
         super(opts);
-        this.name = opts.name;
         this.url = opts.url;
         this.viewController = opts.viewController;
-    }
-
-    /**
-     * 获取部件名称
-     * 
-     * @returns {String}
-     * @memberof IBizControl
-     */
-    public getName(): string {
-        return this.name;
     }
 
     /**

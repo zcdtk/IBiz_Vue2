@@ -1018,7 +1018,85 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.iBizNotification = new IBizNotification();
+        /**
+         * 对象id
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizObject
+         */
+        this.id = '';
+        /**
+         * 对象name
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizObject
+         */
+        this.name = '';
+        this.Id = opts.id;
+        this.Name = opts.name;
     }
+    Object.defineProperty(IBizObject.prototype, "Id", {
+        /**
+         * 获取id
+         *
+         * @type {string}
+         * @memberof IBizObject
+         */
+        get: function () {
+            return this.id;
+        },
+        /**
+         * 设置id
+         *
+         * @memberof IBizObject
+         */
+        set: function (id) {
+            this.id = id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(IBizObject.prototype, "Name", {
+        /**
+         * 获取name
+         *
+         * @type {string}
+         * @memberof IBizObject
+         */
+        get: function () {
+            return this.name;
+        },
+        /**
+         * 设置name
+         *
+         * @memberof IBizObject
+         */
+        set: function (name) {
+            this.name = name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 获取id
+     *
+     * @returns {string}
+     * @memberof IBizObject
+     */
+    IBizObject.prototype.getId = function () {
+        return this.id;
+    };
+    /**
+     * 获取名称
+     *
+     * @returns {string}
+     * @memberof IBizObject
+     */
+    IBizObject.prototype.getName = function () {
+        return this.name;
+    };
     /**
      * 注册Rx订阅事件
      *
@@ -1099,14 +1177,6 @@ var IBizCodeList = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
-         * 代码表ID
-         *
-         * @private
-         * @type {string}
-         * @memberof IBizCodeList
-         */
-        _this.id = '';
-        /**
          * 静态代码表数据
          *
          * @type {Array<any>}
@@ -1114,18 +1184,8 @@ var IBizCodeList = /** @class */ (function (_super) {
          */
         _this.data = [];
         _this.data = opts.datas.slice();
-        _this.id = opts.id;
         return _this;
     }
-    /**
-     * 获取代码表ID
-     *
-     * @returns {string}
-     * @memberof IBizCodeList
-     */
-    IBizCodeList.prototype.getId = function () {
-        return this.id;
-    };
     /**
      * 获取代码表数据
      *
@@ -1444,7 +1504,6 @@ var IBizFormItem = /** @class */ (function (_super) {
         _this.fieldType = opts.fieldType;
         _this.form = opts.form;
         _this.hidden = opts.hidden ? true : false;
-        _this.name = opts.name;
         _this.showCaption = opts.showCaption ? true : false;
         _this.visible = opts.visible ? true : false;
         return _this;
@@ -1518,15 +1577,6 @@ var IBizFormItem = /** @class */ (function (_super) {
      */
     IBizFormItem.prototype.setValue = function (value) {
         this.value = value;
-    };
-    /**
-     * 获取属性名
-     *
-     * @returns {string}
-     * @memberof IBizFormItem
-     */
-    IBizFormItem.prototype.getName = function () {
-        return this.name;
     };
     /**
      * 是否启用
@@ -2127,14 +2177,6 @@ var IBizControl = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
-         * 部件名称
-         *
-         * @private
-         * @type {string}
-         * @memberof IBizControl
-         */
-        _this.name = '';
-        /**
          * 后台交互URL
          *
          * @private
@@ -2157,21 +2199,11 @@ var IBizControl = /** @class */ (function (_super) {
          * @memberof IBizControl
          */
         _this.isLoading = false;
-        _this.name = opts.name;
         _this.url = opts.url;
         _this.viewController = opts.viewController;
         return _this;
     }
     ;
-    /**
-     * 获取部件名称
-     *
-     * @returns {String}
-     * @memberof IBizControl
-     */
-    IBizControl.prototype.getName = function () {
-        return this.name;
-    };
     /**
      * 获取后台路径
      *

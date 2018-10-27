@@ -42,14 +42,6 @@ var IBizCodeList = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
-         * 代码表ID
-         *
-         * @private
-         * @type {string}
-         * @memberof IBizCodeList
-         */
-        _this.id = '';
-        /**
          * 静态代码表数据
          *
          * @type {Array<any>}
@@ -57,18 +49,8 @@ var IBizCodeList = /** @class */ (function (_super) {
          */
         _this.data = [];
         _this.data = opts.datas.slice();
-        _this.id = opts.id;
         return _this;
     }
-    /**
-     * 获取代码表ID
-     *
-     * @returns {string}
-     * @memberof IBizCodeList
-     */
-    IBizCodeList.prototype.getId = function () {
-        return this.id;
-    };
     /**
      * 获取代码表数据
      *

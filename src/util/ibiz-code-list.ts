@@ -7,15 +7,6 @@
 class IBizCodeList extends IBizObject {
 
     /**
-     * 代码表ID
-     *
-     * @private
-     * @type {string}
-     * @memberof IBizCodeList
-     */
-    private id: string = '';
-
-    /**
      * 静态代码表数据
      *
      * @type {Array<any>}
@@ -33,17 +24,6 @@ class IBizCodeList extends IBizObject {
     constructor(opts: any = {}) {
         super(opts);
         this.data = [...opts.datas];
-        this.id = opts.id;
-    }
-
-    /**
-     * 获取代码表ID
-     * 
-     * @returns {string} 
-     * @memberof IBizCodeList
-     */
-    public getId(): string {
-        return this.id;
     }
 
     /**

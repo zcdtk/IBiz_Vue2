@@ -37,7 +37,85 @@ var IBizObject = /** @class */ (function () {
          * @memberof IBizObject
          */
         this.iBizNotification = new IBizNotification();
+        /**
+         * 对象id
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizObject
+         */
+        this.id = '';
+        /**
+         * 对象name
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizObject
+         */
+        this.name = '';
+        this.Id = opts.id;
+        this.Name = opts.name;
     }
+    Object.defineProperty(IBizObject.prototype, "Id", {
+        /**
+         * 获取id
+         *
+         * @type {string}
+         * @memberof IBizObject
+         */
+        get: function () {
+            return this.id;
+        },
+        /**
+         * 设置id
+         *
+         * @memberof IBizObject
+         */
+        set: function (id) {
+            this.id = id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(IBizObject.prototype, "Name", {
+        /**
+         * 获取name
+         *
+         * @type {string}
+         * @memberof IBizObject
+         */
+        get: function () {
+            return this.name;
+        },
+        /**
+         * 设置name
+         *
+         * @memberof IBizObject
+         */
+        set: function (name) {
+            this.name = name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * 获取id
+     *
+     * @returns {string}
+     * @memberof IBizObject
+     */
+    IBizObject.prototype.getId = function () {
+        return this.id;
+    };
+    /**
+     * 获取名称
+     *
+     * @returns {string}
+     * @memberof IBizObject
+     */
+    IBizObject.prototype.getName = function () {
+        return this.name;
+    };
     /**
      * 注册Rx订阅事件
      *

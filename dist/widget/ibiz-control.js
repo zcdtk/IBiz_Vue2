@@ -31,14 +31,6 @@ var IBizControl = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
-         * 部件名称
-         *
-         * @private
-         * @type {string}
-         * @memberof IBizControl
-         */
-        _this.name = '';
-        /**
          * 后台交互URL
          *
          * @private
@@ -61,21 +53,11 @@ var IBizControl = /** @class */ (function (_super) {
          * @memberof IBizControl
          */
         _this.isLoading = false;
-        _this.name = opts.name;
         _this.url = opts.url;
         _this.viewController = opts.viewController;
         return _this;
     }
     ;
-    /**
-     * 获取部件名称
-     *
-     * @returns {String}
-     * @memberof IBizControl
-     */
-    IBizControl.prototype.getName = function () {
-        return this.name;
-    };
     /**
      * 获取后台路径
      *

@@ -31,6 +31,61 @@ abstract class IBizObject {
      */
     public iBizNotification: IBizNotification = new IBizNotification();
 
+    /**
+     * 对象id
+     *
+     * @private
+     * @type {string}
+     * @memberof IBizObject
+     */
+    private id: string = '';
+
+    /**
+     * 对象name
+     *
+     * @private
+     * @type {string}
+     * @memberof IBizObject
+     */
+    private name: string = '';
+
+    /**
+     * 设置id
+     *
+     * @memberof IBizObject
+     */
+    set Id(id: string) {
+        this.id = id;
+    }
+
+    /**
+     * 获取id
+     *
+     * @type {string}
+     * @memberof IBizObject
+     */
+    get Id(): string {
+        return this.id;
+    }
+
+    /**
+     * 设置name
+     *
+     * @memberof IBizObject
+     */
+    set Name(name: string) {
+        this.name = name;
+    }
+
+    /**
+     * 获取name
+     *
+     * @type {string}
+     * @memberof IBizObject
+     */
+    get Name(): string {
+        return this.name;
+    }
 
     /**
      * Creates an instance of IBizObject.
@@ -40,7 +95,28 @@ abstract class IBizObject {
      * @memberof IBizObject
      */
     constructor(opts: any = {}) {
+        this.Id = opts.id;
+        this.Name = opts.name;
+    }
 
+    /**
+     * 获取id
+     *
+     * @returns {string}
+     * @memberof IBizObject
+     */
+    public getId(): string {
+        return this.id;
+    }
+
+    /**
+     * 获取名称
+     *
+     * @returns {string}
+     * @memberof IBizObject
+     */
+    public getName(): string {
+        return this.name;
     }
 
     /**

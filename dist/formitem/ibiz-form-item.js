@@ -72,7 +72,6 @@ var IBizFormItem = /** @class */ (function (_super) {
         _this.fieldType = opts.fieldType;
         _this.form = opts.form;
         _this.hidden = opts.hidden ? true : false;
-        _this.name = opts.name;
         _this.showCaption = opts.showCaption ? true : false;
         _this.visible = opts.visible ? true : false;
         return _this;
@@ -146,15 +145,6 @@ var IBizFormItem = /** @class */ (function (_super) {
      */
     IBizFormItem.prototype.setValue = function (value) {
         this.value = value;
-    };
-    /**
-     * 获取属性名
-     *
-     * @returns {string}
-     * @memberof IBizFormItem
-     */
-    IBizFormItem.prototype.getName = function () {
-        return this.name;
     };
     /**
      * 是否启用

@@ -98,14 +98,6 @@ class IBizFormItem extends IBizObject {
     public hasError: boolean = false;
 
     /**
-     * 表单项名称
-     *
-     * @type {string}
-     * @memberof IBizFormItem
-     */
-    public name: string;
-
-    /**
      * 是否显示标题
      *
      * @type {boolean}
@@ -156,7 +148,6 @@ class IBizFormItem extends IBizObject {
         this.fieldType = opts.fieldType;
         this.form = opts.form;
         this.hidden = opts.hidden ? true : false;
-        this.name = opts.name;
         this.showCaption = opts.showCaption ? true : false;
         this.visible = opts.visible ? true : false;
     }
@@ -232,16 +223,6 @@ class IBizFormItem extends IBizObject {
      */
     public setValue(value: string): void {
         this.value = value;
-    }
-
-    /**
-     * 获取属性名
-     * 
-     * @returns {string} 
-     * @memberof IBizFormItem
-     */
-    public getName(): string {
-        return this.name;
     }
 
     /**
