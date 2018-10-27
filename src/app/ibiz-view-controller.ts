@@ -124,24 +124,24 @@ class IBizViewController extends IBizObject {
     }
 
     /**
-     * Angular生命周期
-     * 在ngOnChanges钩子之后执行，如果组件的某些初始化依赖输入属性，那么依赖输入属性的初始化一定要放在ngOnInit中执行
-     * 
+     * 初始化
+     * 模拟vue生命周期
+     *
      * @memberof IBizViewController
      */
-    ngOnInit(): void {
+    VueOnInit(vue: any): void {
         this.parseViewParams();
         this.onInit();
         this.onInited();
     }
 
     /**
-     * Angular生命周期
-     * 在组件被销毁的时候调用。
-     * 
+     * 销毁
+     * 模拟Vue生命周期
+     *
      * @memberof IBizViewController
      */
-    ngOnDestroy(): void {
+    VueOnDestroy(): void {
         this.onDestroy();
     }
 
@@ -571,7 +571,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public setParentData(data: any = {}): void {
-        
+
         this.srfParentData = {};
         Object.assign(this.srfParentData, data);
         this.onSetParentData();
@@ -603,7 +603,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getParentMode(): any {
-        
+
         return this.srfParentMode;
     }
 
@@ -624,7 +624,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public setReferData(data: any = {}): void {
-        
+
         Object.assign(this.srfReferData, data);
     }
 
@@ -635,7 +635,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getReferData(): any {
-        
+
         return this.srfReferData;
     }
 

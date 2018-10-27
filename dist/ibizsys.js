@@ -6331,23 +6331,23 @@ var IBizViewController = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * Angular生命周期
-     * 在ngOnChanges钩子之后执行，如果组件的某些初始化依赖输入属性，那么依赖输入属性的初始化一定要放在ngOnInit中执行
+     * 初始化
+     * 模拟vue生命周期
      *
      * @memberof IBizViewController
      */
-    IBizViewController.prototype.ngOnInit = function () {
+    IBizViewController.prototype.VueOnInit = function (vue) {
         this.parseViewParams();
         this.onInit();
         this.onInited();
     };
     /**
-     * Angular生命周期
-     * 在组件被销毁的时候调用。
+     * 销毁
+     * 模拟Vue生命周期
      *
      * @memberof IBizViewController
      */
-    IBizViewController.prototype.ngOnDestroy = function () {
+    IBizViewController.prototype.VueOnDestroy = function () {
         this.onDestroy();
     };
     /**
