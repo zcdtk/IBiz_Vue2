@@ -10,8 +10,7 @@ Vue.component('ibiz-form', {
     `,
     props: ['form'],
     data: function () {
-        let data: any = {};
-        Object.assign(data, { fields: this.form.fieldMap })
+        let data: any = { fields: this.form.fields };
         return data;
     }
 });
