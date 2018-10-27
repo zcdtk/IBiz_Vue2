@@ -9830,6 +9830,7 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
      */
     IBizPickupGridViewController.prototype.onSelectionChange = function (selection) {
         // this.selectionChange.emit(selection);
+        this.$vue.$emit('selection-change', selection);
     };
     /**
      * 数据被激活<最典型的情况就是行双击>
@@ -9845,6 +9846,7 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
             return;
         }
         // this.dataActivated.emit([data]);
+        this.$vue.$emit('data-activated', [data]);
     };
     return IBizPickupGridViewController;
 }(IBizGridViewController));
@@ -10846,11 +10848,11 @@ var IBizPickupViewController = /** @class */ (function (_super) {
         var pickupViewPanel = this.getPickupViewPanel();
         if (pickupViewPanel) {
             // 选择视图面板数据选中
-            pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE, function (args) {
+            pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe(function (args) {
                 _this.onSelectionChange(args);
             });
             // 选择视图面板数据激活
-            pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED, function (args) {
+            pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED).subscribe(function (args) {
                 _this.onDataActivated(args);
             });
         }
@@ -10871,6 +10873,8 @@ var IBizPickupViewController = /** @class */ (function (_super) {
         // this.nzModalSubject.next({ ret: 'OK', selection: pickupViewPanel.getSelections() });
         // this.nzModalSubject.next('DATACHANGE');
         // this.closeWindow();
+        this.dataChange({ ret: 'OK', selections: pickupViewPanel.getSelections() });
+        this.closeModal();
     };
     /**
      * 取消显示选择视图
@@ -10880,6 +10884,7 @@ var IBizPickupViewController = /** @class */ (function (_super) {
      */
     IBizPickupViewController.prototype.onClickCancelButton = function (type) {
         // this.nzModalSubject.destroy(type);
+        this.closeModal();
     };
     /**
      * 接收选择视图数据传递

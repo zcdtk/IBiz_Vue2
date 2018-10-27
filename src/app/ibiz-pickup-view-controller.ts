@@ -52,11 +52,11 @@ class IBizPickupViewController extends IBizMainViewController {
         const pickupViewPanel = this.getPickupViewPanel();
         if (pickupViewPanel) {
             // 选择视图面板数据选中
-            pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE, (args) => {
+            pickupViewPanel.on(IBizPickupViewPanel.SELECTIONCHANGE).subscribe((args) => {
                 this.onSelectionChange(args);
             });
             // 选择视图面板数据激活
-            pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED, (args) => {
+            pickupViewPanel.on(IBizPickupViewPanel.DATAACTIVATED).subscribe((args) => {
                 this.onDataActivated(args);
             });
         }
@@ -78,6 +78,8 @@ class IBizPickupViewController extends IBizMainViewController {
         // this.nzModalSubject.next({ ret: 'OK', selection: pickupViewPanel.getSelections() });
         // this.nzModalSubject.next('DATACHANGE');
         // this.closeWindow();
+        this.dataChange({ ret: 'OK', selections: pickupViewPanel.getSelections() });
+        this.closeModal();
     }
 
     /**
@@ -88,6 +90,7 @@ class IBizPickupViewController extends IBizMainViewController {
      */
     public onClickCancelButton(type: string): void {
         // this.nzModalSubject.destroy(type);
+        this.closeModal();
     }
 
     /**

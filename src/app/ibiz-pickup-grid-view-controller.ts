@@ -130,6 +130,7 @@ class IBizPickupGridViewController extends IBizGridViewController {
      */
     public onSelectionChange(selection: Array<any>): void {
         // this.selectionChange.emit(selection);
+        this.$vue.$emit('selection-change', selection);
     }
 
     /**
@@ -145,6 +146,7 @@ class IBizPickupGridViewController extends IBizGridViewController {
             return;
         }
         // this.dataActivated.emit([data]);
+        this.$vue.$emit('data-activated', [data]);
     }
 }
 

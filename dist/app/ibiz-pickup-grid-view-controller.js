@@ -132,6 +132,7 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
      */
     IBizPickupGridViewController.prototype.onSelectionChange = function (selection) {
         // this.selectionChange.emit(selection);
+        this.$vue.$emit('selection-change', selection);
     };
     /**
      * 数据被激活<最典型的情况就是行双击>
@@ -147,6 +148,7 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
             return;
         }
         // this.dataActivated.emit([data]);
+        this.$vue.$emit('data-activated', [data]);
     };
     return IBizPickupGridViewController;
 }(IBizGridViewController));
