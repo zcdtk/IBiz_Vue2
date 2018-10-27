@@ -86,10 +86,18 @@ var IBizUICounter = /** @class */ (function (_super) {
          * @memberof IBizUICounter
          */
         _this.data = {};
+        /**
+         * url
+         *
+         * @type {string}
+         * @memberof IBizUICounter
+         */
+        _this.url = '';
         _this.counterId = config.counterId;
         Object.assign(_this.counterParam, config.counterParam);
         _this.timer = config.timer;
         _this.load();
+        _this.url = config.url;
         return _this;
     }
     /**
@@ -120,7 +128,7 @@ var IBizUICounter = /** @class */ (function (_super) {
         Object.assign(this.lastReloadArg, arg);
         Object.assign(params, this.lastReloadArg);
         Object.assign(params, { srfcounterid: this.counterId, srfaction: 'FETCH', srfcounterparam: JSON.stringify(this.counterParam) });
-        this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (res) {
+        this.iBizHttp.post(this.url, params).subscribe(function (res) {
             if (res.ret === 0) {
                 _this.setData(res);
             }
@@ -177,4 +185,4 @@ var IBizUICounter = /** @class */ (function (_super) {
      */
     IBizUICounter.COUNTERCHANGED = "COUNTERCHANGED";
     return IBizUICounter;
-}(IBizControl));
+}(IBizObject));

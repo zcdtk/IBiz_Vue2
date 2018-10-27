@@ -4,7 +4,7 @@
  * @class IBizUICounter
  * @extends {IBizControl}
  */
-class IBizUICounter extends IBizControl {
+class IBizUICounter extends IBizObject {
 
     /**
      * 定时器时间
@@ -70,6 +70,14 @@ class IBizUICounter extends IBizControl {
     private data: any = {};
 
     /**
+     * url
+     *
+     * @type {string}
+     * @memberof IBizUICounter
+     */
+    public url: string = '';
+
+    /**
      * Creates an instance of IBizUICounter.
      * 创建 IBizUICounter 服务对象
      * 
@@ -82,6 +90,7 @@ class IBizUICounter extends IBizControl {
         Object.assign(this.counterParam, config.counterParam);
         this.timer = config.timer;
         this.load();
+        this.url = config.url;
     }
 
     /**
@@ -110,7 +119,7 @@ class IBizUICounter extends IBizControl {
         Object.assign(this.lastReloadArg, arg);
         Object.assign(params, this.lastReloadArg);
         Object.assign(params, { srfcounterid: this.counterId, srfaction: 'FETCH', srfcounterparam: JSON.stringify(this.counterParam) });
-        this.iBizHttp.post(this.getBackendUrl(), params).subscribe((res: any) => {
+        this.iBizHttp.post(this.url, params).subscribe((res: any) => {
             if (res.ret === 0) {
                 this.setData(res);
             }
