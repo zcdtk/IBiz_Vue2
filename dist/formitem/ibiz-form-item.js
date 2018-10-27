@@ -31,12 +31,26 @@ var IBizFormItem = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
+         * 是否是必填
+         *
+         * @type {boolean}
+         * @memberof IBizFormItem
+         */
+        _this.allowEmpty = false;
+        /**
          * 属性动态配置值<代码表>
          *
          * @type {Array<any>}
          * @memberof IBizFormItem
          */
         _this.config = [];
+        /**
+         * 标题
+         *
+         * @type {string}
+         * @memberof IBizFormItem
+         */
+        _this.caption = '';
         /**
          * 属性动态配置值<用户字典>
          *
@@ -45,12 +59,49 @@ var IBizFormItem = /** @class */ (function (_super) {
          */
         _this.dictitems = [];
         /**
+         * 表单项是否禁用
+         *
+         * @type {boolean}
+         * @memberof IBizFormItem
+         */
+        _this.disabled = false;
+        /**
+         * 标签是否为空
+         *
+         * @type {boolean}
+         * @memberof IBizFormItem
+         */
+        _this.emptyCaption = false;
+        /**
          * 表达校验错误信息
          *
          * @type {string}
          * @memberof IBizFormItem
          */
         _this.errorInfo = '';
+        /**
+         *表单项类型
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizFormItem
+         */
+        _this.fieldType = '';
+        /**
+         * 表单对象
+         *
+         * @private
+         * @type {*}
+         * @memberof IBizFormItem
+         */
+        _this.form = null;
+        /**
+         * 隐藏表单项
+         *
+         * @type {boolean}
+         * @memberof IBizFormItem
+         */
+        _this.hidden = false;
         /**
          * 是否有错误信息
          *
@@ -59,12 +110,34 @@ var IBizFormItem = /** @class */ (function (_super) {
          */
         _this.hasError = false;
         /**
+         * 是否显示标题
+         *
+         * @type {boolean}
+         * @memberof IBizFormItem
+         */
+        _this.showCaption = true;
+        /**
          * 表单项校验状态
          *
          * @type {string}
          * @memberof IBizFormItem
          */
         _this.validateStatus = 'success';
+        /**
+         * 是否可见
+         *
+         * @type {boolean}
+         * @memberof IBizFormItem
+         */
+        _this.visible = true;
+        /**
+         * 表单项的值
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizFormItem
+         */
+        _this._value = '';
         _this.allowEmpty = opts.allowEmpty ? true : false;
         _this.caption = opts.caption;
         _this.disabled = opts.disabled ? true : false;
@@ -84,7 +157,7 @@ var IBizFormItem = /** @class */ (function (_super) {
          * @memberof IBizFormItem
          */
         get: function () {
-            return this.$value ? this.$value : '';
+            return this._value ? this._value : '';
         },
         /**
          * 设置值
@@ -92,9 +165,9 @@ var IBizFormItem = /** @class */ (function (_super) {
          * @memberof IBizFormItem
          */
         set: function (val) {
-            var oldVal = this.$value;
-            this.$value = val;
-            if (oldVal !== this.$value) {
+            var oldVal = this._value;
+            this._value = val;
+            if (oldVal !== this._value) {
                 this.onValueChanged(oldVal);
             }
         },

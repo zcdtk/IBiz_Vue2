@@ -12,7 +12,7 @@ class IBizFormItem extends IBizObject {
      * @type {boolean}
      * @memberof IBizFormItem
      */
-    public allowEmpty: boolean;
+    public allowEmpty: boolean = false;
 
     /**
      * 属性动态配置值<代码表>
@@ -28,7 +28,7 @@ class IBizFormItem extends IBizObject {
      * @type {string}
      * @memberof IBizFormItem
      */
-    public caption: string;
+    public caption: string = '';
 
     /**
      * 属性动态配置值<用户字典>
@@ -44,7 +44,7 @@ class IBizFormItem extends IBizObject {
      * @type {boolean}
      * @memberof IBizFormItem
      */
-    public disabled: boolean;
+    public disabled: boolean = false;
 
     /**
      * 标签是否为空
@@ -52,7 +52,7 @@ class IBizFormItem extends IBizObject {
      * @type {boolean}
      * @memberof IBizFormItem
      */
-    public emptyCaption: boolean;
+    public emptyCaption: boolean = false;
 
     /**
      * 表达校验错误信息
@@ -70,7 +70,7 @@ class IBizFormItem extends IBizObject {
      * @type {string}
      * @memberof IBizFormItem
      */
-    public fieldType: string;
+    public fieldType: string = '';
 
     /**
      * 表单对象
@@ -79,7 +79,7 @@ class IBizFormItem extends IBizObject {
      * @type {*}
      * @memberof IBizFormItem
      */
-    public form: any;
+    public form: any = null;
 
     /**
      * 隐藏表单项
@@ -87,7 +87,7 @@ class IBizFormItem extends IBizObject {
      * @type {boolean}
      * @memberof IBizFormItem
      */
-    public hidden: boolean;
+    public hidden: boolean = false;
 
     /**
      * 是否有错误信息
@@ -103,7 +103,7 @@ class IBizFormItem extends IBizObject {
      * @type {boolean}
      * @memberof IBizFormItem
      */
-    public showCaption: boolean;
+    public showCaption: boolean = true;
 
     /**
      * 表单项校验状态
@@ -120,7 +120,7 @@ class IBizFormItem extends IBizObject {
      * @type {boolean}
      * @memberof IBizFormItem
      */
-    public visible: boolean;
+    public visible: boolean = true;
 
 
     /**
@@ -130,7 +130,7 @@ class IBizFormItem extends IBizObject {
      * @type {string}
      * @memberof IBizFormItem
      */
-    private $value: string;
+    private _value: string = '';
 
     /**
      * Creates an instance of IBizFormItem.
@@ -158,9 +158,9 @@ class IBizFormItem extends IBizObject {
      * @memberof IBizFormItem
      */
     set value(val) {
-        const oldVal = this.$value;
-        this.$value = val;
-        if (oldVal !== this.$value) {
+        const oldVal = this._value;
+        this._value = val;
+        if (oldVal !== this._value) {
             this.onValueChanged(oldVal);
         }
     }
@@ -172,7 +172,7 @@ class IBizFormItem extends IBizObject {
      * @memberof IBizFormItem
      */
     get value(): string {
-        return this.$value ? this.$value : '';
+        return this._value ? this._value : '';
     }
 
     /**
