@@ -661,6 +661,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
      * @memberof IBizMDViewController
      */
     IBizMDViewController.prototype.openDataView = function (view) {
+        var _this = this;
         if (view === void 0) { view = {}; }
         var openMode = view.openMode;
         if (view.redirect) {
@@ -684,8 +685,9 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (view.modal) {
             var modalview = this.openModal(view);
             modalview.subscribe(function (result) {
-                if (result) {
+                if (result && Object.is(result.ret, 'OK')) {
                     console.log(result);
+                    _this.onRefresh();
                 }
             });
         }

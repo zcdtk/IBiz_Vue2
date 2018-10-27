@@ -733,8 +733,9 @@ class IBizMDViewController extends IBizMainViewController {
         if (view.modal) {
             let modalview = this.openModal(view);
             modalview.subscribe((result:any) => {
-                if (result) {
+                if (result && Object.is(result.ret, 'OK')) {
                     console.log(result);
+                    this.onRefresh();
                 }
             });
         } else {

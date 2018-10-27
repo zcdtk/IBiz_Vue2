@@ -935,6 +935,17 @@ class IBizViewController extends IBizObject {
     }
 
     /**
+     * 关闭模态框
+     *
+     * @param {*} [result]
+     * @memberof IBizViewController
+     */
+    public closeModal(result?: any): void {
+        let _this = this;
+        _this.$vue.$emit('close', result);
+    }
+
+    /**
      * 打开视图;打开方式,路由打开
      * 
      * @param {string} routeString 相对路由地址
@@ -999,6 +1010,17 @@ class IBizViewController extends IBizObject {
      */
     public goBack(): void {
 
+    }
+
+    /**
+     * 数据变化
+     *
+     * @param {*} [data]
+     * @memberof IBizViewController
+     */
+    public dataChange(data?: any): void {
+        let _this = this;
+        _this.$vue.$emit('dataChange', data);
     }
 
     public static INITED = 'INITED';
