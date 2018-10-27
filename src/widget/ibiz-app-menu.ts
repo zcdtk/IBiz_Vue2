@@ -136,6 +136,43 @@ class IBizAppMenu extends IBizControl {
         return item;
     }
 
+     /**
+     * 获取菜单数据
+     *
+     * @returns {Array<any>}
+     * @memberof IBizAppMenu
+     */
+    public getItems(): Array<any> {
+        return this.items;
+    }
+
+    /**
+     * 获取菜单数据项
+     *
+     * @param {string} id
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    public getItem(id: string, items: Array<any>): any {
+        let _this = this;
+        let _item: any = {};
+        items.some(item => {
+            if (Object.is(item.id, id)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
+                let _subItem = _this.getItem(id, item.items);
+                if (_subItem && Object.keys(_subItem).length > 0) {
+                    Object.assign(_item, _subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
+    }
+
     /**
      * 菜单加载
      *

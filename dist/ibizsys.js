@@ -2310,30 +2310,30 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     function IBizAppMenu(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
+        var _this_1 = _super.call(this, opts) || this;
         /**
          * 应用功能数据
          *
          * @type {Array<any>}
          * @memberof IBizAppMenu
          */
-        _this.appFunctions = [];
+        _this_1.appFunctions = [];
         /**
          * 菜单数据项
          *
          * @type {any[]}
          * @memberof IBizAppMenu
          */
-        _this.items = [];
+        _this_1.items = [];
         /**
          * 选中项
          *
          * @type {*}
          * @memberof IBizAppMenu
          */
-        _this.selectItem = {};
-        _this.setAppFunctions();
-        return _this;
+        _this_1.selectItem = {};
+        _this_1.setAppFunctions();
+        return _this_1;
     }
     /**
      * 设置应用功能参数
@@ -2348,12 +2348,12 @@ var IBizAppMenu = /** @class */ (function (_super) {
      * @memberof IBizAppMenu
      */
     IBizAppMenu.prototype.load = function () {
-        var _this = this;
+        var _this_1 = this;
         var params = { srfctrlid: this.getName(), srfaction: 'FETCH' };
         this.iBizHttp.post(this.getBackendUrl(), params).subscribe(function (success) {
             if (success.ret === 0) {
-                _this.items = success.items;
-                _this.fire(IBizAppMenu.LOADED, _this.items);
+                _this_1.items = success.items;
+                _this_1.fire(IBizAppMenu.LOADED, _this_1.items);
             }
         }, function (error) {
             console.log(error);
@@ -2409,7 +2409,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
      * @memberof IBizAppMenu
      */
     IBizAppMenu.prototype.getSelectMenuItem = function (items, appfunction) {
-        var _this = this;
+        var _this_1 = this;
         if (appfunction === void 0) { appfunction = {}; }
         // tslint:disable-next-line:prefer-const
         var item = {};
@@ -2419,7 +2419,7 @@ var IBizAppMenu = /** @class */ (function (_super) {
                 return true;
             }
             if (_item.items) {
-                var subItem = _this.getSelectMenuItem(_item.items, appfunction);
+                var subItem = _this_1.getSelectMenuItem(_item.items, appfunction);
                 if (subItem && Object.keys(subItem).length > 0) {
                     Object.assign(item, subItem);
                     return true;
@@ -2427,6 +2427,41 @@ var IBizAppMenu = /** @class */ (function (_super) {
             }
         });
         return item;
+    };
+    /**
+    * 获取菜单数据
+    *
+    * @returns {Array<any>}
+    * @memberof IBizAppMenu
+    */
+    IBizAppMenu.prototype.getItems = function () {
+        return this.items;
+    };
+    /**
+     * 获取菜单数据项
+     *
+     * @param {string} id
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getItem = function (id, items) {
+        var _this = this;
+        var _item = {};
+        items.some(function (item) {
+            if (Object.is(item.id, id)) {
+                Object.assign(_item, item);
+                return true;
+            }
+            if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
+                var _subItem = _this.getItem(id, item.items);
+                if (_subItem && Object.keys(_subItem).length > 0) {
+                    Object.assign(_item, _subItem);
+                    return true;
+                }
+            }
+        });
+        return _item;
     };
     /**
      * 菜单加载
