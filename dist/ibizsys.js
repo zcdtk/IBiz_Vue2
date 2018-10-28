@@ -12110,6 +12110,69 @@ var IBizWFStartViewController = /** @class */ (function (_super) {
 }(IBizWFEditViewController));
 
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * 工作流交互视图控制器
+ *
+ * @class IBizWFActionViewController
+ * @extends {IBizWFEditViewController}
+ */
+var IBizWFActionViewController = /** @class */ (function (_super) {
+    __extends(IBizWFActionViewController, _super);
+    /**
+     * Creates an instance of IBizWFActionViewController.
+     * 创建 IBizWFActionViewController 实例
+     *
+     * @param {*} [opts={}]
+     * @memberof IBizWFActionViewController
+     */
+    function IBizWFActionViewController(opts) {
+        if (opts === void 0) { opts = {}; }
+        return _super.call(this, opts) || this;
+    }
+    /**
+     * 工作流提交
+     *
+     * @memberof IBizWFActionViewController
+     */
+    IBizWFActionViewController.prototype.onFormWFSubmitted = function () {
+        _super.prototype.onFormWFSubmitted.call(this);
+    };
+    /**
+     * 工作流提交
+     *
+     * @memberof IBizWFActionViewController
+     */
+    IBizWFActionViewController.prototype.onClickOkButton = function () {
+        var form = this.getForm();
+        if (form) {
+            form.wfsubmit(this.getViewParam());
+        }
+    };
+    /**
+     * 关闭工作流操作界面
+     *
+     * @memberof IBizWFActionViewController
+     */
+    IBizWFActionViewController.prototype.onClickCancelButton = function () {
+        this.closeWindow();
+    };
+    return IBizWFActionViewController;
+}(IBizWFEditViewController));
+
+"use strict";
 Vue.component('ibiz-app-menu', {
     template: "\n    <i-menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\"  @on-select=\"onSelect($event)\" active-name=\"ctrl.selection.id\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <submenu :name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <submenu :name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <menu-item :name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </menu-item>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <menu-item :name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </menu-item>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <menu-item :name=\"item0.id\">\n                    <span><i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </menu-item>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </i-menu>\n    ",
     props: ['ctrl', 'viewController'],
