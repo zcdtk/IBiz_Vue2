@@ -2,12 +2,19 @@ var gulp = require('gulp');  // gulp 插件
 var typescript = require('gulp-typescript'); // gulp-typescript插件
 var tsProject = typescript.createProject('tsconfig.json');  // ts配置信息
 var concat = require('gulp-concat'); // 合并插件
+var sass = require('gulp-sass')
+
+gulp.task('css', function () {
+    return gulp.src('./src/css/**/*.sass')
+        .pipe(sass())
+        .pipe(gulp.dest('dist/css'));
+});
 
 // 编译ts文件
 gulp.task('compilets', function () {
     return tsProject.src()
         .pipe(tsProject())
-        .js.pipe(gulp.dest('dist'));
+        .js.pipe(gulp.dest('dist/css'));
 });
 
 // 合并编译后的JavaScript文件（非压缩版）
