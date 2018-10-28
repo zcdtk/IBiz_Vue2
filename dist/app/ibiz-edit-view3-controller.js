@@ -41,7 +41,8 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
         _super.prototype.onInitComponents.call(this);
         var drTab = this.getDRTab();
         if (drTab) {
-            drTab.on(IBizDRTab.SELECTCHANGE, function (data) {
+            // 分页导航选中
+            drTab.on(IBizDRTab.SELECTCHANGE).subscribe(function (data) {
                 _this.doDRTabSelectChange(data);
             });
         }

@@ -26,7 +26,8 @@ class IBizEditView3Controller extends IBizEditViewController {
         super.onInitComponents();
         const drTab: any = this.getDRTab();
         if (drTab) {
-            drTab.on(IBizDRTab.SELECTCHANGE, (data) => {
+            // 分页导航选中
+            drTab.on(IBizDRTab.SELECTCHANGE).subscribe((data) => {
                 this.doDRTabSelectChange(data);
             });
         }
