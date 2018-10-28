@@ -898,7 +898,7 @@ var IBizHttp = /** @class */ (function () {
         var postData = [];
         Object.assign(params, opt);
         var keys = Object.keys(params);
-        keys.forEach(function (key, index) {
+        keys.forEach(function (key) {
             var val = params[key];
             if (val instanceof Array || val instanceof Object) {
                 postData.push(key + "=" + encodeURIComponent(JSON.stringify(val)));

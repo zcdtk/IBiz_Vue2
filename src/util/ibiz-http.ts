@@ -87,7 +87,7 @@ class IBizHttp {
 
         Object.assign(params, opt);
         let keys: string[] = Object.keys(params);
-        keys.forEach((key: string, index: number) => {
+        keys.forEach((key: string) => {
             let val: any = params[key];
             if (val instanceof Array || val instanceof Object) {
                 postData.push(`${key}=${encodeURIComponent(JSON.stringify(val))}`);
