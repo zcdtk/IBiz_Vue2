@@ -489,6 +489,8 @@ class IBizMDViewController extends IBizMainViewController {
         if (this.doNewDataWizard(loadParam)) {
             return;
         }
+
+        Object.assign(loadParam, { openerid: this.getId() });
         this.doNewDataNormal(loadParam);
     }
 
