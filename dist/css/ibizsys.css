@@ -1,4 +1,4 @@
-/***BEGIN:多项数据选择***/
+/***    BEGIN:多项数据选择    ***/
 .ibiz-mpickerup-view .ibiz-pickup-view-bottom {
   margin-bottom: 0px !important;
 }
@@ -53,4 +53,9 @@
   color: #108ee9;
   background: #ecf6fd;
 }
-/***END:多项数据选择***/
+/***    END:多项数据选择     ***/
+/***    BEGIN:视图底部内容     ***/
+.footer .ivu-card-body {
+  padding: 0px;
+}
+/***    END:视图底部内容    ***/
