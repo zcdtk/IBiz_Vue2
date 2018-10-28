@@ -14,7 +14,7 @@ gulp.task('css', function () {
 gulp.task('compilets', function () {
     return tsProject.src()
         .pipe(tsProject())
-        .js.pipe(gulp.dest('dist/css'));
+        .js.pipe(gulp.dest('dist'));
 });
 
 // 合并编译后的JavaScript文件（非压缩版）
@@ -75,6 +75,7 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-wf-edit-view-controller.js',
         'dist/app/ibiz-wf-start-view-controller.js',
         'dist/app/ibiz-wf-action-view-controller.js',
+        'dist/app/ibiz-wf-edit-view3-controller.js',
         // 组件
         'dist/components/ibiz-app-menu/ibiz-app-menu.component.js',
         'dist/components/ibiz-form/ibiz-form.component.js',
