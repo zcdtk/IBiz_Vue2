@@ -59,6 +59,7 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-pickup-grid-view-controller.js',
         'dist/app/ibiz-edit-view-controller.js',
         'dist/app/ibiz-edit-view3-controller.js',
+        'dist/app/ibiz-wf-edit-view-controller.js',
         'dist/app/ibiz-pickup-view-controller.js',
         'dist/app/ibiz-tree-exp-view-controller.js',
         'dist/app/ibiz-exp-view-controller.js',
