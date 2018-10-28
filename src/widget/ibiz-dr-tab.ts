@@ -36,13 +36,13 @@ class IBizDRTab extends IBizTab {
 
     /**
      * 分页部件选中变化
-     * 
-     * @param {*} [args={}] 
-     * @returns {void} 
+     *
+     * @param {string} name
+     * @returns {void}
      * @memberof IBizDRTab
      */
-    public onTabSelectionChange(args: any = {}): void {
-        let viewid: string = args.name;
+    public onTabSelectionChange(name: string): void {
+        let viewid: string = name;
         let controller = this.getViewController();
 
         let parentKey: string = '';
@@ -83,7 +83,7 @@ class IBizDRTab extends IBizTab {
             }
         }
 
-        this.setActiveTab(args.index);
+        // this.setActiveTab(args.index);
         this.fire(IBizDRTab.SELECTCHANGE, { parentMode: viewParam, parentData: parentData, viewid: viewid });
     }
 

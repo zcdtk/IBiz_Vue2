@@ -51,13 +51,12 @@ var IBizDRTab = /** @class */ (function (_super) {
     /**
      * 分页部件选中变化
      *
-     * @param {*} [args={}]
+     * @param {string} name
      * @returns {void}
      * @memberof IBizDRTab
      */
-    IBizDRTab.prototype.onTabSelectionChange = function (args) {
-        if (args === void 0) { args = {}; }
-        var viewid = args.name;
+    IBizDRTab.prototype.onTabSelectionChange = function (name) {
+        var viewid = name;
         var controller = this.getViewController();
         var parentKey = '';
         if (this.parentData.srfparentkey) {
@@ -90,7 +89,7 @@ var IBizDRTab = /** @class */ (function (_super) {
                 Object.assign(parentData, { srfparentdeid: viewParam.srfparentdeid });
             }
         }
-        this.setActiveTab(args.index);
+        // this.setActiveTab(args.index);
         this.fire(IBizDRTab.SELECTCHANGE, { parentMode: viewParam, parentData: parentData, viewid: viewid });
     };
     IBizDRTab.SELECTCHANGE = 'SELECTCHANGE';
