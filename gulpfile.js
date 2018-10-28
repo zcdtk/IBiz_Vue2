@@ -50,6 +50,7 @@ gulp.task('concatibizsys', function () {
         'dist/widget/ibiz-tree.js',
         'dist/widget/ibiz-tree-exp-bar.js',
         'dist/widget/ibiz-wf-exp-bar.js',
+        'dist/widget/ibiz-mpickup-result.js',
         // 控制器
         'dist/app/ibiz-view-controller.js',
         'dist/app/ibiz-main-view-controller.js',
@@ -60,6 +61,7 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-edit-view-controller.js',
         'dist/app/ibiz-edit-view3-controller.js',
         'dist/app/ibiz-pickup-view-controller.js',
+        'dist/app/ibiz-mpickup-view-controller.js',
         'dist/app/ibiz-tree-exp-view-controller.js',
         'dist/app/ibiz-exp-view-controller.js',
         'dist/app/ibiz-wf-exp-view-controller.js',
