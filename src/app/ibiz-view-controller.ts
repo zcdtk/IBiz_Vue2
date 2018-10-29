@@ -401,10 +401,13 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public getPController(): any {
-        // if (this.ibizAppService) {
-        //     return this.ibizAppService.getParentViewController(this.getUUID());
-        // }
-        // return undefined;
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        let PController = null;;
+        if (iBizApp) {
+            PController = iBizApp.getParentController(this.getId());
+        }
+        return PController;
     }
 
     /**
@@ -498,14 +501,9 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public reloadUICounters(): void {
-        if (this.uicounters) {
-            for (const tag in this.uicounters) {
-                const uicounter: IBizUICounter = this.uicounters.get(tag);
-                if (uicounter) {
-                    uicounter.reload();
-                }
-            }
-        }
+        this.uicounters.forEach((uicounter: IBizUICounter) => {
+            uicounter.reload();
+        })
 
         const pController = this.getPController();
         if (pController) {

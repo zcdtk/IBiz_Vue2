@@ -7058,10 +7058,14 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.getPController = function () {
-        // if (this.ibizAppService) {
-        //     return this.ibizAppService.getParentViewController(this.getUUID());
-        // }
-        // return undefined;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        var PController = null;
+        ;
+        if (iBizApp) {
+            PController = iBizApp.getParentController(this.getId());
+        }
+        return PController;
     };
     /**
      * 注销子控制器对象
@@ -7147,14 +7151,9 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.reloadUICounters = function () {
-        if (this.uicounters) {
-            for (var tag in this.uicounters) {
-                var uicounter = this.uicounters.get(tag);
-                if (uicounter) {
-                    uicounter.reload();
-                }
-            }
-        }
+        this.uicounters.forEach(function (uicounter) {
+            uicounter.reload();
+        });
         var pController = this.getPController();
         if (pController) {
             pController.reloadUICounters();
