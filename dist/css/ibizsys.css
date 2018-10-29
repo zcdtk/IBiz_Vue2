@@ -55,7 +55,7 @@
 }
 /***    END:多项数据选择     ***/
 /***    BEGIN:视图底部内容     ***/
-.view-footer .ivu-card-body {
+.ibiz-modal-view .view-footer .ivu-card-body {
   padding: 10px 0  0;
 }
 /***    END:视图底部内容    ***/
