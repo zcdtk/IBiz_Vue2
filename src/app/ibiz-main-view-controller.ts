@@ -65,7 +65,7 @@ class IBizMainViewController extends IBizViewController {
      */
     public onLoad(): void {
         super.onLoad();
-        
+
         this.loadModel();
     }
 
@@ -330,35 +330,34 @@ class IBizMainViewController extends IBizViewController {
 
         if (Object.is(uiaction.actionmode, 'WFFRONT')) {
             if (Object.is(uiaction.fronttype, 'WIZARD') || Object.is(uiaction.fronttype, 'SHOWPAGE')) {
-                let className: string;
-                if (uiaction.frontview.className) {
-                    className = uiaction.frontview.className;
-                } else {
-                    className = uiaction.frontview.classname;
-                }
-                let opt: any = {};
+                // let className: string;
+                // if (uiaction.frontview.className) {
+                //     className = uiaction.frontview.className;
+                // } else {
+                //     className = uiaction.frontview.classname;
+                // }
+                let opt: any = { viewparam: {} };
                 let data: any = this.getFrontUIActionParam(uiaction, params);
 
-                opt.modalZIndex = this.modalZIndex;
-                opt.viewParam = {};
+                // opt.modalZIndex = this.modalZIndex;
+                // opt.viewparam = {};
                 if (data) {
-                    Object.assign(opt.viewParam, data);
+                    Object.assign(opt.viewparam, data);
                 }
                 if (uiaction.frontview.viewParam) {
-                    Object.assign(opt.viewParam, uiaction.frontview.viewParam);
+                    Object.assign(opt.viewparam, uiaction.frontview.viewParam);
                 } else {
-                    Object.assign(opt.viewParam, uiaction.frontview.viewparam);
+                    Object.assign(opt.viewparam, uiaction.frontview.viewparam);
                 }
+                Object.assign(opt, { modalviewname: uiaction.frontview.modalviewname, title: uiaction.frontview.title });
 
                 // 打开模态框
-                // const modalService: any = this.getModalService(className);
-                // if (modalService) {
-                //     modalService.openModal(opt).subscribe((result) => {
-                //         if (result && Object.is(result.ret, 'OK')) {
-                //             this.onWFUIFrontWindowClosed(result);
-                //         }
-                //     });
-                // }
+                const modal = this.openModal(opt);
+                modal.subscribe((result) => {
+                    if (result && Object.is(result.ret, 'OK')) {
+                        this.onWFUIFrontWindowClosed(result);
+                    }
+                });
                 return;
             }
         }

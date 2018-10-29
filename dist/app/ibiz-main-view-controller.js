@@ -333,39 +333,38 @@ var IBizMainViewController = /** @class */ (function (_super) {
      * @memberof IBizMainViewController
      */
     IBizMainViewController.prototype.doWFUIAction = function (uiaction, params) {
+        var _this = this;
         if (uiaction === void 0) { uiaction = {}; }
         if (params === void 0) { params = {}; }
         if (Object.is(uiaction.actionmode, 'WFFRONT')) {
             if (Object.is(uiaction.fronttype, 'WIZARD') || Object.is(uiaction.fronttype, 'SHOWPAGE')) {
-                var className = void 0;
-                if (uiaction.frontview.className) {
-                    className = uiaction.frontview.className;
-                }
-                else {
-                    className = uiaction.frontview.classname;
-                }
-                var opt = {};
+                // let className: string;
+                // if (uiaction.frontview.className) {
+                //     className = uiaction.frontview.className;
+                // } else {
+                //     className = uiaction.frontview.classname;
+                // }
+                var opt = { viewparam: {} };
                 var data = this.getFrontUIActionParam(uiaction, params);
-                opt.modalZIndex = this.modalZIndex;
-                opt.viewParam = {};
+                // opt.modalZIndex = this.modalZIndex;
+                // opt.viewparam = {};
                 if (data) {
-                    Object.assign(opt.viewParam, data);
+                    Object.assign(opt.viewparam, data);
                 }
                 if (uiaction.frontview.viewParam) {
-                    Object.assign(opt.viewParam, uiaction.frontview.viewParam);
+                    Object.assign(opt.viewparam, uiaction.frontview.viewParam);
                 }
                 else {
-                    Object.assign(opt.viewParam, uiaction.frontview.viewparam);
+                    Object.assign(opt.viewparam, uiaction.frontview.viewparam);
                 }
+                Object.assign(opt, { modalviewname: uiaction.frontview.modalviewname, title: uiaction.frontview.title });
                 // 打开模态框
-                // const modalService: any = this.getModalService(className);
-                // if (modalService) {
-                //     modalService.openModal(opt).subscribe((result) => {
-                //         if (result && Object.is(result.ret, 'OK')) {
-                //             this.onWFUIFrontWindowClosed(result);
-                //         }
-                //     });
-                // }
+                var modal = this.openModal(opt);
+                modal.subscribe(function (result) {
+                    if (result && Object.is(result.ret, 'OK')) {
+                        _this.onWFUIFrontWindowClosed(result);
+                    }
+                });
                 return;
             }
         }
