@@ -64,3 +64,17 @@
   padding: 0px;
 }
 /***    END:搜索表单    ***/
+/***    BEGIN:多项选择视图     ***/
+.ibiz-mpickup-view .pickupviewpanel {
+  display: flex;
+  justify-content: end;
+}
+.ibiz-mpickup-view .pickupviewpanel .left,
+.ibiz-mpickup-view .pickupviewpanel .right {
+  width: 340px;
+  height: 100%;
+}
+.ibiz-mpickup-view .pickupviewpanel .center {
+  width: 100%;
+}
+/***    END:多项选择视图    ***/
