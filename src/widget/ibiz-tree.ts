@@ -1,10 +1,18 @@
 /**
- * 树部件
+ *  树部件
  *
  * @class IBizTree
  * @extends {IBizControl}
  */
 class IBizTree extends IBizControl {
+
+    /**
+     * 树部件是否收缩，默认展开
+     * 
+     * @type {boolean}
+     * @memberof IBizTree
+     */
+    public isCollapsed: boolean = true;
 
     /**
      * 数据项节点集合
@@ -15,14 +23,6 @@ class IBizTree extends IBizControl {
     public items: Array<any> = [];
 
     /**
-     * 树节点数据
-     *
-     * @type {Array<any>}
-     * @memberof IBizTree
-     */
-    public nodes: Array<any> = [];
-
-    /**
      * 默认节点
      * 
      * @private
@@ -31,13 +31,7 @@ class IBizTree extends IBizControl {
      */
     private node: any = {};
 
-    /**
-     * 选中数据项
-     *
-     * @type {Array<string>}
-     * @memberof IBizTree
-     */
-    public selectedKeys: Array<string> = [];
+    public selectNode: any = {};
 
     /**
      * Creates an instance of IBizTree.
@@ -57,26 +51,24 @@ class IBizTree extends IBizControl {
      * @memberof IBizTree
      */
     public load(treeCfg: any = {}): void {
-        // tslint:disable-next-line:prefer-const
-        let param: any = {
-            srfnodeid: this.node.id ? this.node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
-            srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
-            srfctrlid: this.getName()
-        };
+        // let param: any = {
+        //     srfnodeid: this.node.id ? this.node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+        //     srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
+        //     srfctrlid: this.getName()
+        // };
 
-        this.iBizHttp.post(this.getBackendUrl(), param).subscribe((result) => {
-            if (result.ret !== 0) {
-                this.iBizNotification.error('错误', result.info);
-                return;
-            }
-            this.items = [...this.formatDatas(result.items)];
-            this.items.forEach((item) => {
-                // this.nodes.push(new NzTreeNode({ title: item.text, key: item.srfkey, children: [] }));
-            });
-            this.fire(IBizTree.CONTEXTMENU, this.items);
-        }, (error) => {
-            this.iBizNotification.error('错误', error.info);
-        });
+        // this.fire(IBizMDControl.BEFORELOAD, param);
+
+        // this.iBizHttp.post(this.getBackendUrl(), param).subscribe((result) => {
+        //     if (result.ret !== 0) {
+        //         this.iBizNotification.error('错误', result.info);
+        //         return;
+        //     }
+        //     this.items = this.formatTreeData(result.items);
+        //     this.fire(IBizTree.CONTEXTMENU, this.items);
+        // }, (error) => {
+        //     this.iBizNotification.error('错误', error.info);
+        // });
     }
 
     /**
@@ -130,134 +122,80 @@ class IBizTree extends IBizControl {
 
     }
 
-    public mouseAction(name: string, e: any): void {
-        if (!Object.is(name, 'expand') || (!e || !e.node || !e.node.origin)) {
-            return;
-        }
-        if (e.node.getChildren().length !== 0 || !e.node.isExpanded) {
-            return;
-        }
-        const node = e.node.origin;
-        const _treeitem = this.getTreeItem(this.items, node.key);
-        if (Object.keys(_treeitem).length === 0) {
-            return;
-        }
-        const param: any = {
-            srfnodeid: _treeitem.id ? _treeitem.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+    /**
+     * 格式化树数据
+     * 
+     * @private
+     * @param {Array<any>} items 
+     * @returns {Array<any>} 
+     * @memberof IBizTree
+     */
+    private formatTreeData(items: Array<any>): Array<any> {
+        let data: Array<any> = [];
+        items.forEach((item) => {
+            let tempData: any = {};
+            Object.assign(tempData, item);
+            tempData.name = tempData.text;
+            data.push(tempData);
+
+        });
+        return data;
+    }
+
+    /**
+     * 树节点激活加载子数据
+     *
+     * @private
+     * @param {*} resolve
+     * @memberof IBizTree
+     */
+    private loadChildren(node: any, resolve: any): void {
+        let param: any = {
+            srfnodeid: node.id ? node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
             srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
             srfctrlid: this.getName()
         };
 
+        this.fire(IBizMDControl.BEFORELOAD, param);
+
         this.iBizHttp.post(this.getBackendUrl(), param).subscribe((result) => {
             if (result.ret !== 0) {
+                this.iBizNotification.error('错误', result.info);
+                resolve([]);
                 return;
             }
-            if (!result.items || !Array.isArray(result.items)) {
-                return;
+            const _items = [...this.formatTreeData(result.items)];
+
+            if (node.level === 0) {
+                this.items = [..._items];
+                this.fire(IBizTree.CONTEXTMENU, this.items);
             }
-            if (result.items.length === 0) {
-                e.node.isLeaf = true;
-            } else {
-                // tslint:disable-next-line:prefer-const
-                let data: Array<any> = [];
-                result.items.forEach((item) => {
-                    data.push({ title: item.text, key: item.srfkey, children: [] });
-                });
-                this.addTreeChildItems(this.items, node.key, result.items);
-                e.node.addChildren(data);
-            }
+            resolve(_items);
+
         }, (error) => {
             this.iBizNotification.error('错误', error.info);
+            resolve([]);
         });
     }
 
     /**
-     * 获取数据数据节点
-     *
-     * @private
-     * @param {Array<any>} items
-     * @param {string} srfkey
-     * @returns {*}
-     * @memberof IBizTree
-     */
-    private getTreeItem(items: Array<any>, srfkey: string): any {
-        // tslint:disable-next-line:prefer-const
-        let _item: any = {};
-        items.some(item => {
-            if (Object.is(item.srfkey, srfkey)) {
-                Object.assign(_item, item);
-                return true;
-            }
-            if (item.items) {
-                const subItem = this.getTreeItem(item.items, srfkey);
-                if (subItem && Object.keys(subItem).length > 0) {
-                    Object.assign(_item, subItem);
-                    return true;
-                }
-            }
-        });
-        return _item;
-    }
-
-    /**
-     * 添加子节点数据值树数据中
-     *
-     * @private
-     * @param {Array<any>} items
-     * @param {string} srfkey
-     * @param {Array<any>} childItems
-     * @memberof IBizTree
-     */
-    private addTreeChildItems(items: Array<any>, srfkey: string, childItems: Array<any>): void {
-        items.some(item => {
-            if (Object.is(item.srfkey, srfkey)) {
-                item.items = [];
-                Object.assign(item, { items: childItems });
-                return true;
-            }
-            if (item.items) {
-                this.addTreeChildItems(item.items, srfkey, childItems);
-            }
-        });
-    }
-
-    /**
-     * 设置树选中数据节点
-     *
-     * @private
-     * @param {*} [item={}]
-     * @memberof IBizTree
-     */
-    public setSelectTreeItem(item: any = {}): void {
-        this.selectedKeys = [];
-        this.selectedKeys.push(item.srfkey);
-    }
-
-    /**
-     * 格式化树数据
-     *
-     * @private
-     * @param {Array<any>} datas
-     * @returns {Array<any>}
-     * @memberof IBizTree
-     */
-    private formatDatas(datas: Array<any>): Array<any> {
-        datas.forEach((data) => {
-            data.label = data.text;
-            data.children = [];
-            data.isLeaf = true;
-        });
-        return datas;
-    }
-
-    /**
-     * 节点选中
+     * 树节点激活选中数据
      *
      * @param {*} [data={}]
      * @memberof IBizTree
      */
     public nodeSelect(data: any = {}): void {
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
+    }
+
+    /**
+     * 
+     *
+     * @param {*} [item={}]
+     * @memberof IBizTree
+     */
+    public setSelectTreeItem(item: any = {}): void {
+        Object.assign(this.selectNode, item);
     }
 
     /*****************事件声明************************/

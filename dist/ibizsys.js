@@ -5643,7 +5643,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 /**
- * 树部件
+ *  树部件
  *
  * @class IBizTree
  * @extends {IBizControl}
@@ -5661,19 +5661,19 @@ var IBizTree = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
+         * 树部件是否收缩，默认展开
+         *
+         * @type {boolean}
+         * @memberof IBizTree
+         */
+        _this.isCollapsed = true;
+        /**
          * 数据项节点集合
          *
          * @type {Array<any>}
          * @memberof IBizTree
          */
         _this.items = [];
-        /**
-         * 树节点数据
-         *
-         * @type {Array<any>}
-         * @memberof IBizTree
-         */
-        _this.nodes = [];
         /**
          * 默认节点
          *
@@ -5682,13 +5682,7 @@ var IBizTree = /** @class */ (function (_super) {
          * @memberof IBizTree
          */
         _this.node = {};
-        /**
-         * 选中数据项
-         *
-         * @type {Array<string>}
-         * @memberof IBizTree
-         */
-        _this.selectedKeys = [];
+        _this.selectNode = {};
         return _this;
     }
     /**
@@ -5698,27 +5692,23 @@ var IBizTree = /** @class */ (function (_super) {
      * @memberof IBizTree
      */
     IBizTree.prototype.load = function (treeCfg) {
-        var _this = this;
+        // let param: any = {
+        //     srfnodeid: this.node.id ? this.node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+        //     srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
+        //     srfctrlid: this.getName()
+        // };
         if (treeCfg === void 0) { treeCfg = {}; }
-        // tslint:disable-next-line:prefer-const
-        var param = {
-            srfnodeid: this.node.id ? this.node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
-            srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
-            srfctrlid: this.getName()
-        };
-        this.iBizHttp.post(this.getBackendUrl(), param).subscribe(function (result) {
-            if (result.ret !== 0) {
-                _this.iBizNotification.error('错误', result.info);
-                return;
-            }
-            _this.items = _this.formatDatas(result.items).slice();
-            _this.items.forEach(function (item) {
-                // this.nodes.push(new NzTreeNode({ title: item.text, key: item.srfkey, children: [] }));
-            });
-            _this.fire(IBizTree.CONTEXTMENU, _this.items);
-        }, function (error) {
-            _this.iBizNotification.error('错误', error.info);
-        });
+        // this.fire(IBizMDControl.BEFORELOAD, param);
+        // this.iBizHttp.post(this.getBackendUrl(), param).subscribe((result) => {
+        //     if (result.ret !== 0) {
+        //         this.iBizNotification.error('错误', result.info);
+        //         return;
+        //     }
+        //     this.items = this.formatTreeData(result.items);
+        //     this.fire(IBizTree.CONTEXTMENU, this.items);
+        // }, (error) => {
+        //     this.iBizNotification.error('错误', error.info);
+        // });
     };
     /**
      * 获取选择节点数据
@@ -5763,127 +5753,58 @@ var IBizTree = /** @class */ (function (_super) {
      */
     IBizTree.prototype.doUIAction = function (params) {
     };
-    IBizTree.prototype.mouseAction = function (name, e) {
-        var _this = this;
-        if (!Object.is(name, 'expand') || (!e || !e.node || !e.node.origin)) {
-            return;
-        }
-        if (e.node.getChildren().length !== 0 || !e.node.isExpanded) {
-            return;
-        }
-        var node = e.node.origin;
-        var _treeitem = this.getTreeItem(this.items, node.key);
-        if (Object.keys(_treeitem).length === 0) {
-            return;
-        }
-        var param = {
-            srfnodeid: _treeitem.id ? _treeitem.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
-            srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
-            srfctrlid: this.getName()
-        };
-        this.iBizHttp.post(this.getBackendUrl(), param).subscribe(function (result) {
-            if (result.ret !== 0) {
-                return;
-            }
-            if (!result.items || !Array.isArray(result.items)) {
-                return;
-            }
-            if (result.items.length === 0) {
-                e.node.isLeaf = true;
-            }
-            else {
-                // tslint:disable-next-line:prefer-const
-                var data_1 = [];
-                result.items.forEach(function (item) {
-                    data_1.push({ title: item.text, key: item.srfkey, children: [] });
-                });
-                _this.addTreeChildItems(_this.items, node.key, result.items);
-                e.node.addChildren(data_1);
-            }
-        }, function (error) {
-            _this.iBizNotification.error('错误', error.info);
-        });
-    };
-    /**
-     * 获取数据数据节点
-     *
-     * @private
-     * @param {Array<any>} items
-     * @param {string} srfkey
-     * @returns {*}
-     * @memberof IBizTree
-     */
-    IBizTree.prototype.getTreeItem = function (items, srfkey) {
-        var _this = this;
-        // tslint:disable-next-line:prefer-const
-        var _item = {};
-        items.some(function (item) {
-            if (Object.is(item.srfkey, srfkey)) {
-                Object.assign(_item, item);
-                return true;
-            }
-            if (item.items) {
-                var subItem = _this.getTreeItem(item.items, srfkey);
-                if (subItem && Object.keys(subItem).length > 0) {
-                    Object.assign(_item, subItem);
-                    return true;
-                }
-            }
-        });
-        return _item;
-    };
-    /**
-     * 添加子节点数据值树数据中
-     *
-     * @private
-     * @param {Array<any>} items
-     * @param {string} srfkey
-     * @param {Array<any>} childItems
-     * @memberof IBizTree
-     */
-    IBizTree.prototype.addTreeChildItems = function (items, srfkey, childItems) {
-        var _this = this;
-        items.some(function (item) {
-            if (Object.is(item.srfkey, srfkey)) {
-                item.items = [];
-                Object.assign(item, { items: childItems });
-                return true;
-            }
-            if (item.items) {
-                _this.addTreeChildItems(item.items, srfkey, childItems);
-            }
-        });
-    };
-    /**
-     * 设置树选中数据节点
-     *
-     * @private
-     * @param {*} [item={}]
-     * @memberof IBizTree
-     */
-    IBizTree.prototype.setSelectTreeItem = function (item) {
-        if (item === void 0) { item = {}; }
-        this.selectedKeys = [];
-        this.selectedKeys.push(item.srfkey);
-    };
     /**
      * 格式化树数据
      *
      * @private
-     * @param {Array<any>} datas
+     * @param {Array<any>} items
      * @returns {Array<any>}
      * @memberof IBizTree
      */
-    IBizTree.prototype.formatDatas = function (datas) {
-        datas.forEach(function (data) {
-            data.label = data.text;
-            data.children = [];
-            data.isLeaf = true;
+    IBizTree.prototype.formatTreeData = function (items) {
+        var data = [];
+        items.forEach(function (item) {
+            var tempData = {};
+            Object.assign(tempData, item);
+            tempData.name = tempData.text;
+            data.push(tempData);
         });
-        return datas;
+        return data;
     };
     /**
-     * 节点选中
+     * 树节点激活加载子数据
+     *
+     * @private
+     * @param {*} resolve
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.loadChildren = function (node, resolve) {
+        var _this = this;
+        var param = {
+            srfnodeid: node.id ? node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+            srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
+            srfctrlid: this.getName()
+        };
+        this.fire(IBizMDControl.BEFORELOAD, param);
+        this.iBizHttp.post(this.getBackendUrl(), param).subscribe(function (result) {
+            if (result.ret !== 0) {
+                _this.iBizNotification.error('错误', result.info);
+                resolve([]);
+                return;
+            }
+            var _items = _this.formatTreeData(result.items).slice();
+            if (node.level === 0) {
+                _this.items = _items.slice();
+                _this.fire(IBizTree.CONTEXTMENU, _this.items);
+            }
+            resolve(_items);
+        }, function (error) {
+            _this.iBizNotification.error('错误', error.info);
+            resolve([]);
+        });
+    };
+    /**
+     * 树节点激活选中数据
      *
      * @param {*} [data={}]
      * @memberof IBizTree
@@ -5891,6 +5812,16 @@ var IBizTree = /** @class */ (function (_super) {
     IBizTree.prototype.nodeSelect = function (data) {
         if (data === void 0) { data = {}; }
         this.fire(IBizTree.SELECTIONCHANGE, [data]);
+    };
+    /**
+     *
+     *
+     * @param {*} [item={}]
+     * @memberof IBizTree
+     */
+    IBizTree.prototype.setSelectTreeItem = function (item) {
+        if (item === void 0) { item = {}; }
+        Object.assign(this.selectNode, item);
     };
     /*****************事件声明************************/
     /**
