@@ -45,6 +45,13 @@ var IBizMDViewController = /** @class */ (function (_super) {
          */
         _this.multiSelect = false;
         /**
+         * 快速搜索值
+         *
+         * @type {string}
+         * @memberof IBizMDViewController
+         */
+        _this.searchValue = '';
+        /**
          * 父数据改变
          *
          * @type {boolean}

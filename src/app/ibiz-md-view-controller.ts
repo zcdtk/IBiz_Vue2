@@ -28,7 +28,7 @@ class IBizMDViewController extends IBizMainViewController {
      * @type {string}
      * @memberof IBizMDViewController
      */
-    public searchValue: string;
+    public searchValue: string = '';
 
     /**
      * 父数据改变

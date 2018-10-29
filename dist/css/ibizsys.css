@@ -59,3 +59,8 @@
   padding: 0px;
 }
 /***    END:视图底部内容    ***/
+/***    BEGIN:搜索表单     ***/
+.ibiz-search-form .footer .ivu-card-body {
+  padding: 0px;
+}
+/***    END:搜索表单    ***/
