@@ -8040,14 +8040,8 @@ var IBizMainViewController = /** @class */ (function (_super) {
      * @memberof IBizMainViewController
      */
     IBizMainViewController.prototype.closeWindow = function () {
-        // if (this.isModal()) {
-        //     this.nzModalSubject.destroy('onOk');
-        // } else if (this.ibizAppService.getFullScreen()) {
-        //     let win = this.getWindow();
-        //     win.close();
-        // } else {
-        //     this.goBack();
-        // }
+        var win = this.getWindow();
+        win.close();
     };
     /**
      * 获取窗口对象
@@ -10474,7 +10468,14 @@ var IBizEditViewController = /** @class */ (function (_super) {
      */
     IBizEditViewController.prototype.onFormWFSubmitted = function () {
         this.refreshReferView();
-        this.closeWindow();
+        if (this.isModal()) {
+            var result = { ret: 'OK', activeData: this.getForm().getValues() };
+            this.dataChange();
+            this.closeModal(result);
+        }
+        else {
+            this.closeWindow();
+        }
     };
     /**
      * 更细视图caption信息
@@ -12542,7 +12543,12 @@ var IBizWFActionViewController = /** @class */ (function (_super) {
      * @memberof IBizWFActionViewController
      */
     IBizWFActionViewController.prototype.onClickCancelButton = function () {
-        this.closeWindow();
+        if (this.isModal()) {
+            this.closeModal();
+        }
+        else {
+            this.closeWindow();
+        }
     };
     return IBizWFActionViewController;
 }(IBizWFEditViewController));

@@ -295,9 +295,14 @@ class IBizEditViewController extends IBizMainViewController {
      * @memberof IBizEditViewController
      */
     public onFormWFSubmitted(): void {
-
         this.refreshReferView();
-        this.closeWindow();
+        if (this.isModal()) {
+            let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
+            this.dataChange();
+            this.closeModal(result);
+        } else {
+            this.closeWindow();
+        }
     }
 
     /**

@@ -403,14 +403,8 @@ class IBizMainViewController extends IBizViewController {
      * @memberof IBizMainViewController
      */
     public closeWindow(): void {
-        // if (this.isModal()) {
-        //     this.nzModalSubject.destroy('onOk');
-        // } else if (this.ibizAppService.getFullScreen()) {
-        //     let win = this.getWindow();
-        //     win.close();
-        // } else {
-        //     this.goBack();
-        // }
+        let win = this.getWindow();
+        win.close();
     }
 
     /**

@@ -279,7 +279,14 @@ var IBizEditViewController = /** @class */ (function (_super) {
      */
     IBizEditViewController.prototype.onFormWFSubmitted = function () {
         this.refreshReferView();
-        this.closeWindow();
+        if (this.isModal()) {
+            var result = { ret: 'OK', activeData: this.getForm().getValues() };
+            this.dataChange();
+            this.closeModal(result);
+        }
+        else {
+            this.closeWindow();
+        }
     };
     /**
      * 更细视图caption信息

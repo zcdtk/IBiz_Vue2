@@ -56,7 +56,12 @@ var IBizWFActionViewController = /** @class */ (function (_super) {
      * @memberof IBizWFActionViewController
      */
     IBizWFActionViewController.prototype.onClickCancelButton = function () {
-        this.closeWindow();
+        if (this.isModal()) {
+            this.closeModal();
+        }
+        else {
+            this.closeWindow();
+        }
     };
     return IBizWFActionViewController;
 }(IBizWFEditViewController));

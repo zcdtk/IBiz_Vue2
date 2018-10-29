@@ -44,7 +44,11 @@ class IBizWFActionViewController extends IBizWFEditViewController {
      * @memberof IBizWFActionViewController
      */
     public onClickCancelButton(): void {
-        this.closeWindow();
+        if (this.isModal()) {
+            this.closeModal();
+        } else {
+            this.closeWindow();
+        }
 
     }
 }
