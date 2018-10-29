@@ -99,6 +99,7 @@ class IBizMPickupViewController extends IBizMainViewController {
         // this.nzModalSubject.next({ ret: 'OK', selection: this.MPickupResult.selections });
         // this.nzModalSubject.next('DATACHANGE');
         // this.closeWindow();
+        this.closeModal({ ret: 'OK', selections: this.MPickupResult.selections });
     }
 
 
@@ -110,6 +111,7 @@ class IBizMPickupViewController extends IBizMainViewController {
      */
     public onClickCancelButton(type: any): void {
         // this.nzModalSubject.destroy(type);
+        this.closeModal();
     }
 
     /**
