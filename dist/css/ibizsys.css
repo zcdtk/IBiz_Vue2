@@ -1,59 +1,3 @@
-/***    BEGIN:多项数据选择    ***/
-.ibiz-mpickerup-view .ibiz-pickup-view-bottom {
-  margin-bottom: 0px !important;
-}
-.ibiz-mpickerup-view .mpickup-view {
-  margin-bottom: 0px !important;
-}
-.ibiz-mpickerup-view ::ng-deep .ant-card-body {
-  padding: 0;
-}
-.ibiz-mpickerup-view nz-layout {
-  background: white;
-}
-.ibiz-mpickerup-view nz-layout nz-sider {
-  background: white;
-}
-.ibiz-mpickerup-view .layout {
-  margin-top: 4px;
-}
-.ibiz-mpickerup-view .tree-exp-view nz-content {
-  padding-right: 12px;
-}
-.ibiz-mpickerup-view .buttons > button {
-  margin-top: 5px;
-}
-.ibiz-mpickerup-view .mpicker-select {
-  font-family: helvetica, sans-serif;
-  font-size: 16px;
-  font-variant: small-caps;
-  text-align: justify;
-  word-spacing: -3.8pt;
-  line-height: 1.6;
-  font-weight: bold;
-  word-spacing: 10px;
-  height: 100%;
-  overflow: auto;
-}
-.ibiz-mpickerup-view .mpicker-select > div {
-  padding: 3px 10px;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.85);
-  font-weight: initial;
-  cursor: pointer;
-  min-height: 28px;
-  border: 1px solid #e9e9e9;
-  margin: 4px 4px;
-  transition: all 0.3s;
-}
-.ibiz-mpickerup-view .mpicker-select > div:hover {
-  background: #ecf6fd;
-}
-.ibiz-mpickerup-view .mpicker-select > .select {
-  color: #108ee9;
-  background: #ecf6fd;
-}
-/***    END:多项数据选择     ***/
 /***    BEGIN:视图底部内容     ***/
 .ibiz-modal-view .footer .ivu-card-body {
   padding: 10px 0  0;
@@ -84,6 +28,36 @@
 }
 .ibiz-mpickup-view .pickupviewpanel .right {
   border: 1px solid #e9e9e9;
+}
+.ibiz-mpickup-view .pickupviewpanel .right .mpicker-select {
+  font-family: helvetica, sans-serif;
+  font-size: 16px;
+  font-variant: small-caps;
+  text-align: justify;
+  word-spacing: -3.8pt;
+  line-height: 1.6;
+  font-weight: bold;
+  word-spacing: 10px;
+  height: 100%;
+  overflow: auto;
+}
+.ibiz-mpickup-view .pickupviewpanel .right .mpicker-select > div {
+  padding: 3px 10px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: initial;
+  cursor: pointer;
+  min-height: 28px;
+  border: 1px solid #e9e9e9;
+  margin: 4px 4px;
+  transition: all 0.3s;
+}
+.ibiz-mpickup-view .pickupviewpanel .right .mpicker-select > div:hover {
+  background: #ecf6fd;
+}
+.ibiz-mpickup-view .pickupviewpanel .right .mpicker-select > .select {
+  color: #108ee9;
+  background: #ecf6fd;
 }
 .ibiz-mpickup-view .pickupviewpanel .center {
   width: 100%;
