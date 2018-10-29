@@ -69,10 +69,21 @@
   display: flex;
   justify-content: end;
 }
+.ibiz-mpickup-view .pickupviewpanel .translate-buttons {
+  width: 80px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.ibiz-mpickup-view .pickupviewpanel .translate-buttons button {
+  margin-bottom: 5px;
+}
 .ibiz-mpickup-view .pickupviewpanel .left,
 .ibiz-mpickup-view .pickupviewpanel .right {
-  width: 340px;
-  height: 100%;
+  width: 300px;
+}
+.ibiz-mpickup-view .pickupviewpanel .right {
+  border: 1px solid #e9e9e9;
 }
 .ibiz-mpickup-view .pickupviewpanel .center {
   width: 100%;

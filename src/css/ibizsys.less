@@ -86,13 +86,24 @@
     .pickupviewpanel {
         display: flex;
         justify-content: end;
+        .translate-buttons {
+            width: 80px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            button {
+                margin-bottom: 5px;
+            }
+        }
         .left, .right {
-            width: 340px;
-            height: 100%;
+            width: 300px;
+        }
+        .right {
+            border: 1px solid #e9e9e9;
         }
         .center{
             width: 100%;
-          }
+        }
     }
 }
 /***    END:多项选择视图    ***/
