@@ -71,6 +71,8 @@ gulp.task('concatibizsys', function () {
         'dist/app/ibiz-mpickup-view-controller.js',
         'dist/app/ibiz-tree-exp-view-controller.js',
         'dist/app/ibiz-exp-view-controller.js',
+        'dist/app/ibiz-tree-view-controller.js',
+        'dist/app/ibiz-pickup-tree-view-controller.js',
         'dist/app/ibiz-wf-exp-view-controller.js',
         'dist/app/ibiz-wf-edit-view-controller.js',
         'dist/app/ibiz-wf-start-view-controller.js',
