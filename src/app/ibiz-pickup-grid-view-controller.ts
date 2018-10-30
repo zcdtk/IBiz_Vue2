@@ -6,72 +6,68 @@
  */
 class IBizPickupGridViewController extends IBizGridViewController {
 
-    // /**
-    //  * 父数据
-    //  *
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Input()
-    // set parentData(parentData: any) {
-    //     if (parentData) {
-    //         this.setParentData(parentData);
-    //         this.onRefresh();
-    //     }
-    // }
+    /**
+     * 父数据  <Input>
+     *
+     * @private
+     * @type {*}
+     * @memberof IBizPickupGridViewController
+     */
+    private parentData: any = null;
 
-    // /**
-    //  * 是否支持多项数据选择
-    //  * 
-    //  * @type {boolean}
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Input()
-    // multiselect: boolean;
+    /**
+     * 是否支持多项数据选择  <Input>
+     *
+     * @private
+     * @type {boolean}
+     * @memberof IBizPickupGridViewController
+     */
+    private multiselect: boolean = true;
 
-    // /**
-    //  * 当前选择数据
-    //  * 
-    //  * @type {*}
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Input()
-    // currentValue: any;
+    /**
+     *  当前选择数据 <Input>
+     *
+     * @private
+     * @type {*}
+     * @memberof IBizPickupGridViewController
+     */
+    private currentValue: any = null;
 
-    // /**
-    //  * 删除数据
-    //  * 
-    //  * @type {*}
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Input()
-    // deleteData: any;
+    /**
+     * 删除数据 <Input>
+     *
+     * @private
+     * @type {*}
+     * @memberof IBizPickupGridViewController
+     */
+    private deleteData: any = null;
 
-    // /**
-    //  * 数据选中事件，向外输出处理
-    //  * 
-    //  * @type {EventEmitter<any>}
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Output()
-    // selectionChange: EventEmitter<any> = new EventEmitter();
+    /**
+     * 数据选中事件 <Output>
+     *
+     * @private
+     * @type {string}
+     * @memberof IBizPickupGridViewController
+     */
+    private selectionChange: string = 'selectionChange';
 
-    // /**
-    //  * 行数据激活事件，向外输出处理
-    //  *
-    //  * @type {EventEmitter<any>}
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Output()
-    // dataActivated: EventEmitter<any> = new EventEmitter();
+    /**
+     * 行数据激活事件 <Output>
+     *
+     * @private
+     * @type {string}
+     * @memberof IBizPickupGridViewController
+     */
+    private dataActivated: string = 'dataActivated';
 
-    // /**
-    //  * 多数据部件加载所有数据
-    //  * 
-    //  * @type {EventEmitter<any>}
-    //  * @memberof IBizPickupGridViewController
-    //  */
-    // @Output()
-    // allData: EventEmitter<any> = new EventEmitter();
+    /**
+     * 多数据部件加载所有数据 <Output>
+     *
+     * @private 
+     * @type {string}
+     * @memberof IBizPickupGridViewController
+     */
+    private allData: string = 'allData';
 
     /**
      * Creates an instance of IBizPickupGridViewController.
@@ -85,6 +81,27 @@ class IBizPickupGridViewController extends IBizGridViewController {
     }
 
     /**
+     * 解析视图参数，初始化调用
+     *
+     * @memberof IBizPickupGridViewController
+     */
+    public parseViewParams():void {
+        super.parseViewParams();
+        if (this.$vue.parentData) {
+            this.parentData = this.$vue.parentData;
+        }
+        if (this.$vue.multiselect) {
+            this.multiselect = this.$vue.multiselect;
+        }
+        if (this.$vue.currentValue) {
+            this.currentValue = this.$vue.currentValue;
+        }
+        if (this.$vue.deleteData) {
+            this.deleteData = this.$vue.deleteData;
+        }
+    }
+
+    /**
      * 部件初始化完成
      * 
      * @param {*} opt 
@@ -93,9 +110,10 @@ class IBizPickupGridViewController extends IBizGridViewController {
     public onStoreLoad(opt: any): void {
         super.onStoreLoad(opt);
 
-        // if (this.multiselect && Array.isArray(opt)) {
-        //     this.allData.emit(opt);
-        // }
+        if (this.multiselect && Array.isArray(opt)) {
+            // this.allData.emit(opt);
+            this.$vue.$emit(this.allData, opt);
+        }
     }
 
     /**
@@ -107,9 +125,9 @@ class IBizPickupGridViewController extends IBizGridViewController {
         super.onInited();
 
         const grid: any = this.getGrid();
-        // if (grid) {
-        //     grid.setMultiSelect(this.multiselect);
-        // }
+        if (grid) {
+            grid.setMultiSelect(this.multiselect);
+        }
     }
 
     /**
@@ -130,7 +148,7 @@ class IBizPickupGridViewController extends IBizGridViewController {
      */
     public onSelectionChange(selection: Array<any>): void {
         // this.selectionChange.emit(selection);
-        this.$vue.$emit('selection-change', selection);
+        this.$vue.$emit(this.selectionChange, selection);
     }
 
     /**
@@ -146,7 +164,7 @@ class IBizPickupGridViewController extends IBizGridViewController {
             return;
         }
         // this.dataActivated.emit([data]);
-        this.$vue.$emit('data-activated', [data]);
+        this.$vue.$emit(this.dataActivated, [data]);
     }
 }
 

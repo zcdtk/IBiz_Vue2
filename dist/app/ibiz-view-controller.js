@@ -814,9 +814,8 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.regCodeLists = function () {
     };
     /**
-     * 解析url参数，初始化调用
+     * 解析视图参数，初始化调用
      *
-     * @private
      * @memberof IBizViewController
      */
     IBizViewController.prototype.parseViewParams = function () {

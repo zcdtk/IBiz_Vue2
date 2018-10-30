@@ -893,12 +893,11 @@ class IBizViewController extends IBizObject {
     }
 
     /**
-     * 解析url参数，初始化调用
-     * 
-     * @private
+     * 解析视图参数，初始化调用
+     *
      * @memberof IBizViewController
      */
-    private parseViewParams(): void {
+    public parseViewParams(): void {
         this.addViewParam(this.$route.query);
         if (this.$vue.params) {
             this.addViewParam(this.$vue.params);
