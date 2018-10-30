@@ -7,6 +7,14 @@
 class IBizEditView3Controller extends IBizEditViewController {
 
     /**
+     * 关系分页禁用
+     *
+     * @type {boolean}
+     * @memberof IBizEditView3Controller
+     */
+    public drTabDisabled: boolean = false;
+
+    /**
      * Creates an instance of IBizEditView3Controller.
      * 创建 IBizEditView3Controller 实例
      * 
@@ -41,15 +49,18 @@ class IBizEditView3Controller extends IBizEditViewController {
     public onFormLoaded(): void {
         super.onFormLoaded();
 
+        this.setDrTabState();
+        
         const drtab: any = this.getDRTab();
+        const form = this.getForm();
+        const _field = form.findField('srfkey');
+        const _srfuf = form.findField('srfuf');
+
         if (this.isHideEditForm()) {
-            const form = this.getForm();
-            const _field = form.findField('srfkey');
-            const _srfuf = form.findField('srfuf');
             if (!_field) {
                 return;
             }
-            if (Object.is(_srfuf.getValue(), 0) && Object.is(_field.getValue(), '')) {
+            if (Object.is(_srfuf.getValue(), '0') && Object.is(_field.getValue(), '')) {
                 this.iBizNotification.warning('警告', '新建模式，表单主数据不存在');
                 if (drtab) {
                     drtab.setActiveTab(0);
@@ -58,7 +69,6 @@ class IBizEditView3Controller extends IBizEditViewController {
             }
         }
 
-        let form = this.getForm();
         if (form.findField('srfkey') && !Object.is(form.findField('srfkey').getValue(), '')) {
             const index: number = this.getDRTabIndex();
             if (drtab) {
@@ -66,6 +76,16 @@ class IBizEditView3Controller extends IBizEditViewController {
             }
 
         }
+    }
+
+    /**
+     * 表单保存完成
+     *
+     * @memberof IBizEditView3Controller
+     */
+    public onFormSaved(): void {
+        super.onFormSaved();
+        this.setDrTabState();
     }
 
     /**
@@ -166,12 +186,29 @@ class IBizEditView3Controller extends IBizEditViewController {
         return this.getControl('drtab');
     }
 
+    /**
+     * 获取关系分页下标
+     *
+     * @private
+     * @returns {number}
+     * @memberof IBizEditView3Controller
+     */
     private getDRTabIndex(): number {
         let _tab: number = 0;
-
-
         return _tab;
+    }
 
-
+    /**
+     * 设置关系分页状态
+     *
+     * @private
+     * @memberof IBizEditView3Controller
+     */
+    private setDrTabState(): void {
+        const form = this.getForm();
+        const _field = form.findField('srfkey');
+        const _srfuf = form.findField('srfuf');
+        const state: boolean = Object.is(_srfuf.getValue(), '0') && Object.is(_field.getValue(), '');
+        this.drTabDisabled = state ? true : false;
     }
 }

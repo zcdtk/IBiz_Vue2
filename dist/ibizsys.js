@@ -11100,7 +11100,15 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
      */
     function IBizEditView3Controller(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 关系分页禁用
+         *
+         * @type {boolean}
+         * @memberof IBizEditView3Controller
+         */
+        _this.drTabDisabled = false;
+        return _this;
     }
     /**
      * 视图部件初始化，注册所有事件
@@ -11125,15 +11133,16 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
      */
     IBizEditView3Controller.prototype.onFormLoaded = function () {
         _super.prototype.onFormLoaded.call(this);
+        this.setDrTabState();
         var drtab = this.getDRTab();
+        var form = this.getForm();
+        var _field = form.findField('srfkey');
+        var _srfuf = form.findField('srfuf');
         if (this.isHideEditForm()) {
-            var form_1 = this.getForm();
-            var _field = form_1.findField('srfkey');
-            var _srfuf = form_1.findField('srfuf');
             if (!_field) {
                 return;
             }
-            if (Object.is(_srfuf.getValue(), 0) && Object.is(_field.getValue(), '')) {
+            if (Object.is(_srfuf.getValue(), '0') && Object.is(_field.getValue(), '')) {
                 this.iBizNotification.warning('警告', '新建模式，表单主数据不存在');
                 if (drtab) {
                     drtab.setActiveTab(0);
@@ -11141,13 +11150,21 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
                 return;
             }
         }
-        var form = this.getForm();
         if (form.findField('srfkey') && !Object.is(form.findField('srfkey').getValue(), '')) {
             var index = this.getDRTabIndex();
             if (drtab) {
                 drtab.setActiveTab(index);
             }
         }
+    };
+    /**
+     * 表单保存完成
+     *
+     * @memberof IBizEditView3Controller
+     */
+    IBizEditView3Controller.prototype.onFormSaved = function () {
+        _super.prototype.onFormSaved.call(this);
+        this.setDrTabState();
     };
     /**
      * 是否隐藏编辑表单
@@ -11242,9 +11259,29 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
     IBizEditView3Controller.prototype.getDRTab = function () {
         return this.getControl('drtab');
     };
+    /**
+     * 获取关系分页下标
+     *
+     * @private
+     * @returns {number}
+     * @memberof IBizEditView3Controller
+     */
     IBizEditView3Controller.prototype.getDRTabIndex = function () {
         var _tab = 0;
         return _tab;
+    };
+    /**
+     * 设置关系分页状态
+     *
+     * @private
+     * @memberof IBizEditView3Controller
+     */
+    IBizEditView3Controller.prototype.setDrTabState = function () {
+        var form = this.getForm();
+        var _field = form.findField('srfkey');
+        var _srfuf = form.findField('srfuf');
+        var state = Object.is(_srfuf.getValue(), '0') && Object.is(_field.getValue(), '');
+        this.drTabDisabled = state ? true : false;
     };
     return IBizEditView3Controller;
 }(IBizEditViewController));
