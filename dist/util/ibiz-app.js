@@ -15,10 +15,10 @@ var IBizApp = /** @class */ (function () {
         /**
          * 当前窗口所有视图控制器
          *
-         * @type {*}
+         * @type {Array<any>}
          * @memberof IBizApp
          */
-        this.viewControllers = {};
+        this.viewControllers = [];
         /**
          * 父窗口window对象
          *
@@ -43,7 +43,7 @@ var IBizApp = /** @class */ (function () {
      * @memberof IBizApp
      */
     IBizApp.prototype.regSRFController = function (ctrler) {
-        this.viewControllers[ctrler.getId()] = ctrler;
+        this.viewControllers.push(ctrler);
     };
     /**
      * 注销视图控制器
@@ -53,44 +53,58 @@ var IBizApp = /** @class */ (function () {
      */
     IBizApp.prototype.unRegSRFController = function (ctrler) {
         var id = ctrler.getId();
-        // ctrler.quit();
-        this.viewControllers[id] = null;
-        delete this.viewControllers[id];
+        var viewUsage = ctrler.getViewUsage();
+        var index = this.viewControllers.findIndex(function (ctrl) { return Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()); });
+        if (index !== -1) {
+            this.viewControllers[index] = null;
+            this.viewControllers.splice(index, 1);
+        }
     };
     /**
      * 注销视图控制器
      *
-     * @param {string} id
+     * @param {string} id 视图id
+     * @param {number} viewUsage 视图使用模式
      * @memberof IBizApp
      */
-    IBizApp.prototype.unRegSRFController2 = function (id) {
-        this.viewControllers[id] = null;
-        delete this.viewControllers[id];
+    IBizApp.prototype.unRegSRFController2 = function (id, viewUsage) {
+        var index = this.viewControllers.findIndex(function (ctrl) { return Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()); });
+        if (index !== -1) {
+            this.viewControllers[index] = null;
+            this.viewControllers.splice(index, 1);
+        }
     };
     /**
      * 获取视图控制器
      *
-     * @param {string} id
+     * @param {string} id 视图id
+     * @param {number} viewUsage 视图使用模式
      * @returns {*}
      * @memberof IBizApp
      */
-    IBizApp.prototype.getSRFController = function (id) {
-        return this.viewControllers[id];
+    IBizApp.prototype.getSRFController = function (id, viewUsage) {
+        var viewController = null;
+        var index = this.viewControllers.findIndex(function (ctrl) { return Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()); });
+        if (index !== -1) {
+            viewController = this.viewControllers[index];
+        }
+        return viewController;
     };
     /**
      * 获取父视图控制器
      *
-     * @param {string} id 视图控制器id
+     * @param {string} id 视图id
+     * @param {number} viewUsage 视图使用模式
      * @returns {*}
      * @memberof IBizApp
      */
-    IBizApp.prototype.getParentController = function (id) {
-        var ctrl_ids = Object.keys(this.viewControllers);
-        var index = ctrl_ids.findIndex(function (ctrl_id) { return Object.is(id, ctrl_id); });
-        if (index > 0) {
-            return this.viewControllers[ctrl_ids[index - 1]];
+    IBizApp.prototype.getParentController = function (id, viewUsage) {
+        var viewController = null;
+        var index = this.viewControllers.findIndex(function (ctrl) { return Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()); });
+        if (index !== -1) {
+            viewController = this.viewControllers[index - 1];
         }
-        return null;
+        return viewController;
     };
     /**
      * 注册父窗口window 对象

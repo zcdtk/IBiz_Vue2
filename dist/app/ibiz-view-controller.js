@@ -385,7 +385,7 @@ var IBizViewController = /** @class */ (function (_super) {
         var PController = null;
         ;
         if (iBizApp) {
-            PController = iBizApp.getParentController(this.getId());
+            PController = iBizApp.getParentController(this.getId(), this.getViewUsage());
         }
         return PController;
     };

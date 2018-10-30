@@ -8,10 +8,10 @@ class IBizApp {
     /**
      * 当前窗口所有视图控制器
      *
-     * @type {*}
+     * @type {Array<any>}
      * @memberof IBizApp
      */
-    public viewControllers: any = {};
+    public viewControllers: Array<any> = [];
 
     /**
      * 父窗口window对象
@@ -45,7 +45,7 @@ class IBizApp {
      * @memberof IBizApp
      */
     public regSRFController(ctrler: any): void {
-        this.viewControllers[ctrler.getId()] = ctrler;
+        this.viewControllers.push(ctrler);
     }
 
     /**
@@ -55,48 +55,62 @@ class IBizApp {
      * @memberof IBizApp
      */
     public unRegSRFController(ctrler: any): void {
-        var id = ctrler.getId();
-        // ctrler.quit();
-        this.viewControllers[id] = null;
-        delete this.viewControllers[id];
+        const id = ctrler.getId();
+        const viewUsage = ctrler.getViewUsage();
+        const index = this.viewControllers.findIndex((ctrl: any) => Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()));
+        if (index !== -1) {
+            this.viewControllers[index] = null;
+            this.viewControllers.splice(index, 1);
+        }
     }
 
     /**
      * 注销视图控制器
      *
-     * @param {string} id
+     * @param {string} id 视图id
+     * @param {number} viewUsage 视图使用模式
      * @memberof IBizApp
      */
-    public unRegSRFController2(id: string): void {
-        this.viewControllers[id] = null;
-        delete this.viewControllers[id];
+    public unRegSRFController2(id: string, viewUsage: number): void {
+        const index = this.viewControllers.findIndex((ctrl: any) => Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()));
+        if (index !== -1) {
+            this.viewControllers[index] = null;
+            this.viewControllers.splice(index, 1);
+        }
     }
 
     /**
      * 获取视图控制器
      *
-     * @param {string} id
+     * @param {string} id 视图id
+     * @param {number} viewUsage 视图使用模式
      * @returns {*}
      * @memberof IBizApp
      */
-    public getSRFController(id: string): any {
-        return this.viewControllers[id];
+    public getSRFController(id: string, viewUsage: number): any {
+        let viewController = null;
+        const index = this.viewControllers.findIndex((ctrl: any) => Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()));
+        if (index !== -1) {
+            viewController = this.viewControllers[index];
+        }
+        return viewController;
     }
 
     /**
      * 获取父视图控制器
      *
-     * @param {string} id 视图控制器id
+     * @param {string} id 视图id
+     * @param {number} viewUsage 视图使用模式
      * @returns {*}
      * @memberof IBizApp
      */
-    public getParentController(id: string): any {
-        const ctrl_ids: Array<any> = Object.keys(this.viewControllers);
-        let index = ctrl_ids.findIndex(ctrl_id => Object.is(id, ctrl_id));
-        if (index > 0) {
-            return this.viewControllers[ctrl_ids[index - 1]];
+    public getParentController(id: string, viewUsage: number): any {
+        let viewController = null;
+        const index = this.viewControllers.findIndex((ctrl: any) => Object.is(id, ctrl.getId()) && Object.is(viewUsage, ctrl.getViewUsage()));
+        if (index !== -1) {
+            viewController = this.viewControllers[index - 1];
         }
-        return null;
+        return viewController;
     }
 
     /**
@@ -135,7 +149,7 @@ class IBizApp {
      * @param {*} data
      * @memberof IBizApp
      */
-    public fireRefreshView(data: any = {}): void { 
+    public fireRefreshView(data: any = {}): void {
         this.subject.next(data);
     }
 }

@@ -415,7 +415,7 @@ class IBizViewController extends IBizObject {
         let iBizApp: IBizApp = win.getIBizApp();
         let PController = null;;
         if (iBizApp) {
-            PController = iBizApp.getParentController(this.getId());
+            PController = iBizApp.getParentController(this.getId(), this.getViewUsage());
         }
         return PController;
     }
