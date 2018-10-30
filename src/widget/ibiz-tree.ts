@@ -151,7 +151,7 @@ class IBizTree extends IBizControl {
      */
     private loadChildren(node: any, resolve: any): void {
         let param: any = {
-            srfnodeid: node.id ? node.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
+            srfnodeid: node.data && node.data.id ? node.data.id : '#', srfaction: 'fetch', srfrender: 'JSTREE',
             srfviewparam: JSON.stringify(this.getViewController().getViewParam()),
             srfctrlid: this.getName()
         };
