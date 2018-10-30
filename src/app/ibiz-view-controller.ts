@@ -133,7 +133,16 @@ class IBizViewController extends IBizObject {
      * @type {*}
      * @memberof IBizViewController
      */
-    public $route: any = null;;
+    public $route: any = null;
+
+    /**
+     * 视图使用模式
+     *
+     * @private
+     * @type {number}
+     * @memberof IBizViewController
+     */
+    private viewUsage: number = 0;
 
     /**
      *Creates an instance of IBizViewController.
@@ -157,6 +166,9 @@ class IBizViewController extends IBizObject {
         this.$route = vue.$route;
         this.$router = vue.$router;
         this.$vue = vue;
+        if (this.$vue.viewUsage !== null || this.$vue.viewUsage !== undefined) {
+            this.setViewUsage(this.$vue.viewUsage);
+        }
         this.parseViewParams();
         this.onInit();
         this.onInited();
@@ -1026,5 +1038,57 @@ class IBizViewController extends IBizObject {
         _this.$vue.$emit('dataChange', data);
     }
 
+    /**
+     * 设置视图的使用模式
+     *
+     * @private
+     * @param {number} viewUsage
+     * @memberof IBizViewController
+     */
+    private setViewUsage(viewUsage: number): void {
+        this.viewUsage = viewUsage;
+    }
+
+    /**
+     * 获取视图的使用模式
+     *
+     * @returns {number}
+     * @memberof IBizViewController
+     */
+    public getViewUsage(): number {
+        return this.viewUsage;
+    }
+
+    /**
+     * 视图初始化完成
+     *
+     * @static
+     * @memberof IBizViewController
+     */
     public static INITED = 'INITED';
+
+    /**
+     * 视图使用模式，默认
+     *
+     * @static
+     * @memberof IBizViewController
+     */
+    public static VIEWUSAGE_DEFAULT = 1;
+
+    /**
+     * 视图使用模式，模式弹出
+     *
+     * @static
+     * @memberof IBizViewController
+     */
+    public static VIEWUSAGE_MODAL = 2;
+
+    /**
+     * 视图使用模式，嵌入
+     *
+     * @static
+     * @memberof IBizViewController
+     */
+    public static VIEWUSAGE_EMBEDED = 4;
+
 }

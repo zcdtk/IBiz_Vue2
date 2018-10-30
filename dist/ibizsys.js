@@ -6839,10 +6839,17 @@ var IBizViewController = /** @class */ (function (_super) {
          * @memberof IBizViewController
          */
         _this_1.$route = null;
+        /**
+         * 视图使用模式
+         *
+         * @private
+         * @type {number}
+         * @memberof IBizViewController
+         */
+        _this_1.viewUsage = 0;
         _this_1.url = opts.url;
         return _this_1;
     }
-    ;
     ;
     /**
      * 初始化
@@ -6854,6 +6861,9 @@ var IBizViewController = /** @class */ (function (_super) {
         this.$route = vue.$route;
         this.$router = vue.$router;
         this.$vue = vue;
+        if (this.$vue.viewUsage !== null || this.$vue.viewUsage !== undefined) {
+            this.setViewUsage(this.$vue.viewUsage);
+        }
         this.parseViewParams();
         this.onInit();
         this.onInited();
@@ -7636,7 +7646,53 @@ var IBizViewController = /** @class */ (function (_super) {
         var _this = this;
         _this.$vue.$emit('dataChange', data);
     };
+    /**
+     * 设置视图的使用模式
+     *
+     * @private
+     * @param {number} viewUsage
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.setViewUsage = function (viewUsage) {
+        this.viewUsage = viewUsage;
+    };
+    /**
+     * 获取视图的使用模式
+     *
+     * @returns {number}
+     * @memberof IBizViewController
+     */
+    IBizViewController.prototype.getViewUsage = function () {
+        return this.viewUsage;
+    };
+    /**
+     * 视图初始化完成
+     *
+     * @static
+     * @memberof IBizViewController
+     */
     IBizViewController.INITED = 'INITED';
+    /**
+     * 视图使用模式，默认
+     *
+     * @static
+     * @memberof IBizViewController
+     */
+    IBizViewController.VIEWUSAGE_DEFAULT = 1;
+    /**
+     * 视图使用模式，模式弹出
+     *
+     * @static
+     * @memberof IBizViewController
+     */
+    IBizViewController.VIEWUSAGE_MODAL = 2;
+    /**
+     * 视图使用模式，嵌入
+     *
+     * @static
+     * @memberof IBizViewController
+     */
+    IBizViewController.VIEWUSAGE_EMBEDED = 4;
     return IBizViewController;
 }(IBizObject));
 
