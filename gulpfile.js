@@ -40,6 +40,7 @@ gulp.task('concatibizsys', function () {
         'dist/formitem/ibiz-form-raw-item.js',
         'dist/formitem/ibiz-form-tab-page.js',
         'dist/formitem/ibiz-form-tab-panel.js',
+        'dist/formitem/ibiz-form-button.js',
         // 部件
         'dist/widget/ibiz-control.js',
         'dist/widget/ibiz-app-menu.js',
