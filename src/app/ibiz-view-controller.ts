@@ -166,9 +166,7 @@ class IBizViewController extends IBizObject {
         this.$route = vue.$route;
         this.$router = vue.$router;
         this.$vue = vue;
-        if (this.$vue.viewUsage !== null || this.$vue.viewUsage !== undefined) {
-            this.setViewUsage(this.$vue.viewUsage);
-        }
+        this.setViewUsage(this.$vue.viewUsage);
         this.parseViewParams();
         this.onInit();
         this.onInited();
@@ -910,10 +908,15 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public parseViewParams(): void {
-        this.addViewParam(this.$route.query);
-        if (this.$vue.params) {
-            this.addViewParam(this.$vue.params);
+        let parsms: any = {};
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
+            Object.assign(parsms, this.$route.params);
+        } else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
+            Object.assign(parsms, this.$vue.params);
+        } else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_EMBEDED) {
+            Object.assign(parsms, this.$vue.params);
         }
+        this.addViewParam(parsms);
     }
 
     /**
@@ -1042,10 +1045,10 @@ class IBizViewController extends IBizObject {
      * 设置视图的使用模式
      *
      * @private
-     * @param {number} viewUsage
+     * @param {number} [viewUsage=0]
      * @memberof IBizViewController
      */
-    private setViewUsage(viewUsage: number): void {
+    private setViewUsage(viewUsage: number = 0): void {
         this.viewUsage = viewUsage;
     }
 

@@ -6861,9 +6861,7 @@ var IBizViewController = /** @class */ (function (_super) {
         this.$route = vue.$route;
         this.$router = vue.$router;
         this.$vue = vue;
-        if (this.$vue.viewUsage !== null || this.$vue.viewUsage !== undefined) {
-            this.setViewUsage(this.$vue.viewUsage);
-        }
+        this.setViewUsage(this.$vue.viewUsage);
         this.parseViewParams();
         this.onInit();
         this.onInited();
@@ -7526,10 +7524,17 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.parseViewParams = function () {
-        this.addViewParam(this.$route.query);
-        if (this.$vue.params) {
-            this.addViewParam(this.$vue.params);
+        var parsms = {};
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
+            Object.assign(parsms, this.$route.params);
         }
+        else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
+            Object.assign(parsms, this.$vue.params);
+        }
+        else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_EMBEDED) {
+            Object.assign(parsms, this.$vue.params);
+        }
+        this.addViewParam(parsms);
     };
     /**
      * 添加视图参数, 处理视图刷新操作
@@ -7650,10 +7655,11 @@ var IBizViewController = /** @class */ (function (_super) {
      * 设置视图的使用模式
      *
      * @private
-     * @param {number} viewUsage
+     * @param {number} [viewUsage=0]
      * @memberof IBizViewController
      */
     IBizViewController.prototype.setViewUsage = function (viewUsage) {
+        if (viewUsage === void 0) { viewUsage = 0; }
         this.viewUsage = viewUsage;
     };
     /**
