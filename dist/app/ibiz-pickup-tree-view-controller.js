@@ -21,38 +21,6 @@ var __extends = (this && this.__extends) || (function () {
 var IBizPickupTreeViewController = /** @class */ (function (_super) {
     __extends(IBizPickupTreeViewController, _super);
     /**
-     * 是否支持多项数据选择
-     *
-     * @type {boolean}
-     * @memberof IBizPickupTreeViewController
-     */
-    // @Input()
-    // multiselect: boolean;
-    /**
-     * 多数据部件加载所有数据
-     *
-     * @type {EventEmitter<any>}
-     * @memberof IBizPickupTreeViewController
-     */
-    // @Output()
-    // allData: EventEmitter<any> = new EventEmitter();
-    /**
-     * 数据选中事件，向外输出处理
-     *
-     * @type {EventEmitter<any>}
-     * @memberof IBizPickupTreeViewController
-     */
-    // @Output()
-    // selectionChange: EventEmitter<any> = new EventEmitter();
-    /**
-     * 数据激活事件，向外输出处理
-     *
-     * @type {EventEmitter<any>}
-     * @memberof IBizPickupTreeViewController
-     */
-    // @Output()
-    // dataActivated: EventEmitter<any> = new EventEmitter();
-    /**
      * Creates an instance of IBizPickupTreeViewController.
      * 创建 IBizPickupTreeViewController 实例
      *
@@ -61,7 +29,40 @@ var IBizPickupTreeViewController = /** @class */ (function (_super) {
      */
     function IBizPickupTreeViewController(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 是否支持多项数据选择 <Input>
+         *
+         * @private
+         * @type {boolean}
+         * @memberof IBizPickupTreeViewController
+         */
+        _this.multiselect = true;
+        /**
+         * 多数据部件加载所有数据  <Output>
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizPickupTreeViewController
+         */
+        _this.allData = 'allData';
+        /**
+         * 数据选中事件  <Output>
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizPickupTreeViewController
+         */
+        _this.selectionChange = 'selectionChange';
+        /**
+         * 数据激活事件  <Output>
+         *
+         * @private
+         * @type {string}
+         * @memberof IBizPickupTreeViewController
+         */
+        _this.dataActivated = 'dataActivated';
+        return _this;
     }
     /**
      * 获取树部件
@@ -89,8 +90,7 @@ var IBizPickupTreeViewController = /** @class */ (function (_super) {
      */
     IBizPickupTreeViewController.prototype.onSelectionChange = function (datas) {
         _super.prototype.onSelectionChange.call(this, datas);
-        // this.selectionChange.emit(datas);
-        this.$vue.$emit('selection-change', datas);
+        this.$vue.$emit(this.selectionChange, datas);
     };
     /**
      * 树部件数据激活
@@ -100,8 +100,7 @@ var IBizPickupTreeViewController = /** @class */ (function (_super) {
      */
     IBizPickupTreeViewController.prototype.onDataActivated = function (datas) {
         _super.prototype.onDataActivated.call(this, datas);
-        // this.dataActivated.emit(datas);
-        this.$vue.$emit('data-activated', datas);
+        this.$vue.$emit(this.dataActivated, datas);
     };
     /**
      * 树部件数据加载完成
@@ -112,7 +111,7 @@ var IBizPickupTreeViewController = /** @class */ (function (_super) {
     IBizPickupTreeViewController.prototype.onTreeLoad = function (datas) {
         _super.prototype.onTreeLoad.call(this, datas);
         var _datas = this.doTreeDatas(datas);
-        // this.allData.emit(_datas);
+        this.$vue.$emit(this.allData, _datas);
     };
     /**
      * 处理所有树数据

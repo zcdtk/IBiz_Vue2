@@ -111,7 +111,6 @@ class IBizPickupGridViewController extends IBizGridViewController {
         super.onStoreLoad(opt);
 
         if (this.multiselect && Array.isArray(opt)) {
-            // this.allData.emit(opt);
             this.$vue.$emit(this.allData, opt);
         }
     }
@@ -147,7 +146,6 @@ class IBizPickupGridViewController extends IBizGridViewController {
      * @memberof IBizPickupGridViewController
      */
     public onSelectionChange(selection: Array<any>): void {
-        // this.selectionChange.emit(selection);
         this.$vue.$emit(this.selectionChange, selection);
     }
 
@@ -163,7 +161,6 @@ class IBizPickupGridViewController extends IBizGridViewController {
         if (Object.keys(data).length === 0) {
             return;
         }
-        // this.dataActivated.emit([data]);
         this.$vue.$emit(this.dataActivated, [data]);
     }
 }

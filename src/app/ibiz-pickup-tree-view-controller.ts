@@ -7,40 +7,40 @@
 class IBizPickupTreeViewController extends IBizTreeViewController {
 
     /**
-     * 是否支持多项数据选择
-     * 
+     * 是否支持多项数据选择 <Input>
+     *
+     * @private
      * @type {boolean}
      * @memberof IBizPickupTreeViewController
      */
-    // @Input()
-    // multiselect: boolean;
+    private multiselect: boolean = true;
 
     /**
-     * 多数据部件加载所有数据
-     * 
-     * @type {EventEmitter<any>}
-     * @memberof IBizPickupTreeViewController
-     */
-    // @Output()
-    // allData: EventEmitter<any> = new EventEmitter();
-
-    /**
-     * 数据选中事件，向外输出处理
-     * 
-     * @type {EventEmitter<any>}
-     * @memberof IBizPickupTreeViewController
-     */
-    // @Output()
-    // selectionChange: EventEmitter<any> = new EventEmitter();
-
-    /**
-     * 数据激活事件，向外输出处理
+     * 多数据部件加载所有数据  <Output>
      *
-     * @type {EventEmitter<any>}
+     * @private
+     * @type {string}
      * @memberof IBizPickupTreeViewController
      */
-    // @Output()
-    // dataActivated: EventEmitter<any> = new EventEmitter();
+    private allData: string = 'allData';
+
+    /**
+     * 数据选中事件  <Output>
+     *
+     * @private
+     * @type {string}
+     * @memberof IBizPickupTreeViewController
+     */
+    private selectionChange: string = 'selectionChange';
+
+    /**
+     * 数据激活事件  <Output>
+     *
+     * @private
+     * @type {string}
+     * @memberof IBizPickupTreeViewController
+     */
+    private dataActivated:string = 'dataActivated';
 
     /**
      * Creates an instance of IBizPickupTreeViewController.
@@ -81,8 +81,7 @@ class IBizPickupTreeViewController extends IBizTreeViewController {
      */
     public onSelectionChange(datas: Array<any>): void {
         super.onSelectionChange(datas);
-        // this.selectionChange.emit(datas);
-        this.$vue.$emit('selection-change', datas);
+        this.$vue.$emit(this.selectionChange, datas);
     }
 
     /**
@@ -93,8 +92,7 @@ class IBizPickupTreeViewController extends IBizTreeViewController {
      */
     public onDataActivated(datas: Array<any>): void {
         super.onDataActivated(datas);
-        // this.dataActivated.emit(datas);
-        this.$vue.$emit('data-activated', datas);
+        this.$vue.$emit(this.dataActivated, datas);
     }
 
     /**
@@ -106,7 +104,7 @@ class IBizPickupTreeViewController extends IBizTreeViewController {
     public onTreeLoad(datas: Array<any>): void {
         super.onTreeLoad(datas);
         const _datas: Array<any> = this.doTreeDatas(datas);
-        // this.allData.emit(_datas);
+        this.$vue.$emit(this.allData, _datas);
     }
 
     /**

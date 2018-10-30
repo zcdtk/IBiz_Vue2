@@ -117,7 +117,6 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
     IBizPickupGridViewController.prototype.onStoreLoad = function (opt) {
         _super.prototype.onStoreLoad.call(this, opt);
         if (this.multiselect && Array.isArray(opt)) {
-            // this.allData.emit(opt);
             this.$vue.$emit(this.allData, opt);
         }
     };
@@ -149,7 +148,6 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
      * @memberof IBizPickupGridViewController
      */
     IBizPickupGridViewController.prototype.onSelectionChange = function (selection) {
-        // this.selectionChange.emit(selection);
         this.$vue.$emit(this.selectionChange, selection);
     };
     /**
@@ -165,7 +163,6 @@ var IBizPickupGridViewController = /** @class */ (function (_super) {
         if (Object.keys(data).length === 0) {
             return;
         }
-        // this.dataActivated.emit([data]);
         this.$vue.$emit(this.dataActivated, [data]);
     };
     return IBizPickupGridViewController;
