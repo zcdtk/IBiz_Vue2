@@ -13230,17 +13230,30 @@ Vue.component('ibiz-modal', {
 
 "use strict";
 Vue.component('ibiz-picker', {
-    template: "\n    <i-input style=\"width: 100%;\" :icon=\"'ios-search'\" v-model=\"field.value\" :disabled=\"field.disabled\" @on-click=\"openView\">\n    </i-input>\n    ",
+    template: "\n    <el-autocomplete value-key=\"text\" :disabled=\"field.disabled\" v-model=\"value\" size=\"small\" :fetch-suggestions=\"onSearch\" @select=\"onSelect\" @focus=\"onFocus\">\n        <template slot=\"suffix\">\n            <i class=\"el-icon-search\"  @click=\"openView\"></i>\n        </template>\n    </el-autocomplete>\n    ",
     props: ['field', 'name', 'modalviewname'],
     data: function () {
-        var data = {};
+        var data = {
+            http: new IBizHttp(),
+            value: ''
+        };
         Object.assign(data, this.field.editorParams);
         Object.assign(data, { form: this.field.getForm() });
         return data;
     },
     mounted: function () {
     },
+    watch: {
+        'field.value': function (newVal, oldVal) {
+            this.value = newVal;
+        }
+    },
     methods: {
+        onFocus: function () {
+            if (this.field && this.value != this.field.value) {
+                this.value = this.field.value;
+            }
+        },
         //  填充条件
         fillPickupCondition: function (arg) {
             if (this.form) {
@@ -13277,8 +13290,40 @@ Vue.component('ibiz-picker', {
                 return false;
             }
         },
+        onSearch: function (query, func) {
+            if (this.url) {
+                var param = {
+                    srfaction: 'itemfetch',
+                    query: query
+                };
+                var bcancel = this.fillPickupCondition(param);
+                if (!bcancel) {
+                    this.$Notice.warning({ title: '异常', desc: '条件不满足' });
+                    return;
+                }
+                this.http.post(this.url, param).subscribe(function (data) {
+                    console.log(data);
+                    func(data.items);
+                });
+            }
+        },
+        onSelect: function (item) {
+            if (this.form) {
+                var valueField = this.form.findField(this.valueItem);
+                if (valueField) {
+                    valueField.setValue(item.value);
+                }
+                var itemField = this.form.findField(this.name);
+                if (itemField) {
+                    itemField.setValue(item.text);
+                }
+            }
+        },
         openView: function () {
             var _this = this;
+            if (this.field && this.field.disabled) {
+                return;
+            }
             var view = { viewparam: {} };
             var viewController;
             if (this.form) {

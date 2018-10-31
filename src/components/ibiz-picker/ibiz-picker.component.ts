@@ -1,18 +1,34 @@
 Vue.component('ibiz-picker', {
     template: `
-    <i-input style="width: 100%;" :icon="'ios-search'" v-model="field.value" :disabled="field.disabled" @on-click="openView">
-    </i-input>
+    <el-autocomplete value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onSelect" @focus="onFocus">
+        <template slot="suffix">
+            <i class="el-icon-search"  @click="openView"></i>
+        </template>
+    </el-autocomplete>
     `,
     props: ['field', 'name', 'modalviewname'],
     data: function () {
-        let data: any = {};
+        let data: any = {
+            http: new IBizHttp(),
+            value: ''
+        };
         Object.assign(data, this.field.editorParams);
         Object.assign(data, { form: this.field.getForm() })
         return data;
     },
     mounted: function () {
     },
+    watch: {
+        'field.value': function(newVal, oldVal) {
+            this.value = newVal;
+        }
+    },
     methods: {
+        onFocus() {
+            if(this.field && this.value != this.field.value) {
+                this.value = this.field.value;
+            }
+        },
         //  填充条件
         fillPickupCondition(arg: any): boolean {
             if (this.form) {
@@ -48,7 +64,39 @@ Vue.component('ibiz-picker', {
                 return false;
             }
         },
+        onSearch(query, func) {
+            if(this.url) {
+                let param: any = {
+                    srfaction: 'itemfetch',
+                    query: query
+                };
+                let bcancel = this.fillPickupCondition(param);
+                if (!bcancel) {
+                    this.$Notice.warning({title: '异常', desc: '条件不满足'});
+                    return;
+                }
+                this.http.post(this.url, param).subscribe((data) => {
+                    console.log(data);
+                    func(data.items);
+                })
+            }
+        },
+        onSelect(item) {
+            if (this.form) {
+                let valueField = this.form.findField(this.valueItem);
+                if (valueField) {
+                    valueField.setValue(item.value);
+                }
+                let itemField = this.form.findField(this.name);
+                if (itemField) {
+                    itemField.setValue(item.text);
+                }
+            }
+        },
         openView() {
+            if(this.field && this.field.disabled) {
+                return;
+            }
             let view = { viewparam: {} };
 
             let viewController: any;
