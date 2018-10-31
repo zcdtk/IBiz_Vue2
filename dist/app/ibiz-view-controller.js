@@ -143,6 +143,13 @@ var IBizViewController = /** @class */ (function (_super) {
          */
         _this_1.$route = null;
         /**
+         * 路由所在位置下标
+         *
+         * @type {number}
+         * @memberof IBizViewController
+         */
+        _this_1.route_index = -1;
+        /**
          * 视图使用模式
          *
          * @private
@@ -245,11 +252,17 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.onInited = function () {
+        var _this_1 = this;
         this.bInited = true;
         var win = window;
         var iBizApp = win.getIBizApp();
         if (iBizApp) {
             iBizApp.regSRFController(this);
+        }
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
+            var views = iBizApp.viewControllers;
+            var index = views.findIndex(function (view) { return Object.is(view.getId(), _this_1.getId()) && Object.is(view.getViewUsage(), _this_1.getViewUsage()); });
+            this.route_index = index;
         }
     };
     /**
@@ -891,7 +904,31 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openView = function (routeString, routeParam, queryParams) {
         if (routeParam === void 0) { routeParam = {}; }
-        this.$router.push({ name: routeString, query: routeParam });
+        var matched = this.$route.matched;
+        var route_arr = this.$route.fullPath.split('/');
+        var index = -2;
+        if (matched[this.route_index]) {
+            var name_1 = matched[this.route_index].name;
+            var _index = route_arr.findIndex(function (_name) { return Object.is(_name, name_1); });
+            index = _index + 1;
+            if (route_arr[_index]) {
+                index = index + 1;
+            }
+        }
+        if (matched[this.route_index + 1]) {
+            var nextName_1 = matched[this.route_index + 1].name;
+            var _index1 = route_arr.findIndex(function (_name) { return Object.is(_name, nextName_1); });
+            if (_index1 !== -1) {
+                index = _index1;
+            }
+        }
+        if (index > 0) {
+            var path_arr = route_arr.slice(0, index);
+            var path = path_arr.join('/') + "/" + routeString + "/" + JSON.stringify(routeParam);
+            console.log(path_arr);
+            this.$router.push({ path: path, query: queryParams });
+        }
+        // this.$router.push({ name: routeString, query: routeParam });
     };
     /**
      * 打开新窗口
