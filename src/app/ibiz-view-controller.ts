@@ -1022,17 +1022,18 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openWindow(viewurl: string, parsms: any = {}): void {
-        let url_datas: Array<string> = [];
-        const params_names = Object.keys(parsms);
-        params_names.forEach(name => {
-            if (name && parsms[name] && !Object.is(parsms[name], '')) {
-                url_datas.push(`${name}=${parsms[name]}`)
-            }
-        })
-        let url = `/${IBizEnvironment.SysName}/${IBizEnvironment.BaseUrl.toLowerCase()}${viewurl}`;
-        if (url_datas.length > 0) {
-            url = `${url}?${url_datas.join('&')}`;
-        }
+        // let url_datas: Array<string> = [];
+        // const params_names = Object.keys(parsms);
+        // params_names.forEach(name => {
+        //     if (name && parsms[name] && !Object.is(parsms[name], '')) {
+        //         url_datas.push(`${name}=${parsms[name]}`)
+        //     }
+        // })
+        let url = `/${IBizEnvironment.SysName}/${IBizEnvironment.BaseUrl.toLowerCase()}${viewurl}/${JSON.stringify(parsms)}`;
+        // if (url_datas.length > 0) {
+        //     url = `${url}?${url_datas.join('&')}`;
+        // }
+
         let win: any = window;
         win.open(url, '_blank');
     }
