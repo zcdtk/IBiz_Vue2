@@ -136,6 +136,14 @@ class IBizViewController extends IBizObject {
     public $route: any = null;
 
     /**
+     * 路由所在位置下标
+     *
+     * @type {number}
+     * @memberof IBizViewController
+     */
+    public route_index: number = -1;
+
+    /**
      * 视图使用模式
      *
      * @private
@@ -265,6 +273,12 @@ class IBizViewController extends IBizObject {
         let iBizApp: IBizApp = win.getIBizApp();
         if (iBizApp) {
             iBizApp.regSRFController(this);
+        }
+
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
+            let views: Array<any> = iBizApp.viewControllers;
+            let index: number = views.findIndex((view: any) => Object.is(view.getId(), this.getId()) && Object.is(view.getViewUsage(), this.getViewUsage()));
+            this.route_index = index;
         }
     }
 
@@ -972,7 +986,32 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openView(routeString: string, routeParam: any = {}, queryParams?: any) {
-        this.$router.push({ name: routeString, query: routeParam });
+        let matched: Array<any> = this.$route.matched;
+        let route_arr: Array<any> = this.$route.fullPath.split('/');
+
+        let index = -2;
+        if (matched[this.route_index]) {
+            let name = matched[this.route_index].name;
+            let _index = route_arr.findIndex((_name: any) => Object.is(_name, name));
+            index = _index + 1;
+            if (route_arr[_index]) {
+                index = index + 1;
+            }
+        }
+        if (matched[this.route_index + 1]) {
+            let nextName = matched[this.route_index + 1].name;
+            let _index1 = route_arr.findIndex((_name: any) => Object.is(_name, nextName));
+            if (_index1 !== -1) {
+                index = _index1;
+            }
+        }
+        if (index > 0) {
+            let path_arr: Array<String> = route_arr.slice(0, index);
+            let path: string = `${path_arr.join('/')}/${routeString}/${JSON.stringify(routeParam)}`
+            console.log(path_arr);
+            this.$router.push({ path: path, query: queryParams });
+        }
+        // this.$router.push({ name: routeString, query: routeParam });
     }
 
     /**
