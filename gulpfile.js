@@ -88,6 +88,7 @@ gulp.task('concatibizsys', function () {
         'dist/components/ibiz-modal/ibiz-modal.component.js',
         'dist/components/ibiz-picker/ibiz-picker.component.js',
         'dist/components/ibiz-check-list/ibiz-check-list.component.js',
+        'dist/components/ibiz-file-upload/ibiz-file-upload.component.js',
     ]
     return gulp.src(ibizsys)
         .pipe(concat('ibizsys.js'))
