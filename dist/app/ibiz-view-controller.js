@@ -842,7 +842,13 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.parseViewParams = function () {
         var parsms = {};
         if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
-            Object.assign(parsms, this.$route.params);
+            var _parsms = {};
+            if (this.$route.params.params) {
+                Object.assign(_parsms, JSON.parse(this.$route.params.params));
+            }
+            if (Object.keys(_parsms).length > 0) {
+                Object.assign(parsms, _parsms);
+            }
         }
         else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
             Object.assign(parsms, this.$vue.params);

@@ -924,7 +924,13 @@ class IBizViewController extends IBizObject {
     public parseViewParams(): void {
         let parsms: any = {};
         if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
-            Object.assign(parsms, this.$route.params);
+            let _parsms:any = {};
+            if (this.$route.params.params) {
+                Object.assign(_parsms, JSON.parse(this.$route.params.params));
+            }
+            if (Object.keys(_parsms).length > 0) {
+                Object.assign(parsms, _parsms);
+            }
         } else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
             Object.assign(parsms, this.$vue.params);
         } else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_EMBEDED) {

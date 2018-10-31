@@ -7553,7 +7553,13 @@ var IBizViewController = /** @class */ (function (_super) {
     IBizViewController.prototype.parseViewParams = function () {
         var parsms = {};
         if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
-            Object.assign(parsms, this.$route.params);
+            var _parsms = {};
+            if (this.$route.params.params) {
+                Object.assign(_parsms, JSON.parse(this.$route.params.params));
+            }
+            if (Object.keys(_parsms).length > 0) {
+                Object.assign(parsms, _parsms);
+            }
         }
         else if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
             Object.assign(parsms, this.$vue.params);
@@ -13145,7 +13151,7 @@ Vue.component('ibiz-exp-bar', {
 
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal v-model=\"showmodal\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\" :width=\"width\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
+    template: "\n        <modal v-model=\"showmodal\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\" :width=\"width\">\n            <component v-if=\"showmodal\" :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
     props: ['key', 'params', 'index'],
     data: function () {
         var data = {

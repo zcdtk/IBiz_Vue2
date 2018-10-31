@@ -1,6 +1,6 @@
 "use strict";
 Vue.component('ibiz-modal', {
-    template: "\n        <modal v-model=\"showmodal\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\" :width=\"width\">\n            <component :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
+    template: "\n        <modal v-model=\"showmodal\" @on-visible-change=\"onVisibleChange($event)\" :title=\"title\" :footer-hide=\"true\" :mask-closable=\"false\" :width=\"width\">\n            <component v-if=\"showmodal\" :is=\"modalviewname\" :params=\"viewparam\" :viewType=\"'modalview'\" @close=\"close\" @dataChange=\"dataChange\"></component>\n        </modal>\n    ",
     props: ['key', 'params', 'index'],
     data: function () {
         var data = {

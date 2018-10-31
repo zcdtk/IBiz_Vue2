@@ -1,7 +1,7 @@
 Vue.component('ibiz-modal', {
     template: `
         <modal v-model="showmodal" @on-visible-change="onVisibleChange($event)" :title="title" :footer-hide="true" :mask-closable="false" :width="width">
-            <component :is="modalviewname" :params="viewparam" :viewType="'modalview'" @close="close" @dataChange="dataChange"></component>
+            <component v-if="showmodal" :is="modalviewname" :params="viewparam" :viewType="'modalview'" @close="close" @dataChange="dataChange"></component>
         </modal>
     `,
     props: ['key', 'params', 'index'],
