@@ -464,7 +464,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (this.doNewDataWizard(loadParam)) {
             return;
         }
-        Object.assign(loadParam, { openerid: this.getId() });
+        Object.assign(loadParam, { openerid: this.getId(), viewusage: this.getViewUsage() });
         this.doNewDataNormal(loadParam);
     };
     /**
@@ -622,7 +622,7 @@ var IBizMDViewController = /** @class */ (function (_super) {
         if (arg.data.srfmstag) {
             loadParam.srfeditmode2 = arg.data.srfmstag;
         }
-        Object.assign(loadParam, { openerid: this.getId() });
+        Object.assign(loadParam, { openerid: this.getId(), viewusage: this.getViewUsage() });
         this.doEditDataNormal(loadParam);
     };
     /**
