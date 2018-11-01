@@ -500,7 +500,7 @@ class IBizMDViewController extends IBizMainViewController {
             return;
         }
 
-        Object.assign(loadParam, { openerid: this.getId(), viewusage: this.getViewUsage() });
+        Object.assign(loadParam, { openerid: this.getId(), pviewusage: this.getViewUsage() });
         this.doNewDataNormal(loadParam);
     }
 
@@ -668,7 +668,7 @@ class IBizMDViewController extends IBizMainViewController {
             loadParam.srfeditmode2 = arg.data.srfmstag;
         }
 
-        Object.assign(loadParam, { openerid: this.getId(), viewusage: this.getViewUsage() });
+        Object.assign(loadParam, { openerid: this.getId(), pviewusage: this.getViewUsage() });
         this.doEditDataNormal(loadParam);
     }
 
