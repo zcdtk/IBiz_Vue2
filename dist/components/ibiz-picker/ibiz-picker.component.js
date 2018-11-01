@@ -1,11 +1,12 @@
 "use strict";
 Vue.component('ibiz-picker', {
-    template: "\n    <div>\n        <el-autocomplete v-if=\"editorType != 'dropdown' && editorType != 'pickup-no-ac'\" value-key=\"text\" :disabled=\"field.disabled\" v-model=\"value\" size=\"small\" :fetch-suggestions=\"onSearch\" @select=\"onACSelect\" @blur=\"onFocus\" style=\"width:100%;\">\n            <template slot=\"suffix\">\n                <i v-if=\"editorType != 'ac'\" class=\"el-icon-search\"  @click=\"openView\"></i>\n            </template>\n        </el-autocomplete>\n        <el-input :value=\"value\" v-if=\"editorType == 'pickup-no-ac'\" readonly size=\"small\" :disabled=\"field.disabled\">\n            <template slot=\"suffix\">\n                <i class=\"el-icon-search\"  @click=\"openView\"></i>\n            </template>\n        </el-input>\n        <el-select v-if=\"editorType == 'dropdown'\" :value=\"value\" size=\"small\" filterable @change=\"onSelect\" :disabled=\"field.disabled\" style=\"width:100%;\">\n            <el-option v-for=\"(item, index) of items\" :value=\"item.value\" :label=\"item.text\" :disabled=\"item.disabled\"></el-option>\n        </el-select>\n    </div>\n    ",
+    template: "\n    <div class=\"ibiz-picker\">\n        <el-autocomplete v-if=\"editorType != 'dropdown' && editorType != 'pickup-no-ac'\" value-key=\"text\" :disabled=\"field.disabled\" v-model=\"value\" size=\"small\" :fetch-suggestions=\"onSearch\" @select=\"onACSelect\" @blur=\"onBlur\" style=\"width:100%;\">\n            <template slot=\"suffix\">\n                <i v-if=\"editorType != 'ac'\" class=\"el-icon-search\"  @click=\"openView\"></i>\n            </template>\n        </el-autocomplete>\n        <el-input :value=\"value\" v-if=\"editorType == 'pickup-no-ac'\" readonly size=\"small\" :disabled=\"field.disabled\">\n            <template slot=\"suffix\">\n                <i class=\"el-icon-search\"  @click=\"openView\"></i>\n            </template>\n        </el-input>\n        <el-select v-if=\"editorType == 'dropdown'\" remote :remote-method=\"onSearch\" :value=\"value\" size=\"small\" filterable @change=\"onSelect\" :disabled=\"field.disabled\" style=\"width:100%;\" clearable @clear=\"onClear\" @visible-change=\"onSelectOpen\">\n            <el-option v-for=\"(item, index) of items\" :value=\"item.value\" :label=\"item.text\" :disabled=\"item.disabled\"></el-option>\n        </el-select>\n        <span v-if=\"editorType == 'dropdown'\" style=\"position: absolute;right: 5px;color: #c0c4cc;top: 0;font-size: 13px;\">\n            <i v-if=\"!open\" class=\"el-icon-arrow-down\"></i>\n            <i v-if=\"open\" class=\"el-icon-arrow-up\"></i>\n        </span>\n    </div>\n    ",
     props: ['field', 'name', 'modalviewname', 'editorType'],
     data: function () {
         var data = {
             http: new IBizHttp(),
             value: '',
+            open: false,
             items: []
         };
         Object.assign(data, this.field.editorParams);
@@ -23,7 +24,10 @@ Vue.component('ibiz-picker', {
         }
     },
     methods: {
-        onFocus: function () {
+        onSelectOpen: function (flag) {
+            this.open = flag;
+        },
+        onBlur: function () {
             if (this.field && this.value != this.field.value) {
                 this.value = this.field.value;
             }
@@ -89,6 +93,18 @@ Vue.component('ibiz-picker', {
             if (index >= 0) {
                 var item = this.items[index];
                 this.onACSelect(item);
+            }
+        },
+        onClear: function () {
+            if (this.form) {
+                var valueField = this.form.findField(this.valueItem);
+                if (valueField) {
+                    valueField.setValue('');
+                }
+                var itemField = this.form.findField(this.name);
+                if (itemField) {
+                    itemField.setValue('');
+                }
             }
         },
         onACSelect: function (item) {

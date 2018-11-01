@@ -1,7 +1,7 @@
 Vue.component('ibiz-picker', {
     template: `
-    <div>
-        <el-autocomplete v-if="editorType != 'dropdown' && editorType != 'pickup-no-ac'" value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onACSelect" @blur="onFocus" style="width:100%;">
+    <div class="ibiz-picker">
+        <el-autocomplete v-if="editorType != 'dropdown' && editorType != 'pickup-no-ac'" value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onACSelect" @blur="onBlur" style="width:100%;">
             <template slot="suffix">
                 <i v-if="editorType != 'ac'" class="el-icon-search"  @click="openView"></i>
             </template>
@@ -11,9 +11,13 @@ Vue.component('ibiz-picker', {
                 <i class="el-icon-search"  @click="openView"></i>
             </template>
         </el-input>
-        <el-select v-if="editorType == 'dropdown'" :value="value" size="small" filterable @change="onSelect" :disabled="field.disabled" style="width:100%;">
+        <el-select v-if="editorType == 'dropdown'" remote :remote-method="onSearch" :value="value" size="small" filterable @change="onSelect" :disabled="field.disabled" style="width:100%;" clearable @clear="onClear" @visible-change="onSelectOpen">
             <el-option v-for="(item, index) of items" :value="item.value" :label="item.text" :disabled="item.disabled"></el-option>
         </el-select>
+        <span v-if="editorType == 'dropdown'" style="position: absolute;right: 5px;color: #c0c4cc;top: 0;font-size: 13px;">
+            <i v-if="!open" class="el-icon-arrow-down"></i>
+            <i v-if="open" class="el-icon-arrow-up"></i>
+        </span>
     </div>
     `,
     props: ['field', 'name', 'modalviewname', 'editorType'],
@@ -21,6 +25,7 @@ Vue.component('ibiz-picker', {
         let data: any = {
             http: new IBizHttp(),
             value: '',
+            open: false,
             items: []
         };
         Object.assign(data, this.field.editorParams);
@@ -38,7 +43,10 @@ Vue.component('ibiz-picker', {
         }
     },
     methods: {
-        onFocus() {
+        onSelectOpen(flag) {
+            this.open = flag;
+        },
+        onBlur() {
             if(this.field && this.value != this.field.value) {
                 this.value = this.field.value;
             }
@@ -102,6 +110,18 @@ Vue.component('ibiz-picker', {
             if(index >= 0) {
                 const item = this.items[index];
                 this.onACSelect(item);
+            }
+        },
+        onClear() {
+            if (this.form) {
+                let valueField = this.form.findField(this.valueItem);
+                if (valueField) {
+                    valueField.setValue('');
+                }
+                let itemField = this.form.findField(this.name);
+                if (itemField) {
+                    itemField.setValue('');
+                }
             }
         },
         onACSelect(item) {
