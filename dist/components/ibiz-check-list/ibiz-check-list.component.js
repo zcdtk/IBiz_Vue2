@@ -1,6 +1,6 @@
 "use strict";
 Vue.component("ibiz-check-list", {
-    template: "\n    <CheckboxGroup v-model=\"selects\" @on-change=\"onSelectChange\">\n        <template v-for=\"(item, index) of field.config\">\n            <Checkbox :label=\"item.value\">{{ item.text }}</Checkbox>\n        </template>\n    </CheckboxGroup>\n    ",
+    template: "\n    <CheckboxGroup v-model=\"selects\" @on-change=\"onSelectChange\">\n        <template v-for=\"(item, index) of field.config\">\n            <Checkbox :label=\"item.value\" :disabled=\"field.disabled || item.disabled\">{{ item.text }}</Checkbox>\n        </template>\n    </CheckboxGroup>\n    ",
     props: ['field', 'name', 'mode', 'separator'],
     data: function () {
         var data = {

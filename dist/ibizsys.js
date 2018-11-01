@@ -13497,7 +13497,7 @@ Vue.component('ibiz-picker', {
 
 "use strict";
 Vue.component("ibiz-check-list", {
-    template: "\n    <CheckboxGroup v-model=\"selects\" @on-change=\"onSelectChange\">\n        <template v-for=\"(item, index) of field.config\">\n            <Checkbox :label=\"item.value\">{{ item.text }}</Checkbox>\n        </template>\n    </CheckboxGroup>\n    ",
+    template: "\n    <CheckboxGroup v-model=\"selects\" @on-change=\"onSelectChange\">\n        <template v-for=\"(item, index) of field.config\">\n            <Checkbox :label=\"item.value\" :disabled=\"field.disabled || item.disabled\">{{ item.text }}</Checkbox>\n        </template>\n    </CheckboxGroup>\n    ",
     props: ['field', 'name', 'mode', 'separator'],
     data: function () {
         var data = {
@@ -13614,7 +13614,7 @@ Vue.component("ibiz-file-upload", {
 
 "use strict";
 Vue.component("ibiz-mpicker", {
-    template: "\n    <div style=\"position: relative;\">\n        <el-select :value=\"value\" multiple filterable remote :remote-method=\"onSearch\" size=\"small\" style=\"width:100%;\" @change=\"onSelect\" @remove-tag=\"onRemove\">\n            <el-option v-for=\"item in items\" :label=\"item.text\" :value=\"item.value\"></el-option>\n        </el-select>\n        <span style=\"position: absolute;right: 5px;color: #c0c4cc;top: 0;font-size: 13px;\">\n            <i class=\"el-icon-search\"  @click=\"openView\"></i>\n        </span>\n    </div>\n    ",
+    template: "\n    <div style=\"position: relative;\">\n        <el-select :value=\"value\" multiple filterable remote :remote-method=\"onSearch\" size=\"small\" style=\"width:100%;\" @change=\"onSelect\" @remove-tag=\"onRemove\" :disabled=\"field.disabled\">\n            <el-option v-for=\"item in items\" :label=\"item.text\" :value=\"item.value\"></el-option>\n        </el-select>\n        <span style=\"position: absolute;right: 5px;color: #c0c4cc;top: 0;font-size: 13px;\">\n            <i class=\"el-icon-search\"  @click=\"openView\"></i>\n        </span>\n    </div>\n    ",
     props: ['field', 'name'],
     data: function () {
         var data = {

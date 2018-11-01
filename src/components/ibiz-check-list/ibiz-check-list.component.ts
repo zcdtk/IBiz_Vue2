@@ -2,7 +2,7 @@ Vue.component("ibiz-check-list", {
     template: `
     <CheckboxGroup v-model="selects" @on-change="onSelectChange">
         <template v-for="(item, index) of field.config">
-            <Checkbox :label="item.value">{{ item.text }}</Checkbox>
+            <Checkbox :label="item.value" :disabled="field.disabled || item.disabled">{{ item.text }}</Checkbox>
         </template>
     </CheckboxGroup>
     `,

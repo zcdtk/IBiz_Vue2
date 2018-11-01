@@ -1,7 +1,7 @@
 Vue.component("ibiz-mpicker", {
     template: `
     <div style="position: relative;">
-        <el-select :value="value" multiple filterable remote :remote-method="onSearch" size="small" style="width:100%;" @change="onSelect" @remove-tag="onRemove">
+        <el-select :value="value" multiple filterable remote :remote-method="onSearch" size="small" style="width:100%;" @change="onSelect" @remove-tag="onRemove" :disabled="field.disabled">
             <el-option v-for="item in items" :label="item.text" :value="item.value"></el-option>
         </el-select>
         <span style="position: absolute;right: 5px;color: #c0c4cc;top: 0;font-size: 13px;">
