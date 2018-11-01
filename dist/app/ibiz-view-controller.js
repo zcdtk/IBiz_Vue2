@@ -122,6 +122,14 @@ var IBizViewController = /** @class */ (function (_super) {
          */
         _this_1.viewParam = {};
         /**
+         * 视图使用模式
+         *
+         * @private
+         * @type {number}
+         * @memberof IBizViewController
+         */
+        _this_1.viewUsage = 0;
+        /**
          * vue 路由对象
          *
          * @type {*}
@@ -143,21 +151,25 @@ var IBizViewController = /** @class */ (function (_super) {
          */
         _this_1.$route = null;
         /**
-         * 路由所在位置下标
+         * 当前路由所在位置下标
          *
          * @type {number}
          * @memberof IBizViewController
          */
         _this_1.route_index = -1;
         /**
-         * 视图使用模式
+         * 当前路由url
          *
-         * @private
-         * @type {number}
+         * @type {string}
          * @memberof IBizViewController
          */
-        _this_1.viewUsage = 0;
+        _this_1.route_url = '';
         _this_1.url = opts.url;
+        var win = window;
+        var iBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(_this_1);
+        }
         return _this_1;
     }
     ;
@@ -252,18 +264,7 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.onInited = function () {
-        var _this_1 = this;
         this.bInited = true;
-        var win = window;
-        var iBizApp = win.getIBizApp();
-        if (iBizApp) {
-            iBizApp.regSRFController(this);
-        }
-        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
-            var views = iBizApp.viewControllers;
-            var index = views.findIndex(function (view) { return Object.is(view.getId(), _this_1.getId()) && Object.is(view.getViewUsage(), _this_1.getViewUsage()); });
-            this.route_index = index;
-        }
     };
     /**
      * 开始触发界面行为
@@ -840,12 +841,37 @@ var IBizViewController = /** @class */ (function (_super) {
      * @memberof IBizViewController
      */
     IBizViewController.prototype.parseViewParams = function () {
+        var _this_1 = this;
         var parsms = {};
         if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
             var _parsms = {};
-            if (this.$route.params.params) {
-                Object.assign(_parsms, JSON.parse(this.$route.params.params));
+            var win = window;
+            var iBizApp = win.getIBizApp();
+            if (iBizApp) {
+                var views = iBizApp.viewControllers;
+                var index = views.findIndex(function (view) { return Object.is(view.getId(), _this_1.getId()) && Object.is(view.getViewUsage(), _this_1.getViewUsage()); });
+                this.route_index = index;
             }
+            var route_arr = this.$route.fullPath.split('/');
+            var matched = this.$route.matched;
+            var cur_route_name_1 = matched[this.route_index].name;
+            var cur_route_index = route_arr.findIndex(function (_name) { return Object.is(_name, cur_route_name_1); });
+            var route_url_index = cur_route_index + 1;
+            if (matched[this.route_index + 1]) {
+                var next_route_name_1 = matched[this.route_index + 1].name;
+                var next_route_index = route_arr.findIndex(function (_name) { return Object.is(_name, next_route_name_1); });
+                if (cur_route_index + 2 === next_route_index) {
+                    var datas = decodeURIComponent(route_arr[cur_route_index + 1]);
+                    Object.assign(_parsms, JSON.parse(datas));
+                    route_url_index = route_url_index + 1;
+                }
+            }
+            else if (route_arr[cur_route_index + 1]) {
+                var datas = decodeURIComponent(route_arr[cur_route_index + 1]);
+                Object.assign(_parsms, JSON.parse(datas));
+                route_url_index = route_url_index + 1;
+            }
+            this.route_url = route_arr.slice(0, route_url_index).join('/');
             if (Object.keys(_parsms).length > 0) {
                 Object.assign(parsms, _parsms);
             }

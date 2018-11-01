@@ -50,7 +50,7 @@ class IBizEditView3Controller extends IBizEditViewController {
         super.onFormLoaded();
 
         this.setDrTabState();
-        
+
         const drtab: any = this.getDRTab();
         const form = this.getForm();
         const _field = form.findField('srfkey');
@@ -151,7 +151,12 @@ class IBizEditView3Controller extends IBizEditViewController {
         });
         Object.assign(params, data.parentMode);
         Object.assign(params, data.parentData);
-        this.openView(data.viewid, params);
+        if (_isShowToolBar) {
+            this.$router.push({ path: this.route_url });
+        } else {
+            this.openView(data.viewid, params);
+
+        }
     }
 
     /**

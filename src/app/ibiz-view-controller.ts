@@ -112,6 +112,15 @@ class IBizViewController extends IBizObject {
     public viewParam: any = {};
 
     /**
+     * 视图使用模式
+     *
+     * @private
+     * @type {number}
+     * @memberof IBizViewController
+     */
+    private viewUsage: number = 0;
+
+    /**
      * vue 路由对象
      *
      * @type {*}
@@ -136,7 +145,7 @@ class IBizViewController extends IBizObject {
     public $route: any = null;
 
     /**
-     * 路由所在位置下标
+     * 当前路由所在位置下标
      *
      * @type {number}
      * @memberof IBizViewController
@@ -144,13 +153,12 @@ class IBizViewController extends IBizObject {
     public route_index: number = -1;
 
     /**
-     * 视图使用模式
+     * 当前路由url
      *
-     * @private
-     * @type {number}
+     * @type {string}
      * @memberof IBizViewController
      */
-    private viewUsage: number = 0;
+    public route_url: string = '';
 
     /**
      *Creates an instance of IBizViewController.
@@ -162,6 +170,12 @@ class IBizViewController extends IBizObject {
     constructor(opts: any = {}) {
         super(opts);
         this.url = opts.url;
+
+        let win: any = window;
+        let iBizApp: IBizApp = win.getIBizApp();
+        if (iBizApp) {
+            iBizApp.regSRFController(this);
+        }
     }
 
     /**
@@ -268,18 +282,6 @@ class IBizViewController extends IBizObject {
      */
     public onInited(): void {
         this.bInited = true;
-
-        let win: any = window;
-        let iBizApp: IBizApp = win.getIBizApp();
-        if (iBizApp) {
-            iBizApp.regSRFController(this);
-        }
-
-        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
-            let views: Array<any> = iBizApp.viewControllers;
-            let index: number = views.findIndex((view: any) => Object.is(view.getId(), this.getId()) && Object.is(view.getViewUsage(), this.getViewUsage()));
-            this.route_index = index;
-        }
     }
 
     /**
@@ -924,10 +926,38 @@ class IBizViewController extends IBizObject {
     public parseViewParams(): void {
         let parsms: any = {};
         if (this.getViewUsage() === IBizViewController.VIEWUSAGE_DEFAULT) {
-            let _parsms:any = {};
-            if (this.$route.params.params) {
-                Object.assign(_parsms, JSON.parse(this.$route.params.params));
+            let _parsms: any = {};
+
+            let win: any = window;
+            let iBizApp: IBizApp = win.getIBizApp();
+            if (iBizApp) {
+                let views: Array<any> = iBizApp.viewControllers;
+                let index: number = views.findIndex((view: any) => Object.is(view.getId(), this.getId()) && Object.is(view.getViewUsage(), this.getViewUsage()));
+                this.route_index = index;
             }
+
+            let route_arr: Array<any> = this.$route.fullPath.split('/');
+            let matched: Array<any> = this.$route.matched;
+
+            const cur_route_name = matched[this.route_index].name;
+            const cur_route_index = route_arr.findIndex((_name: any) => Object.is(_name, cur_route_name));
+            let route_url_index = cur_route_index + 1;
+            if (matched[this.route_index + 1]) {
+                const next_route_name = matched[this.route_index + 1].name;
+                const next_route_index = route_arr.findIndex((_name: any) => Object.is(_name, next_route_name));
+                if (cur_route_index + 2 === next_route_index) {
+                    let datas = decodeURIComponent(route_arr[cur_route_index + 1]);
+                    Object.assign(_parsms, JSON.parse(datas));
+                    route_url_index = route_url_index + 1;
+                }
+            } else if (route_arr[cur_route_index + 1]) {
+                let datas = decodeURIComponent(route_arr[cur_route_index + 1]);
+                Object.assign(_parsms, JSON.parse(datas));
+                route_url_index = route_url_index + 1;
+            }
+
+            this.route_url = route_arr.slice(0, route_url_index).join('/');
+
             if (Object.keys(_parsms).length > 0) {
                 Object.assign(parsms, _parsms);
             }

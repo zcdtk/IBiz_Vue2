@@ -157,7 +157,12 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
         });
         Object.assign(params, data.parentMode);
         Object.assign(params, data.parentData);
-        this.openView(data.viewid, params);
+        if (_isShowToolBar) {
+            this.$router.push({ path: this.route_url });
+        }
+        else {
+            this.openView(data.viewid, params);
+        }
     };
     /**
      * 获取关系视图参数

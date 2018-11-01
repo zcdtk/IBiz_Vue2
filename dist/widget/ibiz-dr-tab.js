@@ -68,7 +68,7 @@ var IBizDRTab = /** @class */ (function (_super) {
             return;
         }
         if (Object.is(viewid, 'form')) {
-            this.fire(IBizDRTab.SELECTCHANGE, { parentMode: {}, parentData: {}, viewid: '' });
+            this.fire(IBizDRTab.SELECTCHANGE, { parentMode: {}, parentData: {}, viewid: 'form' });
             this.setActiveTab(0);
             return;
         }
