@@ -5351,6 +5351,13 @@ var IBizTab = /** @class */ (function (_super) {
          */
         _this.activeTabIndex = 0;
         /**
+         * 激活tab分页名称
+         *
+         * @type {string}
+         * @memberof IBizTab
+         */
+        _this.activeTabName = 'form';
+        /**
          * 分页部件对象
          *
          * @type {*}
@@ -5393,16 +5400,15 @@ var IBizTab = /** @class */ (function (_super) {
         return undefined;
     };
     /**
-     * 设置激活分页数
+     * 设置激活分页
      *
-     * @param {number} index
+     * @param {*} [tab={}]
      * @memberof IBizTab
      */
-    IBizTab.prototype.setActiveTab = function (index) {
-        var _this = this;
-        setTimeout(function () {
-            _this.activeTabIndex = index;
-        });
+    IBizTab.prototype.setActiveTab = function (tab) {
+        if (tab === void 0) { tab = {}; }
+        this.activeTabIndex = tab.index;
+        this.activeTabName = tab.name;
     };
     return IBizTab;
 }(IBizControl));
@@ -5509,12 +5515,14 @@ var IBizDRTab = /** @class */ (function (_super) {
         }
         if (!parentKey || Object.is(parentKey, '')) {
             this.iBizNotification.warning('警告', '请先建立主数据');
-            this.setActiveTab(0);
+            var tab_1 = this.getTab('form');
+            this.setActiveTab(tab_1);
             return;
         }
         if (Object.is(viewid, 'form')) {
             this.fire(IBizDRTab.SELECTCHANGE, { parentMode: {}, parentData: {}, viewid: 'form' });
-            this.setActiveTab(0);
+            var tab_2 = this.getTab('form');
+            this.setActiveTab(tab_2);
             return;
         }
         var dritem = { viewid: viewid.toLocaleUpperCase() };
@@ -5534,9 +5542,16 @@ var IBizDRTab = /** @class */ (function (_super) {
                 Object.assign(parentData, { srfparentdeid: viewParam.srfparentdeid });
             }
         }
-        // this.setActiveTab(args.index);
+        var tab = this.getTab(viewid);
+        this.setActiveTab(tab);
         this.fire(IBizDRTab.SELECTCHANGE, { parentMode: viewParam, parentData: parentData, viewid: viewid });
     };
+    /**
+     * 关系分页选中
+     *
+     * @static
+     * @memberof IBizDRTab
+     */
     IBizDRTab.SELECTCHANGE = 'SELECTCHANGE';
     return IBizDRTab;
 }(IBizTab));
@@ -11333,23 +11348,21 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
         var form = this.getForm();
         var _field = form.findField('srfkey');
         var _srfuf = form.findField('srfuf');
+        var tab = {};
         if (this.isHideEditForm()) {
             if (!_field) {
                 return;
             }
             if (Object.is(_srfuf.getValue(), '0') && Object.is(_field.getValue(), '')) {
                 this.iBizNotification.warning('警告', '新建模式，表单主数据不存在');
-                if (drtab) {
-                    drtab.setActiveTab(0);
-                }
                 return;
             }
         }
         if (form.findField('srfkey') && !Object.is(form.findField('srfkey').getValue(), '')) {
-            var index = this.getDRTabIndex();
-            if (drtab) {
-                drtab.setActiveTab(index);
-            }
+            Object.assign(tab, this.getActivatedDRTab());
+        }
+        if (Object.keys(tab).length) {
+            drtab.setActiveTab(tab);
         }
     };
     /**
@@ -11414,13 +11427,11 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
      * @memberof IBizEditView3Controller
      */
     IBizEditView3Controller.prototype.doDRTabSelectChange = function (data) {
-        var _this = this;
         if (data === void 0) { data = {}; }
         var params = {};
         var _isShowToolBar = Object.is(data.viewid, 'form') ? true : false;
-        setTimeout(function () {
-            _this.isShowToolBar = _isShowToolBar;
-        });
+        this.isShowToolBar = _isShowToolBar;
+        ;
         Object.assign(params, data.parentMode);
         Object.assign(params, data.parentData);
         if (_isShowToolBar) {
@@ -11460,14 +11471,31 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
         return this.getControl('drtab');
     };
     /**
-     * 获取关系分页下标
+     * 获取激活关系分页
      *
      * @private
-     * @returns {number}
+     * @returns {*}
      * @memberof IBizEditView3Controller
      */
-    IBizEditView3Controller.prototype.getDRTabIndex = function () {
-        var _tab = 0;
+    IBizEditView3Controller.prototype.getActivatedDRTab = function () {
+        var _tab = {};
+        var matched = this.$route.matched;
+        var drTab = this.getDRTab();
+        if (matched[1]) {
+            var next_route_name = matched[1].name;
+            var tab = drTab.getTab(next_route_name);
+            if (tab) {
+                this.isShowToolBar = false;
+                Object.assign(_tab, tab);
+            }
+        }
+        else {
+            var tab = drTab.getTab('form');
+            if (tab) {
+                this.isShowToolBar = true;
+                Object.assign(_tab, tab);
+            }
+        }
         return _tab;
     };
     /**

@@ -64,12 +64,14 @@ var IBizDRTab = /** @class */ (function (_super) {
         }
         if (!parentKey || Object.is(parentKey, '')) {
             this.iBizNotification.warning('警告', '请先建立主数据');
-            this.setActiveTab(0);
+            var tab_1 = this.getTab('form');
+            this.setActiveTab(tab_1);
             return;
         }
         if (Object.is(viewid, 'form')) {
             this.fire(IBizDRTab.SELECTCHANGE, { parentMode: {}, parentData: {}, viewid: 'form' });
-            this.setActiveTab(0);
+            var tab_2 = this.getTab('form');
+            this.setActiveTab(tab_2);
             return;
         }
         var dritem = { viewid: viewid.toLocaleUpperCase() };
@@ -89,9 +91,16 @@ var IBizDRTab = /** @class */ (function (_super) {
                 Object.assign(parentData, { srfparentdeid: viewParam.srfparentdeid });
             }
         }
-        // this.setActiveTab(args.index);
+        var tab = this.getTab(viewid);
+        this.setActiveTab(tab);
         this.fire(IBizDRTab.SELECTCHANGE, { parentMode: viewParam, parentData: parentData, viewid: viewid });
     };
+    /**
+     * 关系分页选中
+     *
+     * @static
+     * @memberof IBizDRTab
+     */
     IBizDRTab.SELECTCHANGE = 'SELECTCHANGE';
     return IBizDRTab;
 }(IBizTab));

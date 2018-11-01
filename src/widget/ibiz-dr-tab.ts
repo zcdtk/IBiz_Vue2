@@ -52,13 +52,15 @@ class IBizDRTab extends IBizTab {
 
         if (!parentKey || Object.is(parentKey, '')) {
             this.iBizNotification.warning('警告', '请先建立主数据');
-            this.setActiveTab(0);
+            let tab = this.getTab('form');
+            this.setActiveTab(tab);
             return;
         }
 
         if (Object.is(viewid, 'form')) {
             this.fire(IBizDRTab.SELECTCHANGE, { parentMode: {}, parentData: {}, viewid: 'form' });
-            this.setActiveTab(0);
+            let tab = this.getTab('form');
+            this.setActiveTab(tab);
             return;
         }
 
@@ -83,12 +85,17 @@ class IBizDRTab extends IBizTab {
             }
         }
 
-        // this.setActiveTab(args.index);
+        let tab = this.getTab(viewid);
+        this.setActiveTab(tab);
         this.fire(IBizDRTab.SELECTCHANGE, { parentMode: viewParam, parentData: parentData, viewid: viewid });
     }
 
+    /**
+     * 关系分页选中
+     *
+     * @static
+     * @memberof IBizDRTab
+     */
     public static SELECTCHANGE = 'SELECTCHANGE';
-
-
 }
 

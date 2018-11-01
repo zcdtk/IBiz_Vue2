@@ -15,6 +15,14 @@ class IBizTab extends IBizControl {
     public activeTabIndex: number = 0;
 
     /**
+     * 激活tab分页名称
+     *
+     * @type {string}
+     * @memberof IBizTab
+     */
+    public activeTabName: string = 'form';
+
+    /**
      * 分页部件对象
      * 
      * @type {*}
@@ -69,14 +77,13 @@ class IBizTab extends IBizControl {
     }
 
     /**
-     * 设置激活分页数
-     * 
-     * @param {number} index 
+     * 设置激活分页
+     *
+     * @param {*} [tab={}]
      * @memberof IBizTab
      */
-    public setActiveTab(index: number): void {
-        setTimeout(() => {
-            this.activeTabIndex = index;
-        });
+    public setActiveTab(tab: any = {}): void {
+        this.activeTabIndex = tab.index;
+        this.activeTabName = tab.name;
     }
 }

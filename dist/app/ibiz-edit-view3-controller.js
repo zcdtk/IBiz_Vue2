@@ -67,23 +67,21 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
         var form = this.getForm();
         var _field = form.findField('srfkey');
         var _srfuf = form.findField('srfuf');
+        var tab = {};
         if (this.isHideEditForm()) {
             if (!_field) {
                 return;
             }
             if (Object.is(_srfuf.getValue(), '0') && Object.is(_field.getValue(), '')) {
                 this.iBizNotification.warning('警告', '新建模式，表单主数据不存在');
-                if (drtab) {
-                    drtab.setActiveTab(0);
-                }
                 return;
             }
         }
         if (form.findField('srfkey') && !Object.is(form.findField('srfkey').getValue(), '')) {
-            var index = this.getDRTabIndex();
-            if (drtab) {
-                drtab.setActiveTab(index);
-            }
+            Object.assign(tab, this.getActivatedDRTab());
+        }
+        if (Object.keys(tab).length) {
+            drtab.setActiveTab(tab);
         }
     };
     /**
@@ -148,13 +146,11 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
      * @memberof IBizEditView3Controller
      */
     IBizEditView3Controller.prototype.doDRTabSelectChange = function (data) {
-        var _this = this;
         if (data === void 0) { data = {}; }
         var params = {};
         var _isShowToolBar = Object.is(data.viewid, 'form') ? true : false;
-        setTimeout(function () {
-            _this.isShowToolBar = _isShowToolBar;
-        });
+        this.isShowToolBar = _isShowToolBar;
+        ;
         Object.assign(params, data.parentMode);
         Object.assign(params, data.parentData);
         if (_isShowToolBar) {
@@ -194,14 +190,31 @@ var IBizEditView3Controller = /** @class */ (function (_super) {
         return this.getControl('drtab');
     };
     /**
-     * 获取关系分页下标
+     * 获取激活关系分页
      *
      * @private
-     * @returns {number}
+     * @returns {*}
      * @memberof IBizEditView3Controller
      */
-    IBizEditView3Controller.prototype.getDRTabIndex = function () {
-        var _tab = 0;
+    IBizEditView3Controller.prototype.getActivatedDRTab = function () {
+        var _tab = {};
+        var matched = this.$route.matched;
+        var drTab = this.getDRTab();
+        if (matched[1]) {
+            var next_route_name = matched[1].name;
+            var tab = drTab.getTab(next_route_name);
+            if (tab) {
+                this.isShowToolBar = false;
+                Object.assign(_tab, tab);
+            }
+        }
+        else {
+            var tab = drTab.getTab('form');
+            if (tab) {
+                this.isShowToolBar = true;
+                Object.assign(_tab, tab);
+            }
+        }
         return _tab;
     };
     /**

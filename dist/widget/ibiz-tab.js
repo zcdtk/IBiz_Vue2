@@ -37,6 +37,13 @@ var IBizTab = /** @class */ (function (_super) {
          */
         _this.activeTabIndex = 0;
         /**
+         * 激活tab分页名称
+         *
+         * @type {string}
+         * @memberof IBizTab
+         */
+        _this.activeTabName = 'form';
+        /**
          * 分页部件对象
          *
          * @type {*}
@@ -79,16 +86,15 @@ var IBizTab = /** @class */ (function (_super) {
         return undefined;
     };
     /**
-     * 设置激活分页数
+     * 设置激活分页
      *
-     * @param {number} index
+     * @param {*} [tab={}]
      * @memberof IBizTab
      */
-    IBizTab.prototype.setActiveTab = function (index) {
-        var _this = this;
-        setTimeout(function () {
-            _this.activeTabIndex = index;
-        });
+    IBizTab.prototype.setActiveTab = function (tab) {
+        if (tab === void 0) { tab = {}; }
+        this.activeTabIndex = tab.index;
+        this.activeTabName = tab.name;
     };
     return IBizTab;
 }(IBizControl));
