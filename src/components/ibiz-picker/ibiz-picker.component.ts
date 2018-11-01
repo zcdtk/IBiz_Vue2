@@ -1,22 +1,36 @@
 Vue.component('ibiz-picker', {
     template: `
-    <el-autocomplete value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onSelect" @focus="onFocus">
-        <template slot="suffix">
-            <i class="el-icon-search"  @click="openView"></i>
-        </template>
-    </el-autocomplete>
+    <div>
+        <el-autocomplete v-if="editorType != 'dropdown' && editorType != 'pickup-on-ac'" value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onACSelect" @blur="onFocus" style="width:100%;">
+            <template slot="suffix">
+                <i v-if="editorType != 'ac'" class="el-icon-search"  @click="openView"></i>
+            </template>
+        </el-autocomplete>
+        <el-input :value="value" v-if="editorType == 'pickup-on-ac'" readonly size="small" :disabled="field.disabled">
+            <template slot="suffix">
+                <i class="el-icon-search"  @click="openView"></i>
+            </template>
+        </el-input>
+        <el-select v-if="editorType == 'dropdown'" :value="value" size="small" filterable @change="onSelect" :disabled="field.disabled" style="width:100%;">
+            <el-option v-for="(item, index) of items" :value="item.value" :label="item.text" :disabled="item.disabled"></el-option>
+        </el-select>
+    </div>
     `,
-    props: ['field', 'name', 'modalviewname'],
+    props: ['field', 'name', 'modalviewname', 'editorType'],
     data: function () {
         let data: any = {
             http: new IBizHttp(),
-            value: ''
+            value: '',
+            items: []
         };
         Object.assign(data, this.field.editorParams);
         Object.assign(data, { form: this.field.getForm() })
         return data;
     },
     mounted: function () {
+        if(this.editorType == 'dropdown') {
+            this.onSearch('');
+        }
     },
     watch: {
         'field.value': function(newVal, oldVal) {
@@ -76,12 +90,21 @@ Vue.component('ibiz-picker', {
                     return;
                 }
                 this.http.post(this.url, param).subscribe((data) => {
-                    console.log(data);
-                    func(data.items);
+                    this.items = data.items;
+                    if(typeof func == 'function') {
+                        func(data.items);
+                    }
                 })
             }
         },
-        onSelect(item) {
+        onSelect(value) {
+            let index = this.items.findIndex((item) => Object.is(item.value, value));
+            if(index >= 0) {
+                const item = this.items[index];
+                this.onACSelect(item);
+            }
+        },
+        onACSelect(item) {
             if (this.form) {
                 let valueField = this.form.findField(this.valueItem);
                 if (valueField) {

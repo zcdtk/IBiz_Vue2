@@ -1,17 +1,21 @@
 "use strict";
 Vue.component('ibiz-picker', {
-    template: "\n    <el-autocomplete value-key=\"text\" :disabled=\"field.disabled\" v-model=\"value\" size=\"small\" :fetch-suggestions=\"onSearch\" @select=\"onSelect\" @focus=\"onFocus\">\n        <template slot=\"suffix\">\n            <i class=\"el-icon-search\"  @click=\"openView\"></i>\n        </template>\n    </el-autocomplete>\n    ",
-    props: ['field', 'name', 'modalviewname'],
+    template: "\n    <div>\n        <el-autocomplete v-if=\"editorType != 'dropdown' && editorType != 'pickup-on-ac'\" value-key=\"text\" :disabled=\"field.disabled\" v-model=\"value\" size=\"small\" :fetch-suggestions=\"onSearch\" @select=\"onACSelect\" @blur=\"onFocus\" style=\"width:100%;\">\n            <template slot=\"suffix\">\n                <i v-if=\"editorType != 'ac'\" class=\"el-icon-search\"  @click=\"openView\"></i>\n            </template>\n        </el-autocomplete>\n        <el-input :value=\"value\" v-if=\"editorType == 'pickup-on-ac'\" readonly size=\"small\" :disabled=\"field.disabled\">\n            <template slot=\"suffix\">\n                <i class=\"el-icon-search\"  @click=\"openView\"></i>\n            </template>\n        </el-input>\n        <el-select v-if=\"editorType == 'dropdown'\" :value=\"value\" size=\"small\" filterable @change=\"onSelect\" :disabled=\"field.disabled\" style=\"width:100%;\">\n            <el-option v-for=\"(item, index) of items\" :value=\"item.value\" :label=\"item.text\" :disabled=\"item.disabled\"></el-option>\n        </el-select>\n    </div>\n    ",
+    props: ['field', 'name', 'modalviewname', 'editorType'],
     data: function () {
         var data = {
             http: new IBizHttp(),
-            value: ''
+            value: '',
+            items: []
         };
         Object.assign(data, this.field.editorParams);
         Object.assign(data, { form: this.field.getForm() });
         return data;
     },
     mounted: function () {
+        if (this.editorType == 'dropdown') {
+            this.onSearch('');
+        }
     },
     watch: {
         'field.value': function (newVal, oldVal) {
@@ -61,6 +65,7 @@ Vue.component('ibiz-picker', {
             }
         },
         onSearch: function (query, func) {
+            var _this = this;
             if (this.url) {
                 var param = {
                     srfaction: 'itemfetch',
@@ -72,12 +77,21 @@ Vue.component('ibiz-picker', {
                     return;
                 }
                 this.http.post(this.url, param).subscribe(function (data) {
-                    console.log(data);
-                    func(data.items);
+                    _this.items = data.items;
+                    if (typeof func == 'function') {
+                        func(data.items);
+                    }
                 });
             }
         },
-        onSelect: function (item) {
+        onSelect: function (value) {
+            var index = this.items.findIndex(function (item) { return Object.is(item.value, value); });
+            if (index >= 0) {
+                var item = this.items[index];
+                this.onACSelect(item);
+            }
+        },
+        onACSelect: function (item) {
             if (this.form) {
                 var valueField = this.form.findField(this.valueItem);
                 if (valueField) {
