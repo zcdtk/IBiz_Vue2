@@ -32,6 +32,10 @@ Vue.component("ibiz-mpicker", {
                 this.selectItems = JSON.parse(newVal);
                 this.selectItems.forEach(item => {
                     this.value.push(item.srfkey);
+                    let index = this.items.findIndex((i) => Object.is(i.value, item.srfkey));
+                    if(index < 0) {
+                        this.items.push({text: item.srfmajortext, value:item.srfkey})
+                    }
                 });
             }
         }

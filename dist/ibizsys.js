@@ -13606,6 +13606,10 @@ Vue.component("ibiz-mpicker", {
                 this.selectItems = JSON.parse(newVal);
                 this.selectItems.forEach(function (item) {
                     _this.value.push(item.srfkey);
+                    var index = _this.items.findIndex(function (i) { return Object.is(i.value, item.srfkey); });
+                    if (index < 0) {
+                        _this.items.push({ text: item.srfmajortext, value: item.srfkey });
+                    }
                 });
             }
         }
