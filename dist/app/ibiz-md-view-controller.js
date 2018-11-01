@@ -80,6 +80,17 @@ var IBizMDViewController = /** @class */ (function (_super) {
          */
         _this.quickSearchTipInfo = '';
         _this.regQuickSearchDEFileds();
+        var _window = window;
+        var iBizApp = _window.getIBizApp();
+        if (iBizApp) {
+            iBizApp.onRefreshView().subscribe(function (data) {
+                if (data === void 0) { data = {}; }
+                var controller = iBizApp.getSRFController(data.openerid, data.viewUsage);
+                if (controller) {
+                    _this.onRefresh();
+                }
+            });
+        }
         return _this;
     }
     /**

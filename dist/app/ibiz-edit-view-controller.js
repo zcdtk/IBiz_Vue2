@@ -606,7 +606,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
         if (parentWindow) {
             var pWinIBizApp = parentWindow.getIBizApp();
             var viewparam = this.getViewParam();
-            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
+            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid, viewUsage: this.getViewUsage() });
         }
         if (this.isModal()) {
             var result = { ret: 'OK', activeData: this.getForm().getValues() };

@@ -71,8 +71,18 @@ class IBizMDViewController extends IBizMainViewController {
      */
     constructor(opts: any = {}) {
         super(opts);
-
         this.regQuickSearchDEFileds();
+
+        let _window: any = window;
+        let iBizApp: IBizApp = _window.getIBizApp();
+        if (iBizApp) {
+            iBizApp.onRefreshView().subscribe((data:any = {}) => {
+                let controller = iBizApp.getSRFController(data.openerid,data.viewUsage);
+                if (controller) {
+                    this.onRefresh();
+                }
+            });
+        }
     }
 
     /**

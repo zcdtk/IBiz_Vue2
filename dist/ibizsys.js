@@ -7688,10 +7688,11 @@ var IBizViewController = /** @class */ (function (_super) {
     * @memberof IBizViewController
     */
     IBizViewController.prototype.isModal = function () {
-        if (this.modalViewParam) {
-            return true;
+        var type = false;
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
+            type = true;
         }
-        return false;
+        return type;
     };
     /**
      * 获取实体名称
@@ -8531,6 +8532,17 @@ var IBizMDViewController = /** @class */ (function (_super) {
          */
         _this.quickSearchTipInfo = '';
         _this.regQuickSearchDEFileds();
+        var _window = window;
+        var iBizApp = _window.getIBizApp();
+        if (iBizApp) {
+            iBizApp.onRefreshView().subscribe(function (data) {
+                if (data === void 0) { data = {}; }
+                var controller = iBizApp.getSRFController(data.openerid, data.viewUsage);
+                if (controller) {
+                    _this.onRefresh();
+                }
+            });
+        }
         return _this;
     }
     /**
@@ -10949,7 +10961,7 @@ var IBizEditViewController = /** @class */ (function (_super) {
         if (parentWindow) {
             var pWinIBizApp = parentWindow.getIBizApp();
             var viewparam = this.getViewParam();
-            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
+            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid, viewUsage: this.getViewUsage() });
         }
         if (this.isModal()) {
             var result = { ret: 'OK', activeData: this.getForm().getValues() };

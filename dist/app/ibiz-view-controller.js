@@ -962,10 +962,11 @@ var IBizViewController = /** @class */ (function (_super) {
     * @memberof IBizViewController
     */
     IBizViewController.prototype.isModal = function () {
-        if (this.modalViewParam) {
-            return true;
+        var type = false;
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
+            type = true;
         }
-        return false;
+        return type;
     };
     /**
      * 获取实体名称

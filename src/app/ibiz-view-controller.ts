@@ -1051,10 +1051,11 @@ class IBizViewController extends IBizObject {
     * @memberof IBizViewController
     */
     public isModal(): boolean {
-        if (this.modalViewParam) {
-            return true;
+        let type: boolean = false;
+        if (this.getViewUsage() === IBizViewController.VIEWUSAGE_MODAL) {
+            type = true;
         }
-        return false;
+        return type;
     }
 
     /**
