@@ -1022,32 +1022,12 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openView(routeString: string, routeParam: any = {}, queryParams?: any) {
-        let matched: Array<any> = this.$route.matched;
-        let route_arr: Array<any> = this.$route.fullPath.split('/');
+        if (this.getViewUsage() !== IBizViewController.VIEWUSAGE_DEFAULT) {
+            return;
+        }
 
-        let index = -2;
-        if (matched[this.route_index]) {
-            let name = matched[this.route_index].name;
-            let _index = route_arr.findIndex((_name: any) => Object.is(_name, name));
-            index = _index + 1;
-            if (route_arr[_index]) {
-                index = index + 1;
-            }
-        }
-        if (matched[this.route_index + 1]) {
-            let nextName = matched[this.route_index + 1].name;
-            let _index1 = route_arr.findIndex((_name: any) => Object.is(_name, nextName));
-            if (_index1 !== -1) {
-                index = _index1;
-            }
-        }
-        if (index > 0) {
-            let path_arr: Array<String> = route_arr.slice(0, index);
-            let path: string = `${path_arr.join('/')}/${routeString}/${JSON.stringify(routeParam)}`
-            console.log(path_arr);
-            this.$router.push({ path: path, query: queryParams });
-        }
-        // this.$router.push({ name: routeString, query: routeParam });
+        let url: string = `${this.route_url}/${routeString}/${JSON.stringify(routeParam)}`;
+        this.$router.push({ path: url, query: queryParams });
     }
 
     /**
@@ -1058,17 +1038,7 @@ class IBizViewController extends IBizObject {
      * @memberof IBizViewController
      */
     public openWindow(viewurl: string, parsms: any = {}): void {
-        // let url_datas: Array<string> = [];
-        // const params_names = Object.keys(parsms);
-        // params_names.forEach(name => {
-        //     if (name && parsms[name] && !Object.is(parsms[name], '')) {
-        //         url_datas.push(`${name}=${parsms[name]}`)
-        //     }
-        // })
         let url = `/${IBizEnvironment.SysName}/${IBizEnvironment.BaseUrl.toLowerCase()}${viewurl}/${JSON.stringify(parsms)}`;
-        // if (url_datas.length > 0) {
-        //     url = `${url}?${url_datas.join('&')}`;
-        // }
 
         let win: any = window;
         win.open(url, '_blank');

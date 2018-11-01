@@ -7647,31 +7647,11 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openView = function (routeString, routeParam, queryParams) {
         if (routeParam === void 0) { routeParam = {}; }
-        var matched = this.$route.matched;
-        var route_arr = this.$route.fullPath.split('/');
-        var index = -2;
-        if (matched[this.route_index]) {
-            var name_1 = matched[this.route_index].name;
-            var _index = route_arr.findIndex(function (_name) { return Object.is(_name, name_1); });
-            index = _index + 1;
-            if (route_arr[_index]) {
-                index = index + 1;
-            }
+        if (this.getViewUsage() !== IBizViewController.VIEWUSAGE_DEFAULT) {
+            return;
         }
-        if (matched[this.route_index + 1]) {
-            var nextName_1 = matched[this.route_index + 1].name;
-            var _index1 = route_arr.findIndex(function (_name) { return Object.is(_name, nextName_1); });
-            if (_index1 !== -1) {
-                index = _index1;
-            }
-        }
-        if (index > 0) {
-            var path_arr = route_arr.slice(0, index);
-            var path = path_arr.join('/') + "/" + routeString + "/" + JSON.stringify(routeParam);
-            console.log(path_arr);
-            this.$router.push({ path: path, query: queryParams });
-        }
-        // this.$router.push({ name: routeString, query: routeParam });
+        var url = this.route_url + "/" + routeString + "/" + JSON.stringify(routeParam);
+        this.$router.push({ path: url, query: queryParams });
     };
     /**
      * 打开新窗口
@@ -7682,17 +7662,7 @@ var IBizViewController = /** @class */ (function (_super) {
      */
     IBizViewController.prototype.openWindow = function (viewurl, parsms) {
         if (parsms === void 0) { parsms = {}; }
-        // let url_datas: Array<string> = [];
-        // const params_names = Object.keys(parsms);
-        // params_names.forEach(name => {
-        //     if (name && parsms[name] && !Object.is(parsms[name], '')) {
-        //         url_datas.push(`${name}=${parsms[name]}`)
-        //     }
-        // })
         var url = "/" + IBizEnvironment.SysName + "/" + IBizEnvironment.BaseUrl.toLowerCase() + viewurl + "/" + JSON.stringify(parsms);
-        // if (url_datas.length > 0) {
-        //     url = `${url}?${url_datas.join('&')}`;
-        // }
         var win = window;
         win.open(url, '_blank');
     };
