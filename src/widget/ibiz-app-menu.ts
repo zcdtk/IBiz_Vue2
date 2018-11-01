@@ -51,6 +51,29 @@ class IBizAppMenu extends IBizControl {
     }
 
     /**
+     * 获取应用功能数据
+     *
+     * @param {string} [appfuncid] 应用功能id 可选
+     * @param {string} [viewname] 应用功能代码名称 可选
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    public getAppFunction(appfuncid?: string, viewname?: string): any {
+        let appfunc: any = {};
+        this.appFunctions.some((_appFunction: any = {}) => {
+            if (appfuncid && Object.is(appfuncid, _appFunction.appfuncid)) {
+                Object.assign(appfunc, _appFunction);
+                return true;
+            }
+            if (viewname && Object.is(viewname, _appFunction.viewname)) {
+                Object.assign(appfunc, _appFunction);
+                return true;
+            }
+        });
+        return appfunc;
+    }
+
+    /**
      * 部件加载
      * 
      * @memberof IBizAppMenu
@@ -93,31 +116,20 @@ class IBizAppMenu extends IBizControl {
      * @memberof IBizAppMenu
      */
     public setAppMenuSelected(item: any = {}): void {
-        if (!item) {
-            return;
-        }
-        this.selectItem = {};
-        const appfunction = this.appFunctions.find(_appfunction => Object.is(_appfunction.routerlink, item.routerlink));
-        if (!appfunction) {
-            return;
-        }
-        const _selectItem = this.getSelectMenuItem(this.items, appfunction);
-
-        if (_selectItem && Object.keys(_selectItem).length > 0) {
-            Object.assign(this.selectItem, _selectItem);
+        if (item && Object.keys(item).length > 0) {
+            Object.assign(this.selectItem, item);
         }
     }
 
     /**
-     * 获取选中菜单项
+     * 根据应用功能数据获取菜单数据项
      *
-     * @private
      * @param {Array<any>} items
      * @param {*} [appfunction={}]
      * @returns {*}
      * @memberof IBizAppMenu
      */
-    private getSelectMenuItem(items: Array<any>, appfunction: any = {}): any {
+    public getSelectMenuItem(items: Array<any>, appfunction: any = {}): any {
         // tslint:disable-next-line:prefer-const
         let item = {};
         items.some(_item => {
@@ -136,34 +148,34 @@ class IBizAppMenu extends IBizControl {
         return item;
     }
 
-     /**
-     * 获取菜单数据
-     *
-     * @returns {Array<any>}
-     * @memberof IBizAppMenu
-     */
+    /**
+    * 获取菜单数据
+    *
+    * @returns {Array<any>}
+    * @memberof IBizAppMenu
+    */
     public getItems(): Array<any> {
         return this.items;
     }
 
     /**
-     * 获取菜单数据项
+     * 根据菜单节点获取菜单数据项
      *
-     * @param {string} id
-     * @param {Array<any>} items
+     * @param {Array<any>} items 菜单数据项
+     * @param {*} [data={}] 
      * @returns {*}
      * @memberof IBizAppMenu
      */
-    public getItem(id: string, items: Array<any>): any {
+    public getItem(items: Array<any>, data: any = {}): any {
         let _this = this;
         let _item: any = {};
         items.some(item => {
-            if (Object.is(item.id, id)) {
+            if (Object.is(item.id, data.id)) {
                 Object.assign(_item, item);
                 return true;
             }
             if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
-                let _subItem = _this.getItem(id, item.items);
+                let _subItem = _this.getItem(item.items, data);
                 if (_subItem && Object.keys(_subItem).length > 0) {
                     Object.assign(_item, _subItem);
                     return true;

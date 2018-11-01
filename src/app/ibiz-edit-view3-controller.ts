@@ -51,7 +51,7 @@ class IBizEditView3Controller extends IBizEditViewController {
 
         this.setDrTabState();
 
-        const drtab: IBizDRTab = this.getDRTab();
+        const drtab: any = this.getDRTab();
         const form = this.getForm();
         const _field = form.findField('srfkey');
         const _srfuf = form.findField('srfuf');

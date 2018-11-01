@@ -62,6 +62,29 @@ var IBizAppMenu = /** @class */ (function (_super) {
     IBizAppMenu.prototype.setAppFunctions = function () {
     };
     /**
+     * 获取应用功能数据
+     *
+     * @param {string} [appfuncid] 应用功能id 可选
+     * @param {string} [viewname] 应用功能代码名称 可选
+     * @returns {*}
+     * @memberof IBizAppMenu
+     */
+    IBizAppMenu.prototype.getAppFunction = function (appfuncid, viewname) {
+        var appfunc = {};
+        this.appFunctions.some(function (_appFunction) {
+            if (_appFunction === void 0) { _appFunction = {}; }
+            if (appfuncid && Object.is(appfuncid, _appFunction.appfuncid)) {
+                Object.assign(appfunc, _appFunction);
+                return true;
+            }
+            if (viewname && Object.is(viewname, _appFunction.viewname)) {
+                Object.assign(appfunc, _appFunction);
+                return true;
+            }
+        });
+        return appfunc;
+    };
+    /**
      * 部件加载
      *
      * @memberof IBizAppMenu
@@ -105,23 +128,13 @@ var IBizAppMenu = /** @class */ (function (_super) {
      */
     IBizAppMenu.prototype.setAppMenuSelected = function (item) {
         if (item === void 0) { item = {}; }
-        if (!item) {
-            return;
-        }
-        this.selectItem = {};
-        var appfunction = this.appFunctions.find(function (_appfunction) { return Object.is(_appfunction.routerlink, item.routerlink); });
-        if (!appfunction) {
-            return;
-        }
-        var _selectItem = this.getSelectMenuItem(this.items, appfunction);
-        if (_selectItem && Object.keys(_selectItem).length > 0) {
-            Object.assign(this.selectItem, _selectItem);
+        if (item && Object.keys(item).length > 0) {
+            Object.assign(this.selectItem, item);
         }
     };
     /**
-     * 获取选中菜单项
+     * 根据应用功能数据获取菜单数据项
      *
-     * @private
      * @param {Array<any>} items
      * @param {*} [appfunction={}]
      * @returns {*}
@@ -157,23 +170,24 @@ var IBizAppMenu = /** @class */ (function (_super) {
         return this.items;
     };
     /**
-     * 获取菜单数据项
+     * 根据菜单节点获取菜单数据项
      *
-     * @param {string} id
-     * @param {Array<any>} items
+     * @param {Array<any>} items 菜单数据项
+     * @param {*} [data={}]
      * @returns {*}
      * @memberof IBizAppMenu
      */
-    IBizAppMenu.prototype.getItem = function (id, items) {
+    IBizAppMenu.prototype.getItem = function (items, data) {
+        if (data === void 0) { data = {}; }
         var _this = this;
         var _item = {};
         items.some(function (item) {
-            if (Object.is(item.id, id)) {
+            if (Object.is(item.id, data.id)) {
                 Object.assign(_item, item);
                 return true;
             }
             if (item.items && item.items.length > 0 && Array.isArray(item.items)) {
-                var _subItem = _this.getItem(id, item.items);
+                var _subItem = _this.getItem(item.items, data);
                 if (_subItem && Object.keys(_subItem).length > 0) {
                     Object.assign(_item, _subItem);
                     return true;

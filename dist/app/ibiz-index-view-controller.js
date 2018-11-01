@@ -29,15 +29,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
      */
     function IBizIndexViewController(opts) {
         if (opts === void 0) { opts = {}; }
-        var _this = _super.call(this, opts) || this;
-        /**
-         * 视图类型
-         *
-         * @type {string}
-         * @memberof IBizIndexViewController
-         */
-        _this.viewtype = 'index';
-        return _this;
+        return _super.call(this, opts) || this;
     }
     /**
      * 应用菜单部件初始化
@@ -80,6 +72,29 @@ var IBizIndexViewController = /** @class */ (function (_super) {
      * @memberof IBizIndexViewController
      */
     IBizIndexViewController.prototype.appMenuLoaded = function (items) {
+        var matched = this.$route.matched;
+        var appMenu = this.getAppMenu();
+        if (matched[this.route_index + 1]) {
+            var next_route_name = matched[this.route_index + 1].name;
+            var _app = appMenu.getAppFunction('', next_route_name);
+            var _item = {};
+            if (_app && Object.keys(_app).length > 0) {
+                Object.assign(_item, appMenu.getSelectMenuItem(items, _app));
+            }
+            if (Object.keys(_item).length > 0) {
+                appMenu.setAppMenuSelected(_item);
+            }
+        }
+        else {
+            var firstItem = {};
+            Object.assign(firstItem, items[0]);
+            var _app = appMenu.getAppFunction(firstItem.appfuncid, '');
+            if (_app) {
+                Object.assign(firstItem, _app);
+                appMenu.setAppMenuSelected(firstItem);
+                this.appMenuSelection([firstItem]);
+            }
+        }
     };
     /**
      * 应用菜单选中

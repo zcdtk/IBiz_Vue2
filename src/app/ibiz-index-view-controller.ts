@@ -7,14 +7,6 @@
 class IBizIndexViewController extends IBizMainViewController {
 
     /**
-     * 视图类型
-     *
-     * @type {string}
-     * @memberof IBizIndexViewController
-     */
-    public viewtype: string = 'index';
-
-    /**
      * Creates an instance of IBizIndexViewController.
      * 创建 IBizIndexViewController 实例
      * 
@@ -69,7 +61,28 @@ class IBizIndexViewController extends IBizMainViewController {
      * @memberof IBizIndexViewController
      */
     public appMenuLoaded(items: any[]): void {
-
+        let matched: Array<any> = this.$route.matched;
+        let appMenu: any = this.getAppMenu();
+        if (matched[this.route_index + 1]) {
+            const next_route_name = matched[this.route_index + 1].name;
+            let _app = appMenu.getAppFunction('', next_route_name);
+            let _item: any = {};
+            if (_app && Object.keys(_app).length > 0) {
+                Object.assign(_item, appMenu.getSelectMenuItem(items, _app));
+            }
+            if (Object.keys(_item).length > 0) {
+                appMenu.setAppMenuSelected(_item);
+            }
+        } else {
+            let firstItem: any = {};
+            Object.assign(firstItem, items[0]);
+            let _app = appMenu.getAppFunction(firstItem.appfuncid, '');
+            if (_app) {
+                Object.assign(firstItem, _app);
+                appMenu.setAppMenuSelected(firstItem);
+                this.appMenuSelection([firstItem]);
+            }
+        }
     }
 
     /**
