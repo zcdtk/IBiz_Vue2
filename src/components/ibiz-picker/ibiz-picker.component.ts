@@ -1,12 +1,12 @@
 Vue.component('ibiz-picker', {
     template: `
     <div>
-        <el-autocomplete v-if="editorType != 'dropdown' && editorType != 'pickup-on-ac'" value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onACSelect" @blur="onFocus" style="width:100%;">
+        <el-autocomplete v-if="editorType != 'dropdown' && editorType != 'pickup-no-ac'" value-key="text" :disabled="field.disabled" v-model="value" size="small" :fetch-suggestions="onSearch" @select="onACSelect" @blur="onFocus" style="width:100%;">
             <template slot="suffix">
                 <i v-if="editorType != 'ac'" class="el-icon-search"  @click="openView"></i>
             </template>
         </el-autocomplete>
-        <el-input :value="value" v-if="editorType == 'pickup-on-ac'" readonly size="small" :disabled="field.disabled">
+        <el-input :value="value" v-if="editorType == 'pickup-no-ac'" readonly size="small" :disabled="field.disabled">
             <template slot="suffix">
                 <i class="el-icon-search"  @click="openView"></i>
             </template>
