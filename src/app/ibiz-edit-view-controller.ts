@@ -638,7 +638,7 @@ class IBizEditViewController extends IBizMainViewController {
         if (parentWindow) {
             let pWinIBizApp: IBizApp = parentWindow.getIBizApp();
             let viewparam = this.getViewParam();
-            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid, viewUsage: this.getViewUsage() });
+            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid, viewUsage: viewparam.viewUsage });
         }
         if (this.isModal()) {
             let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
