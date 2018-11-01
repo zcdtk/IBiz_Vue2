@@ -6,14 +6,13 @@
  */
 class IBizEditViewController extends IBizMainViewController {
 
-
     /**
      * 表单视图数据标题信息
-     * 
+     *
      * @type {string}
      * @memberof IBizEditViewController
      */
-    public dataInfo: string;
+    public dataInfo: string = '';
 
     /**
      * 表单保存后操作行为
@@ -234,10 +233,10 @@ class IBizEditViewController extends IBizMainViewController {
             // }
 
             if (this.isModal()) {
-				let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
-				this.closeModal(result);
-				return ;
-			}
+                let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
+                this.closeModal(result);
+                return;
+            }
             this.closeWindow();
             return;
         }
@@ -630,21 +629,21 @@ class IBizEditViewController extends IBizMainViewController {
      * @memberof IBizEditViewController
      */
     public refreshReferView(): void {
-		let _window: any = window;
-		let iBizApp: IBizApp = _window.getIBizApp();
-		if (!iBizApp) {
-			return;
-		}
-		let parentWindow: any = iBizApp.getParentWindow();
-		if (parentWindow) {
-			let pWinIBizApp: IBizApp = parentWindow.getIBizApp();
-			let viewparam = this.getViewParam();
-			pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
-		}
-		if (this.isModal()) {
-			let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
-			this.dataChange(result);
-		}
+        let _window: any = window;
+        let iBizApp: IBizApp = _window.getIBizApp();
+        if (!iBizApp) {
+            return;
+        }
+        let parentWindow: any = iBizApp.getParentWindow();
+        if (parentWindow) {
+            let pWinIBizApp: IBizApp = parentWindow.getIBizApp();
+            let viewparam = this.getViewParam();
+            pWinIBizApp.fireRefreshView({ openerid: viewparam.openerid });
+        }
+        if (this.isModal()) {
+            let result: any = { ret: 'OK', activeData: this.getForm().getValues() };
+            this.dataChange(result);
+        }
     }
 
     /**

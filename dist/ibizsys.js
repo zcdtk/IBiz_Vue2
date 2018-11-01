@@ -10374,6 +10374,13 @@ var IBizEditViewController = /** @class */ (function (_super) {
         if (opts === void 0) { opts = {}; }
         var _this = _super.call(this, opts) || this;
         /**
+         * 表单视图数据标题信息
+         *
+         * @type {string}
+         * @memberof IBizEditViewController
+         */
+        _this.dataInfo = '';
+        /**
          * 表单保存后操作行为
          *
          * @private
