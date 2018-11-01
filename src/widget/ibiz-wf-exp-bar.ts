@@ -7,11 +7,19 @@
 class IBizWFExpBar extends IBizControl {
 
     /**
- * 导航树部件是否收缩，默认展开
- * 
- * @type {boolean}
- * @memberof IBizWFExpBarService
- */
+     * 展开数据项
+     *
+     * @type {Array<string>}
+     * @memberof IBizWFExpBar
+     */
+    public expandItems: Array<string> = [];
+
+    /**
+     * 导航树部件是否收缩，默认展开
+     *
+     * @type {boolean}
+     * @memberof IBizWFExpBar
+     */
     public isCollapsed: boolean = true;
 
     /**

@@ -2486,12 +2486,26 @@ var IBizAppMenu = /** @class */ (function (_super) {
          */
         _this_1.appFunctions = [];
         /**
+         * 展开数据项
+         *
+         * @type {Array<string>}
+         * @memberof IBizAppMenu
+         */
+        _this_1.expandItems = [];
+        /**
          * 菜单数据项
          *
          * @type {any[]}
          * @memberof IBizAppMenu
          */
         _this_1.items = [];
+        /**
+         * 导航树部件是否收缩，默认展开
+         *
+         * @type {boolean}
+         * @memberof IBizAppMenu
+         */
+        _this_1.isCollapsed = true;
         /**
          * 选中项
          *
@@ -6274,11 +6288,18 @@ var IBizWFExpBar = /** @class */ (function (_super) {
         if (otps === void 0) { otps = {}; }
         var _this = _super.call(this, otps) || this;
         /**
-     * 导航树部件是否收缩，默认展开
-     *
-     * @type {boolean}
-     * @memberof IBizWFExpBarService
-     */
+         * 展开数据项
+         *
+         * @type {Array<string>}
+         * @memberof IBizWFExpBar
+         */
+        _this.expandItems = [];
+        /**
+         * 导航树部件是否收缩，默认展开
+         *
+         * @type {boolean}
+         * @memberof IBizWFExpBar
+         */
         _this.isCollapsed = true;
         /**
          * 导航菜单数据项

@@ -15,12 +15,28 @@ class IBizAppMenu extends IBizControl {
     public appFunctions: Array<any> = [];
 
     /**
+     * 展开数据项
+     *
+     * @type {Array<string>}
+     * @memberof IBizAppMenu
+     */
+    public expandItems: Array<string> = [];
+
+    /**
      * 菜单数据项
      * 
      * @type {any[]}
      * @memberof IBizAppMenu
      */
     public items: Array<any> = [];
+
+    /**
+     * 导航树部件是否收缩，默认展开
+     *
+     * @type {boolean}
+     * @memberof IBizAppMenu
+     */
+    public isCollapsed: boolean = true;
 
     /**
      * 选中项
