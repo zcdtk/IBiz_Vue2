@@ -87,10 +87,8 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         }
         else {
             var firstItem = {};
-            Object.assign(firstItem, items[0]);
-            var _app = appMenu.getAppFunction(firstItem.appfuncid, '');
-            if (_app) {
-                Object.assign(firstItem, _app);
+            Object.assign(firstItem, this.getFirstMenuItem(items));
+            if (firstItem && Object.keys(firstItem).length > 0) {
                 appMenu.setAppMenuSelected(firstItem);
                 this.appMenuSelection([firstItem]);
             }
@@ -117,21 +115,40 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         return this.getControl('appmenu');
     };
     /**
-     * 导航数据跳转处理
-     *
-     * @param {*} [data={}]
-     * @memberof IBizIndexViewController
-     */
-    IBizIndexViewController.prototype.navigationLink = function (data) {
-        if (data === void 0) { data = {}; }
-    };
-    /**
      * 设置主菜单状态
      *
      * @param {string} [align]
      * @memberof IBizIndexViewController
      */
     IBizIndexViewController.prototype.setMianMenuState = function (align) {
+    };
+    /**
+     * 获取第一个带导航内容的菜单数据
+     *
+     * @private
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizIndexViewController
+     */
+    IBizIndexViewController.prototype.getFirstMenuItem = function (items) {
+        var _this = this;
+        var app = {};
+        var appMenu = this.getAppMenu();
+        items.some(function (_item) {
+            var _app = appMenu.getAppFunction(_item.appfuncid, '');
+            if (_app && Object.keys(_app).length > 0) {
+                Object.assign(app, _item, _app);
+                return true;
+            }
+            if (_item.items && _item.items.length > 0) {
+                var subapp = _this.getFirstMenuItem(_item.items);
+                if (subapp && Object.keys(subapp).length > 0) {
+                    Object.assign(app, _item, subapp);
+                    return true;
+                }
+            }
+        });
+        return app;
     };
     return IBizIndexViewController;
 }(IBizMainViewController));

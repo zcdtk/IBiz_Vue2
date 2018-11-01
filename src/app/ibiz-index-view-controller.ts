@@ -75,10 +75,10 @@ class IBizIndexViewController extends IBizMainViewController {
             }
         } else {
             let firstItem: any = {};
-            Object.assign(firstItem, items[0]);
-            let _app = appMenu.getAppFunction(firstItem.appfuncid, '');
-            if (_app) {
-                Object.assign(firstItem, _app);
+
+            Object.assign(firstItem, this.getFirstMenuItem(items));
+
+            if (firstItem && Object.keys(firstItem).length > 0) {
                 appMenu.setAppMenuSelected(firstItem);
                 this.appMenuSelection([firstItem]);
             }
@@ -108,20 +108,39 @@ class IBizIndexViewController extends IBizMainViewController {
     }
 
     /**
-     * 导航数据跳转处理
-     * 
-     * @param {*} [data={}] 
-     * @memberof IBizIndexViewController
-     */
-    public navigationLink(data: any = {}) {
-    }
-
-    /**
      * 设置主菜单状态
      *
      * @param {string} [align]
      * @memberof IBizIndexViewController
      */
     public setMianMenuState(align?: string): void {
+    }
+
+    /**
+     * 获取第一个带导航内容的菜单数据
+     *
+     * @private
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizIndexViewController
+     */
+    private getFirstMenuItem(items: Array<any>): any {
+        let app: any = {};
+        let appMenu: any = this.getAppMenu();
+        items.some((_item: any) => {
+            let _app = appMenu.getAppFunction(_item.appfuncid, '');
+            if (_app && Object.keys(_app).length > 0) {
+                Object.assign(app, _item, _app);
+                return true;
+            }
+            if (_item.items && _item.items.length > 0) {
+                let subapp = this.getFirstMenuItem(_item.items);
+                if (subapp && Object.keys(subapp).length > 0) {
+                    Object.assign(app, _item, subapp);
+                    return true;
+                }
+            }
+        });
+        return app;
     }
 }

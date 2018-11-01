@@ -3,6 +3,16 @@
   padding: 10px 0  0;
 }
 /***    END:视图底部内容    ***/
+/***    BEGIN:应用菜单    ***/
+.ibiz-app-menu .el-submenu__title i {
+  font-size: 18px;
+  margin-right: 4px;
+}
+.ibiz-app-menu .el-menu-item i {
+  font-size: 18px;
+  margin-right: 4px;
+}
+/***    END:多项选择视图    ***/
 /***    BEGIN:搜索表单     ***/
 .ibiz-search-form .footer .ivu-card-body {
   padding: 0px;

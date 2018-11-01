@@ -8430,10 +8430,8 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         }
         else {
             var firstItem = {};
-            Object.assign(firstItem, items[0]);
-            var _app = appMenu.getAppFunction(firstItem.appfuncid, '');
-            if (_app) {
-                Object.assign(firstItem, _app);
+            Object.assign(firstItem, this.getFirstMenuItem(items));
+            if (firstItem && Object.keys(firstItem).length > 0) {
                 appMenu.setAppMenuSelected(firstItem);
                 this.appMenuSelection([firstItem]);
             }
@@ -8460,21 +8458,40 @@ var IBizIndexViewController = /** @class */ (function (_super) {
         return this.getControl('appmenu');
     };
     /**
-     * 导航数据跳转处理
-     *
-     * @param {*} [data={}]
-     * @memberof IBizIndexViewController
-     */
-    IBizIndexViewController.prototype.navigationLink = function (data) {
-        if (data === void 0) { data = {}; }
-    };
-    /**
      * 设置主菜单状态
      *
      * @param {string} [align]
      * @memberof IBizIndexViewController
      */
     IBizIndexViewController.prototype.setMianMenuState = function (align) {
+    };
+    /**
+     * 获取第一个带导航内容的菜单数据
+     *
+     * @private
+     * @param {Array<any>} items
+     * @returns {*}
+     * @memberof IBizIndexViewController
+     */
+    IBizIndexViewController.prototype.getFirstMenuItem = function (items) {
+        var _this = this;
+        var app = {};
+        var appMenu = this.getAppMenu();
+        items.some(function (_item) {
+            var _app = appMenu.getAppFunction(_item.appfuncid, '');
+            if (_app && Object.keys(_app).length > 0) {
+                Object.assign(app, _item, _app);
+                return true;
+            }
+            if (_item.items && _item.items.length > 0) {
+                var subapp = _this.getFirstMenuItem(_item.items);
+                if (subapp && Object.keys(subapp).length > 0) {
+                    Object.assign(app, _item, subapp);
+                    return true;
+                }
+            }
+        });
+        return app;
     };
     return IBizIndexViewController;
 }(IBizMainViewController));
@@ -13120,7 +13137,7 @@ var IBizWFEditView3Controller = /** @class */ (function (_super) {
 
 "use strict";
 Vue.component('ibiz-app-menu', {
-    template: "\n    <i-menu theme=\"dark\" width=\"auto\" class=\"ibiz-app-menu\"  @on-select=\"onSelect($event)\" active-name=\"ctrl.selection.id\">\n        <template v-for=\"(item0, index0) in ctrl.items\">\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n            <template v-if=\"item0.items && item0.items.length > 0\">\n                <submenu :name=\"item0.id\">\n                    <template slot=\"title\">\n                        <span><i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i> {{ item0.text }}</span>\n                    </template>\n                    <template v-for=\"(item1, index1) in item0.items\">\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                        <template v-if=\"item1.items && item1.items.length > 0\">\n                            <submenu :name=\"item1.id\">\n                                <template slot=\"title\">\n                                    <span>{{ item1.text }}</span>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                <template v-for=\"(item2, index2) in item1.items\">\n                                    <menu-item :name=\"item2.id\">\n                                        <span>{{ item2.text }}</span>\n                                    </menu-item>\n                                </template>\n                                <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n                            </submenu>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                        <template v-else>\n                            <menu-item :name=\"item1.id\">\n                                <span>{{ item1.text }}</span>\n                            </menu-item>\n                        </template>\n                        <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n                    </template>\n                </submenu>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n            <template v-else>\n                <menu-item :name=\"item0.id\">\n                    <span><i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\" style=\"margin-right:8px;\"></i>{{ item0.text }}</span>\n                </menu-item>\n            </template>\n            <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n        </template>\n    </i-menu>\n    ",
+    template: "\n        <el-menu background-color=\"#515a6e\" text-color=\"#fff\" @select=\"onSelect\" :default-active=\"ctrl.selectItem.id\">\n            <template v-for=\"(item0, index0) in ctrl.items\">\n\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                <template v-if=\"item0.items && item0.items.length > 0\">\n                    <el-submenu :index=\"item0.id\">\n                        <template slot=\"title\">\n                            <i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i>\n                            <span slot=\"title\">{{ item0.text }}</span>\n                        </template>\n                        <template v-for=\"(item1, index1) in item0.items\">\n\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 begin  --->\n                            <template v-if=\"item1.items && item1.items.length > 0\">\n                                <el-submenu :index=\"item1.id\">\n                                    <template slot=\"title\">\n                                        <span slot=\"title\">{{ item1.text }}</span>\n                                    </template>\n\n                                    <!---  \u4E09\u7EA7\u83DC\u5355 begin  --->\n                                    <template v-for=\"(item2, index2) in item1.items\">\n                                        <el-menu-item :index=\"item2.id\">{{ item2.text }}</el-menu-item>\n                                    </template>\n                                    <!---  \u4E09\u7EA7\u83DC\u5355\u6709 begin  --->\n\n                                </el-submenu>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                            <template v-else>\n                                <el-menu-item :index=\"item1.id\">{{ item1.text }}</el-menu-item>\n                            </template>\n                            <!---  \u4E8C\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n\n                        </template>\n                    </el-submenu>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u6709\u5B50\u9879 end  --->\n\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 begin  --->\n                <template v-else>\n                    <el-menu-item :index=\"item0.id\">\n                        <i :class=\"[item0.iconcls == '' ? 'fa fa-cogs' : item0.iconcls ]\" aria-hidden=\"true\"></i>\n                        <span slot=\"title\">{{ item0.text }}</span>\n                    </el-menu-item>\n                </template>\n                <!---  \u4E00\u7EA7\u83DC\u5355\u65E0\u5B50\u9879 end  --->\n\n            </template>\n        </el-menu>\n    ",
     props: ['ctrl', 'viewController'],
     data: function () {
         var data = {};
@@ -13131,7 +13148,7 @@ Vue.component('ibiz-app-menu', {
     methods: {
         onSelect: function (name) {
             if (this.ctrl && !Object.is(name, '')) {
-                var item = this.ctrl.getItem(name, this.ctrl.getItems());
+                var item = this.ctrl.getItem(this.ctrl.getItems(), { id: name });
                 this.ctrl.onSelectChange(item);
             }
         }
