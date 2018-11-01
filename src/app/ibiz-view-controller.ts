@@ -118,7 +118,7 @@ class IBizViewController extends IBizObject {
      * @type {number}
      * @memberof IBizViewController
      */
-    private viewUsage: number = 0;
+    private viewUsage: number = 1;
 
     /**
      * vue 路由对象

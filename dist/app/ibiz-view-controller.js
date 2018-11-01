@@ -128,7 +128,7 @@ var IBizViewController = /** @class */ (function (_super) {
          * @type {number}
          * @memberof IBizViewController
          */
-        _this_1.viewUsage = 0;
+        _this_1.viewUsage = 1;
         /**
          * vue 路由对象
          *
