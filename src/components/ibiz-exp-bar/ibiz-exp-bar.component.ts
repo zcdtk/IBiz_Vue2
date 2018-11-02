@@ -1,56 +1,63 @@
 Vue.component('ibiz-exp-bar', {
     template: `
-        <i-menu theme="light" width="auto" class="ibiz-exp-bar" @on-select="onSelect($event)"  @on-open-change="onOpenChange($event)"
-          active-name="ctrl.selection.id">
+        <el-menu class="ibiz-exp-bar" @select="onSelect" :default-active="ctrl.selectItem.id">
             <template v-for="(item0, index0) in ctrl.items">
+
                 <!---  一级菜单有子项 begin  --->
                 <template v-if="item0.items && item0.items.length > 0">
-                    <submenu :name="item0.id">
+                    <el-submenu :index="item0.id" v-show="item0.show">
                         <template slot="title">
-                            <span>{{ item0.text }}</span>
+                            <span slot="title">{{ item0.text }}</span>
                             <span>&nbsp;&nbsp;<badge :count="item0.counterdata"></badge></span>
                         </template>
                         <template v-for="(item1, index1) in item0.items">
+
                             <!---  二级菜单有子项 begin  --->
                             <template v-if="item1.items && item1.items.length > 0">
-                                <submenu :name="item1.id">
+                                <el-submenu :index="item1.id" v-show="item1.show">
                                     <template slot="title">
-                                        <span>{{ item1.text }}</span>
+                                        <span slot="title">{{ item1.text }}</span>
                                         <span>&nbsp;&nbsp;<badge :count="item1.counterdata"></badge></span>
                                     </template>
+
                                     <!---  三级菜单 begin  --->
                                     <template v-for="(item2, index2) in item1.items">
-                                        <menu-item :name="item2.id">
-                                            <span>{{ item2.text }}</span>
+                                        <el-menu-item :index="item2.id" v-show="item2.show">
+                                            <span slot="title">{{ item2.text }}</span>
                                             <span>&nbsp;&nbsp;<badge :count="item2.counterdata"></badge></span>
-                                        </menu-item>
+                                        </el-menu-item>
                                     </template>
                                     <!---  三级菜单有 begin  --->
-                                </submenu>
+
+                                </el-submenu>
                             </template>
                             <!---  二级菜单有子项 end  --->
+
                             <!---  二级菜单无子项 begin  --->
                             <template v-else>
-                                <menu-item :name="item1.id">
-                                    <span>{{ item1.text }}</span>
+                                <el-menu-item :index="item1.id" v-show="item1.show">
+                                    <span slot="title">{{ item1.text }}</span>
                                     <span>&nbsp;&nbsp;<badge :count="item1.counterdata"></badge></span>
-                                </menu-item>
+                                </el-menu-item>
                             </template>
                             <!---  二级菜单无子项 end  --->
+
                         </template>
-                    </submenu>
+                    </el-submenu>
                 </template>
                 <!---  一级菜单有子项 end  --->
+
                 <!---  一级菜单无子项 begin  --->
                 <template v-else>
-                    <menu-item :name="item0.id">
-                        <span>{{ item0.text }}</span>
+                    <el-menu-item :index="item0.id" v-show="item0.show">
+                        <span slot="title">{{ item0.text }}</span>
                         <span>&nbsp;&nbsp;<badge :count="item0.counterdata"></badge></span>
-                    </menu-item>
+                    </el-menu-item>
                 </template>
                 <!---  一级菜单无子项 end  --->
+
             </template>
-        </i-menu>
+        </el-menu>
     `,
     props: ['ctrl', 'viewController'],
     data: function () {
