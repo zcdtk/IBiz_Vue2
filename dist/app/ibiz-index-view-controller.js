@@ -132,6 +132,13 @@ var IBizIndexViewController = /** @class */ (function (_super) {
     IBizIndexViewController.prototype.setMianMenuState = function (align) {
     };
     /**
+     * 注册默认打开视图
+     *
+     * @memberof IBizIndexViewController
+     */
+    IBizIndexViewController.prototype.regDefOpenView = function () {
+    };
+    /**
      * 获取第一个带导航内容的菜单数据
      *
      * @private
@@ -158,13 +165,6 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             }
         });
         return app;
-    };
-    /**
-     * 注册默认打开视图
-     *
-     * @memberof IBizIndexViewController
-     */
-    IBizIndexViewController.prototype.regDefOpenView = function () {
     };
     return IBizIndexViewController;
 }(IBizMainViewController));

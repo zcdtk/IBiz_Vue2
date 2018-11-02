@@ -126,6 +126,15 @@ class IBizIndexViewController extends IBizMainViewController {
     }
 
     /**
+     * 注册默认打开视图
+     *
+     * @memberof IBizIndexViewController
+     */
+    public regDefOpenView(): void {
+        
+    }
+
+    /**
      * 获取第一个带导航内容的菜单数据
      *
      * @private
@@ -153,12 +162,4 @@ class IBizIndexViewController extends IBizMainViewController {
         return app;
     }
 
-    /**
-     * 注册默认打开视图
-     *
-     * @memberof IBizIndexViewController
-     */
-    public regDefOpenView(): void {
-        
-    }
 }
