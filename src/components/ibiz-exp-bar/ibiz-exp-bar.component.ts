@@ -1,6 +1,6 @@
 Vue.component('ibiz-exp-bar', {
     template: `
-        <el-menu class="ibiz-exp-bar" @select="onSelect" :default-active="ctrl.selectItem.id">
+        <el-menu class="ibiz-exp-bar" @select="onSelect" :default-active="ctrl.selectItem.id" :default-openeds="ctrl.expandItems">
             <template v-for="(item0, index0) in ctrl.items">
 
                 <!---  一级菜单有子项 begin  --->
