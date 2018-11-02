@@ -98,7 +98,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             var defView = {};
             var _app = appMenu.getAppFunction('', this.defOpenView.viewname);
             if (_app) {
-                Object.assign(defView, appMenu.getSelectMenuItem(items, _app));
+                Object.assign(defView, appMenu.getSelectMenuItem(items, _app), _app);
             }
             if (Object.keys(defView).length > 0) {
                 appMenu.setAppMenuSelected(defView);
