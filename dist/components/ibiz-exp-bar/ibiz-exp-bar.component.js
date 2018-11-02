@@ -9,15 +9,6 @@ Vue.component('ibiz-exp-bar', {
     mounted: function () {
     },
     methods: {
-        setOpenData: function (arr) {
-            var _this = this;
-            arr.forEach(function (item) {
-                if (item.items && item.items.length > 0) {
-                    _this.opendata.push(item.id);
-                    _this.setOpenData(item.items);
-                }
-            });
-        },
         getItem: function (items, id) {
             var _this = this;
             var data = {};
@@ -45,13 +36,5 @@ Vue.component('ibiz-exp-bar', {
         onOpenChange: function (submenu) {
             console.log(submenu);
         },
-    },
-    watch: {
-        'ctrl.items': function (val) {
-            if (val && Array.isArray(val)) {
-                this.items = val.slice();
-                this.setOpenData(val);
-            }
-        }
     }
 });
