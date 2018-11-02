@@ -8393,7 +8393,15 @@ var IBizIndexViewController = /** @class */ (function (_super) {
      */
     function IBizIndexViewController(opts) {
         if (opts === void 0) { opts = {}; }
-        return _super.call(this, opts) || this;
+        var _this = _super.call(this, opts) || this;
+        /**
+         * 默认打开视图
+         *
+         * @type {*}
+         * @memberof IBizIndexViewController
+         */
+        _this.defOpenView = {};
+        return _this;
     }
     /**
      * 应用菜单部件初始化
@@ -8513,6 +8521,13 @@ var IBizIndexViewController = /** @class */ (function (_super) {
             }
         });
         return app;
+    };
+    /**
+     * 注册默认打开视图
+     *
+     * @memberof IBizIndexViewController
+     */
+    IBizIndexViewController.prototype.regDefOpenView = function () {
     };
     return IBizIndexViewController;
 }(IBizMainViewController));

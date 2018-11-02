@@ -7,6 +7,14 @@
 class IBizIndexViewController extends IBizMainViewController {
 
     /**
+     * 默认打开视图
+     *
+     * @type {*}
+     * @memberof IBizIndexViewController
+     */
+    public defOpenView: any = {};
+
+    /**
      * Creates an instance of IBizIndexViewController.
      * 创建 IBizIndexViewController 实例
      * 
@@ -142,5 +150,14 @@ class IBizIndexViewController extends IBizMainViewController {
             }
         });
         return app;
+    }
+
+    /**
+     * 注册默认打开视图
+     *
+     * @memberof IBizIndexViewController
+     */
+    public regDefOpenView(): void {
+
     }
 }
