@@ -92,7 +92,7 @@ var IBizWFExpBar = /** @class */ (function (_super) {
             if (result.ret === 0) {
                 // this.items = result.items;
                 _this.onCounterChanged(result.items);
-                _this.formarItems(_this.items);
+                _this.formarItems(result.items);
                 _this.items = result.items.slice();
                 _this.fire(IBizWFExpBar.LOADED, _this.items[0]);
             }
@@ -111,17 +111,10 @@ var IBizWFExpBar = /** @class */ (function (_super) {
     IBizWFExpBar.prototype.formarItems = function (_items) {
         var _this = this;
         _items.forEach(function (item) {
-            if (item.checked) {
-                Object.assign(_this.selectItem, item);
-            }
-            item.bchecked = item.checked ? true : false;
             if (item.items) {
-                var hasItemCheck = _this.formarItems(item.items);
-                if (hasItemCheck) {
-                    item.expanded = true;
-                }
+                _this.expandItems.push(item.id);
+                _this.formarItems(item.items);
             }
-            item.hassubmenu = item.items ? true : false;
         });
     };
     /**

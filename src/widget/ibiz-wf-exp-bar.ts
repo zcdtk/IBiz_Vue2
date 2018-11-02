@@ -83,7 +83,7 @@ class IBizWFExpBar extends IBizControl {
             if (result.ret === 0) {
                 // this.items = result.items;
                 this.onCounterChanged(result.items);
-                this.formarItems(this.items);
+                this.formarItems(result.items);
                 this.items = [...result.items];
                 this.fire(IBizWFExpBar.LOADED, this.items[0]);
             }
@@ -102,18 +102,10 @@ class IBizWFExpBar extends IBizControl {
      */
     private formarItems(_items: any): any {
         _items.forEach(item => {
-            if (item.checked) {
-                Object.assign(this.selectItem, item);
-            }
-            item.bchecked = item.checked ? true : false;
-
             if (item.items) {
-                const hasItemCheck = this.formarItems(item.items);
-                if (hasItemCheck) {
-                    item.expanded = true;
-                }
+                this.expandItems.push(item.id);
+                this.formarItems(item.items);
             }
-            item.hassubmenu = item.items ? true : false;
         });
     }
 
