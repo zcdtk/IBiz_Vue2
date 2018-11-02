@@ -8458,6 +8458,17 @@ var IBizIndexViewController = /** @class */ (function (_super) {
                 appMenu.setAppMenuSelected(_item);
             }
         }
+        else if (this.defOpenView && Object.keys(this.defOpenView).length > 0) {
+            var defView = {};
+            var _app = appMenu.getAppFunction('', this.defOpenView.viewname);
+            if (_app) {
+                Object.assign(defView, appMenu.getSelectMenuItem(items, _app));
+            }
+            if (Object.keys(defView).length > 0) {
+                appMenu.setAppMenuSelected(defView);
+                this.appMenuSelection([defView]);
+            }
+        }
         else {
             var firstItem = {};
             Object.assign(firstItem, this.getFirstMenuItem(items));

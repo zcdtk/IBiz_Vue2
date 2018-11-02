@@ -82,6 +82,16 @@ class IBizIndexViewController extends IBizMainViewController {
             if (Object.keys(_item).length > 0) {
                 appMenu.setAppMenuSelected(_item);
             }
+        } else if (this.defOpenView && Object.keys(this.defOpenView).length > 0) {
+            let defView: any = {};
+            let _app = appMenu.getAppFunction('', this.defOpenView.viewname);
+            if (_app) {
+                Object.assign(defView, appMenu.getSelectMenuItem(items, _app));
+            }
+            if (Object.keys(defView).length > 0) {
+                appMenu.setAppMenuSelected(defView);
+                this.appMenuSelection([defView]);
+            }
         } else {
             let firstItem: any = {};
 
@@ -131,7 +141,7 @@ class IBizIndexViewController extends IBizMainViewController {
      * @memberof IBizIndexViewController
      */
     public regDefOpenView(): void {
-        
+
     }
 
     /**
