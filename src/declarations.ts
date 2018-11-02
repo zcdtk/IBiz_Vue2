@@ -87,3 +87,4 @@ declare var Vue;
 declare var axios;
 declare var IBizEnvironment;
 declare var iview;
+declare var tinymce;

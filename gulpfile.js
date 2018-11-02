@@ -91,6 +91,7 @@ gulp.task('concatibizsys', function () {
         'dist/components/ibiz-file-upload/ibiz-file-upload.component.js',
         'dist/components/ibiz-mpicker/ibiz-mpicker.component.js',
         'dist/components/ibiz-picture-upload/ibiz-picture-upload.component.js',
+        'dist/components/ibiz-rich-text-editor/ibiz-rich-text-editor.component.js',
     ]
     return gulp.src(ibizsys)
         .pipe(concat('ibizsys.js'))
