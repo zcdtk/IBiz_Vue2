@@ -1,6 +1,6 @@
 Vue.component('ibiz-app-menu', {
     template: `
-        <el-menu background-color="#515a6e" text-color="#fff" @select="onSelect" :default-active="ctrl.selectItem.id">
+        <el-menu class="ibiz-app-menu" background-color="#515a6e" text-color="#fff" @select="onSelect" :default-active="ctrl.selectItem.id">
             <template v-for="(item0, index0) in ctrl.items">
 
                 <!---  一级菜单有子项 begin  --->
