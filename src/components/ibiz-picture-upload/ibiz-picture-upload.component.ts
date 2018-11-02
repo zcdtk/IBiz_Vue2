@@ -83,6 +83,9 @@ Vue.component("ibiz-picture-upload", {
             this.$Notice.error({title: '上传失败'});
         },
         'onRemove': function(file) {
+            if(this.field && this.field.disabled) {
+                return;
+            }
             let arr:Array<any> = [];
             this.files.forEach(f => {
                 if(f.id != file.id) {
