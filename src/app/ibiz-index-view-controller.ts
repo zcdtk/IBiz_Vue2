@@ -23,6 +23,7 @@ class IBizIndexViewController extends IBizMainViewController {
      */
     constructor(opts: any = {}) {
         super(opts);
+        this.regDefOpenView();
     }
 
     /**
@@ -158,6 +159,6 @@ class IBizIndexViewController extends IBizMainViewController {
      * @memberof IBizIndexViewController
      */
     public regDefOpenView(): void {
-
+        
     }
 }

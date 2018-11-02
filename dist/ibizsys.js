@@ -8401,6 +8401,7 @@ var IBizIndexViewController = /** @class */ (function (_super) {
          * @memberof IBizIndexViewController
          */
         _this.defOpenView = {};
+        _this.regDefOpenView();
         return _this;
     }
     /**
