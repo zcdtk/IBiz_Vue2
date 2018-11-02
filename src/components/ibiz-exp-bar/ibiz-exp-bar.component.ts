@@ -86,7 +86,6 @@ Vue.component('ibiz-exp-bar', {
             return data;
         },
         onSelect(name: string) {
-            console.log(name);
             let _this = this;
             let _data = _this.getItem(_this.ctrl.items, name);
             _this.ctrl.selection(_data);
