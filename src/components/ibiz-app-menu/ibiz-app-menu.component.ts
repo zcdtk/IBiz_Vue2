@@ -21,7 +21,9 @@ Vue.component('ibiz-app-menu', {
 
                                     <!---  三级菜单 begin  --->
                                     <template v-for="(item2, index2) in item1.items">
-                                        <el-menu-item :index="item2.id">{{ item2.text }}</el-menu-item>
+                                        <el-menu-item :index="item2.id">
+                                            <span slot="title">{{ item2.text }}</span>
+                                        </el-menu-item>
                                     </template>
                                     <!---  三级菜单有 begin  --->
 
@@ -31,7 +33,9 @@ Vue.component('ibiz-app-menu', {
 
                             <!---  二级菜单无子项 begin  --->
                             <template v-else>
-                                <el-menu-item :index="item1.id">{{ item1.text }}</el-menu-item>
+                                <el-menu-item :index="item1.id">
+                                    <span slot="title">{{ item1.text }}</span>
+                                </el-menu-item>
                             </template>
                             <!---  二级菜单无子项 end  --->
 
