@@ -1,13 +1,14 @@
 Vue.component("ibiz-file-upload", {
     template: `
-    <el-upload :disabled="field.disabled" :file-list="files" :action="url" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :before-remove="onRemove">
-        <Button icon="ios-cloud-upload-outline">上传</Button>
+    <el-upload :disabled="field.disabled" :file-list="files" :action="uploadUrl" :before-upload="beforeUpload" :on-success="onSuccess" :on-error="onError" :before-remove="onRemove" :on-preview="onDownload">
+        <el-button size="small" icon="el-icon-upload">上传</el-button>
     </el-upload>
     `,
     props: ['field', 'name'],
     data: function() {
         let data: any = {
-            url: '/' + IBizEnvironment.SysName + IBizEnvironment.UploadFile,
+            uploadUrl: '/' + IBizEnvironment.SysName + IBizEnvironment.UploadFile,
+            downloadUrl: '/' + IBizEnvironment.SysName + IBizEnvironment.ExportFile,
             files: []
         };
         return data;
@@ -19,6 +20,9 @@ Vue.component("ibiz-file-upload", {
         'field.value': function(newVal, oldVal) {
             if(newVal) {
                 this.files = JSON.parse(newVal);
+                this.files.forEach(file => {
+                    file.url = this.downloadUrl + '?fileid=' + file.id;
+                });
             } else {
                 this.files = [];
             }
@@ -53,6 +57,9 @@ Vue.component("ibiz-file-upload", {
             if(this.field) {
                 this.field.setValue(value);
             }
+        },
+        'onDownload': function(file) {
+            window.open(file.url);
         }
     }
 });

@@ -1,10 +1,11 @@
 "use strict";
 Vue.component("ibiz-file-upload", {
-    template: "\n    <el-upload :disabled=\"field.disabled\" :file-list=\"files\" :action=\"url\" :before-upload=\"beforeUpload\" :on-success=\"onSuccess\" :on-error=\"onError\" :before-remove=\"onRemove\">\n        <Button icon=\"ios-cloud-upload-outline\">\u4E0A\u4F20</Button>\n    </el-upload>\n    ",
+    template: "\n    <el-upload :disabled=\"field.disabled\" :file-list=\"files\" :action=\"uploadUrl\" :before-upload=\"beforeUpload\" :on-success=\"onSuccess\" :on-error=\"onError\" :before-remove=\"onRemove\" :on-preview=\"onDownload\">\n        <el-button size=\"small\" icon=\"el-icon-upload\">\u4E0A\u4F20</el-button>\n    </el-upload>\n    ",
     props: ['field', 'name'],
     data: function () {
         var data = {
-            url: '/' + IBizEnvironment.SysName + IBizEnvironment.UploadFile,
+            uploadUrl: '/' + IBizEnvironment.SysName + IBizEnvironment.UploadFile,
+            downloadUrl: '/' + IBizEnvironment.SysName + IBizEnvironment.ExportFile,
             files: []
         };
         return data;
@@ -13,8 +14,12 @@ Vue.component("ibiz-file-upload", {
     },
     watch: {
         'field.value': function (newVal, oldVal) {
+            var _this = this;
             if (newVal) {
                 this.files = JSON.parse(newVal);
+                this.files.forEach(function (file) {
+                    file.url = _this.downloadUrl + '?fileid=' + file.id;
+                });
             }
             else {
                 this.files = [];
@@ -50,6 +55,9 @@ Vue.component("ibiz-file-upload", {
             if (this.field) {
                 this.field.setValue(value);
             }
+        },
+        'onDownload': function (file) {
+            window.open(file.url);
         }
     }
 });
