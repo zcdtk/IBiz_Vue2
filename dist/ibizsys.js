@@ -13376,7 +13376,12 @@ Vue.component('ibiz-picker', {
         },
         onBlur: function () {
             if (this.field && this.value != this.field.value) {
-                this.value = this.field.value;
+                if (this.forceSelection) {
+                    this.value = this.field.value;
+                }
+                else {
+                    this.onACSelect({ text: this.value, value: '' });
+                }
             }
         },
         //  填充条件
@@ -13951,13 +13956,14 @@ Vue.component("ibiz-rich-text-editor", {
 
 "use strict";
 Vue.component("ibiz-autocomplete", {
-    template: "\n    <i-select :value=\"value\" :disabled=\"field.disabled\">\n        <Scroll :on-reach-bottom=\"onScollBottom\">\n            <template v-for=\"item of items\">\n                <i-option :value=\"item.value\" :disabled=\"item.disabled\"> {{ item.text }} </i-option>\n            </template>\n        </Scroll>\n    </i-select>\n    ",
+    template: "\n    <el-select remote :remote-method=\"onSearch\" @change=\"onSelect\" popper-class=\"ibiz-autocomplete\" :value=\"value\" size=\"small\" filterable :disabled=\"field.disabled\" style=\"width:100%;\" clearable>\n        <Scroll :on-reach-bottom=\"onScollBottom\" height=\"150\">\n            <el-option v-for=\"(item, index) of options\" :value=\"item.value\" :label=\"item.text\" :disabled=\"item.disabled\"></el-option>\n        </Scroll>\n    </el-select>\n    ",
     props: ['field', 'name'],
     data: function () {
         var data = {
+            http: new IBizHttp(),
             value: '',
-            items: [],
-            limit: 50,
+            options: [],
+            limit: 5,
             startrow: 0,
             totalrow: 0,
             searchText: ''
@@ -13974,15 +13980,53 @@ Vue.component("ibiz-autocomplete", {
         }
     },
     methods: {
+        onSelect: function (value) {
+            var index = this.options.findIndex(function (item) { return Object.is(item.value, value); });
+            if (index >= 0) {
+                var item = this.options[index];
+                if (this.form) {
+                    var valueField = this.form.findField(this.valueItem);
+                    if (valueField) {
+                        valueField.setValue(item.value);
+                    }
+                    var itemField = this.form.findField(this.name);
+                    if (itemField) {
+                        itemField.setValue(item.text);
+                    }
+                }
+            }
+        },
         onSearch: function (query) {
-            this.startrow = 0;
-            this.totalrow = 0;
-            this.items = [];
-            this.searchText = query;
-            this.loadData();
+            var _this = this;
+            _this.startrow = 0;
+            _this.totalrow = 0;
+            _this.options = [];
+            _this.searchText = query;
+            if (_this.url) {
+                var param = {
+                    srfaction: 'itemfetch',
+                    query: _this.searchText,
+                    start: _this.startrow,
+                    limit: _this.limit
+                };
+                if (_this.form) {
+                    Object.assign(param, { srfreferdata: JSON.stringify(_this.form.getActiveData()) });
+                }
+                _this.http.post(_this.url, param).subscribe(function (response) {
+                    if (response.ret == 0) {
+                        response.items.forEach(function (data) {
+                            var index = _this.options.findIndex(function (item) { return Object.is(item.value, data.value); });
+                            if (index === -1) {
+                                _this.options.push(data);
+                            }
+                        });
+                        _this.totalrow = response.totalrow;
+                    }
+                });
+            }
         },
         onScollBottom: function () {
-            if (this.totalrow == this.items.length) {
+            if (this.totalrow == this.options.length) {
                 return;
             }
             this.startrow += this.limit;
@@ -14004,9 +14048,9 @@ Vue.component("ibiz-autocomplete", {
                     _this.http.post(_this.url, param).subscribe(function (response) {
                         if (response.ret == 0) {
                             response.items.forEach(function (data) {
-                                var index = _this.items.findIndex(function (item) { return Object.is(item.value, data.value); });
+                                var index = _this.options.findIndex(function (item) { return Object.is(item.value, data.value); });
                                 if (index === -1) {
-                                    _this.items.push(data);
+                                    _this.options.push(data);
                                 }
                             });
                             _this.totalrow = response.totalrow;

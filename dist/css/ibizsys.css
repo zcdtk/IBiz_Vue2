@@ -83,3 +83,11 @@
   display: inline;
 }
 /***    END:图片上传    ***/
+/***    BEGIN:自动填充     ***/
+.ibiz-autocomplete .ivu-scroll-wrapper {
+  margin-right: -18px;
+}
+.ibiz-autocomplete .el-scrollbar__bar.is-horizontal {
+  display: none;
+}
+/***    END:自动填充    ***/

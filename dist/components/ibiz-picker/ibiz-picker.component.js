@@ -29,7 +29,12 @@ Vue.component('ibiz-picker', {
         },
         onBlur: function () {
             if (this.field && this.value != this.field.value) {
-                this.value = this.field.value;
+                if (this.forceSelection) {
+                    this.value = this.field.value;
+                }
+                else {
+                    this.onACSelect({ text: this.value, value: '' });
+                }
             }
         },
         //  填充条件
