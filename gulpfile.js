@@ -11,8 +11,6 @@ gulp.task('js', function () {
         'plugins/axios/axios.min.js',
         'plugins/iview/iview.min.js',
         'plugins/element-ui/element-ui.js',
-        'plugins/tinymce/tinymce.min.js',
-        'plugins/tinymce/langs/zh_CN.js'
     ];
     return gulp.src(assets)
         .pipe(concat('assets.js'))
