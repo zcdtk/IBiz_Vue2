@@ -77,6 +77,9 @@ Vue.component("ibiz-mpicker", {
                     srfaction: 'itemfetch',
                     query: query
                 };
+                if (this.form) {
+                    Object.assign(param, {srfreferdata: JSON.stringify(this.form.getActiveData())});
+                }
                 this.http.post(this.url, param).subscribe((data) => {
                     this.items = data.items;
                 })
